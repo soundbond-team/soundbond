@@ -17,3 +17,6 @@ cache:
 script:
   - npm test
   - yarn build
+
+notifications:
+  slack: teamsoundbond:t070C9oXt6APmAQ5qrDegxrP
