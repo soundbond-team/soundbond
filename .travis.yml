@@ -1,0 +1,19 @@
+language: node_js
+node_js: "16"
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  skip_cleanup: true
+  on:
+    branch: develop
+    tags: true
+
+before_script:
+  -yarn install --frozen-lockfile
+cache:
+  directories:
+    - node_modules
+script:
+  - npm test
+  - yarn build
