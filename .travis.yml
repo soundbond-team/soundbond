@@ -16,5 +16,4 @@ cache:
     - client/node_modules
 script:
   - npm test
-  - cd client
   - npm run build
