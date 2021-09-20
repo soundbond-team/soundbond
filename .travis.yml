@@ -1,8 +1,6 @@
 language: node_js
 node_js: "16"
-install:
-    - npm install
-    - npm install yarn
+
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
@@ -13,7 +11,7 @@ deploy:
 
 cache:
   directories:
-    - node_modules
+    - client/node_modules
 script:
   - npm test
-  - yarn build
+  - npm run build
