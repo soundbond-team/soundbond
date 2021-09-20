@@ -1,6 +1,8 @@
 language: node_js
 node_js: "16"
-
+install:
+    -npm install
+    -npm install yarn
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
@@ -9,8 +11,6 @@ deploy:
     branch: develop
     tags: true
 
-before_script:
-  -yarn install --frozen-lockfile
 cache:
   directories:
     - node_modules
