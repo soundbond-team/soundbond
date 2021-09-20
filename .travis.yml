@@ -17,3 +17,5 @@ cache:
 script:
   - npm test
   - npm run build
+notifications:
+  slack: teamsoundbond:t070C9oXt6APmAQ5qrDegxrP
