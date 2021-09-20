@@ -8,7 +8,9 @@ deploy:
   on:
     branch: develop
     tags: true
-
+before_script:
+    - cd client
+    - npm install react-scripts
 cache:
   directories:
     - client/node_modules
