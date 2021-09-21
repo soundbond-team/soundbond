@@ -22,3 +22,4 @@ script:
   - npm run
 notifications:
   slack: teamsoundbond:t070C9oXt6APmAQ5qrDegxrPcde1bdfe1aed03b66990b290e9b0783789849db6
+  - yarn build
