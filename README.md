@@ -2,17 +2,42 @@
 
 [![Build Status](https://app.travis-ci.com/gu1lhem/soundbond.svg?token=mMVNgd82CCyhEB2ReSqx&branch=main)](https://app.travis-ci.com/gu1lhem/soundbond)
 
-## Installer depuis le dépot
+## A propos
 
-### Installations minimales nécessaires pour Linux
+__SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le comme un Instagram des sons. Tous droits réservés.
+
+### Intégration continue
+
+Nous utilisons [Travis CI](https://travis-ci.org/) connecté à GitHub. Les tests sont effectés avant chaque _release_.
+
+### Kanban client
+
+Notre kanban client est disponible [ici]([ici](https://github.com/gu1lhem/soundbond/projects)).
+
+## Pré-requis
+
+Avant de commencer, assurez-vous de satisfaire les pré-requis suivants :
+
+* Vous avez une machine avec `Windows/Linux Ubuntu`. Le fonctionnement avec tout autre OS n'est pas garanti.
+* Vous avez installé `NodeJS`. Par exemple pour Linux :
 
 ``` bash
 sudo apt install snapd
 sudo snap install node --classic
+```
+
+* Vous avez installé `NPM`
+* Si vous souhaitez utiliser le serveur de développement recommandé, vous avez installé `nodemon` version 2.0.12 ou supérieure au niveau machine.
+
+``` bash
 sudo npm install -g nodemon
 ```
 
+## Installer SoundBond
+
 ### Installer les paquets NPM
+
+Installez les packets NPM de /client et /server :
 
 ``` bash
 cd client
@@ -23,60 +48,38 @@ npm ci
 
 ### Installer les variables confidentielles
 
+Copiez le fichier .env.sample en un autre fichier .env.
+
 ``` bash
 cp ./backend/.env.sample ./backend/.env
 ```
-Puis copier l'URL de la base de données MongoDB dans le fichier .env.
+
+Puis copiez-y l'URL de la base de données MongoDB.
 
 ### Lancer les serveurs de développement
 
+Pour le serveur backend
+
 ``` bash
+cd server
 nodemon server.js
 ```
 
-Et dans un autre terminal
+Pour le serveur frontend
+
 ``` bash
 cd client
 nodemon start
 ```
-ou npm start.
-
-## Installer depuis le début
-
-On utilise le gestionnaire snap pour avoir la dernière version de Node.JS (attention, dans les dépots APT, cette-ci est trop ancienne) :
-``` bash
-sudo snap install node --classic
-```
-
-Pour créer un projet :
-
-``` bash
-npx create-react-app .
-```
-(on suppose que l'on est déjà dans le répertoire du projet, ici soundbound).
-
-Pour initialiser NPM :
-
-``` bash
-mkdir backend
-cd backend/
-npm init
-npm install express cors mongoose dotenv
-```
-
-- express : lightwirght web framework for node.js
-- cors : cross origin ressource sharing : access ressources from remote hosts. middleware : cors with different options -> to access something from outsde the server
-- mongoose : interaction with mongodb trough Node.js
-- dotenv : environnement variables stored in a file in the project (.env)
-
-``` bash
-sudo npm install -g nodemon
-```
-- -g : install globally
-- nodemon : automatically reload when a server file changed on the disk
-
 
 ## Tester l'API REST
+
+Essayez d'insérer un élément dans la base de données depuis l'API.
+
 ``` bash
 curl -i -H "Content-Type: application/json" -X POST -d '{"string_attribute":"hello world"}' http://localhost:5000/example/add
 ```
+
+## License
+
+Tous droits réservés.

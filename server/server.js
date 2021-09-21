@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 5000; // Port du serveur de développement
+const port = process.env.PORT || 8080; // Port du serveur de développement
 
 app.use(cors());
 app.use(express.json());
