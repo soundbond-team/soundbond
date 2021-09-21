@@ -12,14 +12,13 @@ before_script:
     - cd client
     - npm install react-scripts
 cache:
-  directories:
-    - client/node_modules
-    - server/node_modules
+    directories:
+        - client/node_modules
+        - server/node_modules
 script:
-  - npm test
-  - npm run build
-  - cd ../server
-  - npm run
+    - npm test
+    - npm run build
+    - cd ../server
+    - npm run
 notifications:
-  slack: teamsoundbond:t070C9oXt6APmAQ5qrDegxrPcde1bdfe1aed03b66990b290e9b0783789849db6
-  - yarn build
+    slack: teamsoundbond:t070C9oXt6APmAQ5qrDegxrPcde1bdfe1aed03b66990b290e9b0783789849db6
