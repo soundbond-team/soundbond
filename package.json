@@ -1,0 +1,19 @@
+{
+  "name": "soundbond",
+  "version": "1.0.0",
+  "description": "[![Build Status](https://app.travis-ci.com/gu1lhem/soundbond.svg?token=mMVNgd82CCyhEB2ReSqx&branch=main)](https://app.travis-ci.com/gu1lhem/soundbond)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gu1lhem/soundbond.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gu1lhem/soundbond/issues"
+  },
+  "homepage": "https://github.com/gu1lhem/soundbond#readme"
+}
