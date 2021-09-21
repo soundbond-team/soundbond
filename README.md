@@ -1,6 +1,6 @@
 # SoundBond
 
-[![Build Status](https://app.travis-ci.com/gu1lhem/soundbond.svg?token=mMVNgd82CCyhEB2ReSqx&branch=main)](https://app.travis-ci.com/gu1lhem/soundbond)
+[![Build Status](https://app.travis-ci.com/gu1lhem/soundbond.svg?token=mMVNgd82CCyhEB2ReSqx&branch=develop)](https://app.travis-ci.com/gu1lhem/soundbond)
 
 ## Installer depuis le dépot
 
