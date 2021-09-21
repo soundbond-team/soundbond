@@ -1,6 +1,9 @@
 language: node_js
 node_js: "16"
-
+branches:
+    only:
+        - develop
+        - main
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
