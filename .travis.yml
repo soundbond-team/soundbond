@@ -16,12 +16,13 @@ before_script:
     - npm install react-scripts
     - npm ci
     - cd ../server
-    - npm ci			
+    - npm install nodemon			
 cache:
     directories:
         - client/node_modules
         - server/node_modules
 script:
+    - cd ../client
     - npm test
     - npm run build
     - cd ../server
