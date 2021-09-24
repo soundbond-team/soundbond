@@ -13,8 +13,7 @@ deploy:
     tags: true
 before_script:
     - cd client
-    - npm install react-scripts
-    - npm ci
+    - yarn install
     - cd ../server
     - npm install nodemon			
 cache:
