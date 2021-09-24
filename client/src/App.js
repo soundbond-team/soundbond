@@ -1,24 +1,29 @@
 import logo from './logo.svg';
 import './App.css';
-
+import React, { useState } from "react";
+import Grid from "@material-ui/core/Grid";
+import Microphone from './components/Microphone/Microphone';
+import AudioPlayer from './components/AudioPlayer/AudioPlayer';
 function App() {
+  const [files, setFiles] = useState("");
+
+  const pushFile = file => {
+    setFiles(file);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>t.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+  
+      <Microphone pushFile={pushFile} />
+      <Grid container direction="column" spacing={3}>
+      
+          <Grid>
+            <AudioPlayer file={files} />
+          
+          </Grid>
+       
+      </Grid>
+    </>
   );
 }
 
