@@ -43,7 +43,7 @@ Installez les packets NPM de /client et /server :
 
 ``` bash
 cd client
-npm ci
+yarn install (si npm ci ne marche pas)
 cd ../server
 npm ci
 ```
@@ -53,7 +53,7 @@ npm ci
 Copiez le fichier .env.sample en un autre fichier .env.
 
 ``` bash
-cp ./backend/.env.sample ./backend/.env
+cp ./server/.env.sample ./server/.env
 ```
 
 Puis copiez-y l'URL de la base de données MongoDB.
