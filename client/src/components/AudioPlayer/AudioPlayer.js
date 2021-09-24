@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 export default function AudioPlayer({ file }) {
   const wavesurfer = useRef(null);
 
-  const [playerReady, setPlayerReady] = useState(false);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurferId = `wavesurfer--${uuidv4()}`;
 
@@ -70,10 +70,7 @@ export default function AudioPlayer({ file }) {
 
    
 
-    wavesurfer.current.on("ready", () => {
-      setPlayerReady(true);
-    });
-
+  
     const handleResize = wavesurfer.current.util.debounce(() => {
       wavesurfer.current.empty();
       wavesurfer.current.drawBuffer();
@@ -82,7 +79,7 @@ export default function AudioPlayer({ file }) {
     wavesurfer.current.on("play", () => setIsPlaying(true));
     wavesurfer.current.on("pause", () => setIsPlaying(false));
     window.addEventListener("resize", handleResize, false);
-  }, []);
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     console.log("file", file);

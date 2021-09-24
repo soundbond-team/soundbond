@@ -46,7 +46,7 @@ export default function Microphone({ pushFile }) {
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
 
-  const [playerReady, setPlayerReady] = useState(false);
+  
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurfer = useRef(null);
 
@@ -66,9 +66,7 @@ export default function Microphone({ pushFile }) {
       fillParent: true
     });
 
-    wavesurfer.current.on("ready", () => {
-      setPlayerReady(true);
-    });
+    
 
     const handleResize = wavesurfer.current.util.debounce(() => {
       wavesurfer.current.empty();
