@@ -13,14 +13,12 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
-import { green, red, blue } from "@material-ui/core/colors";
+import { green, red } from "@material-ui/core/colors";
 
 import "./Microphone.css";
 

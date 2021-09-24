@@ -3,18 +3,12 @@ import WaveSurfer from "wavesurfer.js";
 import uuidv4 from "uuid/v4";
 
 import { makeStyles } from "@material-ui/styles";
-import Avatar from "@material-ui/core/Avatar";
+
 import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+
 import IconButton from "@material-ui/core/IconButton";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import StopIcon from "@material-ui/icons/Stop";
-import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
-import ShareIcon from "@material-ui/icons/Share";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import { green, red, blue } from "@material-ui/core/colors";
 
 import PauseIcon from "@material-ui/icons/Pause";
 import Grid from "@material-ui/core/Grid";
@@ -50,10 +44,7 @@ const useStyles = makeStyles(theme => ({
     display: "inline-block"
   }
 }));
-/*
-avatar username ostalo layout sa grid
 
-*/
 export default function AudioPlayer({ file }) {
   const wavesurfer = useRef(null);
 
