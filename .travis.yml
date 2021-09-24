@@ -22,7 +22,6 @@ cache:
         - server/node_modules
 script:
     - cd ../client
-    - npm test
     - npm run build
     - cd ../server
     - npm run
