@@ -20,7 +20,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import { green, red } from "@material-ui/core/colors";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import "./Microphone.css";
 
@@ -135,13 +135,11 @@ export default function Microphone({ pushFile }) {
 
   return (
     <>
-      <Grid container justify="center">
-        <Grid item>
+    
           <IconButton onClick={handleClickOpen}>
             <MicIcon className={classes.icon} />
           </IconButton>
-        </Grid>
-      </Grid>
+       
       <Dialog maxWidth="sm" open={open} onClose={handleCancel}>
         <DialogTitle className={classes.flex}>Record</DialogTitle>
         <DialogContent>

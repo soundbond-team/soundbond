@@ -16,7 +16,7 @@ import Grid from "@material-ui/core/Grid";
 const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: 600,
-    minWidth: 240,
+    minWidth: 100,
     margin: "auto",
     transition: "0.3s",
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
@@ -57,13 +57,14 @@ export default function AudioPlayer({ file }) {
       container: `#${wavesurferId}`,
       waveColor: "grey",
       progressColor: "tomato",
-      height: 70,
+      height: 60,
       cursorWidth: 1,
       cursorColor: "lightgray",
       barWidth: 2,
       normalize: true,
       responsive: true,
-      fillParent: true
+      fillParent: true,
+    
     });
 
     
@@ -118,6 +119,7 @@ export default function AudioPlayer({ file }) {
 
   return (
     <>
+    
       <Card className={classes.card}>
         <Grid container direction="column">
         
