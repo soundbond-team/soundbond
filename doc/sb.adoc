@@ -6,7 +6,7 @@
 L'équipe est composée de Maguette Diop, Paul Malinvaud, Mohamed Belhaimeur ainsi que Guilhem Tissot. 
 
 === Le projet
-Le projet SoundBond a été pensé en analogie avec un réseau scoail comme Instagram, ce dernier est omniprésent aujourd'hui et il paraît tout à fait naturel d'immortaliser ses souvenirs avec une photo de son plat, de la plage ou de ses amis. En regardant les réseaux sociaux déjà existants nous nous sommes dit que personne ne jouait exclusivement sur l'aspect du son. Il a l'avantage de pouvoir offrir un nouveau regard sur les souvenirs immortalisés et à l'avenir nous aimerions bien que l'application serve à transformer chaque utilisateur en DJ du quotidien. 
+Le projet SoundBond a été pensé en analogie avec un réseau social comme Instagram, ce dernier est omniprésent aujourd'hui et il paraît tout à fait naturel d'immortaliser ses souvenirs avec une photo de son plat, de la plage ou de ses amis. En regardant les réseaux sociaux déjà existants nous nous sommes dit que personne ne jouait exclusivement sur l'aspect du son. Il a l'avantage de pouvoir offrir un nouveau regard sur les souvenirs immortalisés et à l'avenir nous aimerions bien que l'application serve à transformer chaque utilisateur en DJ du quotidien. 
 
 === Les personas
 ==== Utilisateur Instagram de longue date
