@@ -41,11 +41,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Microphone({ pushFile }) {
+export default function Microphone({ pushFile ,pushPosition}) {
   const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
-
+  const [positions, setPosition] = useState({ lat: 5, lng: 5 });
   
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurfer = useRef(null);
@@ -102,9 +102,15 @@ export default function Microphone({ pushFile }) {
     if (tempFile) {
       pushFile(tempFile);
       setTempFile(null);
-      setRecord(false);
-      setOpen(false);
+      setOpen(false)
       // Envoyer les data au backkk
+      navigator.geolocation.getCurrentPosition(function(positiongeo) {
+        setPosition({lat: positiongeo.coords.latitude, lng: positiongeo.coords.longitude})
+        pushPosition({lat: positiongeo.coords.latitude, lng: positiongeo.coords.longitude});
+        setRecord(false);
+        
+      });
+      
     }
   };
 
@@ -208,6 +214,7 @@ export default function Microphone({ pushFile }) {
                   className={classes.icon}
                 />
               </IconButton>
+            
             </Grid>
           </Grid>
         </DialogActions>

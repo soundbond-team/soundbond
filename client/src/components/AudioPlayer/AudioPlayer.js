@@ -45,13 +45,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function AudioPlayer({ file }) {
+export default function AudioPlayer({ file ,position}) {
   const wavesurfer = useRef(null);
 
 
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurferId = `wavesurfer--${uuidv4()}`;
-
   useEffect(() => {
     wavesurfer.current = WaveSurfer.create({
       container: `#${wavesurferId}`,
@@ -67,7 +66,7 @@ export default function AudioPlayer({ file }) {
     
     });
 
-    
+   
 
    
 
@@ -83,7 +82,7 @@ export default function AudioPlayer({ file }) {
   }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    console.log("file", file);
+  
     if (file) {
       wavesurfer.current.load(file.blobURL);
     }
@@ -130,8 +129,9 @@ export default function AudioPlayer({ file }) {
               <IconButton onClick={stopPlayback}>
                 <StopIcon className={classes.icon} />
               </IconButton>
+              {position.lat!=null && position.lng!=null && ( <p>{"latitude: "+position.lat}  {" / longitude: "+position.lng} </p>)}
             </Grid>
-          
+         
           </Grid>
         </Grid>
       </Card>

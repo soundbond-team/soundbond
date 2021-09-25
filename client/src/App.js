@@ -14,6 +14,12 @@ function App() {
   const pushFile = file => {
     setFiles(file);
   };
+  const [positions, setPosition] = useState({ lat: null , lng: null });
+
+  const pushPosition = ({lat,lng}) => {
+    setPosition({lat:lat.toFixed(2),lng: lng.toFixed(2)})
+    
+  };
 
   return (
     <>
@@ -21,13 +27,13 @@ function App() {
    
   <Container>
     <Row>
-      <Microphone pushFile={pushFile} />
+      <Microphone pushFile={pushFile} pushPosition={pushPosition} />
       </Row></Container>
       <Container>  
        <Grid  direction="column" spacing={3}>
       
           <Grid>
-            <AudioPlayer file={files} />
+            <AudioPlayer file={files} position={positions}/>
           
           </Grid>
        
