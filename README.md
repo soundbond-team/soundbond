@@ -29,10 +29,19 @@ sudo snap install node --classic
 ```
 
 * Vous avez installé `NPM`
-* Si vous souhaitez utiliser le serveur de développement recommandé, vous avez installé `nodemon` version 2.0.12 ou supérieure au niveau machine.
+* Si vous souhaitez utiliser le serveur de développement recommandé, vous avez installé `nodemon` version 2.0.12 ou supérieure __au niveau machine (option -g)__.
 
 ``` bash
 sudo npm install -g nodemon
+```
+
+* Si vous souhaitez utiliser un serveur MySQL local, vous disposez de la version `8.0` de `mysql-server` avec une base de données dédiée à _SoundBond_ :
+
+``` sql
+    CREATE DATABASE `nom de la base`;
+    CREATE USER '`nom administrateur`'@'localhost' IDENTIFIED BY '`mot de passe`';
+    GRANT ALL PRIVILEGES ON `nom de la base`.* to '`nom administrateur`'@'localhost';
+    FLUSH PRIVILEGES;
 ```
 
 ## Installer SoundBond
