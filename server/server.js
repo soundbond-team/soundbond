@@ -20,9 +20,12 @@ const sequelize = new Sequelize(process.env.DATABASE, process.env.USERNAME, proc
     dialect: 'mysql'
 });
 /*
-Sequelize will keep the connection open by default, and use the same
-connection for all queries. If you need to close the connection, call
-sequelize.close() (which is asynchronous and returns a Promise).
+    Sequelize will keep the connection open by default, and use the same
+    connection for all queries. If you need to close the connection, call
+    sequelize.close() (which is asynchronous and returns a Promise).
+
+    Se référer à https://sequelize.org/master/manual/getting-started.html
+    section Logging pour gérer le log.
 */
 
 // Test de la connexion.

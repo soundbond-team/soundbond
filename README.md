@@ -65,7 +65,7 @@ Copiez le fichier .env.sample en un autre fichier .env.
 cp ./server/.env.sample ./server/.env
 ```
 
-Puis copiez-y l'URL de la base de données MongoDB.
+Puis écrivez-y les valeurs que vous avez défini en initialisant la base de données.
 
 ### Lancer les serveurs de développement
 
@@ -73,7 +73,7 @@ Pour le serveur backend
 
 ``` bash
 cd server
-nodemon server.js
+nodemon start
 ```
 
 Pour le serveur frontend
