@@ -13,7 +13,7 @@ import StopIcon from "@material-ui/icons/Stop";
 import PauseIcon from "@material-ui/icons/Pause";
 import Grid from "@material-ui/core/Grid";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 600,
     minWidth: 100,
@@ -21,33 +21,32 @@ const useStyles = makeStyles(theme => ({
     transition: "0.3s",
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
     "&:hover": {
-      boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)"
-    }
+      boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)",
+    },
   },
   media: {
-    width: "100%"
+    width: "100%",
   },
   list: {
-    padding: 0
+    padding: 0,
   },
   listItem: {
     //paddingBottom: 0
   },
   controls: {
-    minWidth: "100px"
+    minWidth: "100px",
   },
   icon: {
     height: 18,
-    width: 18
+    width: 18,
   },
   avatar: {
-    display: "inline-block"
-  }
+    display: "inline-block",
+  },
 }));
 
-export default function AudioPlayer({ file ,position}) {
+export default function AudioPlayer({ file, position }) {
   const wavesurfer = useRef(null);
-
 
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurferId = `wavesurfer--${uuidv4()}`;
@@ -63,14 +62,8 @@ export default function AudioPlayer({ file ,position}) {
       normalize: true,
       responsive: true,
       fillParent: true,
-    
     });
 
-   
-
-   
-
-  
     const handleResize = wavesurfer.current.util.debounce(() => {
       wavesurfer.current.empty();
       wavesurfer.current.drawBuffer();
@@ -79,10 +72,9 @@ export default function AudioPlayer({ file ,position}) {
     wavesurfer.current.on("play", () => setIsPlaying(true));
     wavesurfer.current.on("pause", () => setIsPlaying(false));
     window.addEventListener("resize", handleResize, false);
-  }, []);// eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-  
     if (file) {
       wavesurfer.current.load(file.blobURL);
     }
@@ -118,10 +110,8 @@ export default function AudioPlayer({ file ,position}) {
 
   return (
     <>
-    
       <Card className={classes.card}>
         <Grid container direction="column">
-        
           <Grid item id={wavesurferId} />
           <Grid item container className={classes.buttons}>
             <Grid item xs={5}>
@@ -129,13 +119,16 @@ export default function AudioPlayer({ file ,position}) {
               <IconButton onClick={stopPlayback}>
                 <StopIcon className={classes.icon} />
               </IconButton>
-              {position.lat!=null && position.lng!=null && ( <p>{"latitude: "+position.lat}  {" / longitude: "+position.lng} </p>)}
+              {position.lat != null && position.lng != null && (
+                <p>
+                  {"latitude: " + position.lat}{" "}
+                  {" / longitude: " + position.lng}{" "}
+                </p>
+              )}
             </Grid>
-         
           </Grid>
         </Grid>
       </Card>
     </>
   );
 }
-
