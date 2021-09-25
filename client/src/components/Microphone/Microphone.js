@@ -20,33 +20,32 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import { green, red } from "@material-ui/core/colors";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./Microphone.css";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
     height: 38,
-    width: 38
+    width: 38,
   },
   reactmic: {
     width: "100%",
-    height: 200
+    height: 200,
   },
   wavesurfer: {
-    width: "100%"
+    width: "100%",
   },
   flex: {
-    flex: 1
-  }
+    flex: 1,
+  },
 }));
 
-export default function Microphone({ pushFile }) {
+export default function Microphone({ pushFile, pushPosition }) {
   const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
 
-  
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurfer = useRef(null);
 
@@ -63,10 +62,8 @@ export default function Microphone({ pushFile }) {
       barWidth: 2,
       normalize: true,
       responsive: true,
-      fillParent: true
+      fillParent: true,
     });
-
-    
 
     const handleResize = wavesurfer.current.util.debounce(() => {
       wavesurfer.current.empty();
@@ -102,9 +99,15 @@ export default function Microphone({ pushFile }) {
     if (tempFile) {
       pushFile(tempFile);
       setTempFile(null);
-      setRecord(false);
       setOpen(false);
+      setRecord(false);
       // Envoyer les data au backkk
+      navigator.geolocation.getCurrentPosition(function (positiongeo) {
+        pushPosition({
+          lat: positiongeo.coords.latitude,
+          lng: positiongeo.coords.longitude,
+        });
+      });
     }
   };
 
@@ -123,11 +126,11 @@ export default function Microphone({ pushFile }) {
     setRecord(false);
   };
 
-  const onData = recordedBlob => {
+  const onData = (recordedBlob) => {
     //console.log("chunk of real-time data is: ", recordedBlob);
   };
 
-  const onStop = recordedBlob => {
+  const onStop = (recordedBlob) => {
     setTempFile(recordedBlob);
   };
 
@@ -135,13 +138,10 @@ export default function Microphone({ pushFile }) {
 
   return (
     <>
-      <Grid container justify="center">
-        <Grid item>
-          <IconButton onClick={handleClickOpen}>
-            <MicIcon className={classes.icon} />
-          </IconButton>
-        </Grid>
-      </Grid>
+      <IconButton onClick={handleClickOpen}>
+        <MicIcon className={classes.icon} />
+      </IconButton>
+
       <Dialog maxWidth="sm" open={open} onClose={handleCancel}>
         <DialogTitle className={classes.flex}>Record</DialogTitle>
         <DialogContent>
