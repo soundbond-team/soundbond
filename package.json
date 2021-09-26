@@ -18,5 +18,9 @@
   "homepage": "https://github.com/gu1lhem/soundbond#readme",
   "dependencies": {
     "@asciidoctor/gulp-asciidoctor": "^2.2.5"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-graybullet-asciidoctor": "^0.6.4"
   }
 }

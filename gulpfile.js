@@ -11,4 +11,4 @@ function copyImages(cb) {
   cb();
 }
 
-exports.process = gulp.parallel(processAdocFiles, copyImages);
+exports.default = gulp.parallel(processAdocFiles, copyImages);
