@@ -32,7 +32,7 @@ const db = require("./models");
 
 // Test de la connexion.
 try {
-    sequelize.authenticate(); //? la documentation suggère d'utiliser await sequelize.authenticate() mais cela génère une erreur.
+    db.sequelize.authenticate(); //? la documentation suggère d'utiliser await sequelize.authenticate() mais cela génère une erreur.
     console.log("Connection has been established successfully.");
 } catch (error) {
     console.error("Unable to connect to the database:", error);

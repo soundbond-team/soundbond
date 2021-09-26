@@ -1,5 +1,5 @@
 module.exports = (app) => {
-  const sounds = require("../controllers/sound.controller.js");
+  const sounds = require("../controllers/sound.controller");
 
   var router = require("express").Router();
 
