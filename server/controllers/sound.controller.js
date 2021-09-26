@@ -141,3 +141,5 @@ exports.findAllPublished = (req, res) => {
       });
     });
 };
+
+// Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/

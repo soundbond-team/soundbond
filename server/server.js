@@ -3,10 +3,7 @@
 // instanciation des frameworks requis.
 const express = require("express");
 const cors = require("cors");
-const { Sequelize } = require("sequelize");
-
-// Récupération de la configuration confidentielle.
-require("dotenv").config();
+const { Sequelize } = require("sequelize"); // ORM
 
 const app = express();
 const port = process.env.PORT || 8080; // Port du serveur de développement.
@@ -14,39 +11,37 @@ const port = process.env.PORT || 8080; // Port du serveur de développement.
 app.use(cors());
 app.use(express.json());
 
-// Instanciation de la connexion à la base de données MySQL avec Sequelize.
-const sequelize = new Sequelize(
-  process.env.DATABASE,
-  process.env.USERNAME,
-  process.env.PASSWORD,
-  {
-    host: process.env.HOST,
-    dialect: "mysql",
-  }
-);
-/*
-    Sequelize will keep the connection open by default, and use the same
-    connection for all queries. If you need to close the connection, call
-    sequelize.close() (which is asynchronous and returns a Promise).
+require("./routes/sound.routes")(app);
 
-    Se référer à https://sequelize.org/master/manual/getting-started.html
-    section Logging pour gérer le log.
-*/
+// On dit au serveur de servir ces pages.
+//app.use("/api/sound", exercisesRouter);
+// Il n'est peut-être pas nécessaire d'utiliser cette ligne car
+// // Instanciation des fichiers de route.
+//const exercisesRouter = require("./routes/sound"); 
+// a été remplacé par
+// require("./routes/sound.routes")(app);
+
+app.listen(port, () => {
+    console.log(`Server is running on port: ${port}`);
+});
+
+
+// Récupération de la base de données
+
+const db = require("./models");
 
 // Test de la connexion.
 try {
-  sequelize.authenticate(); //? la documentation suggère d'utiliser await sequelize.authenticate() mais cela génère une erreur.
-  console.log("Connection has been established successfully.");
+    sequelize.authenticate(); //? la documentation suggère d'utiliser await sequelize.authenticate() mais cela génère une erreur.
+    console.log("Connection has been established successfully.");
 } catch (error) {
-  console.error("Unable to connect to the database:", error);
+    console.error("Unable to connect to the database:", error);
 }
 
-// Instanciation des fichiers de route.
-const exercisesRouter = require("./routes/sound");
+db.sequelize.sync();
 
-// On dit au serveur de servir ces pages.
-app.use("/api/sound", exercisesRouter);
-
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
+/*
+db.sequelize.sync({ force: true }).then(() => {
+  console.log("Drop and re-sync db.");
 });
+*/
