@@ -21,6 +21,8 @@
   },
   "devDependencies": {
     "gulp": "^4.0.2",
-    "gulp-graybullet-asciidoctor": "^0.6.4"
+    "gulp-coveralls": "^0.1.4",
+    "gulp-graybullet-asciidoctor": "^0.6.4",
+    "gulp-puml": "^0.1.24"
   }
 }
