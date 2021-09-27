@@ -4,9 +4,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/gu1lhem/soundbond)
 ![GitHub repo size](https://img.shields.io/github/repo-size/gu1lhem/soundbond)
 [![Coverage Status](https://coveralls.io/repos/github/gu1lhem/soundbond/badge.svg?branch=develop)](https://coveralls.io/github/gu1lhem/soundbond?branch=develop)
-[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=fr.uparis10.pascalpoizat%3Atemplate-java-project&metric=alert_status)](https://sonarcloud.io/dashboard?id=fr.uparis10.pascalpoizat%3Atemplate-java-project)
-[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=fr.uparis10.pascalpoizat%3Atemplate-java-project&metric=coverage)](https://sonarcloud.io/dashboard?id=fr.uparis10.pascalpoizat%3Atemplate-java-project)
-[![SonarCloud Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fr.uparis10.pascalpoizat%3Atemplate-java-project&metric=sqale_index)](https://sonarcloud.io/dashboard?id=fr.uparis10.pascalpoizat%3Atemplate-java-project)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=alert_status)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
 ## A propos
 
 __SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le comme un Instagram des sons. Tous droits réservés.
