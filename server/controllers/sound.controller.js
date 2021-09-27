@@ -32,7 +32,7 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all Sounds from the database.
-/*exports.findAll = (req, res) => {
+exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
@@ -45,7 +45,7 @@ exports.create = (req, res) => {
         message: err.message || "Some error occurred while retrieving sound.",
       });
     });
-};*/
+};
 
 // Find a single Sound with an id
 exports.findOne = (req, res) => {
