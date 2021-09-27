@@ -4,8 +4,7 @@ node_js: "16"
 addons:
   sonarcloud:
     organization: "soundbond" # the key of the org you chose at step #3
-    token:
-      secure: ${{ secrets.SONAR_TOKEN }} 
+    token: ${{ secrets.SONAR_TOKEN }} 
       
 branches:
     only:
