@@ -1,21 +1,24 @@
 module.exports = (app) => {
   const soundlocation = require("../controllers/soundlocation.controller");
-  const db = require('../models');
+  const db = require("../models");
   var router = require("express").Router();
 
   // Create a new Sound
   router.post("/", soundlocation.create);
 
-    // Retrieve all soundlocation
-    //router.get("/", soundlocation.findAll);
+  // Retrieve all soundlocation
+  //router.get("/", soundlocation.findAll);
 
-    router.get('/', function(req, res, next) {
-        db.SoundLocation.findAll()
-        .then((users) => {
-            res.json(users);
-        }, (err) => next(err))
-        .catch((err) => next(err));
-    });
+  router.get("/", function (req, res, next) {
+    db.SoundLocation.findAll()
+      .then(
+        (users) => {
+          res.json(users);
+        },
+        (err) => next(err)
+      )
+      .catch((err) => next(err));
+  });
 
   // Retrieve all published soundlocation
   router.get("/published", soundlocation.findAllPublished);
@@ -31,6 +34,8 @@ module.exports = (app) => {
 
   // Delete all soundlocation
   router.delete("/", soundlocation.deleteAll);
+
+  router.get("/getClosestPositions/:id", soundlocation.findClosestPositions);
 
   app.use("/api/v1/soundlocation", router);
 };

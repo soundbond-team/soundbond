@@ -1,20 +1,23 @@
 module.exports = (app) => {
   const sound = require("../controllers/sound.controller");
-  const db = require('../models');
+  const db = require("../models");
   var router = require("express").Router();
 
   // Create a new Sound
   router.post("/", sound.create);
 
-    // Retrieve all sound
-    //router.get("/", sound.findAll);
-    router.get('/', function(req, res, next) {
-        db.Sound.findAll()
-        .then((users) => {
-            res.json(users);
-        }, (err) => next(err))
-        .catch((err) => next(err));
-    });
+  // Retrieve all sound
+  //router.get("/", sound.findAll);
+  router.get("/", function (req, res, next) {
+    db.Sound.findAll()
+      .then(
+        (users) => {
+          res.json(users);
+        },
+        (err) => next(err)
+      )
+      .catch((err) => next(err));
+  });
 
   // Retrieve all published sound
   router.get("/published", sound.findAllPublished);

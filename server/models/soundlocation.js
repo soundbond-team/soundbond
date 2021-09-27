@@ -1,7 +1,7 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+const db = require("../models");
+const SoundLocation = db.SoundLocation;
+("use strict");
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class SoundLocation extends Model {
     /**
@@ -12,13 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  SoundLocation.init({
-    longitude: DataTypes.INTEGER,
-    latitude: DataTypes.INTEGER,
-  }, {
-    sequelize,
-    modelName: 'SoundLocation',
-  });
+  }
+  SoundLocation.init(
+    {
+      longitude: DataTypes.INTEGER,
+      latitude: DataTypes.INTEGER,
+      latitude: DataTypes.INTEGER,
+    },
+
+    {
+      sequelize,
+      modelName: "SoundLocation",
+    }
+  );
   return SoundLocation;
 };

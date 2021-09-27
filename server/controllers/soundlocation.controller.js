@@ -26,7 +26,9 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the SoundLocation.",
+        message:
+          err.message ||
+          "Some error occurred while creating the SoundLocation.",
       });
     });
 };
@@ -119,12 +121,15 @@ exports.deleteAll = (req, res) => {
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} SoundLocations were deleted successfully!` });
+      res.send({
+        message: `${nums} SoundLocations were deleted successfully!`,
+      });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all soundlocations.",
+          err.message ||
+          "Some error occurred while removing all soundlocations.",
       });
     });
 };
@@ -137,9 +142,69 @@ exports.findAllPublished = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving soundlocations.",
+        message:
+          err.message || "Some error occurred while retrieving soundlocations.",
       });
     });
 };
 
+exports.findClosestPositions = (req, res) => {
+  const id = req.params.id;
+  const sound = SoundLocation.findByPk(id);
+
+  const result = nearestPosition(sound);
+  if (result != null) {
+    res.status(500).send({
+      message: "Some error occurred while retrieving soundlocations.",
+    });
+  } else {
+    res.send(result);
+  }
+};
+
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
+function distance(lat1, lon1, lat2, lon2, unit) {
+  var radlat1 = (Math.PI * lat1) / 180;
+  var radlat2 = (Math.PI * lat2) / 180;
+  var theta = lon1 - lon2;
+  var radtheta = (Math.PI * theta) / 180;
+  var dist =
+    Math.sin(radlat1) * Math.sin(radlat2) +
+    Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+  if (dist > 1) {
+    dist = 1;
+  }
+  dist = Math.acos(dist);
+  dist = (dist * 180) / Math.PI;
+  dist = dist * 60 * 1.1515;
+  if (unit == "K") {
+    dist = dist * 1.609344;
+  }
+  if (unit == "N") {
+    dist = dist * 0.8684;
+  }
+  return dist;
+}
+nearestPosition = (localisation) => {
+  let allPositions = SoundLocation.findAll();
+
+  let distance_list = [];
+  let nearestPosition = [];
+  for (var i = 0; i < allPositions.length; i++) {
+    distance_list[allPositions[i]] = distance(
+      localisation.latitude,
+      localisation.longitude,
+      allPositions[i].latitude,
+      allPositions[i].longitude,
+      "K"
+    );
+  }
+  position_sorted = Object.keys(distance_list).sort(function (a, b) {
+    return list[a] - list[b];
+  });
+  for (var i = 0; i < 2; i++) {
+    nearestPosition.push(position_sorted[i]);
+  }
+  console.log(nearestPosition);
+  return nearestPosition;
+};
