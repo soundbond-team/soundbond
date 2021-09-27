@@ -32,7 +32,7 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all SoundLocations from the database.
-exports.findAll = (req, res) => {
+/*exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
@@ -45,7 +45,7 @@ exports.findAll = (req, res) => {
         message: err.message || "Some error occurred while retrieving soundlocations.",
       });
     });
-};
+};*/
 
 // Find a single SoundLocation with an id
 exports.findOne = (req, res) => {

@@ -12,6 +12,8 @@ app.use(cors());
 app.use(express.json());
 
 require("./routes/sound.routes")(app);
+require("./routes/soundlocation.routes")(app);
+
 
 // On dit au serveur de servir ces pages.
 //app.use("/api/sound", exercisesRouter);

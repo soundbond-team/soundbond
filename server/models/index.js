@@ -54,7 +54,7 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.sound = require("./sound")(sequelize, Sequelize);
-db.soundlocation = require("./soundlocation")(sequelize, Sequelize);
+//db.sound = require("./sound")(sequelize, Sequelize);
+//db.soundlocation = require("./soundlocation")(sequelize, Sequelize);
 
 module.exports = db;
