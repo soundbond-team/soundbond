@@ -22,11 +22,13 @@ before_script:
     - cd client
     - yarn install
     - cd ../server
-    - npm install nodemon			
+    - npm install nodemon	
+    - sonar-scanner
 cache:
     directories:
         - client/node_modules
         - server/node_modules
+        - '$HOME/.sonar/cache'
 script:
     - cd ../client
     - npm run build
