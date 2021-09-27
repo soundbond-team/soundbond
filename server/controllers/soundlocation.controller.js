@@ -1,8 +1,8 @@
 const db = require("../models");
-const Sound = db.sound;
+const SoundLocation = db.soundlocation;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Sound
+// Create and Save a new SoundLocation
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.title) {
@@ -12,132 +12,132 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Sound
-  const sound = {
+  // Create a SoundLocation
+  const soundlocation = {
     title: req.body.title,
     description: req.body.description,
     published: req.body.published ? req.body.published : false,
   };
 
-  // Save Sound in the database
-  Sound.create(sound)
+  // Save SoundLocation in the database
+  SoundLocation.create(soundlocation)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the Sound.",
+        message: err.message || "Some error occurred while creating the SoundLocation.",
       });
     });
 };
 
-// Retrieve all Sounds from the database.
+// Retrieve all SoundLocations from the database.
 exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
-  Sound.findAll({ where: condition })
+  SoundLocation.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving sound.",
+        message: err.message || "Some error occurred while retrieving soundlocations.",
       });
     });
 };
 
-// Find a single Sound with an id
+// Find a single SoundLocation with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Sound.findByPk(id)
+  SoundLocation.findByPk(id)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving Sound with id=" + id,
+        message: "Error retrieving SoundLocation with id=" + id,
       });
     });
 };
 
-// Update a Sound by the id in the request
+// Update a SoundLocation by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Sound.update(req.body, {
+  SoundLocation.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Sound was updated successfully.",
+          message: "SoundLocation was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Sound with id=${id}. Maybe Sound was not found or req.body is empty!`,
+          message: `Cannot update SoundLocation with id=${id}. Maybe SoundLocation was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating Sound with id=" + id,
+        message: "Error updating SoundLocation with id=" + id,
       });
     });
 };
 
-// Delete a Sound with the specified id in the request
+// Delete a SoundLocation with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Sound.destroy({
+  SoundLocation.destroy({
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Sound was deleted successfully!",
+          message: "SoundLocation was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Sound with id=${id}. Maybe Sound was not found!`,
+          message: `Cannot delete SoundLocation with id=${id}. Maybe SoundLocation was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Sound with id=" + id,
+        message: "Could not delete SoundLocation with id=" + id,
       });
     });
 };
 
-// Delete all Sounds from the database.
+// Delete all SoundLocations from the database.
 exports.deleteAll = (req, res) => {
-  Sound.destroy({
+  SoundLocation.destroy({
     where: {},
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} Sounds were deleted successfully!` });
+      res.send({ message: `${nums} SoundLocations were deleted successfully!` });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all sound.",
+          err.message || "Some error occurred while removing all soundlocations.",
       });
     });
 };
 
-// find all published Sound
+// find all published SoundLocation
 exports.findAllPublished = (req, res) => {
-  Sound.findAll({ where: { published: true } })
+  SoundLocation.findAll({ where: { published: true } })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving sound.",
+        message: err.message || "Some error occurred while retrieving soundlocations.",
       });
     });
 };
