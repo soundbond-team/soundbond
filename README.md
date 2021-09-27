@@ -1,82 +1,99 @@
 # SoundBond
 
-[![Build Status](https://app.travis-ci.com/gu1lhem/soundbond.svg?token=mMVNgd82CCyhEB2ReSqx&branch=main)](https://app.travis-ci.com/gu1lhem/soundbond)
+[![Build Status](https://app.travis-ci.com/gu1lhem/soundbond.svg?token=7WD7QLSzFYsXRujYsxQ5&branch=develop)](https://app.travis-ci.com/gu1lhem/soundbond)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/gu1lhem/soundbond)
+![GitHub repo size](https://img.shields.io/github/repo-size/gu1lhem/soundbond)
+[![Coverage Status](https://coveralls.io/repos/github/gu1lhem/soundbond/badge.svg?branch=develop)](https://coveralls.io/github/gu1lhem/soundbond?branch=develop)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=coverage)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=alert_status)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=code_smells)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
+## A propos
 
-## Installer depuis le dépot
+__SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le comme un Instagram des sons. Tous droits réservés.
 
-### Installations minimales nécessaires pour Linux
+### Intégration continue
+
+Nous utilisons [Travis CI](https://travis-ci.org/) connecté à GitHub. Les tests sont effectés avant chaque _release_.
+
+### Kanban client
+
+Notre kanban client est disponible [ici]([ici](https://github.com/gu1lhem/soundbond/projects)).
+
+## Pré-requis
+
+Avant de commencer, assurez-vous de satisfaire les pré-requis suivants :
+
+* Vous avez une machine avec `Windows/Linux Ubuntu`. Le fonctionnement avec tout autre OS n'est pas garanti.
+* Vous avez installé `NodeJS`. Par exemple pour Linux :
 
 ``` bash
 sudo apt install snapd
 sudo snap install node --classic
+```
+
+* Vous avez installé `NPM`
+* Si vous souhaitez utiliser le serveur de développement recommandé, vous avez installé `nodemon` version 2.0.12 ou supérieure __au niveau machine (option -g)__.
+
+``` bash
 sudo npm install -g nodemon
 ```
 
+* Si vous souhaitez utiliser un serveur MySQL local, vous disposez de la version `8.0` de `mysql-server` avec une base de données dédiée à _SoundBond_ :
+
+``` sql
+    CREATE DATABASE `nom de la base`;
+    CREATE USER '`nom administrateur`'@'localhost' IDENTIFIED BY '`mot de passe`';
+    GRANT ALL PRIVILEGES ON `nom de la base`.* to '`nom administrateur`'@'localhost';
+    FLUSH PRIVILEGES;
+```
+
+## Installer SoundBond
+
 ### Installer les paquets NPM
+
+Installez les packets NPM de /client et /server :
 
 ``` bash
 cd client
-npm ci
+yarn install (si npm ci ne marche pas)
 cd ../server
 npm ci
 ```
 
 ### Installer les variables confidentielles
 
+Copiez le fichier .env.sample en un autre fichier .env.
+
 ``` bash
-cp ./backend/.env.sample ./backend/.env
+cp ./server/.env.sample ./server/.env
 ```
-Puis copier l'URL de la base de données MongoDB dans le fichier .env.
+
+Puis écrivez-y les valeurs que vous avez défini en initialisant la base de données.
 
 ### Lancer les serveurs de développement
 
+Pour le serveur backend
+
 ``` bash
-nodemon server.js
+cd server
+nodemon start
 ```
 
-Et dans un autre terminal
+Pour le serveur frontend
+
 ``` bash
 cd client
 nodemon start
 ```
-ou npm start.
-
-## Installer depuis le début
-
-On utilise le gestionnaire snap pour avoir la dernière version de Node.JS (attention, dans les dépots APT, cette-ci est trop ancienne) :
-``` bash
-sudo snap install node --classic
-```
-
-Pour créer un projet :
-
-``` bash
-npx create-react-app .
-```
-(on suppose que l'on est déjà dans le répertoire du projet, ici soundbound).
-
-Pour initialiser NPM :
-
-``` bash
-mkdir backend
-cd backend/
-npm init
-npm install express cors mongoose dotenv
-```
-
-- express : lightwirght web framework for node.js
-- cors : cross origin ressource sharing : access ressources from remote hosts. middleware : cors with different options -> to access something from outsde the server
-- mongoose : interaction with mongodb trough Node.js
-- dotenv : environnement variables stored in a file in the project (.env)
-
-``` bash
-sudo npm install -g nodemon
-```
-- -g : install globally
-- nodemon : automatically reload when a server file changed on the disk
-
 
 ## Tester l'API REST
+
+Essayez d'insérer un élément dans la base de données depuis l'API.
+
 ``` bash
 curl -i -H "Content-Type: application/json" -X POST -d '{"string_attribute":"hello world"}' http://localhost:5000/example/add
 ```
+
+## License
+
+Tous droits réservés.
