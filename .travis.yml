@@ -1,11 +1,5 @@
 language: node_js
 node_js: "16"
-
-addons:
-  sonarcloud:
-    organization: "soundbond" # the key of the org you chose at step #3
-    token: ${{ secrets.SONAR_TOKEN }} 
-      
 branches:
     only:
         - develop
@@ -21,13 +15,11 @@ before_script:
     - cd client
     - yarn install
     - cd ../server
-    - npm install nodemon	
-    - sonar-scanner
+    - npm install nodemon			
 cache:
     directories:
         - client/node_modules
         - server/node_modules
-        - '$HOME/.sonar/cache'
 script:
     - cd ../client
     - npm run build
