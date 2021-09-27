@@ -33,6 +33,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.tutorials = require("./sound.model")(sequelize, Sequelize);
+db.sounds = require("./sound.model")(sequelize, Sequelize);
 
 module.exports = db;
