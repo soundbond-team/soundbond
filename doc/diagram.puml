@@ -1,5 +1,4 @@
 @startuml SoundBond
-!include commons.style
 
 enum Format  {
     mp3

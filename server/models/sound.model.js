@@ -11,9 +11,9 @@ module.exports = (sequelize, Sequelize) => {
             find all Tutorials by title: findAll({ where: { title: ... } })
         */
 
-        title:          { type: Sequelize.STRING, },
-        description:    { type: Sequelize.STRING, },
-        published:      { type: Sequelize.BOOLEAN, },
+        title:          { type: Sequelize.STRING,   },
+        description:    { type: Sequelize.STRING,   },
+        published:      { type: Sequelize.BOOLEAN,  },
     });
 
     return Sound;
