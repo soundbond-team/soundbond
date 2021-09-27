@@ -5,6 +5,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/gu1lhem/soundbond)
 [![Coverage Status](https://coveralls.io/repos/github/gu1lhem/soundbond/badge.svg?branch=develop)](https://coveralls.io/github/gu1lhem/soundbond?branch=develop)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=alert_status)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=code_smells)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
 ## A propos
 
 __SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le comme un Instagram des sons. Tous droits réservés.
