@@ -1,0 +1,77 @@
+@startuml SoundBond
+!include commons.style
+
+enum Format  {
+    mp3
+}
+
+class Sound {
+    +Sound()
+    +play()
+    +pause()
+}
+
+interface ISound {
+
+}
+
+class SocialSound {
+    +SocialSound()
+    +like()
+    +dislike()
+    +getNbLike()
+    +getNbDislike()
+}
+
+interface ISocialSound {
+
+}
+
+class LocalisedSound {
+    +LocalisedSound()
+}
+
+interface ILocalisedSound {
+
+}
+
+interface ISBSound {
+    
+}
+
+class SBSound {
+
+}
+
+class Location {
+    +Location()
+}
+
+class User {
+
+}
+
+class Application {
+    +Application()
+    +create_sound()
+    +create_user()
+    +get_all_elements(in type : string)
+    +get_element_by_id(in type : string, in id : int)
+}
+
+Application -- SBSound
+Application -- User
+SBSound ..|> ISBSound
+SBSound -- SocialSound
+SBSound -- Sound
+ISBSound -- ISound
+ISBSound -- ISocialSound
+SocialSound ..|> ISocialSound
+Sound ..|> ISound
+Sound -- Format
+Sound -- LocalisedSound 
+LocalisedSound ..|> ILocalisedSound
+LocalisedSound -- Location
+
+
+@enduml
