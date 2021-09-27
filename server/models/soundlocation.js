@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
   SoundLocation.init({
     longitude: DataTypes.INTEGER,
     latitude: DataTypes.INTEGER,
-    latitude: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'SoundLocation',

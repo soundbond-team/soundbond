@@ -1,5 +1,5 @@
 const db = require("../models");
-const Sound = db.sound;
+const Sound = db.Sound;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Sound

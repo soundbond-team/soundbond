@@ -14,9 +14,6 @@ module.exports = {
       latitude: {
         type: Sequelize.INTEGER
       },
-      latitude: {
-        type: Sequelize.INTEGER
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

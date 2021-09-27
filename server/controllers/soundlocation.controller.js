@@ -1,5 +1,5 @@
 const db = require("../models");
-const SoundLocation = db.soundlocation;
+const SoundLocation = db.SoundLocation;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new SoundLocation
