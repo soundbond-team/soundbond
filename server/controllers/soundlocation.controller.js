@@ -148,18 +148,19 @@ exports.findAllPublished = (req, res) => {
     });
 };
 
-exports.findClosestPositions = (req, res) => {
+exports.findClosestPositions = async (req, res) => {
   const id = req.params.id;
-  const sound = SoundLocation.findByPk(id);
+  console.log(id + "fffffffffffffffffffffffffffffff");
 
-  const result = nearestPosition(sound);
-  if (result != null) {
-    res.status(500).send({
-      message: "Some error occurred while retrieving soundlocations.",
+  SoundLocation.findByPk(id)
+    .then((data) => {
+      nearestPosition(data, res);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving SoundLocation with id=" + id,
+      });
     });
-  } else {
-    res.send(result);
-  }
 };
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
@@ -185,26 +186,46 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   }
   return dist;
 }
-nearestPosition = (localisation) => {
-  let allPositions = SoundLocation.findAll();
+function nearestPosition(localisation, res) {
+  console.log(localisation);
+  SoundLocation.findAll()
+    .then((data) => {
+      let allPositions = data;
+      let distance_list = [];
+      let nearestPosition = [];
+      let position_sorted = [];
+      var element = {};
+      for (var i = 0; i < allPositions.length; i++) {
+        var element = {};
+        element.id = allPositions[i];
+        element.value = distance(
+          localisation.latitude,
+          localisation.longitude,
+          allPositions[i].latitude,
+          allPositions[i].longitude,
+          "K"
+        );
+        distance_list[i] = element;
+        console.log(element.value);
+      }
 
-  let distance_list = [];
-  let nearestPosition = [];
-  for (var i = 0; i < allPositions.length; i++) {
-    distance_list[allPositions[i]] = distance(
-      localisation.latitude,
-      localisation.longitude,
-      allPositions[i].latitude,
-      allPositions[i].longitude,
-      "K"
-    );
-  }
-  position_sorted = Object.keys(distance_list).sort(function (a, b) {
-    return list[a] - list[b];
-  });
-  for (var i = 0; i < 2; i++) {
-    nearestPosition.push(position_sorted[i]);
-  }
-  console.log(nearestPosition);
-  return nearestPosition;
-};
+      let x = distance_list.sort(function (a, b) {
+        return parseFloat(a.value) - parseFloat(b.value);
+      });
+      /*  for (const [key, value] of Object.entries(position_sorted)) {
+        console.log(`${key}: ${value}`);
+      }*/
+      x.forEach((element) => console.log(element.value));
+      for (var i = 0; i < 2; i++) {
+        nearestPosition.push(x[i].id);
+      }
+
+      nearestPosition.forEach((element) => console.log(element));
+      res.send(nearestPosition);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving SoundLocation with id=" + id,
+      });
+    });
+}
