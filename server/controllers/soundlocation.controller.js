@@ -26,7 +26,9 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the SoundLocation.",
+        message:
+          err.message ||
+          "Some error occurred while creating the SoundLocation.",
       });
     });
 };
@@ -42,7 +44,8 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving soundlocations.",
+        message:
+          err.message || "Some error occurred while retrieving soundlocations.",
       });
     });
 };
@@ -119,12 +122,15 @@ exports.deleteAll = (req, res) => {
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} SoundLocations were deleted successfully!` });
+      res.send({
+        message: `${nums} SoundLocations were deleted successfully!`,
+      });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all soundlocations.",
+          err.message ||
+          "Some error occurred while removing all soundlocations.",
       });
     });
 };
@@ -137,9 +143,86 @@ exports.findAllPublished = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving soundlocations.",
+        message:
+          err.message || "Some error occurred while retrieving soundlocations.",
       });
     });
 };
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
+
+//soundlocation controller
+exports.findClosestPositions = async (req, res) => {
+  const id = req.params.id;
+
+  SoundLocation.findByPk(id)
+    .then((data) => {
+      nearestPosition(data, res);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving SoundLocation with id=" + id,
+      });
+    });
+};
+
+// Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
+function distance(lat1, lon1, lat2, lon2, unit) {
+  var radlat1 = (Math.PI * lat1) / 180;
+  var radlat2 = (Math.PI * lat2) / 180;
+  var theta = lon1 - lon2;
+  var radtheta = (Math.PI * theta) / 180;
+  var dist =
+    Math.sin(radlat1) * Math.sin(radlat2) +
+    Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+  if (dist > 1) {
+    dist = 1;
+  }
+  dist = Math.acos(dist);
+  dist = (dist * 180) / Math.PI;
+  dist = dist * 60 * 1.1515;
+  if (unit == "K") {
+    dist = dist * 1.609344;
+  }
+  if (unit == "N") {
+    dist = dist * 0.8684;
+  }
+  return dist;
+}
+function nearestPosition(localisation, res) {
+  SoundLocation.findAll()
+    .then((data) => {
+      let allPositions = data;
+      let distance_list = [];
+      let nearestPosition = [];
+      let position_sorted = [];
+      var element = {};
+      for (var i = 0; i < allPositions.length; i++) {
+        var element = {};
+        element.id = allPositions[i];
+        element.value = distance(
+          localisation.latitude,
+          localisation.longitude,
+          allPositions[i].latitude,
+          allPositions[i].longitude,
+          "K"
+        );
+        distance_list[i] = element;
+      }
+
+      let x = distance_list.sort(function (a, b) {
+        return parseFloat(a.value) - parseFloat(b.value);
+      });
+
+      for (var i = 1; i < 3; i++) {
+        nearestPosition.push(x[i].id);
+      }
+
+      res.send(nearestPosition);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving SoundLocation with id=" + id,
+      });
+    });
+}
