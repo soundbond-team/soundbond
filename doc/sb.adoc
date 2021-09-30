@@ -3,49 +3,73 @@
 
 == Synthèse
 === L'équipe
-L'équipe est composée de Maguette Diop, Paul Malinvaud, Mohamed Belhaimeur ainsi que Guilhem Tissot. 
+L'équipe est composée de Maguette Diop, Paul Malinvaud, Mohamed Belhaimeur, Guilhem Tissot ainsi que, depuis plus récemment, d'Hajar Salhi.
 
 === Le projet
-Le projet SoundBond a été pensé en analogie avec un réseau scoail comme Instagram, ce dernier est omniprésent aujourd'hui et il paraît tout à fait naturel d'immortaliser ses souvenirs avec une photo de son plat, de la plage ou de ses amis. En regardant les réseaux sociaux déjà existants nous nous sommes dit que personne ne jouait exclusivement sur l'aspect du son. Il a l'avantage de pouvoir offrir un nouveau regard sur les souvenirs immortalisés et à l'avenir nous aimerions bien que l'application serve à transformer chaque utilisateur en DJ du quotidien. 
+Le projet SoundBond a été pensé en analogie avec un réseau social comme Instagram. Ce dernier est omniprésent aujourd'hui et il paraît tout à fait naturel d'immortaliser ses souvenirs avec une photo de son plat, à la plage ou avec ses amis. En regardant les réseaux sociaux déjà existants nous nous sommes dit que personne ne jouait exclusivement sur l'aspect du son. Il a l'avantage de pouvoir offrir un nouveau regard sur les souvenirs immortalisés et à l'avenir nous aimerions bien que l'application serve à transformer chaque utilisateur en DJ du quotidien.
+
+// problématique et gain attendu, motivation de l'équipe par rapport au sujet, concurrence / état de l'art de l'existant et placement par rapport à cela
 
 === Les personas
+
+
 ==== Utilisateur Instagram de longue date
 
-==== Musicien ou faiseur de sons
+==== Musicien ou faiseur de son
 
 ==== Nouvel arrivant sur les réseaux sociaux
 
 === Prévisions marketing
 Nous prévoyons de pousser notre projet auprès des utilisateurs par ... 
+// réseaux sociaux, enquêtes, flyers, site Web, etc
 
 == Aspect techniques
 === Type d'application
-L'application sera d'abord une web-application jusqu'à que le backend soit entièrement fonctionnel, puis ensuite nous développerons une application mobile. 
+L'application sera d'abord une web-application jusqu'à que le backend soit entièrement fonctionnel. Nous imaginons ensuite la possibilité de réaliser une application mobile en React Native.
 
 === Schéma architectural
-Le schéma architectural suit le modèle MERN. MERN pour MongoDB, Express, ReactJS et NodeJS. Nous avons d'abord commencé avec cette architecture classique puis nous sommes passés de MongoDB à MySQL (de l'ODM mongoose à l'ORM Sequelize) car n'appréciant pas l'aspect (et les contraintes) de MongoDB. Dans notre cas, nous avons deux modèles de persistance de données, celle de nos classes comme les utilisateurs, les sons sociaux, etc... puis les sons en tant que ressource. Ces derniers sont stockés sur ... et le chemin pour y parvenir est inscrit dans notre base MySQL.
+Le schéma architectural suit le modèle MERN. MERN pour MongoDB, Express, ReactJS et NodeJS. Nous avons d'abord commencé avec cette architecture classique puis nous sommes passés de MongoDB à MySQL (de l'ODM mongoose à l'ORM 
+// qu'est-ce qu'un ORM et ODM
+Sequelize) car n'appréciant pas l'aspect (et les contraintes) de MongoDB. La base est stockée sur le même serveur que la WebApp mais pourra être externalisé. Dans notre cas, nous avons deux modèles de persistance de données, celle de nos classes comme les utilisateurs, les sons sociaux, etc... puis les sons en tant que ressource. Ces derniers seront, dans l'idéal, stockés sur un BLOB, avec l'URL de chaque fichier conservé dans notre base de données. Dans un premier templs, ils seront conservés sur le serveur de la WebApp.
 
 
 === Plateforme technologique
 Avec ReactJS en front et NodeJS en back, nous nous retrouvons à utiliser quasiment exclusivement du JavaScript. Pour les frameworks de tests nous allons utiliser mocha ? et chai pour la lib d'assertions
 
+- Jira
+- Slack
+pourquoi ces choix
+- Express
+- persistance en local. On réfléchit à externaliser la base de données MySQL et le stockage dans un BLOB chez un hébergeur comment Microsoft Azure.
+
 === Plateforme opérationnelle
 Gestion de versions -> git avec GitHub
 build -> d'abord npm puis gulp pour tous les plugins (dont asciidoctor)
-qualité de code -> 
+qualité de code -> Sonar Cloud
 CI -> Travis puis potentiellement GitHub Actions
-Déploiement -> ?
+Déploiement -> ? git ?
 
 === Interconnection avec systèmes et API distantes
+
+Pour les cartes, nous utilisons l'API gratuite de MapBox
 
 === Acquisition de données et usage intelligent
 Partage de données avec BirdNet ?
 
 == Modélisation
+
+//Le faire pour les features de la première itération, ça sera ensuite à mettre à jour et compléter à chaque itération.
+
 === Maquette du front 
+
+// maquette du front correspondant à la feature (une ou plusieurs représentation d'interface, avec la description des enchaînements)
 
 === Diagramme de classes global
 
-=== Description API
+// partie métier
+
+=== Description API back (ex REST)
 
 === Diagramme de séquences des intercations front/back
+
+// (par feature, voir le back comme une boîte noire)
