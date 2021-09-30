@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Microphone({ pushFile, pushPosition }) {
+export default function Microphone(props) {
   const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
@@ -96,13 +96,13 @@ export default function Microphone({ pushFile, pushPosition }) {
 
   const handleDone = () => {
     if (tempFile) {
-      pushFile(tempFile);
+      props.pushFile(tempFile);
       setTempFile(null);
       setOpen(false);
       setRecord(false);
       // Envoyer les data au backkk
       navigator.geolocation.getCurrentPosition(function (positiongeo) {
-        pushPosition({
+        props.pushPosition({
           lat: positiongeo.coords.latitude,
           lng: positiongeo.coords.longitude,
         });
@@ -154,6 +154,7 @@ export default function Microphone({ pushFile, pushPosition }) {
               onData={onData}
               strokeColor="grey"
               backgroundColor="white"
+              mimeType="audio/mp3"
             />
           )}
         </DialogContent>

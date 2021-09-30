@@ -152,7 +152,7 @@ exports.findAllPublished = (req, res) => {
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
 
 //soundlocation controller
-exports.findClosestPositions = async (req, res) => {
+exports.findClosestPositionsofsound = async (req, res) => {
   const id = req.params.id;
 
   SoundLocation.findByPk(id)
@@ -164,6 +164,17 @@ exports.findClosestPositions = async (req, res) => {
         message: "Error retrieving SoundLocation with id=" + id,
       });
     });
+};
+
+exports.findClosestPositions = async (req, res) => {
+  const latitude = req.query.latitude;
+  const longitude = req.query.longitude;
+  const localisation = {
+    latitude: latitude,
+    longitude: longitude,
+  };
+
+  soundlocationservice.nearestPosition(localisation, res);
 };
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
