@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "./Map.css";
-import Container from "react-bootstrap/Container";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 mapboxgl.accessToken =
@@ -48,14 +47,14 @@ const Map = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Container fluid>
+    <div class="container-fluid">
       <div className="sidebarStyle">
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
       </div>
       <div className="map-container" ref={mapContainerRef} />
-    </Container>
+    </div>
   );
 };
 
