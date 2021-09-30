@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       longitude: DataTypes.INTEGER,
       latitude: DataTypes.INTEGER,
-      latitude: DataTypes.INTEGER,
     },
 
     {
