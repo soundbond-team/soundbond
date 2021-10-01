@@ -21,18 +21,17 @@ function App() {
   const pushPosition = ({ lat, lng }) => {
     setPosition({ lat: lat.toFixed(2), lng: lng.toFixed(2) });
   };
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (positiongeo) {
       pushPosition({
         lat: positiongeo.coords.latitude,
         lng: positiongeo.coords.longitude,
       });
-      console.log("errer");
     });
   }, []);
   useEffect(() => {
     dispatch(getsoundlocation(positions));
-    console.log(positions);
   }, [positions]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const listItems = soundlocationdata.map((i) => (
@@ -59,7 +58,7 @@ function App() {
         <div class="row justify-content-center">
           {" "}
           <div class="col-7">
-            <Map />
+            <Map soundlocationdata={soundlocationdata} />
           </div>
         </div>
       </div>
