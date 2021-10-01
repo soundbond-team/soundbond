@@ -20,8 +20,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import { green, red } from "@material-ui/core/colors";
-
+import { useDispatch } from "react-redux";
 import "./Microphone.css";
+import { postsoundlocation } from "../../actions/soundlocation.actions";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -41,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Microphone(props) {
+  const dispatch = useDispatch();
+
   const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
@@ -101,6 +105,7 @@ export default function Microphone(props) {
       setOpen(false);
       setRecord(false);
       // Envoyer les data au backkk
+
       navigator.geolocation.getCurrentPosition(function (positiongeo) {
         props.pushPosition({
           lat: positiongeo.coords.latitude,
@@ -109,7 +114,16 @@ export default function Microphone(props) {
       });
     }
   };
-
+  const test = async () => {
+    navigator.geolocation.getCurrentPosition(async function (positiongeo) {
+      await dispatch(
+        postsoundlocation({
+          lat: positiongeo.coords.latitude,
+          lng: positiongeo.coords.longitude,
+        })
+      );
+    });
+  };
   const handleCancel = () => {
     setRecord(false);
     setTempFile(null);
@@ -210,6 +224,7 @@ export default function Microphone(props) {
                   className={classes.icon}
                 />
               </IconButton>
+              <Button onClick={test}></Button>
             </Grid>
           </Grid>
         </DialogActions>

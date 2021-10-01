@@ -5,20 +5,13 @@ const soundlocationservice = require("../services/soundlocationService");
 // Create and Save a new SoundLocation
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
-  }
 
   // Create a SoundLocation
   const soundlocation = {
-    title: req.body.title,
-    description: req.body.description,
-    published: req.body.published ? req.body.published : false,
+    latitude: req.body.latitude,
+    longitude: req.body.longitude,
   };
-
+  console.log(soundlocation.latitude + "/ " + soundlocation.longitude);
   // Save SoundLocation in the database
   SoundLocation.create(soundlocation)
     .then((data) => {
