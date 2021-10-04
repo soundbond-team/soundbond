@@ -1,8 +1,5 @@
 const gulp = require("gulp"),
   asciidoctor = require("@asciidoctor/gulp-asciidoctor"),
-  coveralls = require("gulp-coveralls"),
-  puml = require("gulp-puml"),
-  jshint = require("gulp-jshint"),
   html2pdf = require("gulp-html2pdf");
 
 function processAdocFiles(cb) {
@@ -20,21 +17,4 @@ function htmlToPDF(cb) {
   cb();
 }
 
-function coverAlls(cb) {
-  gulp.src("test/coverage/**/lcov.info").pipe(coveralls());
-  cb();
-}
-
-function generatePuml(cb) {
-  gulp.src("doc/*.puml").pipe(puml()).pipe(gulp.dest("doc/"));
-  cb();
-}
-
-gulp.task("lint", function () {
-  return gulp
-    .src("./**/*.js")
-    .pipe(jshint())
-    .pipe(jshint.reporter("YOUR_REPORTER_HERE"));
-});
-
-exports.default = gulp.parallel(processAdocFiles, copyImages, htmlToPDF);
+exports.asciidoc = gulp.parallel(processAdocFiles, copyImages, htmlToPDF);
