@@ -20,9 +20,12 @@
     "@asciidoctor/gulp-asciidoctor": "^2.2.5"
   },
   "devDependencies": {
-    "gulp": "^4.0.2",
-    "gulp-coveralls": "^0.1.4",
+    "gulp": "4.0",
+    "gulp-coveralls": "^0.1.1",
     "gulp-graybullet-asciidoctor": "^0.6.4",
-    "gulp-puml": "^0.1.24"
+    "gulp-jshint": "^2.1.0",
+    "gulp-puml": "^0.1.24",
+    "jshint": "^2.13.1",
+    "jshint-stylish": "^2.2.1"
   }
 }
