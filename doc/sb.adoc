@@ -37,8 +37,7 @@ Dans notre cas, nous avons deux modèles de persistance de données, celle de no
 
 
 === Plateforme technologique
-Avec ReactJS en _frontend_ et NodeJS en _backend_, nous utilisons presque uniquement JavaScript. Pour les frameworks de tests nous allons utiliser "`Mocha`" <<mocha>> et "`Chai`" <<chai>> pour la lib d'assertions.
-// pourquoi ces choix
+Avec ReactJS en _frontend_ et NodeJS en _backend_, nous utilisons presque uniquement JavaScript. Pour les frameworks de tests nous allons utiliser "`Mocha`" <<mocha>> et "`Chai`" <<chai>> pour la lib d'assertions. Nous avons choisi ces frameworks car ils nous semblaient qu'ils étaient les plus utilisés dans l'architecture que nous avions choisie. 
 
 === Plateforme opérationnelle
 Nous utilisons GitHub Project (kanban équipe) ainsi qu'un board Jira (kanban client) pour nous coordonner. Nous utilisions précédemment GitHub Project pour le kanban client et Jira pour celui de l'équipe de développement, puis nous avons échangé les plateformes afin de pouvoir générer des _burn-down ou burn-up charts_ pour le client, et de pouvoir référencer nos commits avec nos _issues_ plus facilement. Pour communiquer autour du projet nous utilisons Slack, qui a l'avantage de pouvoir être relié à toutes les autres applications que nous utilisons pour le projet (Jira, Travis, etc...).
