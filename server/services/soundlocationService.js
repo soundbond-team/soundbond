@@ -1,5 +1,7 @@
 const db = require("../models");
 const SoundLocation = db.SoundLocation;
+
+
 function distance(lat1, lon1, lat2, lon2, unit) {
   var radlat1 = (Math.PI * lat1) / 180;
   var radlat2 = (Math.PI * lat2) / 180;
@@ -23,7 +25,6 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   return dist;
 }
 function nearestPosition(localisation, res) {
-  console.log("salut");
   SoundLocation.findAll()
     .then((data) => {
       let allPositions = data;
@@ -51,7 +52,6 @@ function nearestPosition(localisation, res) {
       for (var i = 1; i < 3; i++) {
         nearestPosition.push(x[i].id);
       }
-      console.log(nearestPosition);
       res.send(nearestPosition);
     })
     .catch((err) => {

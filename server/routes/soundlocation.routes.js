@@ -39,5 +39,7 @@ module.exports = (app) => {
     soundlocation.findClosestPositionsofsound
   );
 
+  router.get("/getClosestPositions/:id", soundlocation.findClosestPositions);
+
   app.use("/api/v1/soundlocation", router);
 };
