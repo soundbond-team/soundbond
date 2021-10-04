@@ -21,12 +21,17 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "mongodb": "^4.1.2",
-    "mongoose": "^6.0.6",
     "nodemon": "^2.0.12"
   },
   "devDependencies": {
     "mocha": "^9.1.2",
     "request": "^2.88.2"
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.0",
+    "nodemon": "^2.0.12",
+    "sequelize": "^6.6.5",
+    "sequelize-auto": "^0.8.4",
+    "sequelize-cli": "^6.2.0",
+    "sequelize-rest-handlers": "^2.1.0"
   }
 }

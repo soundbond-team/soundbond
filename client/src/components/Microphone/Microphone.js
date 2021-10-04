@@ -20,9 +20,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import { green, red } from "@material-ui/core/colors";
-import "bootstrap/dist/css/bootstrap.min.css";
-
+import { useDispatch } from "react-redux";
 import "./Microphone.css";
+import { postsoundlocation } from "../../actions/soundlocation.actions";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -41,7 +41,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Microphone({ pushFile, pushPosition }) {
+export default function Microphone(props) {
+  const dispatch = useDispatch();
+
   const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
@@ -95,15 +97,22 @@ export default function Microphone({ pushFile, pushPosition }) {
     setOpen(true);
   };
 
-  const handleDone = () => {
+  const handleDone = async () => {
     if (tempFile) {
-      pushFile(tempFile);
+      props.pushFile(tempFile);
       setTempFile(null);
       setOpen(false);
       setRecord(false);
       // Envoyer les data au backkk
-      navigator.geolocation.getCurrentPosition(function (positiongeo) {
-        pushPosition({
+
+      navigator.geolocation.getCurrentPosition(async function (positiongeo) {
+        await dispatch(
+          postsoundlocation({
+            lat: positiongeo.coords.latitude,
+            lng: positiongeo.coords.longitude,
+          })
+        );
+        props.pushPosition({
           lat: positiongeo.coords.latitude,
           lng: positiongeo.coords.longitude,
         });
@@ -155,6 +164,7 @@ export default function Microphone({ pushFile, pushPosition }) {
               onData={onData}
               strokeColor="grey"
               backgroundColor="white"
+              mimeType="audio/mp3"
             />
           )}
         </DialogContent>

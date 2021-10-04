@@ -3,7 +3,10 @@
 [![Build Status](https://app.travis-ci.com/gu1lhem/soundbond.svg?token=7WD7QLSzFYsXRujYsxQ5&branch=develop)](https://app.travis-ci.com/gu1lhem/soundbond)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/gu1lhem/soundbond)
 ![GitHub repo size](https://img.shields.io/github/repo-size/gu1lhem/soundbond)
-[![Coverage Status](https://coveralls.io/repos/github/gu1lhem/soundbond/badge.svg)](https://coveralls.io/github/gu1lhem/soundbond)
+[![Coverage Status](https://coveralls.io/repos/github/gu1lhem/soundbond/badge.svg?branch=develop)](https://coveralls.io/github/gu1lhem/soundbond?branch=develop)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=coverage)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=alert_status)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=code_smells)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
 ## A propos
 
 __SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le comme un Instagram des sons. Tous droits réservés.
@@ -29,10 +32,19 @@ sudo snap install node --classic
 ```
 
 * Vous avez installé `NPM`
-* Si vous souhaitez utiliser le serveur de développement recommandé, vous avez installé `nodemon` version 2.0.12 ou supérieure au niveau machine.
+* Si vous souhaitez utiliser le serveur de développement recommandé, vous avez installé `nodemon` version 2.0.12 ou supérieure __au niveau machine (option -g)__.
 
 ``` bash
 sudo npm install -g nodemon
+```
+
+* Si vous souhaitez utiliser un serveur MySQL local, vous disposez de la version `8.0` de `mysql-server` avec une base de données dédiée à _SoundBond_ :
+
+``` sql
+    CREATE DATABASE `nom de la base`;
+    CREATE USER '`nom administrateur`'@'localhost' IDENTIFIED BY '`mot de passe`';
+    GRANT ALL PRIVILEGES ON `nom de la base`.* to '`nom administrateur`'@'localhost';
+    FLUSH PRIVILEGES;
 ```
 
 ## Installer SoundBond
@@ -56,7 +68,7 @@ Copiez le fichier .env.sample en un autre fichier .env.
 cp ./server/.env.sample ./server/.env
 ```
 
-Puis copiez-y l'URL de la base de données MongoDB.
+Puis écrivez-y les valeurs que vous avez défini en initialisant la base de données.
 
 ### Lancer les serveurs de développement
 
@@ -64,7 +76,7 @@ Pour le serveur backend
 
 ``` bash
 cd server
-nodemon server.js
+nodemon start
 ```
 
 Pour le serveur frontend
