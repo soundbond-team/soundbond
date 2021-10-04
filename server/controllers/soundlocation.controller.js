@@ -169,21 +169,3 @@ exports.findClosestPositions = async (req, res) => {
 
   soundlocationservice.nearestPosition(localisation, res);
 };
-
-// Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
-
-//soundlocation controller
-exports.findClosestPositions = async (req, res) => {
-  const id = req.params.id;
-
-  SoundLocation.findByPk(id)
-    .then((data) => {
-      soundlocationservice.nearestPosition(data, res);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving SoundLocation with id=" + id,
-      });
-    });
-};
-
