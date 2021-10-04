@@ -1,24 +1,17 @@
 const db = require("../models");
 const SoundLocation = db.SoundLocation;
 const Op = db.Sequelize.Op;
-
+const soundlocationservice = require("../services/soundlocationService");
 // Create and Save a new SoundLocation
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
-  }
 
   // Create a SoundLocation
   const soundlocation = {
-    title: req.body.title,
-    description: req.body.description,
-    published: req.body.published ? req.body.published : false,
+    latitude: req.body.latitude,
+    longitude: req.body.longitude,
   };
-
+  console.log(soundlocation.latitude + "/ " + soundlocation.longitude);
   // Save SoundLocation in the database
   SoundLocation.create(soundlocation)
     .then((data) => {
@@ -26,7 +19,9 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the SoundLocation.",
+        message:
+          err.message ||
+          "Some error occurred while creating the SoundLocation.",
       });
     });
 };
@@ -42,7 +37,8 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving soundlocations.",
+        message:
+          err.message || "Some error occurred while retrieving soundlocations.",
       });
     });
 };
@@ -119,12 +115,15 @@ exports.deleteAll = (req, res) => {
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} SoundLocations were deleted successfully!` });
+      res.send({
+        message: `${nums} SoundLocations were deleted successfully!`,
+      });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all soundlocations.",
+          err.message ||
+          "Some error occurred while removing all soundlocations.",
       });
     });
 };
@@ -137,9 +136,38 @@ exports.findAllPublished = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving soundlocations.",
+        message:
+          err.message || "Some error occurred while retrieving soundlocations.",
       });
     });
+};
+
+// Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
+
+//soundlocation controller
+exports.findClosestPositionsofsound = async (req, res) => {
+  const id = req.params.id;
+
+  SoundLocation.findByPk(id)
+    .then((data) => {
+      soundlocationservice.nearestPosition(data, res);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving SoundLocation with id=" + id,
+      });
+    });
+};
+
+exports.findClosestPositions = async (req, res) => {
+  const latitude = req.query.latitude;
+  const longitude = req.query.longitude;
+  const localisation = {
+    latitude: latitude,
+    longitude: longitude,
+  };
+
+  soundlocationservice.nearestPosition(localisation, res);
 };
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/

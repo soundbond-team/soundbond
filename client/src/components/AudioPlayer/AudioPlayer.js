@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AudioPlayer({ file, position }) {
+export default function AudioPlayer(props) {
   const wavesurfer = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -75,10 +75,10 @@ export default function AudioPlayer({ file, position }) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (file) {
-      wavesurfer.current.load(file.blobURL);
+    if (props.file) {
+      wavesurfer.current.load(props.file.blobURL);
     }
-  }, [file]);
+  }, [props.file]);
 
   const togglePlayback = () => {
     if (!isPlaying) {
@@ -119,10 +119,10 @@ export default function AudioPlayer({ file, position }) {
               <IconButton onClick={stopPlayback}>
                 <StopIcon className={classes.icon} />
               </IconButton>
-              {position.lat != null && position.lng != null && (
+              {props.position.lat != null && props.position.lng != null && (
                 <p>
-                  {"latitude: " + position.lat}{" "}
-                  {" / longitude: " + position.lng}{" "}
+                  {"latitude: " + props.position.lat}{" "}
+                  {" / longitude: " + props.position.lng}{" "}
                 </p>
               )}
             </Grid>
