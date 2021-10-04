@@ -23,6 +23,7 @@
     "gulp": "4.0",
     "gulp-coveralls": "^0.1.1",
     "gulp-graybullet-asciidoctor": "^0.6.4",
+    "gulp-html2pdf": "^0.1.3",
     "gulp-jshint": "^2.1.0",
     "gulp-puml": "^0.1.24",
     "jshint": "^2.13.1",
