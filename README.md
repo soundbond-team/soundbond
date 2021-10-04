@@ -4,6 +4,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/gu1lhem/soundbond)
 ![GitHub repo size](https://img.shields.io/github/repo-size/gu1lhem/soundbond)
 [![Coverage Status](https://coveralls.io/repos/github/gu1lhem/soundbond/badge.svg)](https://coveralls.io/github/gu1lhem/soundbond)
+
 ## A propos
 
 __SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le comme un Instagram des sons. Tous droits réservés.
@@ -52,7 +53,7 @@ Installez les packets NPM de /client et /server :
 
 ``` bash
 cd client
-yarn install (si npm ci ne marche pas)
+npm ci && yarn install
 cd ../server
 npm ci
 ```
