@@ -10,6 +10,7 @@ exports.create = (req, res) => {
   const soundlocation = {
     latitude: req.body.latitude,
     longitude: req.body.longitude,
+    sound_id: req.body.id,
   };
   console.log(soundlocation.latitude + "/ " + soundlocation.longitude);
   // Save SoundLocation in the database

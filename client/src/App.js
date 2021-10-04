@@ -1,6 +1,5 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import Grid from "@material-ui/core/Grid";
 import Microphone from "./components/Microphone/Microphone";
 import AudioPlayer from "./components/AudioPlayer/AudioPlayer";
 import Map from "./components/Map/Map";
@@ -12,7 +11,6 @@ function App() {
   const dispatch = useDispatch();
 
   const soundlocationdata = useSelector((state) => state.soundlocationReducer);
-
   const pushFile = (file) => {
     setFiles(file);
   };
@@ -47,11 +45,7 @@ function App() {
         </div>
       </div>
       <div class="container">
-        <Grid direction="column" spacing={3}>
-          <Grid>
-            <AudioPlayer file={files} position={positions} />
-          </Grid>
-        </Grid>
+        <AudioPlayer file={files} position={positions} />
       </div>
       <br></br>
       <div class="container-fluid">
