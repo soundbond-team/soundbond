@@ -45,7 +45,7 @@ Notre projet se trouve sur GitHub et nous faisons de l'analyse de qualité de co
 
 === Interconnection avec systèmes et API distantes
 
-Pour les cartes, nous utilisons l'API gratuite de MapBox.
+Pour les cartes, nous utilisons l'API gratuite de "`MapBox`" <<mapbox>>.
 
 === Acquisition de données et usage intelligent
 
@@ -77,3 +77,4 @@ Partage de données avec BirdNet ?
 * [[[expres]]] https://expressjs.com/[Express], " a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. "
 * [[[reactjs]]] https://fr.reactjs.org/[ReactJS], " une bibliothèque JavaScript pour la construction d’interfaces utilisateur (UI). "
 * [[[nodejs]]] https://nodejs.dev/[Node.js], " a free, open-sourced, cross-platform JavaScript run-time environment that lets developers write command line tools and server-side scripts outside of a browser. "
+* [[[mapbox]]] https://fr.wikipedia.org/wiki/Mapbox[MapBox], " une entreprise américaine spécialisée dans la cartographie en ligne. Elle fournit les cartes de sites, services et médias tels que Foursquare, Pinterest, The Financial Times, Etsy, Le Monde et Snapchat. Mapbox développe un ensemble de technologies et d’outils cartographiques, dont la bibliothèque Mapbox.js "
