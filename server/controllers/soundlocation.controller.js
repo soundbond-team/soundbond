@@ -5,20 +5,13 @@ const soundlocationservice = require("../services/soundlocationService");
 // Create and Save a new SoundLocation
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
-  }
 
   // Create a SoundLocation
   const soundlocation = {
-    title: req.body.title,
-    description: req.body.description,
-    published: req.body.published ? req.body.published : false,
+    latitude: req.body.latitude,
+    longitude: req.body.longitude,
   };
-
+  console.log(soundlocation.latitude + "/ " + soundlocation.longitude);
   // Save SoundLocation in the database
   SoundLocation.create(soundlocation)
     .then((data) => {
@@ -152,7 +145,7 @@ exports.findAllPublished = (req, res) => {
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
 
 //soundlocation controller
-exports.findClosestPositions = async (req, res) => {
+exports.findClosestPositionsofsound = async (req, res) => {
   const id = req.params.id;
 
   SoundLocation.findByPk(id)
@@ -164,6 +157,17 @@ exports.findClosestPositions = async (req, res) => {
         message: "Error retrieving SoundLocation with id=" + id,
       });
     });
+};
+
+exports.findClosestPositions = async (req, res) => {
+  const latitude = req.query.latitude;
+  const longitude = req.query.longitude;
+  const localisation = {
+    latitude: latitude,
+    longitude: longitude,
+  };
+
+  soundlocationservice.nearestPosition(localisation, res);
 };
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/

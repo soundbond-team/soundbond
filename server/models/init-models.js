@@ -7,7 +7,7 @@ function initModels(sequelize) {
   var soundlocation = _soundlocation(sequelize, DataTypes);
 
   return {
-      sound,
+    sound,
     soundlocation,
   };
 }
