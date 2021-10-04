@@ -1,6 +1,5 @@
-const db = require("../models");
-const SoundLocation = db.SoundLocation;
 ("use strict");
+const db = require("../models");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class SoundLocation extends Model {
