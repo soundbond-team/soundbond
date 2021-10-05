@@ -1,31 +1,27 @@
+/* Modèle contenant toute les informations sur un
+fichier son, nottament les métadonnées et le lien
+vers le fichier lui-même.
+A chaque Sound est associé un SoundLocation.
+Chaque Sound possède en outre une référence vers un
+User, son uploader. */
+
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Sound extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  }
+  class Sound extends Model { }
   Sound.init(
     {
-      title: DataTypes.STRING,
-      description: DataTypes.TEXT,
-      url: DataTypes.TEXT,
-      size: DataTypes.INTEGER,
-      codec: DataTypes.STRING,
-      startTime: DataTypes.BIGINT,
-      stopTime: DataTypes.BIGINT,
-      duration: DataTypes.INTEGER,
-      pubDate: DataTypes.DATE,
+      url:          DataTypes.TEXT,
+      size:         DataTypes.INTEGER,
+      codec:        DataTypes.STRING,
+      startTime:    DataTypes.BIGINT,
+      stopTime:     DataTypes.BIGINT,
+      duration:     DataTypes.INTEGER,
+      // clé étrangère vers User : uploader.
     },
     {
       sequelize,
-      modelName: "Sound",
+      modelName: "sound",
     }
   );
   return Sound;
