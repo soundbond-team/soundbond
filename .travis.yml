@@ -1,9 +1,9 @@
 language: node_js
 node_js: "16"
 branches:
-    only:
-        - develop
-        - main
+  only:
+    - develop
+    - main
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
@@ -12,18 +12,19 @@ deploy:
     branch: develop
     tags: true
 before_script:
-    - cd client
-    - yarn install
-    - cd ../server
-    - npm install nodemon			
+  - cd client
+  - yarn install
+  - cd ../server
+  - npm install nodemon
 cache:
-    directories:
-        - client/node_modules
-        - server/node_modules
+  directories:
+    - client/node_modules
+    - server/node_modules
 script:
-    - cd ../client
-    - npm run build
-    - cd ../server
-    - npm run
+  - cd ../client
+  - npm run build
+  - cd ../server
+  - npm run
+  - npm test
 notifications:
-    slack: teamsoundbond:t070C9oXt6APmAQ5qrDegxrPcde1bdfe1aed03b66990b290e9b0783789849db6
+  slack: teamsoundbond:t070C9oXt6APmAQ5qrDegxrPcde1bdfe1aed03b66990b290e9b0783789849db6
