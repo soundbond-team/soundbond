@@ -1,6 +1,6 @@
-const db = require("./models");
+const db = require("../models");
 const SoundLocation = db.SoundLocation;
-const soundlocationservice = require("./services/soundlocationService");
+const soundlocationservice = require("../services/soundlocationService");
 
 var assert = require("assert");
 describe("Test soundlocalisationService", function () {

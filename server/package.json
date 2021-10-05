@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "server.js",
   "scripts": {
-    "test": "mocha index.test.js",
+    "test": "mocha",
     "start": "nodemon server.js"
   },
   "repository": {

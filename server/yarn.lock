@@ -836,11 +836,6 @@
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
 
-"fsevents@~2.3.2":
-  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
-  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
-  "version" "2.3.2"
-
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
   "resolved" "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz"
@@ -1243,7 +1238,7 @@
   "integrity" "sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss="
   "resolved" "https://registry.npmjs.org/jsonfile/-/jsonfile-4.0.0.tgz"
   "version" "4.0.0"
-  dependencies:
+  optionalDependencies:
     "graceful-fs" "^4.1.6"
 
 "jsprim@^1.2.2":
@@ -2016,7 +2011,7 @@
     "validator" "^10.4.0"
     "wkx" "^0.4.1"
 
-"sequelize@^6.6.5":
+"sequelize@^6.6.5", "sequelize@>3.30.0":
   "integrity" "sha512-QyRrJrDRiwuiILqTMHUA1yWOPIL12KlfmgZ3hnzQwbMvp2vJ6fzu9bYJQB+qPMosck4mBUggY4Cjoc6Et8FBIQ=="
   "resolved" "https://registry.npmjs.org/sequelize/-/sequelize-6.6.5.tgz"
   "version" "6.6.5"
@@ -2194,7 +2189,7 @@
   "integrity" "sha512-MokUp0+MFal4CmJDVL6VAO1bKegeXcBM2RnPVfqcFIp2IIv8EbPAjG0j/vEy/vuKB8NVMMSF2vfpVS/QLe4DBg=="
   "resolved" "https://registry.npmjs.org/terraformer/-/terraformer-1.0.12.tgz"
   "version" "1.0.12"
-  dependencies:
+  optionalDependencies:
     "@types/geojson" "^7946.0.0 || ^1.0.0"
 
 "timers-ext@^0.1.5", "timers-ext@^0.1.7":
