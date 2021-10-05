@@ -39,4 +39,20 @@ db.Sound.belongsTo(db.User, {
     foreignKey: "uploader_user_id",
 });
 
+// Chaque Post est publié par un User
+db.Post.belongsTo(db.User, {
+    through: "user_post",
+    as: "publisher",
+    foreignKey: "publisher_user_id",
+});
+
+// Chaque Post publie un Sound
+db.Post.belongsTo(db.Sound, {
+    through: "sound_post",
+    as: "publishing",
+    foreignKey: "pusblishing_sound_id",
+});
+
+
+
 module.exports = db;
