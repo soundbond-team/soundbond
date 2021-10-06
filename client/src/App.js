@@ -8,6 +8,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Col from "react-bootstrap/Col";
+import Header from "./components/layouts/Header";
 function App() {
   const [files, setFiles] = useState("");
 
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <>
+      <Header />
       <Container>
         <Row>
           <Microphone pushFile={pushFile} pushPosition={pushPosition} />
@@ -44,6 +46,7 @@ function App() {
         </Row>
       </Container>
     </>
+    
   );
 }
 
