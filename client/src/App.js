@@ -6,6 +6,8 @@ import AudioPlayer from "./components/AudioPlayer/AudioPlayer";
 import Map from "./components/Map/Map";
 import { useDispatch, useSelector } from "react-redux";
 import { getsoundlocation } from "./actions/soundlocation.actions";
+import Header from "./components/layouts/Header";
+import { BrowserRouter } from 'react-router-dom';
 require("dotenv").config();
 function App() {
   const [files, setFiles] = useState("");
@@ -41,6 +43,9 @@ function App() {
   ));
   return (
     <>
+    <BrowserRouter>
+      <Header />
+    </BrowserRouter>
       <div class="container">
         <div class="row justify-content-center">
           <Microphone pushFile={pushFile} pushPosition={pushPosition} />
