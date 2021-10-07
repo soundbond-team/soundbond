@@ -17,6 +17,10 @@ exports.create = (req, res) => {
     title: req.body.title,
     description: req.body.description,
     published: req.body.published ? req.body.published : false,
+    url: req.body.url,
+    size: req.body.size,
+    startTime: req.body.startTime,
+    stopTime: req.body.stopTime,
   };
 
   // Save Sound in the database

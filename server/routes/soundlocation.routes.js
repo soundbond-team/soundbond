@@ -34,10 +34,8 @@ module.exports = (app) => {
   // Delete all soundlocation
   router.delete("/", soundlocation.deleteAll);
   router.post("/getClosestPositions/", soundlocation.findClosestPositions);
-  router.get(
-    "/getClosestPositions/:id",
-    soundlocation.findClosestPositionsofsound
-  );
+
+  router.get("/getClosestPositions/:id", soundlocation.findClosestPositions);
 
   app.use("/api/v1/soundlocation", router);
 };

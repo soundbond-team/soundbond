@@ -55,7 +55,7 @@ Installez les packets NPM de /client et /server :
 
 ``` bash
 cd client
-yarn install (si npm ci ne marche pas)
+npm ci && yarn install
 cd ../server
 npm ci
 ```
