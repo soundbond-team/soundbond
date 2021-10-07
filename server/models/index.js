@@ -24,6 +24,7 @@ db.Sequelize = Sequelize;
 db.Sound = require("./sound")(sequelize, Sequelize);
 db.SoundLocation = require("./soundlocation")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
+db.Post = require("./post")(sequelize, Sequelize);
 
 // Chaque Sound possède des attributs de localisation.
 db.SoundLocation.belongsTo(db.Sound, {
@@ -48,13 +49,13 @@ db.Post.belongsTo(db.User, {
 
 // Chaque Post publie un Sound
 db.Post.belongsTo(db.Sound, {
-    /* Avec belongsTo, la clé pusblishing_sound_id sera 
+    /* Avec belongsTo, la clé sound_id sera 
        ajoutée au modèle Source : Post.
        belongsTo ajoute les méthodes d'instance
        'getSound', 'setSound', et 'createSound'. */
     through: "sound_post",
     as: "publishing",
-    foreignKey: "pusblishing_sound_id",
+    foreignKey: "sound_id",
 });
 
 
