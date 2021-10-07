@@ -23,7 +23,6 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   return dist;
 }
 function nearestPosition(localisation, res) {
-  console.log("salut");
   SoundLocation.findAll()
     .then((data) => {
       let allPositions = data;
