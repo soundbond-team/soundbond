@@ -48,6 +48,10 @@ db.Post.belongsTo(db.User, {
 
 // Chaque Post publie un Sound
 db.Post.belongsTo(db.Sound, {
+    /* Avec belongsTo, la clé pusblishing_sound_id sera 
+       ajoutée au modèle Source : Post.
+       belongsTo ajoute les méthodes d'instance
+       'getSound', 'setSound', et 'createSound'. */
     through: "sound_post",
     as: "publishing",
     foreignKey: "pusblishing_sound_id",
