@@ -28,9 +28,8 @@ function nearestPosition(localisation, res) {
     .then((data) => {
       let allPositions = data;
       let distance_list = [];
-      let nearestPosition = [];
-      let position_sorted = [];
-      var element = {};
+      let nearestPositions = [];
+
       for (var i = 0; i < allPositions.length; i++) {
         var element = {};
         element.id = allPositions[i];
@@ -48,11 +47,15 @@ function nearestPosition(localisation, res) {
         return parseFloat(a.value) - parseFloat(b.value);
       });
 
-      for (var i = 1; i < 3; i++) {
-        nearestPosition.push(x[i].id);
+      for (i = 1; i < 4; i++) {
+        if (i < x.length) {
+          if (x[i].id != null) {
+            nearestPositions.push(x[i].id);
+          }
+        }
       }
-      console.log(nearestPosition);
-      res.send(nearestPosition);
+      console.log(nearestPositions);
+      res.send(nearestPositions);
     })
     .catch((err) => {
       res.status(500).send({
