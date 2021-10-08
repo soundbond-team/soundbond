@@ -1,25 +1,25 @@
-.Register{
+.Login{
     width: 100%;
     height: 700px;
-    display:flex;
-    flex-direction: column;
-    justify-content:center;
     align-items: center;
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
     background-color: lightslategrey;
 }
-.RegisterForm{
+.LoginForm{
     display:flex;
     flex-direction: column;
 }
 
-.RegisterForm input , button{
+.LoginForm input , button{
     margin :10px;
     width: 400px;
     height: 50px;
     font-size: medium;
 }
 
-.RegisterForm button:hover{
+.LoginForm button:hover{
     cursor: pointer;
 }
 

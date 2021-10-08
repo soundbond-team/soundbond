@@ -8,6 +8,7 @@ import Login from  "./pages/Login/Login";
 import SoundMap from "./pages/SoundMap/SoundMap";
 
 function App() {
+  
   return (
     <>
     <Navbar/>

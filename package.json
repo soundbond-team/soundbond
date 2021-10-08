@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/gu1lhem/soundbond/issues"
   },
-  "homepage": "https://github.com/gu1lhem/soundbond#readme"
+  "homepage": "https://github.com/gu1lhem/soundbond#readme",
+  "dependencies": {
+    "sequelize": "^6.6.5"
+  }
 }
