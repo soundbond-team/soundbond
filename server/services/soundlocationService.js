@@ -52,6 +52,7 @@ function nearestPosition(localisation, res) {
       }
       console.log(nearestPosition);
       res.send(nearestPosition);
+      return nearestPosition;
     })
     .catch((err) => {
       res.status(500).send({

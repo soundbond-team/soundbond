@@ -33,34 +33,34 @@ describe("Test soundlocalisationService", function () {
       1.3025229870396715
     );
   });
-  it("Liste des plus proches positions", function () {
+  it("Liste des plus proches positions", async function (res) {
     let s = { title: "" };
-    let sound = Sound.create(s);
-    const sl1 = SoundLocation.create({
+    let sound = await Sound.create(s);
+    const sl1 = await SoundLocation.create({
       latitude: 48.902757,
       longitude: 2.215944,
       sound_id: sound.id,
       //Bâtiment G
     });
-    sound = Sound.create(s);
-    const sl2 = SoundLocation.create({
+    sound = await Sound.create(s);
+    const sl2 = await SoundLocation.create({
       latitude: 48.892752,
       longitude: 2.235041,
       sound_id: sound.id,
       //Grande Arche
     });
-    sound = Sound.create(s);
-    const sl3 = SoundLocation.create({
+    sound = await Sound.create(s);
+    const sl3 = await SoundLocation.create({
       latitude: 48.905232,
       longitude: 2.215351,
       sound_id: sound.id,
       //BU
     });
     console.log(sl3);
-    assert.equal(soundlocationservice.nearestPosition(48.903646, 2.213702), [
-      a,
-      b,
-    ]);
+    assert.equal(
+      soundlocationservice.nearestPosition(48.903646, 2.213702, res),
+      [sl1, sl3]
+    );
   });
   /*after(function () {
     console.log("after");
