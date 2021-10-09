@@ -167,6 +167,13 @@ exports.findClosestPositions = async (req, res) => {
     latitude: latitude,
     longitude: longitude,
   };
-
-  soundlocationservice.nearestPosition(localisation, res);
+  SoundLocation.findAll()
+    .then((data) => {
+      soundlocationservice.nearestPosition(localisation, data, res);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving SoundLocation with id=" + id,
+      });
+    });
 };
