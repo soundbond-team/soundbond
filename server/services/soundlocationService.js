@@ -23,7 +23,7 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   return dist;
 }
 
-function nearestPosition(localisation, positions, res) {
+function nearestPosition(localisation, positions) {
   let allPositions = positions;
   let distance_list = [];
   let nearestPositions = [];
@@ -48,7 +48,7 @@ function nearestPosition(localisation, positions, res) {
     nearestPositions.push(x[i].id);
   }
   console.log(nearestPositions);
-  res.send(nearestPositions);
+  //res.send(nearestPositions);
   return nearestPositions;
 }
 module.exports = { nearestPosition, distance };
