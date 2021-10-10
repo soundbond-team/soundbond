@@ -67,12 +67,12 @@ db.Post.belongsToMany(db.User, {
        mon_user.likes.
        https://sequelize.org/master/manual/assocs.html#defining-an-alias */
     through: "likes",
-    as: "likes", 
+    as: "liked_by", 
     foreignKey: "user_id",
 })
 db.User.belongsToMany(db.Post, {
     through: "likes",
-    as: "likes", 
+    as: "liked_posts", 
     foreignKey: "post_id",
 })
 
