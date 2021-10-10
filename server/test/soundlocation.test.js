@@ -1,14 +1,17 @@
 const db = require("../models");
+const app = require("../server");
 const SoundLocation = db.SoundLocation;
 const Sound = db.Sound;
 const soundlocationservice = require("../services/soundlocationService");
 
-var assert = require("assert");
+const chai = require("chai");
+const chaiHttp = require("chai-http");
+const assert = require("assert");
+var expect = chai.expect;
+
+chai.use(chaiHttp);
 
 describe("Test soundlocalisationService", function () {
-  /*before(function () {
-    console.log("before");
-  });*/
   it("Localisation avec N", function () {
     assert.equal(
       soundlocationservice.distance(
@@ -65,7 +68,25 @@ describe("Test soundlocalisationService", function () {
       [sl1, sl3]
     );
   });
-  /*after(function () {
-    console.log("after");
-  });*/
+});
+
+describe("Test routes", function () {
+  it("/GET All SoundLocations -> 200 status", function (done) {
+    chai
+      .request(app)
+      .get("/api/v1/soundlocation")
+      .end(function (err, res) {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+  it("/GET First SoundLocation -> 200 status", function (done) {
+    chai
+      .request(app)
+      .get("/api/v1/soundlocation/1")
+      .end(function (err, res) {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
 });

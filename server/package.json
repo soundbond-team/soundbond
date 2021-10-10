@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --exit",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -24,6 +24,8 @@
     "nodemon": "^2.0.12"
   },
   "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "nodemon": "^2.0.12",
