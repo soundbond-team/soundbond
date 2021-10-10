@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
+
 import Nav from "react-bootstrap/Nav";
-import { Button } from "react-bootstrap";
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 function NavigationBar() {
   return (
@@ -23,14 +20,6 @@ function NavigationBar() {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <NavLink
-              to="/map"
-              style={{ textDecoration: "none" }}
-              activeClassName="selected"
-            >
-              Map
-            </NavLink>
-
             <NavDropdown title="Users" id="collasible-nav-dropdown">
               <NavDropdown.Item>User 1</NavDropdown.Item>
               <NavDropdown.Item>User 2</NavDropdown.Item>

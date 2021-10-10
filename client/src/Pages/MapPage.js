@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Map from "../components/Map/Map";
 import { useSelector } from "react-redux";
+
 function MapPage() {
   const soundlocationdata = useSelector((state) => state.soundlocationReducer);
   const listItems = soundlocationdata.map((i) => (
