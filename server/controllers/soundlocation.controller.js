@@ -151,7 +151,7 @@ exports.findClosestPositionsofsound = async (req, res) => {
 
   SoundLocation.findByPk(id)
     .then((data) => {
-      soundlocationservice.nearestPosition(data, res);
+      res.send(soundlocationservice.nearestPosition(data));
     })
     .catch((err) => {
       res.status(500).send({
@@ -169,11 +169,11 @@ exports.findClosestPositions = async (req, res) => {
   };
   SoundLocation.findAll()
     .then((data) => {
-      soundlocationservice.nearestPosition(localisation, data, res);
+      res.send(soundlocationservice.nearestPosition(localisation, data));
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving SoundLocation with id=" + id,
+        message: "Error retrieving SoundLocation with id=",
       });
     });
 };
