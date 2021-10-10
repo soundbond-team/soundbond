@@ -6,14 +6,14 @@ const cors = require("cors");
 const { Sequelize } = require("sequelize"); // ORM
 
 const app = express();
-const port = process.env.PORT || 8080; // Port du serveur de développement.
-
-app.use(cors());
 app.use(express.json());
+const port = process.env.PORT || 8080; // Port du serveur de développement.
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+
+
 
 require("./routes/sound.routes")(app);
 require("./routes/soundlocation.routes")(app);
-//require("./routes/UserRegister")(app);
 
 
 // On dit au serveur de servir ces pages.
@@ -33,6 +33,7 @@ app.listen(port, () => {
 
 const db = require("./models");
 
+
 // Test de la connexion.
 try {
     db.sequelize.authenticate(); //? la documentation suggère d'utiliser await sequelize.authenticate() mais cela génère une erreur.
@@ -41,7 +42,14 @@ try {
     console.error("Unable to connect to the database:", error);
 }
 
+
+
 db.sequelize.sync();
+
+const userRoute = require("./routes/UserRegister.routes");
+app.post("/signup",userRoute);
+app.post("/login",userRoute);
+
 
 /*
 db.sequelize.sync({ force: true }).then(() => {

@@ -1,4 +1,4 @@
-.Navbar{
+.NavbarContainer{
     width : 100%;
     height: 80px;
     background-color: rgb(228, 146, 119);
@@ -6,17 +6,93 @@
     display: flex ;
     justify-content: flex-end;
     align-items:center;
-    color:white;
+    position: sticky;
+    top:0;
 }
 
-.Navbar a {
-    font: size 23px;
-    margin : 10px;
+.NavbarLeft {
+    flex:3;
     color: white;
     text-decoration: none;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.Navbar a:hover{
+.logo{
+    font-size:24px;
+    margin: left 20px;
+    font-weight: bold;
+    color: aqua;
     cursor: pointer;
+}
+
+.searchbar{
+    width: 100%;
+    height: 30px;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+
+}
+.searchIcon{
+    font-size: 20px !important;
+    margin-left: 10px;
+
+}
+
+.searchInput :focus{
+    outline: none;
+}
+
+.NavbarCenter {
+    flex:5;
+    
+}
+
+.NavbarRight {
+    flex : 4;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.NavbarRight a{
+    color: white;
+    text-decoration: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.NavbarIcon{
+    display: flex;
+}
+
+.NavbarIconItem{
+    margin-right: 15px;
+    cursor: pointer;
+    position: relative;
+}
+
+.NavbarIconbadge{
+    width: 15px;
+    height: 15px;
+    background-color: rgb(139, 8, 41);
+    border-radius: 50%;
+    color: white;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.ProfilImg{
+    width:32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
 }
