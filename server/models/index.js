@@ -58,6 +58,16 @@ db.Post.belongsTo(db.Sound, {
     foreignKey: "sound_id",
 });
 
-
+// Relation plusieurs à plusieurs pour les posts likés
+db.Post.belongsToMany(db.User, {
+    through: "Like",
+    as: "like", 
+    foreignKey: "user_id",
+})
+db.User.belongsToMany(db.Post, {
+    through: "likes",
+    as: "like", 
+    foreignKey: "post_id",
+})
 
 module.exports = db;
