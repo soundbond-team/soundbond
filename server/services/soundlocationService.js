@@ -22,45 +22,32 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   }
   return dist;
 }
-function nearestPosition(localisation, res) {
-  console.log("salut");
-  SoundLocation.findAll()
-    .then((data) => {
-      let allPositions = data;
-      let distance_list = [];
-      let nearestPositions = [];
 
-      for (var i = 0; i < allPositions.length; i++) {
-        var element = {};
-        element.id = allPositions[i];
-        element.value = distance(
-          localisation.latitude,
-          localisation.longitude,
-          allPositions[i].latitude,
-          allPositions[i].longitude,
-          "K"
-        );
-        distance_list[i] = element;
-      }
+function nearestPosition(localisation, positions) {
+  let allPositions = positions;
+  let distance_list = [];
+  let nearestPositions = [];
+  for (var i = 0; i < allPositions.length; i++) {
+    let element = {};
+    element.id = allPositions[i];
+    element.value = distance(
+      localisation.latitude,
+      localisation.longitude,
+      allPositions[i].latitude,
+      allPositions[i].longitude,
+      "K"
+    );
+    distance_list[i] = element;
+  }
 
-      let x = distance_list.sort(function (a, b) {
-        return parseFloat(a.value) - parseFloat(b.value);
-      });
+  let x = distance_list.sort(function (a, b) {
+    return parseFloat(a.value) - parseFloat(b.value);
+  });
 
-      for (i = 1; i < 4; i++) {
-        if (i < x.length) {
-          if (x[i].id != null) {
-            nearestPositions.push(x[i].id);
-          }
-        }
-      }
-      console.log(nearestPositions);
-      res.send(nearestPositions);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving SoundLocation with id=" + id,
-      });
-    });
+  for (i = 1; i < 3; i++) {
+    nearestPositions.push(x[i].id);
+  }
+  console.log(nearestPositions);
+  return nearestPositions;
 }
 module.exports = { nearestPosition, distance };
