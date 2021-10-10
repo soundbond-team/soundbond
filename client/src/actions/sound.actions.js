@@ -11,13 +11,13 @@ export const postsound = () => {
       method: "post",
       url: `http://localhost:8080/api/v1/sound/`,
       data: {
-        title: "Titre",
-        description: "Description",
-        published: true,
         url: "url",
         size: 50,
+        codec: "codec",
         startTime: 5,
         stopTime: 10,
+        duration: 5,
+        uploader_user_id: 1,
       },
     })
       .then((res) => {
