@@ -52,7 +52,9 @@ db.Post.belongsTo(db.Sound, {
     /* Avec belongsTo, la clé sound_id sera 
        ajoutée au modèle Source : Post.
        belongsTo ajoute les méthodes d'instance
-       'getSound', 'setSound', et 'createSound'. */
+       'getSound', 'setSound', et 'createSound'.
+       Comme on a un alias, on utilisera
+       getPublishing, setPublishing, createPublishing. */
     through: "sound_post",
     as: "publishing",
     foreignKey: "sound_id",
@@ -60,13 +62,17 @@ db.Post.belongsTo(db.Sound, {
 
 // Relation plusieurs à plusieurs pour les posts likés
 db.Post.belongsToMany(db.User, {
-    through: "Like",
-    as: "like", 
+    /* L'alias (as:) nous permet d'accéder aux likes d'un
+       post et d'un utilisateur aver mon_post.likes ou
+       mon_user.likes.
+       https://sequelize.org/master/manual/assocs.html#defining-an-alias */
+    through: "likes",
+    as: "likes", 
     foreignKey: "user_id",
 })
 db.User.belongsToMany(db.Post, {
     through: "likes",
-    as: "like", 
+    as: "likes", 
     foreignKey: "post_id",
 })
 
