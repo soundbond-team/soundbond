@@ -1,24 +1,19 @@
+/* Modèle associé à un Sound, contenant uniquement
+la latitude et la longitude d'un son.  */
+
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class SoundLocation extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  }
+  class SoundLocation extends Model { }
   SoundLocation.init(
     {
-      longitude: DataTypes.DECIMAL(9, 6),
-      latitude: DataTypes.DECIMAL(8, 6),
+      longitude:    DataTypes.DECIMAL(9, 6),
+      latitude:     DataTypes.DECIMAL(8, 6),
+      // clé étrangère vers Sound.
     },
     {
       sequelize,
-      modelName: "SoundLocation",
+      modelName: "soundlocation",
     }
   );
   return SoundLocation;
