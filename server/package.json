@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --exit",
+    "test": "mocha -R @danmasta/mocha-sonar --exit",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -24,6 +24,7 @@
     "nodemon": "^2.0.12"
   },
   "devDependencies": {
+    "@danmasta/mocha-sonar": "^1.0.1",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
     "mysql": "^2.18.1",
