@@ -40,7 +40,7 @@ cache:
     - server/node_modules
 script:
   - cd ..
-  - npm asciidoc
+  -  npm run asciidoc
   - cd ../client
   - npm run build
   - cd ../server
