@@ -4,13 +4,25 @@ branches:
   only:
     - develop
     - main
+before_deploy:
+  - export VERSION=$(node -p -e "require('./package.json').version")
+  - export DOCDIR="docs/asciidoc"
+  - export DOCFILE="sb"
+  - mv "${DOCDIR}/sb.pdf" "${DOCDIR}/${DOCFILE}-${VERSION}.pdf"
+  - export DOCUMENTATION="${DOCDIR}/${DOCFILE}-${VERSION}.pdf"
+  - echo documentation is ${DOCUMENTATION}
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   skip_cleanup: true
+  file:
+    - ${DOCUMENTATION}
   on:
     branch: develop
     tags: true
+after_deploy:
+  - rm ${DOCUMENTATION}
+  - rm docs/asciidoc/sb.html
 before_script:
   - cd client
   - yarn install
@@ -21,6 +33,7 @@ cache:
     - client/node_modules
     - server/node_modules
 script:
+  - npm asciidoc
   - cd ../client
   - npm run build
   - cd ../server
