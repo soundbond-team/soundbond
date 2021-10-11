@@ -8,10 +8,10 @@ exports.create = (req, res) => {
 
   // Create a post
   const post = {
-    description: req.body.description,
-    pubDate: req.body.pubDate,
-    publisher_user_id: req.body.publisher_user_id,
-    sound_id: req.body.sound_id,
+    description: req.sanitize(req.body.description),
+    pubDate: req.sanitize(req.body.pubDate),
+    publisher_user_id: req.sanitize(req.body.publisher_user_id),
+    sound_id: req.sanitize(req.body.sound_id),
   };
   console.log(post);
   // Save post in the database
@@ -28,7 +28,7 @@ exports.create = (req, res) => {
 
 // Retrieve all posts from the database.
 exports.findAll = (req, res) => {
-  const title = req.query.title;
+  const title = req.sanitize(req.query.title);
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
   Post.findAll({ where: condition })
@@ -44,7 +44,7 @@ exports.findAll = (req, res) => {
 
 // Find a single Post with an id
 exports.findOne = (req, res) => {
-  const id = req.params.id;
+  const id = req.sanitize(req.params.id);
 
   Post.findByPk(id)
     .then((data) => {
@@ -59,7 +59,7 @@ exports.findOne = (req, res) => {
 
 // Update a Post by the id in the request
 exports.update = (req, res) => {
-  const id = req.params.id;
+  const id = req.sanitize(req.params.id);
 
   Post.update(req.body, {
     where: { id: id },
@@ -84,7 +84,7 @@ exports.update = (req, res) => {
 
 // Delete a Post with the specified id in the request
 exports.delete = (req, res) => {
-  const id = req.params.id;
+  const id = req.sanitize(req.params.id);
 
   Post.destroy({
     where: { id: id },
