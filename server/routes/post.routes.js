@@ -1,0 +1,28 @@
+module.exports = (app) => {
+  const post = require("../controllers/post.controller");
+  const db = require("../models");
+  var router = require("express").Router();
+
+  // Create a new Post
+  router.post("/", post.create);
+
+  // Retrieve all Post
+  router.get("/", post.findAll);
+
+  // Retrieve all published Post
+  router.get("/published", post.findAllPublished);
+
+  // Retrieve a single Post with id
+  router.get("/:id", post.findOne);
+
+  // Update a Post with id
+  router.put("/:id", post.update);
+
+  // Delete a Post with id
+  router.delete("/:id", post.delete);
+
+  // Delete all Post
+  router.delete("/", post.deleteAll);
+
+  app.use("/api/v1/post", router);
+};
