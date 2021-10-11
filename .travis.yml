@@ -7,8 +7,8 @@ branches:
 addons:
   sonarcloud:
     organization: "soundbond" 
-    token:
-      secure: "sOV1l54EaUmGWZ4zMJ2ZwfNZF0h/Pu5shlDOP14NsXfrGpGWUHTLpRcelyKm7v7lR03MpIISWIiePByschodBcJw1MwBLbs/uZPWG1N97qstxMqFo7CEgjvCm5H2JlICBDev4KrfJC+gR1OH0c94YyHswNuBc4sCGQmB2PPK9rOzFu80j77+xnYuJ5afqKlWE2qdYW7lQo9TCNgNVUlYI6UXP0FvHJN8snWdgh0+3QZTU7lCoretpI826hiQVnb6Klbybync5M4g2y1ngFA8OyMMnrUmrRWzl0/HThNXXBkY++8E6jDaftWc9Y4InUGRNIRdN7SAZ2R3ooDKHVPb28ac7q2oPw1oO6skHuG7mAMYbFBz47lsYv5k3gOy+Md6A6Vnfw6/X137LXP0OX6C0F0E+of/vtZ4PmY+sjqtDaDk2IcOqabPGJDFpLv3Ee01dJR7pcM6b9ra4qMgxHjjxoRKeuaq15k+KwOvq6vjk4iVjoeUesc/clOqNWmGgnY3bAlxse0nXxKQu8C6tlPv8P+1RBlo3FVSvN4P+wRxgIvfs6xZq7IsylhVnwgpxZyJGR1vS5A2CnTXPhfyoAw4XKRE9TM7ziIpNLEF+0g6nh0omaYp3EQC6oyWixethukuqKsKpPTmxtpkrghuwCEST5+aqMVXVZCT9Ccvk2KotF0="
+    token: ${SONAR_TOKEN}
+     
 before_deploy:
   - export VERSION=$(node -p -e "require('./package.json').version")
   - export DOCDIR="docs/asciidoc"
