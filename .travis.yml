@@ -41,7 +41,7 @@ cache:
 script:
   - cd ..
   -  npm run asciidoc
-  - cd ../client
+  - cd client
   - npm run build
   - cd ../server
   - npm run
