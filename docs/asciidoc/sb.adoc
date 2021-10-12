@@ -55,50 +55,41 @@ Partage de données avec BirdNet ?
 
 === Maquette du front 
 
+==== WF0.1 Feed 
+
 image::assets/Feed.png[]
+la page d'accueil est accessible en cliquant sue le nom de la plateforme "SoundBond" situé dans la navbar en haut à gauche et contient les posts de l'utilisateur ainsi que les posts de personnes qu'il suit
+
+Scénarios 
+
+1. L'utilisateur est connecté et souhaite défiler lle contenu de son fil d'actualité
+2. L'utilisateur trouvera sur cette page les posts qui l'a créé lui même ou ceux créer par les personnes qu'il follow , il pourra liker ou commenter ces posts
+3. L'icone sous forme d'une clôche permettra à l'utilisateur de voir ces nouvelles notifications
+4. Cliquer sur l'icone map  redirigera l'utilisateur vers la page soundLocation dans laquelle les sons sont positionner sur une carte   
+5. L'utilisateur pourra se déconnecter grâce à l'icone du bonhomme  sur la navbar en haut à gauche 
+
+==== WF0.1 Profil 
+
 image::assets/Profil.png[]
+la page Profil est ouverte aprés le login de l'utilisateur et lui permet de créer des nouveaux posts et les partager ainsi que revoir ses anciens posts 
+
+Scénarios 
+
+1. L'utilisateur pourra créer un post en ajoutant un son et une description et le partager avec les personnes qui le suivent en cliquant sur le bouton share
+2. La page est mis à jour à chaque création d'un nouveau post
+3. L'utilisateur dispose toujours d'une navbar qui facilite la navigation sur le site
+
+==== WF0.1 SoundLocation
 image::assets/SoundLocalisation.png[]
 
+Cette page regroupe les sons enregistés positionner sur une carte et permet à l'utilisateur de chercher un son selon sa position
+
+
+
 === Diagramme de classes global
-----
-@startuml SoundBond
-!include ./commons.style
 
+image::../../out/docs/asciidoc/models/diagram/SoundBond.png[]
 
-class Sound {
-    +url : string
-    +size : int 
-    +codec : string
-    +startTime : int
-    +stopTime : int
-    +duration : int
-}
-
-
-class SoundLocation {
-    +longitude : float
-    +latitude : float
-}
-
-
-class User {
-    +first_name : string
-    +last_name : string
-    +email : string
-    +password : string
-}
-
-class Post  {
-    +description : string
-    +pub_date : Date
-}
-
-User -- Post
-Post -- Sound
-Sound -- SoundLocation
-
-@enduml
-----
 === Description API back (ex REST)
 
 === Diagramme de séquences des intercations front/back

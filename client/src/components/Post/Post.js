@@ -58,7 +58,7 @@ function Post(props) {
   const classes = useStyles();
   const pushLike = async () => {
     if (like == null) {
-      setLike(0);
+      setLike(1);
     } else {
       let p = like + 1;
       setLike(p);
