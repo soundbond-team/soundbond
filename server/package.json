@@ -4,6 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha -R @danmasta/mocha-sonar --exit",
+    "coverage": "nyc --reporter=lcov npm run test",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -30,6 +31,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "nodemon": "^2.0.12",
+    "nyc": "^15.1.0",
     "request": "^2.88.2",
     "sequelize": "^6.7.0",
     "sequelize-auto": "^0.8.4",
