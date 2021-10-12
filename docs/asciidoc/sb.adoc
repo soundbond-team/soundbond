@@ -90,45 +90,6 @@ Cette page regroupe les sons enregistés positionner sur une carte et permet à 
 
 image::../../out/docs/asciidoc/models/diagram/SoundBond.png[]
 
-----
-
-@startuml SoundBond
-!include ./commons.style
-
-class Sound {
-    #url : string
-    #size : int 
-    #codec : string
-    #startTime : int
-    #stopTime : int
-    #duration : int
-}
-
-
-class SoundLocation {
-    #longitude : float
-    #latitude : float
-}
-
-
-class User {
-    #first_name : string
-    #last_name : string
-    #email : string
-    #password : string
-}
-
-class Post  {
-    #description : string
-    #pub_date : Date
-}
-
-User -- Post
-Post -- Sound
-Sound -- SoundLocation
-
-@enduml
-----
 === Description API back (ex REST)
 
 === Diagramme de séquences des intercations front/back
