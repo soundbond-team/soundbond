@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
   class Post extends Model {}
   Post.init(
     {
-        description:    DataTypes.TEXT,
+      description: DataTypes.TEXT,
+      like: DataTypes.INTEGER,
     },
     {
       sequelize,

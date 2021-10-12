@@ -26,3 +26,14 @@ export const addPost = (sound_id) => {
       .catch((err) => console.log(err));
   };
 };
+
+export const getallPost = () => {
+  return (dispatch) => {
+    return axios
+      .get(`http://localhost:8080/api/v1/post/`)
+      .then((res) => {
+        dispatch({ type: GET_ALL_POST, payload: res.data });
+      })
+      .catch((err) => console.log(err));
+  };
+};

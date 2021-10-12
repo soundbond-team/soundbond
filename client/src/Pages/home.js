@@ -6,10 +6,12 @@ import { getsoundlocation } from "../actions/soundlocation.actions";
 import Post from "../components/Post/Post";
 import Grid from "@material-ui/core/Grid";
 import Map from "../components/Map/Map";
+import { getallPost } from "../actions/post.actions";
 require("dotenv").config();
 function Home() {
   const [files, setFiles] = useState("");
   const dispatch = useDispatch();
+  const allposts = useSelector((state) => state.postReducer);
 
   const pushFile = (file) => {
     setFiles(file);
@@ -26,6 +28,7 @@ function Home() {
   };
   useEffect(() => {
     Posts.shift(); // pour la map
+    dispatch(getallPost());
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -57,6 +60,20 @@ function Home() {
                 Posts.map((posts, index) => (
                   <Grid key={index} item>
                     <Post file={posts.files} position={posts.positions} />
+                  </Grid>
+                ))
+              ) : (
+                <p>Aucun audio</p>
+              )}
+
+              {allposts.length > 0 ? (
+                allposts.map((posts, index) => (
+                  <Grid key={posts.id} item>
+                    <Post
+                      file={null}
+                      like={posts.like}
+                      position={{ lat: 10, lng: 15 }}
+                    />
                   </Grid>
                 ))
               ) : (

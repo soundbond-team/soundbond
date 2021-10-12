@@ -21,7 +21,7 @@ import { makeStyles } from "@material-ui/styles";
 
 function Post(props) {
   const faces = [];
-  const [like, setLike] = useState(0);
+  const [like, setLike] = useState(props.like);
   const useStyles = makeStyles((theme) => ({
     card: {
       maxWidth: 600,
