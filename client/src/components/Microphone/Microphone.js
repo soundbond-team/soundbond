@@ -20,9 +20,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import { green, red } from "@material-ui/core/colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./Microphone.css";
 import { postsoundlocation } from "../../actions/soundlocation.actions";
+import { postsound } from "../../actions/sound.actions";
+import { addPost } from "../../actions/post.actions";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -43,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Microphone(props) {
   const dispatch = useDispatch();
-
+  const sound = useSelector((state) => state.soundReducer);
   const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
@@ -96,20 +98,22 @@ export default function Microphone(props) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
-  const handleDone = async () => {
+  const done = async () => {
+    await dispatch(postsound());
+  };
+  useEffect(() => {
     if (tempFile) {
       props.pushFile(tempFile);
       setTempFile(null);
       setOpen(false);
       setRecord(false);
-      // Envoyer les data au backkk
 
       navigator.geolocation.getCurrentPosition(async function (positiongeo) {
         await dispatch(
           postsoundlocation({
             lat: positiongeo.coords.latitude,
             lng: positiongeo.coords.longitude,
+            id: sound.id,
           })
         );
         props.pushPosition({
@@ -117,9 +121,12 @@ export default function Microphone(props) {
           lng: positiongeo.coords.longitude,
         });
       });
+      addpost(sound.id);
     }
-  };
-
+  }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
+  async function addpost(id) {
+    await dispatch(addPost(id));
+  }
   const handleCancel = () => {
     setRecord(false);
     setTempFile(null);
@@ -208,7 +215,7 @@ export default function Microphone(props) {
                 </IconButton>
               )}
 
-              <IconButton onClick={handleDone}>
+              <IconButton onClick={done}>
                 <DoneIcon
                   style={tempFile && !record ? { color: green[500] } : {}}
                   className={classes.icon}

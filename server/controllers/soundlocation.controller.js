@@ -10,6 +10,7 @@ exports.create = (req, res) => {
   const soundlocation = {
     latitude: req.body.latitude,
     longitude: req.body.longitude,
+    sound_id: req.body.id,
   };
   console.log(soundlocation.latitude + "/ " + soundlocation.longitude);
   // Save SoundLocation in the database
@@ -150,7 +151,7 @@ exports.findClosestPositionsofsound = async (req, res) => {
 
   SoundLocation.findByPk(id)
     .then((data) => {
-      soundlocationservice.nearestPosition(data, res);
+      res.send(soundlocationservice.nearestPosition(data));
     })
     .catch((err) => {
       res.status(500).send({
@@ -166,8 +167,13 @@ exports.findClosestPositions = async (req, res) => {
     latitude: latitude,
     longitude: longitude,
   };
-
-  soundlocationservice.nearestPosition(localisation, res);
+  SoundLocation.findAll()
+    .then((data) => {
+      res.send(soundlocationservice.nearestPosition(localisation, data));
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving SoundLocation with id=",
+      });
+    });
 };
-
-// Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/

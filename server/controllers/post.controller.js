@@ -1,140 +1,137 @@
 const db = require("../models");
-const Sound = db.Sound;
+const Post = db.Post;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Sound
+// Create and Save a new Post
 exports.create = (req, res) => {
   // Validate request
 
-  // Create a Sound
-  const sound = {
-    url: req.body.url,
-    size: req.body.size,
-    startTime: req.body.startTime,
-    stopTime: req.body.stopTime,
-    duration: req.body.duration,
-    uploader_user_id: req.body.uploader_user_id,
-    codec: req.body.codec,
+  // Create a post
+  const post = {
+    description: req.body.description,
+    pubDate: req.body.pubDate,
+    publisher_user_id: req.body.publisher_user_id,
+    sound_id: req.body.sound_id,
   };
-  console.log(sound);
-  // Save Sound in the database
-  Sound.create(sound)
+  console.log(post);
+  // Save post in the database
+  Post.create(post)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the Sound.",
+        message: err.message || "Some error occurred while creating the post.",
       });
     });
 };
 
-// Retrieve all Sounds from the database.
+// Retrieve all posts from the database.
 exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
-  Sound.findAll({ where: condition })
+  Post.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving sound.",
+        message: err.message || "Some error occurred while retrieving post.",
       });
     });
 };
 
-// Find a single Sound with an id
+// Find a single Post with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Sound.findByPk(id)
+  Post.findByPk(id)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving Sound with id=" + id,
+        message: "Error retrieving Post with id=" + id,
       });
     });
 };
 
-// Update a Sound by the id in the request
+// Update a Post by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Sound.update(req.body, {
+  Post.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Sound was updated successfully.",
+          message: "Post was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Sound with id=${id}. Maybe Sound was not found or req.body is empty!`,
+          message: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating Sound with id=" + id,
+        message: "Error updating Post with id=" + id,
       });
     });
 };
 
-// Delete a Sound with the specified id in the request
+// Delete a Post with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Sound.destroy({
+  Post.destroy({
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Sound was deleted successfully!",
+          message: "Post was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Sound with id=${id}. Maybe Sound was not found!`,
+          message: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Sound with id=" + id,
+        message: "Could not delete Post with id=" + id,
       });
     });
 };
 
-// Delete all Sounds from the database.
+// Delete all Posts from the database.
 exports.deleteAll = (req, res) => {
-  Sound.destroy({
+  Post.destroy({
     where: {},
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} Sounds were deleted successfully!` });
+      res.send({ message: `${nums} Posts were deleted successfully!` });
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while removing all sound.",
+        message: err.message || "Some error occurred while removing all post.",
       });
     });
 };
 
-// find all published Sound
+// find all published post
 exports.findAllPublished = (req, res) => {
-  Sound.findAll({ where: { published: true } })
+  Post.findAll({ where: { published: true } })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving sound.",
+        message: err.message || "Some error occurred while retrieving post.",
       });
     });
 };
