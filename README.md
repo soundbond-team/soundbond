@@ -16,25 +16,28 @@ __SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le 
 
 ### Intégration continue
 
-Nous utilisons [Travis CI](https://travis-ci.org/) connecté à GitHub. Les tests sont effectés avant chaque _release_.
+Pour notre intégration continue, nous utilisons [Travis CI](https://travis-ci.org/) connecté à GitHub. Les tests sont effectés au moins avant chaque _release_ (lors de _commits_ et _merge_ sur les branches _main_ et _develop_) 
 
 ### Kanban client
 
-Notre kanban client est disponible [ici]([ici](https://github.com/gu1lhem/soundbond/projects)).
+Notre kanban client est disponible [sur Jira](https://soundbond.atlassian.net/jira/software/projects/SOUN/boards/2).
 
 ## Pré-requis
 
 Avant de commencer, assurez-vous de satisfaire les pré-requis suivants :
 
-* Vous avez une machine avec `Windows/Linux Ubuntu`. Le fonctionnement avec tout autre OS n'est pas garanti.
-* Vous avez installé `NodeJS`. Par exemple pour Linux :
+* Vous avez une machine avec `Windows/Linux Ubuntu`. Le fonctionnement avec un autre OS n'est pas garanti.
+* Vous avez installé [NodeJS](https://nodejs.org/fr/) et [NPM](https://www.npmjs.com/). Pour Linux :
 
 ``` bash
-sudo apt install snapd
+sudo apt install snapd npm
 sudo snap install node --classic
 ```
 
-* Vous avez installé `NPM`
+On recommende ici d'utiliser [Snapcraft](https://snapcraft.io/) (snap install) car les dépots sont à jour.
+
+Pour Windows, installez NodeJS et NPM [en téléchargeant l'installeur ici](https://nodejs.org/fr/download/)
+
 * Si vous souhaitez utiliser le serveur de développement recommandé, vous avez installé `nodemon` version 2.0.12 ou supérieure __au niveau machine (option -g)__.
 
 ``` bash
@@ -50,6 +53,15 @@ sudo npm install -g nodemon
     FLUSH PRIVILEGES;
 ```
 
+Pour installer MySQL sur Windows, rendez-vous [ici](https://openclassrooms.com/fr/courses/1959476-administrez-vos-bases-de-donnees-avec-mysql/1959969-installez-mysql). Sur Linux, exécutez simplement `sudo apt install mysql-server`.
+
+
+* Installez `yarn` :
+
+``` bash
+npm install yarn
+```
+
 ## Installer SoundBond
 
 ### Installer les paquets NPM
@@ -58,7 +70,7 @@ Installez les packets NPM de /client et /server :
 
 ``` bash
 cd client
-npm ci && yarn install
+yarn install
 cd ../server
 npm ci
 ```
@@ -82,7 +94,7 @@ cd server
 nodemon start
 ```
 
-Pour le serveur frontend
+Pour le serveur frontend, dans un autre terminal
 
 ``` bash
 cd client
