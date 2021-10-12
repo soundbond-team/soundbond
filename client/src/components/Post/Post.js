@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
@@ -21,6 +21,7 @@ import { makeStyles } from "@material-ui/styles";
 
 function Post(props) {
   const faces = [];
+  const [like, setLike] = useState(0);
   const useStyles = makeStyles((theme) => ({
     card: {
       maxWidth: 600,
@@ -53,7 +54,10 @@ function Post(props) {
     },
   }));
   const classes = useStyles();
-
+  const pushLike = (like) => {
+    like = like + 1;
+    setLike(like);
+  };
   return (
     <>
       <Card className={classes.card}>
@@ -73,7 +77,9 @@ function Post(props) {
 
         <Grid item container justifyContent="flex-end">
           <IconButton>
+            {like}
             <ThumbUpIcon
+              onClick={pushLike}
               style={{ color: blue[500] }}
               className={classes.icon}
             />
