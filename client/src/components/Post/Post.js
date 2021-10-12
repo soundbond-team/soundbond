@@ -79,7 +79,7 @@ function Post(props) {
           <IconButton>
             {like}
             <ThumbUpIcon
-              onClick={pushLike}
+              onClick={pushLike(like)}
               style={{ color: blue[500] }}
               className={classes.icon}
             />
