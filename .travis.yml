@@ -23,7 +23,7 @@ deploy:
   file:
     - ${DOCUMENTATION}
   on:
-    branch: develop
+    branch: main
     tags: true
 after_deploy:
   - rm ${DOCUMENTATION}
