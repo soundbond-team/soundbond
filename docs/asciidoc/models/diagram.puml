@@ -15,6 +15,8 @@ class Sound {
 class SoundLocation {
     +longitude : float
     +latitude : float
+    +distance(in lat1, in lon1, in lat2, in lon2, in unit)
+    +nearestPosition(in localisation, in positions)
 }
 
 
@@ -23,22 +25,16 @@ class User {
     +last_name : string
     +email : string
     +password : string
-
-    +like();
-    +follow();
-    +comment();
 }
 
 class Post  {
     +description : string
     +pub_date : Date
-
-    +getLikes();
-    +getComments();
 }
 
 User -- Post
 Post -- Sound
 Sound -- SoundLocation
+Sound -- User
 
 @enduml
