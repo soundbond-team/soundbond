@@ -14,6 +14,7 @@ app.use(express.json());
 require("./routes/sound.routes")(app);
 require("./routes/soundlocation.routes")(app);
 require("./routes/post.routes")(app);
+
 // On dit au serveur de servir ces pages.
 //app.use("/api/sound", exercisesRouter);
 // Il n'est peut-être pas nécessaire d'utiliser cette ligne car

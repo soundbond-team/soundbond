@@ -2,19 +2,24 @@ const db = require("../models");
 const Post = db.Post;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Post
+// Création d'un nouveau Post.
 exports.create = (req, res) => {
-  // Validate request
+  // Vérification que la requête contient bien toutes les valeurs.
+  if (!req.body.description || !req.body.publisher_user_id || !req.body.sound_id) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
 
-  // Create a post
+  // Créer un post à partir des données dans la requête POST.
   const post = {
     description: req.body.description,
-    pubDate: req.body.pubDate,
     publisher_user_id: req.body.publisher_user_id,
-    sound_id: req.body.sound_id,
+    sound_id: req.body.sound_id
   };
-  console.log(post);
-  // Save post in the database
+
+  // Enregistrement dans la base. .create créé et commit dans la base d'un seul coup.
   Post.create(post)
     .then((data) => {
       res.send(data);

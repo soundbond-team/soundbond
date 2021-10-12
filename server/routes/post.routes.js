@@ -1,13 +1,12 @@
 module.exports = (app) => {
   const post = require("../controllers/post.controller");
-  const db = require("../models");
   var router = require("express").Router();
 
   // Create a new Post
   router.post("/", post.create);
 
   // Retrieve all Post
-  router.get("/", post.findAll);
+  //! router.get("/", post.findAll);
 
   // Retrieve all published Post
   router.get("/published", post.findAllPublished);

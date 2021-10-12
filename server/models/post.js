@@ -9,8 +9,7 @@ module.exports = (sequelize, DataTypes) => {
   class Post extends Model {}
   Post.init(
     {
-      description: DataTypes.TEXT,
-      pubDate: DataTypes.DATE, // date de publication
+        description:    DataTypes.TEXT,
     },
     {
       sequelize,
