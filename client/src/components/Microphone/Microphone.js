@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Microphone.css";
 import { postsoundlocation } from "../../actions/soundlocation.actions";
 import { postsound } from "../../actions/sound.actions";
+import { addPost } from "../../actions/post.actions";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -120,9 +121,12 @@ export default function Microphone(props) {
           lng: positiongeo.coords.longitude,
         });
       });
+      addpost(sound.id);
     }
   }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
-
+  async function addpost(id) {
+    await dispatch(addPost(id));
+  }
   const handleCancel = () => {
     setRecord(false);
     setTempFile(null);

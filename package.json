@@ -1,6 +1,6 @@
 {
   "name": "soundbond",
-  "version": "1.0.0",
+  "version": "0.3",
   "description": "[![Build Status](https://app.travis-ci.com/gu1lhem/soundbond.svg?token=mMVNgd82CCyhEB2ReSqx&branch=main)](https://app.travis-ci.com/gu1lhem/soundbond)",
   "main": "index.js",
   "scripts": {
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/gu1lhem/soundbond#readme",
   "dependencies": {
     "@asciidoctor/core": "^2.2.5",
-    "asciidoctor-pdf": "^1.0.0-alpha.12"
+    "asciidoctor-pdf": "^1.0.0-alpha.12",
+    "react-bootstrap": "^1.6.4"
   }
 }
