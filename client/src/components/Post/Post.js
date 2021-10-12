@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
-
+import { useDispatch } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 
 import CommentIcon from "@material-ui/icons/Comment";
@@ -18,10 +18,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import { makeStyles } from "@material-ui/styles";
-
+import { addLike } from "../../actions/post.actions";
 function Post(props) {
   const faces = [];
   const [like, setLike] = useState(props.like);
+  const dispatch = useDispatch();
+
   const useStyles = makeStyles((theme) => ({
     card: {
       maxWidth: 600,
@@ -54,9 +56,16 @@ function Post(props) {
     },
   }));
   const classes = useStyles();
-  const pushLike = () => {
-    let p = like + 1;
-    setLike(p);
+  const pushLike = async () => {
+    if (like == null) {
+      setLike(0);
+    } else {
+      let p = like + 1;
+      setLike(p);
+    }
+    if (props.id != null) {
+      await dispatch(addLike({ id: props.id, like: like + 1 }));
+    }
   };
   return (
     <>

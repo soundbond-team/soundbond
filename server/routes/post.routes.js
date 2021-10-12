@@ -23,7 +23,7 @@ module.exports = (app) => {
   // Delete all Post
   router.delete("/", post.deleteAll);
 
-  //router.put("/addLike", post.addLike);
+  //
 
   router.get("/getAllLike/:id", post.getAllLike);
 

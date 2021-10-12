@@ -73,6 +73,7 @@ function Home() {
                       file={null}
                       like={posts.like}
                       position={{ lat: 10, lng: 15 }}
+                      id={posts.id}
                     />
                   </Grid>
                 ))
