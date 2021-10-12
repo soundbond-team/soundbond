@@ -12,7 +12,6 @@ export const addPost = (sound_id) => {
       url: `http://localhost:8080/api/v1/post/`,
       data: {
         description: "description",
-        pubDate: "2011-12-18 13:17:17",
         publisher_user_id: 1,
         sound_id: sound_id,
       },
