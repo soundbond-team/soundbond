@@ -64,10 +64,7 @@ function Post(props) {
               <ListItemAvatar>
                 <Avatar className={classes.avatar} src={faces[4]} />
               </ListItemAvatar>
-              <ListItemText
-                primary="Username"
-                secondary="@username · 11h ago"
-              />
+              <ListItemText primary="Moha" secondary="@Moha · 11h ago" />
             </ListItem>
           </List>
         </Grid>
