@@ -1,6 +1,5 @@
 module.exports = (app) => {
   const post = require("../controllers/post.controller");
-  const db = require("../models");
   var router = require("express").Router();
 
   // Create a new Post
@@ -23,6 +22,10 @@ module.exports = (app) => {
 
   // Delete all Post
   router.delete("/", post.deleteAll);
+
+  //
+
+  router.get("/getAllLike/:id", post.getAllLike);
 
   app.use("/api/v1/post", router);
 };

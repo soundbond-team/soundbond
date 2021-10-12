@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   Post.init(
     {
       description: DataTypes.TEXT,
-      pubDate: DataTypes.DATE, // date de publication
+      like: DataTypes.INTEGER,
     },
     {
       sequelize,

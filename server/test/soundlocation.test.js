@@ -69,8 +69,8 @@ describe("Test soundlocalisationService", function () {
     );
   });
 });
-
-/*describe("Test routes", function () {
+/*
+describe("Test routes", function () {
   it("/GET All SoundLocations -> 200 status", function (done) {
     chai
       .request(app)
@@ -89,4 +89,5 @@ describe("Test soundlocalisationService", function () {
         done();
       });
   });
-});*/
+});
+*/

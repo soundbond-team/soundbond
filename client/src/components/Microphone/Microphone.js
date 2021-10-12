@@ -25,7 +25,7 @@ import "./Microphone.css";
 import { postsoundlocation } from "../../actions/soundlocation.actions";
 import { postsound } from "../../actions/sound.actions";
 import { addPost } from "../../actions/post.actions";
-
+import { getallPost } from "../../actions/post.actions";
 const useStyles = makeStyles((theme) => ({
   icon: {
     height: 38,
@@ -122,6 +122,7 @@ export default function Microphone(props) {
         });
       });
       addpost(sound.id);
+      dispatch(getallPost());
     }
   }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
   async function addpost(id) {

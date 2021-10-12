@@ -2,19 +2,28 @@ const db = require("../models");
 const Post = db.Post;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Post
+// Création d'un nouveau Post.
 exports.create = (req, res) => {
-  // Validate request
+  // Vérification que la requête contient bien toutes les valeurs.
+  if (
+    !req.body.description ||
+    !req.body.publisher_user_id ||
+    !req.body.sound_id
+  ) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
 
-  // Create a post
+  // Créer un post à partir des données dans la requête POST.
   const post = {
     description: req.body.description,
-    pubDate: req.body.pubDate,
     publisher_user_id: req.body.publisher_user_id,
     sound_id: req.body.sound_id,
   };
-  console.log(post);
-  // Save post in the database
+
+  // Enregistrement dans la base. .create créé et commit dans la base d'un seul coup.
   Post.create(post)
     .then((data) => {
       res.send(data);
@@ -28,16 +37,30 @@ exports.create = (req, res) => {
 
 // Retrieve all posts from the database.
 exports.findAll = (req, res) => {
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-
-  Post.findAll({ where: condition })
+  Post.findAll()
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving post.",
+      });
+    });
+};
+exports.getAllLike = (req, res) => {
+  const id = req.params.id;
+  console.log("salut");
+  Post.findByPk(id)
+    .then((data) => {
+      console.log(data.like);
+      let like = {
+        like: data.like,
+      };
+      res.send(like);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving Post with id=" + id,
       });
     });
 };
@@ -60,7 +83,7 @@ exports.findOne = (req, res) => {
 // Update a Post by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-
+  console.log(req.body);
   Post.update(req.body, {
     where: { id: id },
   })

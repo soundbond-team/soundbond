@@ -6,9 +6,9 @@ branches:
     - main
 addons:
   sonarcloud:
-    organization: "soundbond" 
+    organization: "soundbond"
     token: ${SONAR_TOKEN}
-     
+
 before_deploy:
   - export VERSION=$(node -p -e "require('./package.json').version")
   - export DOCDIR="docs/asciidoc"
@@ -33,19 +33,19 @@ before_script:
   - cd client
   - yarn install
   - cd ../server
-  - npm ci 
+  - npm ci
 cache:
   directories:
     - client/node_modules
     - server/node_modules
 script:
   - cd ..
-  -  npm run asciidoc
+  - npm run asciidoc
   - cd client
   - npm run build
   - cd ../server
   - npm run
-  - npm test
+  - npm run coverage
   - cd ..
   - sonar-scanner
 notifications:
