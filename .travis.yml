@@ -41,6 +41,7 @@ cache:
 script:
   - cd ..
   - npm run asciidoc
+  - rm docs/asciidoc/sb.html
   - cd client
   - npm run build
   - cd ../server
