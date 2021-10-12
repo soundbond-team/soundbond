@@ -53,16 +53,52 @@ Partage de données avec BirdNet ?
 
 == Modélisation - v0.3
 
-//Le faire pour les features de la première itération, ça sera ensuite à mettre à jour et compléter à chaque itération.
-
 === Maquette du front 
 
-// maquette du front correspondant à la feature (une ou plusieurs représentation d'interface, avec la description des enchaînements)
+image::assets/Feed.png[]
+image::assets/Profil.png[]
+image::assets/SoundLocalisation.png[]
 
 === Diagramme de classes global
+----
+@startuml SoundBond
+!include ./commons.style
 
-// partie métier
 
+class Sound {
+    +url : string
+    +size : int 
+    +codec : string
+    +startTime : int
+    +stopTime : int
+    +duration : int
+}
+
+
+class SoundLocation {
+    +longitude : float
+    +latitude : float
+}
+
+
+class User {
+    +first_name : string
+    +last_name : string
+    +email : string
+    +password : string
+}
+
+class Post  {
+    +description : string
+    +pub_date : Date
+}
+
+User -- Post
+Post -- Sound
+Sound -- SoundLocation
+
+@enduml
+----
 === Description API back (ex REST)
 
 === Diagramme de séquences des intercations front/back
