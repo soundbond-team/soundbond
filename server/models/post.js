@@ -6,11 +6,11 @@ User. Il possède deux clé étrangères :
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Post extends Model { }
+  class Post extends Model {}
   Post.init(
     {
-        description:    DataTypes.TEXT,
-        pubDate:        DataTypes.DATE, // date de publication
+      description: DataTypes.TEXT,
+      pubDate: DataTypes.DATE, // date de publication
     },
     {
       sequelize,
