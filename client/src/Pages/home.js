@@ -6,17 +6,22 @@ import { getsoundlocation } from "../actions/soundlocation.actions";
 import Post from "../components/Post/Post";
 import Grid from "@material-ui/core/Grid";
 import Map from "../components/Map/Map";
-require("dotenv").config();
+import { getallPost } from "../actions/post.actions";
+
 function Home() {
   const [files, setFiles] = useState("");
   const dispatch = useDispatch();
+  const allposts = useSelector((state) => state.postReducer);
 
   const pushFile = (file) => {
     setFiles(file);
   };
   const [positions, setPosition] = useState({ lat: null, lng: null });
-
-  const [Posts, setPosts] = useState([{ files: files, positions: positions }]);
+  const [like, setLikes] = useState(0);
+  const [id, setId] = useState(0);
+  const [Posts, setPosts] = useState([
+    { files: files, positions: positions, like: like, id: id },
+  ]);
 
   const pushPosition = ({ lat, lng }) => {
     setPosition({ lat: lat.toFixed(2), lng: lng.toFixed(2) });
@@ -24,14 +29,21 @@ function Home() {
   const pushPost = (post) => {
     setPosts([...Posts, post]);
   };
+  const pushid = (id) => {
+    setId(id);
+  };
+  const pushlike = (like) => {
+    setLikes(like);
+  };
   useEffect(() => {
     Posts.shift(); // pour la map
+    dispatch(getallPost());
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     dispatch(getsoundlocation(positions));
     if (files != null && positions.lat != null && positions.lng != null) {
-      let post = { files, positions };
+      let post = { files, positions, like, id };
       pushPost(post);
     }
   }, [positions]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -48,7 +60,12 @@ function Home() {
         <div class="col-5">
           <div class="container">
             <div class="row justify-content-center">
-              <Microphone pushFile={pushFile} pushPosition={pushPosition} />
+              <Microphone
+                pushFile={pushFile}
+                pushPosition={pushPosition}
+                pushid={pushid}
+                pushlike={pushlike}
+              />
             </div>
           </div>
           <div class="container">
@@ -56,11 +73,31 @@ function Home() {
               {Posts.length > 0 ? (
                 Posts.map((posts, index) => (
                   <Grid key={index} item>
-                    <Post file={posts.files} position={posts.positions} />
+                    <Post
+                      file={posts.files}
+                      position={posts.positions}
+                      like={posts.like}
+                      id={posts.id}
+                    />
                   </Grid>
                 ))
               ) : (
-                <p>Aucun audio</p>
+                <p></p>
+              )}
+
+              {allposts.length > 0 ? (
+                allposts.map((posts, index) => (
+                  <Grid key={posts.id} item>
+                    <Post
+                      file={null}
+                      like={posts.like}
+                      position={{ lat: 10, lng: 15 }}
+                      id={posts.id}
+                    />
+                  </Grid>
+                ))
+              ) : (
+                <p></p>
               )}
             </Grid>
           </div>

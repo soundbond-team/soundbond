@@ -25,7 +25,7 @@ import "./Microphone.css";
 import { postsoundlocation } from "../../actions/soundlocation.actions";
 import { postsound } from "../../actions/sound.actions";
 import { addPost } from "../../actions/post.actions";
-
+import { getallPost } from "../../actions/post.actions";
 const useStyles = makeStyles((theme) => ({
   icon: {
     height: 38,
@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Microphone(props) {
   const dispatch = useDispatch();
   const sound = useSelector((state) => state.soundReducer);
+  const posts = useSelector((state) => state.postReducer);
   const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
@@ -122,8 +123,14 @@ export default function Microphone(props) {
         });
       });
       addpost(sound.id);
+      getallpost();
+
+      props.pushid(posts[posts.length - 1].id);
     }
   }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
+  async function getallpost() {
+    await dispatch(getallPost());
+  }
   async function addpost(id) {
     await dispatch(addPost(id));
   }
