@@ -54,7 +54,7 @@ function Post(props) {
     },
   }));
   const classes = useStyles();
-  const pushLike = (like) => {
+  const pushLike = () => {
     like = like + 1;
     setLike(like);
   };
@@ -77,9 +77,9 @@ function Post(props) {
 
         <Grid item container justifyContent="flex-end">
           <IconButton>
-            {like}
+            <p>{like}</p>
             <ThumbUpIcon
-              onClick={pushLike(like)}
+              onClick={pushLike}
               style={{ color: blue[500] }}
               className={classes.icon}
             />
