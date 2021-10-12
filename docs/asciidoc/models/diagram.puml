@@ -23,11 +23,18 @@ class User {
     +last_name : string
     +email : string
     +password : string
+
+    +like();
+    +follow();
+    +comment();
 }
 
 class Post  {
     +description : string
     +pub_date : Date
+
+    +getLikes();
+    +getComments();
 }
 
 User -- Post
