@@ -6,6 +6,7 @@ export const GET_ALL_POST = "GET_ALL_POST";
 export const ADD_POST = "ADD_POST";
 export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
+//permet dajouter un post en BD
 export const addPost = (sound_id) => {
   return (dispatch) => {
     return axios({
@@ -27,7 +28,7 @@ export const addPost = (sound_id) => {
       .catch((err) => console.log(err));
   };
 };
-
+//charge tt les posts (ainsi que les données des foregn key)
 export const getallPost = () => {
   return (dispatch) => {
     return axios
@@ -38,7 +39,7 @@ export const getallPost = () => {
       .catch((err) => console.log(err));
   };
 };
-
+//ajoute un like en bd
 export const addLike = ({ id, like }) => {
   return (dispatch) => {
     return axios({
