@@ -99,38 +99,41 @@ export default function Microphone(props) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const done = async () => {
+  const done = () => {
     if (tempFile) {
-      await dispatch(postsound());
+      dispatch(postsound());
     }
   };
   useEffect(() => {
     if (tempFile) {
       //  props.pushFile(tempFile);
-      setTempFile(null);
-      setOpen(false);
 
-      setRecord(false);
-
-      navigator.geolocation.getCurrentPosition(async function (positiongeo) {
-        await dispatch(
+      navigator.geolocation.getCurrentPosition(function (positiongeo) {
+        dispatch(
           postsoundlocation({
             lat: positiongeo.coords.latitude,
             lng: positiongeo.coords.longitude,
             id: sound.id,
           })
-        );
+        ).then(() => {
+          addpost(sound.id);
+        });
       });
-      addpost(sound.id);
-      getallpost();
+
+      setTempFile(null);
+      setOpen(false);
+
+      setRecord(false);
     }
   }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
-  async function getallpost() {
-    await dispatch(getallPost());
-  }
-  async function addpost(id) {
-    await dispatch(addPost(id));
-  }
+
+  const addpost = (id) =>
+    new Promise((resolve, reject) => {
+      dispatch(addPost(id)).then(() => {
+        dispatch(getallPost());
+      });
+      resolve();
+    });
 
   const handleCancel = () => {
     setRecord(false);
