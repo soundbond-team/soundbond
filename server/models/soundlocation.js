@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       longitude: DataTypes.DECIMAL(9, 6),
       latitude: DataTypes.DECIMAL(8, 6),
-      // clé étrangère vers Sound.
     },
     {
       sequelize,
