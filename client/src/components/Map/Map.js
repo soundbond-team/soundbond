@@ -100,7 +100,7 @@ const Map = ({ soundlocationdata }) => {
 
   return (
     <>
-      <div class="container-fluid">
+      <div className="container-fluid">
         <div className="sidebarStyle">
           <div>
             Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}

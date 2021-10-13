@@ -33,8 +33,14 @@ function Home() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     pushPost(allposts);
-  }, [allposts]);
-  // eslint-disable-line react-hooks/exhaustive-deps
+    navigator.geolocation.getCurrentPosition(async function (positiongeo) {
+      let position = {
+        lat: positiongeo.coords.latitude,
+        lng: positiongeo.coords.longitude,
+      };
+      dispatch(getsoundlocation(position));
+    });
+  }, [allposts]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const listItems = soundlocationdata.map((i) => (
     <li key={i.id}>
@@ -44,14 +50,14 @@ function Home() {
 
   return (
     <>
-      <div class="row">
-        <div class="col-5">
-          <div class="container">
-            <div class="row justify-content-center">
+      <div className="row">
+        <div className="col-5">
+          <div className="container">
+            <div className="row justify-content-center">
               <Microphone pushFile={null} />
             </div>
           </div>
-          <div class="container">
+          <div className="container">
             {
               <Grid container direction="column" spacing={3}>
                 {allpostdata.length > 0 ? (
@@ -93,15 +99,15 @@ function Home() {
             }
           </div>
         </div>
-        <div class="col-6">
-          <div class="container">
-            <div class="row justify-content-center">
+        <div className="col-6">
+          <div className="container">
+            <div className="row justify-content-center">
               {" "}
               <Map soundlocationdata={soundlocationdata} />
             </div>
             <br />
-            <div class="container">
-              <div class="row justify-content-center">
+            <div className="container">
+              <div className="row justify-content-center">
                 <h2>Positions des sons les plus proches:</h2>
                 <div>{listItems}</div>
               </div>
