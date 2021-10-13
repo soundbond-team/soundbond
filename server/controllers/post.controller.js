@@ -1,5 +1,7 @@
 const db = require("../models");
 const Post = db.Post;
+const Sound = db.Sound;
+const SoundLocation = db.SoundLocation;
 const Op = db.Sequelize.Op;
 
 // Création d'un nouveau Post.
@@ -37,7 +39,22 @@ exports.create = (req, res) => {
 
 // Retrieve all posts from the database.
 exports.findAll = (req, res) => {
-  Post.findAll()
+  Post.findAll({
+    include: [
+      {
+        model: Sound,
+        as: "publishing",
+
+        include: [
+          {
+            model: SoundLocation,
+            as: "soundlocation",
+            // where: { id: db.Sequelize.col("Sound.soundlocation_id") },
+          },
+        ],
+      },
+    ],
+  })
     .then((data) => {
       res.send(data);
     })
@@ -69,7 +86,21 @@ exports.getAllLike = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Post.findByPk(id)
+  Post.findByPk(id, {
+    include: [
+      {
+        model: Sound,
+        as: "publishing",
+
+        include: [
+          {
+            model: SoundLocation,
+            as: "soundlocation",
+          },
+        ],
+      },
+    ],
+  })
     .then((data) => {
       res.send(data);
     })

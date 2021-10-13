@@ -25,7 +25,7 @@ export const postsoundlocation = (props) => {
     return axios({
       method: "post",
       url: `http://localhost:8080/api/v1/soundlocation/`,
-      data: { latitude: props.lat, longitude: props.lng, id: props.id },
+      data: { latitude: props.lat, longitude: props.lng },
     })
       .then((res) => {
         console.log(res);

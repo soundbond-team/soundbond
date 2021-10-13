@@ -27,17 +27,18 @@ db.User = require("./user")(sequelize, Sequelize);
 db.Post = require("./post")(sequelize, Sequelize);
 
 // Chaque Sound possède des attributs de localisation.
-db.SoundLocation.belongsTo(db.Sound, {
-  through: "sound_soundlocation",
-  as: "sound",
-  foreignKey: "sound_id",
-});
 
 // Chaque Sound est téléversé par un User
 db.Sound.belongsTo(db.User, {
   through: "user_sound",
   as: "uploader",
   foreignKey: "uploader_user_id",
+});
+
+db.Sound.belongsTo(db.SoundLocation, {
+  through: "sound",
+  as: "soundlocation",
+  foreignKey: "soundlocation_id",
 });
 
 // Chaque Post est publié par un User
