@@ -22,7 +22,7 @@ import Grid from "@material-ui/core/Grid";
 import { green, red } from "@material-ui/core/colors";
 import { useDispatch, useSelector } from "react-redux";
 import "./Microphone.css";
-import { postsoundlocation } from "../../actions/soundlocation.actions";
+import { postsoundlocation } from "../../actions/onesoundlocation.actions";
 import { postsound } from "../../actions/sound.actions";
 import { addPost } from "../../actions/post.actions";
 import { getallPost } from "../../actions/post.actions";
@@ -46,7 +46,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Microphone(props) {
   const dispatch = useDispatch();
   const sound = useSelector((state) => state.soundReducer);
-
+  const lastsoundlocation = useSelector(
+    (state) => state.onesoundlocationReducer
+  );
   const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
@@ -101,24 +103,29 @@ export default function Microphone(props) {
   };
   const done = () => {
     if (tempFile) {
-      dispatch(postsound());
-    }
-  };
-  useEffect(() => {
-    if (tempFile) {
-      //  props.pushFile(tempFile);
-
       navigator.geolocation.getCurrentPosition(function (positiongeo) {
         dispatch(
           postsoundlocation({
             lat: positiongeo.coords.latitude,
             lng: positiongeo.coords.longitude,
-            id: sound.id,
           })
-        ).then(() => {
-          addpost(sound.id);
-        });
+        );
       });
+    }
+  };
+  useEffect(() => {
+    if (tempFile) {
+      //  props.pushFile(tempFile);
+      console.log(lastsoundlocation.id + "fefe");
+      addsound(lastsoundlocation.id);
+    }
+  }, [lastsoundlocation]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (tempFile) {
+      console.log("eeffefe test");
+      //  props.pushFile(tempFile);
+      addpost(sound.id);
 
       setTempFile(null);
       setOpen(false);
@@ -126,12 +133,17 @@ export default function Microphone(props) {
       setRecord(false);
     }
   }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
-
   const addpost = (id) =>
     new Promise((resolve, reject) => {
       dispatch(addPost(id)).then(() => {
         dispatch(getallPost());
       });
+      resolve();
+    });
+
+  const addsound = (id) =>
+    new Promise((resolve, reject) => {
+      dispatch(postsound(id));
       resolve();
     });
 
