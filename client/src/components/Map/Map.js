@@ -51,6 +51,7 @@ const Map = ({ soundlocationdata }) => {
         },
       });
     });
+    console.log(geojson);
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/streets-v11",

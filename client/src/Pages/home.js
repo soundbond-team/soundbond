@@ -9,45 +9,33 @@ import Map from "../components/Map/Map";
 import { getallPost } from "../actions/post.actions";
 
 function Home() {
-  const [files, setFiles] = useState("");
+  const [allpostdata, setPost] = useState([]);
   const dispatch = useDispatch();
   const allposts = useSelector((state) => state.postReducer);
-
-  const pushFile = (file) => {
-    setFiles(file);
-  };
-  const [positions, setPosition] = useState({ lat: null, lng: null });
-  const [like, setLikes] = useState(0);
-  const [id, setId] = useState(0);
-  const [Posts, setPosts] = useState([
-    { files: files, positions: positions, like: like, id: id },
-  ]);
-
-  const pushPosition = ({ lat, lng }) => {
-    setPosition({ lat: lat.toFixed(2), lng: lng.toFixed(2) });
-  };
-  const pushPost = (post) => {
-    setPosts([...Posts, post]);
-  };
-  const pushid = (id) => {
-    setId(id);
-  };
-  const pushlike = (like) => {
-    setLikes(like);
-  };
-  useEffect(() => {
-    Posts.shift(); // pour la map
-    dispatch(getallPost());
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    dispatch(getsoundlocation(positions));
-    if (files != null && positions.lat != null && positions.lng != null) {
-      let post = { files, positions, like, id };
-      pushPost(post);
-    }
-  }, [positions]); // eslint-disable-line react-hooks/exhaustive-deps
   const soundlocationdata = useSelector((state) => state.soundlocationReducer);
+
+  const pushPost = (allpostdata) => {
+    setPost(allpostdata);
+  };
+
+  useEffect(() => {
+    //Posts.shift(); // pour la map
+
+    navigator.geolocation.getCurrentPosition(async function (positiongeo) {
+      let position = {
+        lat: positiongeo.coords.latitude,
+        lng: positiongeo.coords.longitude,
+      };
+      dispatch(getsoundlocation(position));
+
+      dispatch(getallPost());
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    pushPost(allposts);
+  }, [allposts]);
+  // eslint-disable-line react-hooks/exhaustive-deps
+
   const listItems = soundlocationdata.map((i) => (
     <li key={i.id}>
       Latitude: {i.latitude} Longitude:{i.longitude}
@@ -60,46 +48,49 @@ function Home() {
         <div class="col-5">
           <div class="container">
             <div class="row justify-content-center">
-              <Microphone
-                pushFile={pushFile}
-                pushPosition={pushPosition}
-                pushid={pushid}
-                pushlike={pushlike}
-              />
+              <Microphone pushFile={null} />
             </div>
           </div>
           <div class="container">
-            <Grid container direction="column" spacing={3}>
-              {Posts.length > 0 ? (
-                Posts.map((posts, index) => (
-                  <Grid key={index} item>
-                    <Post
-                      file={posts.files}
-                      position={posts.positions}
-                      like={posts.like}
-                      id={posts.id}
-                    />
-                  </Grid>
-                ))
-              ) : (
-                <p></p>
-              )}
-
-              {allposts.length > 0 ? (
-                allposts.map((posts, index) => (
-                  <Grid key={posts.id} item>
-                    <Post
-                      file={null}
-                      like={posts.like}
-                      position={{ lat: 10, lng: 15 }}
-                      id={posts.id}
-                    />
-                  </Grid>
-                ))
-              ) : (
-                <p></p>
-              )}
-            </Grid>
+            {
+              <Grid container direction="column" spacing={3}>
+                {allpostdata.length > 1 ? (
+                  allpostdata.map((i, index) => (
+                    <Grid key={index} item>
+                      <Post
+                        //post
+                        id_post={i.id}
+                        like={i.like}
+                        description={i.description}
+                        //son
+                        id_son={i.publishing ? i.publishing.id : null}
+                        url={i.publishing ? i.publishing.url : null}
+                        size={i.publishing ? i.publishing.size : null}
+                        duration={i.publishing ? i.publishing.duration : null}
+                        //position
+                        id_position_son={
+                          i.publishing.soundlocation
+                            ? i.publishing.soundlocation.id
+                            : null
+                        }
+                        latitude={
+                          i.publishing.soundlocation
+                            ? i.publishing.soundlocation.latitude
+                            : null
+                        }
+                        longitude={
+                          i.publishing.soundlocation
+                            ? i.publishing.soundlocation.longitude
+                            : null
+                        }
+                      />
+                    </Grid>
+                  ))
+                ) : (
+                  <p></p>
+                )}
+              </Grid>
+            }
           </div>
         </div>
         <div class="col-6">
