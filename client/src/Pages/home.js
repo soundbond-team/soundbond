@@ -54,7 +54,7 @@ function Home() {
           <div class="container">
             {
               <Grid container direction="column" spacing={3}>
-                {allpostdata.length > 1 ? (
+                {allpostdata.length > 0 ? (
                   allpostdata.map((i, index) => (
                     <Grid key={index} item>
                       <Post
