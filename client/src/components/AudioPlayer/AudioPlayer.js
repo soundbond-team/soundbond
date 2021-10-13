@@ -115,12 +115,11 @@ export default function AudioPlayer(props) {
           <IconButton onClick={stopPlayback}>
             <StopIcon className={classes.icon} />
           </IconButton>
-          {props.latitude != null && props.longitude != null && (
-            <p>
-              {"  Latitude: " + props.latitude}{" "}
-              {" / Longitude: " + props.longitude}{" "}
-            </p>
-          )}
+
+          <p>
+            {"  Latitude: " + props.latitude}{" "}
+            {" / Longitude: " + props.longitude}{" "}
+          </p>
         </Grid>
       </Grid>
     </>
