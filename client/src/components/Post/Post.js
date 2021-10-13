@@ -88,7 +88,7 @@ function Post(props) {
 
         <Grid item container justifyContent="flex-end">
           <IconButton onClick={pushLike}>
-            <p>{like}</p>
+            <span style={{ margin: "2px 5px" }}>{like} </span>
             <ThumbUpIcon
               style={{ color: blue[500] }}
               className={classes.icon}

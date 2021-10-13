@@ -4,6 +4,7 @@ require("dotenv").config();
 export const GET_SOUNDLOCATION = "GET_SOUNDLOCATION";
 export const POST_SOUNDLOCATION = "POST_SOUNDLOCATION";
 export const GET_SOUND_ERRORS = "GET_SOUND_ERRORS";
+//recupere tt les sonslocation (utile pour la map)
 export const getsoundlocation = (location) => {
   return (dispatch) => {
     return axios({
