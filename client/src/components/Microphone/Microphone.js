@@ -24,8 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Microphone.css";
 import { postsoundlocation } from "../../actions/onesoundlocation.actions";
 import { postsound } from "../../actions/sound.actions";
-import { addPost } from "../../actions/post.actions";
-import { getallPost } from "../../actions/post.actions";
+import { addPost, getallPost } from "../../actions/post.actions";
 const useStyles = makeStyles((theme) => ({
   icon: {
     height: 38,
