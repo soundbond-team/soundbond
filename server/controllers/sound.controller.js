@@ -136,17 +136,4 @@ exports.deleteAll = (req, res) => {
     });
 };
 
-// find all published Sound
-exports.findAllPublished = (req, res) => {
-  Sound.findAll({ where: { published: true } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving sound.",
-      });
-    });
-};
-
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/

@@ -23,7 +23,7 @@ deploy:
   file:
     - ${DOCUMENTATION}
   on:
-    branch: develop
+    branch: main
     tags: true
 after_deploy:
   - rm ${DOCUMENTATION}
@@ -41,11 +41,15 @@ cache:
 script:
   - cd ..
   - npm run asciidoc
+  - rm docs/asciidoc/sb.html
   - cd client
   - npm run build
   - cd ../server
   - npm run
   - npm run coverage
+  - rm -r coverage/sonar.xml
+  - rm -r coverage/lcov-report
+  - rm -r .nyc_output
   - cd ..
   - sonar-scanner
 notifications:

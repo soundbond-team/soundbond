@@ -9,9 +9,6 @@ module.exports = (app) => {
   // Retrieve all sound
   router.get("/", sound.findAll);
 
-  // Retrieve all published sound
-  router.get("/published", sound.findAllPublished);
-
   // Retrieve a single Sound with id
   router.get("/:id", sound.findOne);
 
