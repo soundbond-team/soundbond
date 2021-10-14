@@ -32,7 +32,7 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the post.",
+        error: err.message || "Some error occurred while creating the post.",
       });
     });
 };
@@ -60,7 +60,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving post.",
+        error: err.message || "Some error occurred while retrieving post.",
       });
     });
 };
@@ -77,7 +77,7 @@ exports.getAllLike = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving Post with id=" + id,
+        error: "Error retrieving Post with id=" + id,
       });
     });
 };
@@ -106,7 +106,7 @@ exports.findOne = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving Post with id=" + id,
+        error: "Error retrieving Post with id=" + id,
       });
     });
 };
@@ -125,13 +125,13 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
+            error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating Post with id=" + id,
+        error: "Error updating Post with id=" + id,
       });
     });
 };
@@ -150,13 +150,13 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
+            error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Post with id=" + id,
+        error: "Could not delete Post with id=" + id,
       });
     });
 };
@@ -172,20 +172,7 @@ exports.deleteAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while removing all post.",
-      });
-    });
-};
-
-// find all published post
-exports.findAllPublished = (req, res) => {
-  Post.findAll({ where: { published: true } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving post.",
+        error: err.message || "Some error occurred while removing all post.",
       });
     });
 };
