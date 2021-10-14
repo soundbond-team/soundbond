@@ -1,24 +1,24 @@
 const db = require("../models");
 const Sound = db.Sound;
+const SoundLocation = db.SoundLocation;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Sound
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
-  }
 
   // Create a Sound
   const sound = {
-    title: req.body.title,
-    description: req.body.description,
-    published: req.body.published ? req.body.published : false,
+    url: req.body.url,
+    size: req.body.size,
+    startTime: req.body.startTime,
+    stopTime: req.body.stopTime,
+    duration: req.body.duration,
+    uploader_user_id: req.body.uploader_user_id,
+    codec: req.body.codec,
+    soundlocation_id: req.body.soundlocation_id,
   };
-
+  console.log(sound);
   // Save Sound in the database
   Sound.create(sound)
     .then((data) => {
@@ -36,7 +36,15 @@ exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
-  Sound.findAll({ where: condition })
+  Sound.findAll({
+    include: [
+      {
+        model: SoundLocation,
+        as: "soundlocation",
+        where: { id: db.Sequelize.col("Sound.soundlocation_id") },
+      },
+    ],
+  })
     .then((data) => {
       res.send(data);
     })
@@ -124,19 +132,6 @@ exports.deleteAll = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: err.message || "Some error occurred while removing all sound.",
-      });
-    });
-};
-
-// find all published Sound
-exports.findAllPublished = (req, res) => {
-  Sound.findAll({ where: { published: true } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving sound.",
       });
     });
 };

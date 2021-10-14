@@ -1,25 +1,19 @@
-import "./App.css";
-import { BrowserRouter as Router , Route} from "react-router-dom";
-
-import Home from "./pages/Home/Home";
-import Register from "./pages/Register/Register";
-import Login from  "./pages/Login/Login";
-import SoundMap from "./pages/SoundMap/SoundMap";
-import Navbar from "./components/Navbar/Navbar";
-
-function App() {  
+import React, { useEffect, useState } from "react";
+import Routes from "./components/Routes/Routes";
+import { UidContext } from "./components/Appcontext";
+import { useDispatch } from "react-redux";
+import { getallPost } from "./actions/post.actions";
+const App = () => {
+  const [uid] = useState(1); // eslint-disable-next-line
+  const dispatch = useDispatch(); // eslint-disable-next-line
+  useEffect(() => {
+    dispatch(getallPost);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
-    <>
-    <Navbar/>
-      <Router>
-        <Route path="/" exact render= {()=> <Home/>}/>
-        <Route path="/register" exact render= {()=> <Register/>}/>
-        <Route path="/login" exact render= {()=> <Login/>}/>
-        <Route path="/map" exact render= {()=> <SoundMap/>}/>
-      </Router>
-      
-    </>
+    <UidContext.Provider value={uid}>
+      <Routes />
+    </UidContext.Provider>
   );
-}
+};
 
 export default App;

@@ -1,0 +1,40 @@
+@startuml SoundBond
+!include ./commons.style
+
+
+class Sound {
+    +url : string
+    +size : int 
+    +codec : string
+    +startTime : int
+    +stopTime : int
+    +duration : int
+}
+
+
+class SoundLocation {
+    +longitude : float
+    +latitude : float
+    +distance(in lat1, in lon1, in lat2, in lon2, in unit)
+    +nearestPosition(in localisation, in positions)
+}
+
+
+class User {
+    +first_name : string
+    +last_name : string
+    +email : string
+    +password : string
+}
+
+class Post  {
+    +description : string
+    +pub_date : Date
+}
+
+User -- Post
+Post -- Sound
+Sound -- SoundLocation
+Sound -- User
+
+@enduml

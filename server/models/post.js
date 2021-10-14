@@ -1,28 +1,21 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Post extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  Post.init({
-    id_user: DataTypes.STRING,
-    description : DataTypes.STRING,
-    link : DataTypes.STRING,
-    likes: DataTypes.STRING
+/* Un Post est la publication d'un Sound par un
+User. Il possède deux clé étrangères :
+- vers User, l'utilisateur qui l'a publié,
+- vers Sound, le son qui est publié. */
 
-  }
-  , {
-    sequelize,
-    modelName: 'Post', 
-  });
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class Post extends Model {}
+  Post.init(
+    {
+      description: DataTypes.TEXT,
+      like: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "post",
+    }
+  );
   return Post;
 };

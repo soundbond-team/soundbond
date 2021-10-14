@@ -20,10 +20,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import { green, red } from "@material-ui/core/colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./Microphone.css";
-import { postsoundlocation } from "../../actions/soundlocation.actions";
-
+import { postsoundlocation } from "../../actions/onesoundlocation.actions";
+import { postsound } from "../../actions/sound.actions";
+import { addPost, getallPost } from "../../actions/post.actions";
 const useStyles = makeStyles((theme) => ({
   icon: {
     height: 38,
@@ -43,7 +44,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Microphone(props) {
   const dispatch = useDispatch();
-
+  const sound = useSelector((state) => state.soundReducer);
+  const lastsoundlocation = useSelector(
+    (state) => state.onesoundlocationReducer
+  );
   const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
@@ -96,29 +100,51 @@ export default function Microphone(props) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
-  const handleDone = async () => {
+  const done = () => {
     if (tempFile) {
-      props.pushFile(tempFile);
-      setTempFile(null);
-      setOpen(false);
-      setRecord(false);
-      // Envoyer les data au backkk
-
-      navigator.geolocation.getCurrentPosition(async function (positiongeo) {
-        await dispatch(
+      navigator.geolocation.getCurrentPosition(function (positiongeo) {
+        dispatch(
           postsoundlocation({
             lat: positiongeo.coords.latitude,
             lng: positiongeo.coords.longitude,
           })
         );
-        props.pushPosition({
-          lat: positiongeo.coords.latitude,
-          lng: positiongeo.coords.longitude,
-        });
       });
     }
   };
+  useEffect(() => {
+    if (tempFile) {
+      //  props.pushFile(tempFile);
+      console.log(lastsoundlocation.id + "fefe");
+      addsound(lastsoundlocation.id);
+    }
+  }, [lastsoundlocation]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (tempFile) {
+      console.log("eeffefe test");
+      //  props.pushFile(tempFile);
+      addpost(sound.id);
+
+      setTempFile(null);
+      setOpen(false);
+
+      setRecord(false);
+    }
+  }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
+  const addpost = (id) =>
+    new Promise((resolve, reject) => {
+      dispatch(addPost(id)).then(() => {
+        dispatch(getallPost());
+      });
+      resolve();
+    });
+
+  const addsound = (id) =>
+    new Promise((resolve, reject) => {
+      dispatch(postsound(id));
+      resolve();
+    });
 
   const handleCancel = () => {
     setRecord(false);
@@ -208,7 +234,7 @@ export default function Microphone(props) {
                 </IconButton>
               )}
 
-              <IconButton onClick={handleDone}>
+              <IconButton onClick={done}>
                 <DoneIcon
                   style={tempFile && !record ? { color: green[500] } : {}}
                   className={classes.icon}

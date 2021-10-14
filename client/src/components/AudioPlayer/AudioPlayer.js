@@ -4,8 +4,6 @@ import {v4 as uuidv4} from "uuid";
 
 import { makeStyles } from "@material-ui/styles";
 
-import Card from "@material-ui/core/Card";
-
 import IconButton from "@material-ui/core/IconButton";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import StopIcon from "@material-ui/icons/Stop";
@@ -110,25 +108,20 @@ export default function AudioPlayer(props) {
 
   return (
     <>
-      <Card className={classes.card}>
-        <Grid container direction="column">
-          <Grid item id={wavesurferId} />
-          <Grid item container className={classes.buttons}>
-            <Grid item xs={5}>
-              {transportPlayButton}
-              <IconButton onClick={stopPlayback}>
-                <StopIcon className={classes.icon} />
-              </IconButton>
-              {props.position.lat != null && props.position.lng != null && (
-                <p>
-                  {"latitude: " + props.position.lat}{" "}
-                  {" / longitude: " + props.position.lng}{" "}
-                </p>
-              )}
-            </Grid>
-          </Grid>
+      <Grid item id={wavesurferId} />
+      <Grid item container className={classes.buttons}>
+        <Grid item xs={5}>
+          {transportPlayButton}
+          <IconButton onClick={stopPlayback}>
+            <StopIcon className={classes.icon} />
+          </IconButton>
+
+          <p>
+            {"  Latitude: " + props.latitude}{" "}
+            {" / Longitude: " + props.longitude}{" "}
+          </p>
         </Grid>
-      </Card>
+      </Grid>
     </>
   );
 }

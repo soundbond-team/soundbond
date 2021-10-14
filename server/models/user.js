@@ -1,24 +1,23 @@
+/* Un User est un compte utilisateur sur la
+plateforme Soundbond. A User sont associés :
+- les sons qu'ils a téléversé
+- les posts qu'il a publié
+- les posts auxquels il a attribué un "j'aime". */
+
 'use strict';
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
+  class User extends Model { }
   User.init({
-    username: DataTypes.STRING,
+    first_name: DataTypes.STRING,
+    last_name: DataTypes.STRING,
+    email: DataTypes.STRING,
     password: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'user',
   });
   return User;
 };

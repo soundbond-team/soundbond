@@ -10,6 +10,7 @@ function Navbar() {
     useEffect(() => {
         setLoggedIn(localStorage.getItem("loggedIn"))
     },[localStorage.getItem("loggedIn")])
+    {/* localStorage permet de stocker le contexte (ici, l'utilisateur connecté) */}
 
     return (
         <div className="NavbarContainer">
@@ -25,15 +26,16 @@ function Navbar() {
             </div>
             <div className ="NavbarRight">
                 <a href="/">Home</a>
-                {!loggedIn ? 
-                
-                <>
 
+                {/* Si l'utilisateur n'est pas connecté, on affiche */}
+                {!loggedIn ? 
+                <>
                     <a href ="/Register">Register</a>
                     <a href ="/Login">Login</a>
                 </>
-                 : 
+                 :
                 <>
+                {/* Sinon */}
                     <a href="/Profil" > Profil </a>
                     <a href="/Map">Map</a>
                     <div className="NavbarIcon">
@@ -50,17 +52,10 @@ function Navbar() {
                             <span className="NavbarIconbadge">1</span>
                         </div>
                         <img src="../../profil.jpg" alt =" " className ="ProfilImg"/>
-
                     </div>
                 </>
-                
-                
                 }
-               
-            
             </div>
-            
-            
         </div> 
     );
 }

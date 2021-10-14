@@ -1,16 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class SoundLocation extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  }
+  class SoundLocation extends Model {}
   SoundLocation.init(
     {
       longitude: DataTypes.DECIMAL(9, 6),
@@ -18,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "SoundLocation",
+      modelName: "soundlocation",
     }
   );
   return SoundLocation;
