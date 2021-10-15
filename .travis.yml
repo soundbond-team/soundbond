@@ -16,6 +16,8 @@ before_deploy:
   - mv "${DOCDIR}/sb.pdf" "${DOCDIR}/${DOCFILE}-${VERSION}.pdf"
   - export DOCUMENTATION="${DOCDIR}/${DOCFILE}-${VERSION}.pdf"
   - echo documentation is ${DOCUMENTATION}
+  # Génération du fichier de configuration .env avec les variables d'environnement de Travis.
+  - echo -e "DATABASE = "${DB_DATABASE}"\nUSERNAME = "${DB_USERNAME}"\nPASSWORD = "${DB_PASSWORD}"\nHOST = "${DB_HOST}"\nPORT = "${DB_PORT}"\n > .env
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
@@ -29,7 +31,7 @@ after_deploy:
   - rm ${DOCUMENTATION}
   - rm docs/asciidoc/sb.html
 before_script:
-  - npm ci
+  - npm ci #?
   - cd client
   - yarn install
   - cd ../server
