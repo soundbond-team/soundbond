@@ -19,6 +19,7 @@ const store = createStore(
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+    <button id="sel-button">Cliquez-moi !</button>
       <App />
     </Provider>
   </React.StrictMode>,

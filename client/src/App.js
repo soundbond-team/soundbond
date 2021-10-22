@@ -11,6 +11,7 @@ const App = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <UidContext.Provider value={uid}>
+      <button id="sel-button">Cliquez-moi !</button>
       <Routes />
     </UidContext.Provider>
   );
