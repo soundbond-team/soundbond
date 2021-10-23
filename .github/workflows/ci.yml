@@ -47,7 +47,7 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
           path: |
             client/node_modules
             server/node_modules
