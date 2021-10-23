@@ -64,6 +64,5 @@ jobs:
         id: create_release
         with:
           artifacts: docs/asciidoc/sb.pdf
-          tag_name: ${{ github.ref }}
           bodyFile: CHANGELOG.md
           token: ${{ secrets.GITHUB_TOKEN }}
