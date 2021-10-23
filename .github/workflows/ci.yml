@@ -31,17 +31,6 @@ jobs:
         with:
           node-version: 16
 
-      - name: Installation
-        run: yarn install
-      - name: Client installation
-        run: |
-          cd client 
-          yarn install
-      - name: Server installation
-        run: |
-          cd server
-          yarn install
-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -53,6 +42,17 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
+      - name: Installation
+        run: yarn install
+      - name: Client installation
+        run: |
+          cd client 
+          yarn install
+      - name: Server installation
+        run: |
+          cd server
+          yarn install
 
       - name: Build
         run: |
