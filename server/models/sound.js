@@ -8,16 +8,17 @@ User, son uploader. */
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Sound extends Model { }
+  class Sound extends Model {}
   Sound.init(
     {
-      url:          DataTypes.TEXT,
-      size:         DataTypes.INTEGER,
-      codec:        DataTypes.STRING,
-      startTime:    DataTypes.BIGINT,
-      stopTime:     DataTypes.BIGINT,
-      duration:     DataTypes.INTEGER,
+      url: DataTypes.TEXT,
+      size: DataTypes.INTEGER,
+      codec: DataTypes.STRING,
+      startTime: DataTypes.BIGINT,
+      stopTime: DataTypes.BIGINT,
+      duration: DataTypes.INTEGER,
       // clé étrangère vers User : uploader.
+      // clé étrangère vers soundlocation : location.
     },
     {
       sequelize,

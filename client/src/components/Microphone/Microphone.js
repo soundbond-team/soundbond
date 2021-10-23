@@ -13,19 +13,18 @@ import DoneIcon from "@material-ui/icons/Done";
 import CancelIcon from "@material-ui/icons/Cancel";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
-
+import DownloadIcon from "@mui/icons-material/Download";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
-import { green, red } from "@material-ui/core/colors";
+import { green, red, blue } from "@material-ui/core/colors";
 import { useDispatch, useSelector } from "react-redux";
 import "./Microphone.css";
-import { postsoundlocation } from "../../actions/soundlocation.actions";
+import { postsoundlocation } from "../../actions/onesoundlocation.actions";
 import { postsound } from "../../actions/sound.actions";
-import { addPost } from "../../actions/post.actions";
-import { getallPost } from "../../actions/post.actions";
+import { addPost, getallPost } from "../../actions/post.actions";
 const useStyles = makeStyles((theme) => ({
   icon: {
     height: 38,
@@ -46,7 +45,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Microphone(props) {
   const dispatch = useDispatch();
   const sound = useSelector((state) => state.soundReducer);
-  const posts = useSelector((state) => state.postReducer);
+  const lastsoundlocation = useSelector(
+    (state) => state.onesoundlocationReducer
+  );
   const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState(null);
@@ -99,45 +100,67 @@ export default function Microphone(props) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const done = async () => {
-    await dispatch(postsound());
-  };
-  useEffect(() => {
+  const done = () => {
     if (tempFile) {
-      props.pushFile(tempFile);
-      setTempFile(null);
-      setOpen(false);
-      setRecord(false);
-
-      navigator.geolocation.getCurrentPosition(async function (positiongeo) {
-        await dispatch(
+      navigator.geolocation.getCurrentPosition(function (positiongeo) {
+        dispatch(
           postsoundlocation({
             lat: positiongeo.coords.latitude,
             lng: positiongeo.coords.longitude,
-            id: sound.id,
           })
         );
-        props.pushPosition({
-          lat: positiongeo.coords.latitude,
-          lng: positiongeo.coords.longitude,
-        });
       });
-      addpost(sound.id);
-      getallpost();
+    }
+  };
+  useEffect(() => {
+    if (tempFile) {
+      //  props.pushFile(tempFile);
+      console.log(lastsoundlocation.id + "fefe");
+      addsound(lastsoundlocation.id);
+    }
+  }, [lastsoundlocation]); // eslint-disable-line react-hooks/exhaustive-deps
 
-      props.pushid(posts[posts.length - 1].id);
+  useEffect(() => {
+    if (tempFile) {
+      console.log("eeffefe test");
+      //  props.pushFile(tempFile);
+      addpost(sound.id);
+
+      setTempFile(null);
+      setOpen(false);
+
+      setRecord(false);
     }
   }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
-  async function getallpost() {
-    await dispatch(getallPost());
-  }
-  async function addpost(id) {
-    await dispatch(addPost(id));
-  }
+  const addpost = (id) =>
+    new Promise((resolve, reject) => {
+      dispatch(addPost(id)).then(() => {
+        dispatch(getallPost());
+      });
+      resolve();
+    });
+
+  const addsound = (id) =>
+    new Promise((resolve, reject) => {
+      dispatch(postsound(id));
+      resolve();
+    });
+
   const handleCancel = () => {
     setRecord(false);
     setTempFile(null);
     setOpen(false);
+  };
+
+  const download = () => {
+    if (tempFile) {
+      const url = tempFile.blobURL;
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "rzqr.mp3");
+      document.body.appendChild(link);
+      link.click();
+    }
   };
 
   const startRecording = () => {
@@ -225,6 +248,13 @@ export default function Microphone(props) {
               <IconButton onClick={done}>
                 <DoneIcon
                   style={tempFile && !record ? { color: green[500] } : {}}
+                  className={classes.icon}
+                />
+              </IconButton>
+
+              <IconButton onClick={download}>
+                <DownloadIcon
+                  style={tempFile && !record ? { color: blue[500] } : {}}
                   className={classes.icon}
                 />
               </IconButton>

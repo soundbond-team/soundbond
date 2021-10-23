@@ -10,7 +10,8 @@ import StopIcon from "@material-ui/icons/Stop";
 
 import PauseIcon from "@material-ui/icons/Pause";
 import Grid from "@material-ui/core/Grid";
-
+import DownloadIcon from "@mui/icons-material/Download";
+import { blue } from "@material-ui/core/colors";
 const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 600,
@@ -106,6 +107,17 @@ export default function AudioPlayer(props) {
     );
   }
 
+  const download = () => {
+    if (props.file) {
+      const url = props.file.blobURL;
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "rzqr.mp3");
+      document.body.appendChild(link);
+      link.click();
+    }
+  };
+
   return (
     <>
       <Grid item id={wavesurferId} />
@@ -115,12 +127,17 @@ export default function AudioPlayer(props) {
           <IconButton onClick={stopPlayback}>
             <StopIcon className={classes.icon} />
           </IconButton>
-          {props.position.lat != null && props.position.lng != null && (
-            <p>
-              {"  Latitude: " + props.position.lat}{" "}
-              {" / Longitude: " + props.position.lng}{" "}
-            </p>
-          )}
+          <IconButton onClick={download}>
+            <DownloadIcon
+              style={props.file ? { color: blue[500] } : {}}
+              className={classes.icon}
+            />
+          </IconButton>
+
+          <p>
+            {"  Latitude: " + props.latitude}{" "}
+            {" / Longitude: " + props.longitude}{" "}
+          </p>
         </Grid>
       </Grid>
     </>

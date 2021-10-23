@@ -57,15 +57,10 @@ function Post(props) {
   }));
   const classes = useStyles();
   const pushLike = async () => {
-    if (like == null) {
-      setLike(1);
-    } else {
-      let p = like + 1;
-      setLike(p);
-    }
-    if (props.id != null) {
-      await dispatch(addLike({ id: props.id, like: like + 1 }));
-    }
+    let p = like + 1;
+    setLike(p);
+
+    dispatch(addLike({ id: props.id_post, like: like + 1 }));
   };
   return (
     <>
@@ -77,18 +72,24 @@ function Post(props) {
               <ListItemAvatar>
                 <Avatar className={classes.avatar} src={faces[4]} />
               </ListItemAvatar>
-              <ListItemText primary="Moha" secondary="@Moha · 11h ago" />
+              <ListItemText primary=" Moha" secondary="@Moha · 11h ago" />
             </ListItem>
           </List>
         </Grid>
 
-        <AudioPlayer file={props.file} position={props.position} />
+        {
+          <AudioPlayer
+            file={null}
+            id_son={props.id_position_son}
+            latitude={props.latitude}
+            longitude={props.longitude}
+          />
+        }
 
         <Grid item container justifyContent="flex-end">
-          <IconButton>
-            <p>{like}</p>
+          <IconButton onClick={pushLike}>
+            <span style={{ margin: "2px 5px" }}>{like} </span>
             <ThumbUpIcon
-              onClick={pushLike}
               style={{ color: blue[500] }}
               className={classes.icon}
             />

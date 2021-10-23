@@ -1,22 +1,31 @@
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
 const Sequelize = require("sequelize");
 const db = {};
+
+
+/***%%%*** Configuration de la connexion ***%%%***/
 
 // Récupération de la configuration confidentielle.
 require("dotenv").config();
 
+// Instanciation d'une connexion.
 const sequelize = new Sequelize(
   process.env.DATABASE,
   process.env.USERNAME,
   process.env.PASSWORD,
   {
     host: process.env.HOST,
-    dialect: "mysql",
+    dialect: "mssql",
+    port: process.env.PORT,
+    dialectOptions: {
+      encrypt: true
+    }
   }
 );
+
+
+/***%%%*** Récupération de chaque modèles dans db pour une utilisation dans les autres modules ***%%%***/
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
@@ -26,11 +35,14 @@ db.SoundLocation = require("./soundlocation")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
 db.Post = require("./post")(sequelize, Sequelize);
 
+
+/***%%%*** Déclaration des clés étrangères ***%%%***/
+
 // Chaque Sound possède des attributs de localisation.
-db.SoundLocation.belongsTo(db.Sound, {
-  through: "sound_soundlocation",
-  as: "sound",
-  foreignKey: "sound_id",
+db.Sound.belongsTo(db.SoundLocation, {
+  through: "sound",
+  as: "soundlocation",
+  foreignKey: "soundlocation_id",
 });
 
 // Chaque Sound est téléversé par un User
@@ -75,5 +87,8 @@ db.User.belongsToMany(db.Post, {
   as: "liked_posts",
   foreignKey: "post_id",
 });
+
+
+/***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/
 
 module.exports = db;

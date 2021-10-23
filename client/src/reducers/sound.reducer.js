@@ -1,8 +1,8 @@
 import { POST_SOUND } from "../actions/sound.actions";
-
+//Ce reducer sert a stocké le dernier son posté
 const intialState = [];
 
-export default function soundlocationReducer(state = intialState, action) {
+export default function soundReducer(state = intialState, action) {
   switch (action.type) {
     case POST_SOUND:
       return action.payload;

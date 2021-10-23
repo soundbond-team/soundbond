@@ -51,6 +51,7 @@ const Map = ({ soundlocationdata }) => {
         },
       });
     });
+    console.log(geojson);
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/streets-v11",
@@ -99,7 +100,7 @@ const Map = ({ soundlocationdata }) => {
 
   return (
     <>
-      <div class="container-fluid">
+      <div className="container-fluid">
         <div className="sidebarStyle">
           <div>
             Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}

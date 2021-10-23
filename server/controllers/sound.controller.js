@@ -1,5 +1,6 @@
 const db = require("../models");
 const Sound = db.Sound;
+const SoundLocation = db.SoundLocation;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Sound
@@ -15,6 +16,7 @@ exports.create = (req, res) => {
     duration: req.body.duration,
     uploader_user_id: req.body.uploader_user_id,
     codec: req.body.codec,
+    soundlocation_id: req.body.soundlocation_id,
   };
   console.log(sound);
   // Save Sound in the database
@@ -34,7 +36,15 @@ exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
-  Sound.findAll({ where: condition })
+  Sound.findAll({
+    include: [
+      {
+        model: SoundLocation,
+        as: "soundlocation",
+        where: { id: db.Sequelize.col("Sound.soundlocation_id") },
+      },
+    ],
+  })
     .then((data) => {
       res.send(data);
     })
