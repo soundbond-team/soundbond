@@ -9,7 +9,7 @@ function NavigationBar() {
     <>
       <Navbar bg="light" expand="lg">
         <Navbar.Brand>
-          <NavLink style={{ textDecoration: "none" }} exact to="/">
+          <NavLink style={{ textDecoration: "none" }} exact to="/" id="sel-button">
             Soundbond
           </NavLink>
         </Navbar.Brand>

@@ -14,12 +14,9 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(thunk, logger))
 );
 
-
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-    <button id="sel-button">Cliquez-moi !</button>
       <App />
     </Provider>
   </React.StrictMode>,

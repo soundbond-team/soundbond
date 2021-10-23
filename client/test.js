@@ -1,24 +1,14 @@
-/*var webdriver = require('selenium-webdriver');
-function test(){
-  var driver = new webdriver.Builder().forBrowser('chrome').build();
-  driver.get('http://localhost:3000/').then(function(){
-    driver.findElement(webdriver.By.linkText('Automation')).click().then(function(){
-      driver.getTitle().then(function(title){
-      setTimeout(function(){
-        driver.quit();
-      }, 5000);
-    });
-  });
-});
-}
-test();*/
 
 /**
  * Dependency Modules
  */
- var assert = require("assert").strict;
- var webdriver = require("selenium-webdriver");
- require("geckodriver");
+var assert = require("assert").strict;
+var webdriver = require("selenium-webdriver");
+
+const chrome = require('selenium-webdriver/chrome');
+const chromedriver = require('chromedriver');
+
+chrome.setDefaultService(new chrome.ServiceBuilder(chromedriver.path).build());
  
   // Application Server
  const serverUri = "http://localhost:3000/";
@@ -27,7 +17,7 @@ test();*/
   * Config pour le navigateur Chrome 
   * @type {webdriver}
   */
- var browser = new webdriver.Builder()
+ var browserC = new webdriver.Builder()
  .usingServer()
  .withCapabilities({ browserName: "chrome" })
  .build();
@@ -36,43 +26,57 @@ test();*/
   * Config pour le navigateur Firefox (Commentez la configuration Chrome lorsque vous avez l'intention de tester dans Firefox) 
   * @type {webdriver}
   */
- /*
- var browser = new webdriver.Builder()
+ 
+ var browserF = new webdriver.Builder()
   .usingServer()
   .withCapabilities({ browserName: "firefox" })
   .build();
-  */
+  
+  
  /**
   * Fonction pour obtenir le titre et le résoudre c'est promis
   * @return {[type]} [description]
   */
-  function logTitle() {
+  function logTitleC() {
      return new Promise((resolve, reject) => {
-      browser.getTitle().then(function(title) {
+      browserC.getTitle().then(function(title) {
        resolve(title);
       });
      });
     }
+
+    function logTitleF() {
+      return new Promise((resolve, reject) => {
+       browserF.getTitle().then(function(title) {
+        resolve(title);
+       });
+      });
+     }
     /**
   *  Exemple de cas de test mocha 
-  * Pour vérifier si la valeur donnée est présente dans le tableau. 
   */
- describe("Array", function() {
-   describe("#indexOf()", function() {
-     it("should return -1 when the value is not present", function() {
-      assert.equal([1, 2, 3].indexOf(4), -1);
-     });
-   });
- });
  describe("Home Page", function() {
    /**
     * Scénario de test pour charger notre application et vérifier le titre. 
     */
-   it("Charger la page d'accueil et obtenir le titre", function() {
+   it("Doit charger la page d'accueil et obtenir le titre avec chrome", function() {
     return new Promise((resolve, reject) => {
-     browser
+     browserC
       .get(serverUri)
-      .then(logTitle)
+      .then(logTitleC)
+      .then(title => {
+       assert.strictEqual(title, appTitle);
+       resolve();
+      })
+      .catch(err => reject(err));
+    });
+   });
+
+  it("Doit charger la page d'accueil et obtenir le titre avec firefox", function() {
+    return new Promise((resolve, reject) => {
+     browserF
+      .get(serverUri)
+      .then(logTitleF)
       .then(title => {
        assert.strictEqual(title, appTitle);
        resolve();
@@ -83,18 +87,33 @@ test();*/
    /**
  * Scénario de test pour vérifier si l'élément donné est chargé avec le bouton 
  */
- it("vérifier si l'élément donné est chargé", function() {
+ it("Doit vérifier si l'item (soundbond) est chargé avec chrome", function() {
    return new Promise((resolve, reject) => {
-    browser
+    browserC
      .findElement({ id: "sel-button" })
      .then(elem => resolve())
      .catch(err => reject(err));
    });
  });
+
+ it("Doit vérifier si l'item (soundbond) est chargé avec firefoxe", function() {
+  return new Promise((resolve, reject) => {
+   browserF
+    .findElement({ id: "sel-button" })
+    .then(elem => resolve())
+    .catch(err => reject(err));
+  });
+});
  /**
  * Fin d'utilisation des cas de test. 
  * Fermez le navigateur et quittez. 
  */
+
+ after(function() {
+  // End of test use this.
+  browserC.quit();
+  browserF.quit();
+ });
  
  });
  
