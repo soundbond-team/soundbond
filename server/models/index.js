@@ -17,7 +17,7 @@ const initiateConnection = () => {
     process.env.PASSWORD,
     {
       host: process.env.HOST,
-      dialect: "mssql",
+      dialect: process.env.DIALECT,
       storage: process.env.STORAGE,
       port: process.env.PORT,
       dialectOptions: {
