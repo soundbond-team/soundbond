@@ -3,7 +3,6 @@
 const Sequelize = require("sequelize");
 const db = {};
 
-
 /***%%%*** Configuration de la connexion ***%%%***/
 
 // Récupération de la configuration confidentielle.
@@ -16,14 +15,14 @@ const sequelize = new Sequelize(
   process.env.PASSWORD,
   {
     host: process.env.HOST,
-    dialect: "mssql",
+    dialect: "sqlite",
+    storage: "database.sqlite",
     port: process.env.PORT,
     dialectOptions: {
-      encrypt: true
-    }
+      encrypt: true,
+    },
   }
 );
-
 
 /***%%%*** Récupération de chaque modèles dans db pour une utilisation dans les autres modules ***%%%***/
 
@@ -34,7 +33,6 @@ db.Sound = require("./sound")(sequelize, Sequelize);
 db.SoundLocation = require("./soundlocation")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
 db.Post = require("./post")(sequelize, Sequelize);
-
 
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 
@@ -87,7 +85,6 @@ db.User.belongsToMany(db.Post, {
   as: "liked_posts",
   foreignKey: "post_id",
 });
-
 
 /***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/
 
