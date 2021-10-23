@@ -1,6 +1,7 @@
 # SoundBond
 
 [![Build Status](https://app.travis-ci.com/gu1lhem/soundbond.svg?token=7WD7QLSzFYsXRujYsxQ5&branch=develop)](https://app.travis-ci.com/gu1lhem/soundbond)
+[![Build](https://github.com/gu1lhem/soundbond/actions/workflows/ci.yml/badge.svg)](https://github.com/gu1lhem/soundbond/actions/workflows/ci.yml)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/gu1lhem/soundbond)
 ![GitHub repo size](https://img.shields.io/github/repo-size/gu1lhem/soundbond)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=coverage)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
@@ -15,7 +16,7 @@ __SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le 
 
 ### Intégration continue
 
-Pour notre intégration continue, nous utilisons [Travis CI](https://travis-ci.org/) connecté à GitHub. Les tests sont effectés au moins avant chaque _release_ (lors de _commits_ et _merge_ sur les branches _main_ et _develop_) 
+Pour notre intégration continue, nous utilisons [GitHub Actions](https://fr.github.com/features/actions). Les tests sont effectés au moins avant chaque _release_ (lors de _commits_ et _merge_ sur les branches _main_ et _develop_) 
 
 ### Kanban client
 
@@ -71,7 +72,7 @@ Installez les packets NPM de /client et /server :
 cd client
 yarn install
 cd ../server
-npm ci
+yarn install
 ```
 
 ### Installer les variables confidentielles
