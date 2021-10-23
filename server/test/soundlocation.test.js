@@ -85,81 +85,62 @@ describe("Test soundlocalisationService", () => {
 
 describe("Test routes", () => {
   describe("GET /api/v1/soundlocation", () => {
-    it("/GET All SoundLocations -> 200 status", function (done) {
+    it("Successfully GET an empty array of 0 SoundLocation", function (done) {
       chai
         .request(app)
         .get("/api/v1/soundlocation")
         .end(function (err, res) {
           expect(res).to.have.status(200);
+          expect(res.body).to.be.a("array");
+          expect(res.body.length).to.be.eql(0);
           done();
         });
     });
-    it("/GET First SoundLocation -> 200 status", function (done) {
-      chai
-        .request(app)
-        .get("/api/v1/soundlocation/1")
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
-          done();
+    it("Successfully GET an array of 1 SoundLocation", function () {
+      //not ok
+      SoundLocation.truncate({}, (err) => {
+        let s = { title: "" };
+
+        let sound = Sound.build(s);
+        const sound_in_batiment_g = SoundLocation.build({
+          latitude: 48.902757,
+          longitude: 2.215944,
+          sound_id: sound.id,
+          //Bâtiment G
         });
+        sound_in_batiment_g.save({}, (done) => {
+          chai
+            .request(app)
+            .get("/api/v1/soundlocation")
+            .end(function (res) {
+              expect(res).to.have.status(200);
+              expect(res.body).to.be.a("array");
+              expect(res.body.length).to.be.eql(1);
+              done();
+            });
+        });
+      });
     });
   });
+
   describe("POST /api/v1/soundlocation", () => {
-    it("/GET All SoundLocations -> 200 status", function (done) {
+    it("Successfully POST 1 SoundLocation with all parameters specified", function (done) {
+      const pLatitude = 48.902757;
+      const pLongitude = 2.215944;
+
       chai
         .request(app)
-        .get("/api/v1/soundlocation")
-        .end(function (err, res) {
+        .post("/api/v1/soundlocation")
+        .send({
+          latitude: pLatitude,
+          longitude: pLongitude,
+        })
+        .end(function (res) {
+          console.log(res);
           expect(res).to.have.status(200);
-          done();
-        });
-    });
-    it("/GET First SoundLocation -> 200 status", function (done) {
-      chai
-        .request(app)
-        .get("/api/v1/soundlocation/1")
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
-          done();
-        });
-    });
-  });
-  describe("PUT /api/v1/soundlocation", () => {
-    it("/GET All SoundLocations -> 200 status", function (done) {
-      chai
-        .request(app)
-        .get("/api/v1/soundlocation")
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
-          done();
-        });
-    });
-    it("/GET First SoundLocation -> 200 status", function (done) {
-      chai
-        .request(app)
-        .get("/api/v1/soundlocation/1")
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
-          done();
-        });
-    });
-  });
-  describe("DELETE /api/v1/soundlocation", () => {
-    it("/GET All SoundLocations -> 200 status", function (done) {
-      chai
-        .request(app)
-        .get("/api/v1/soundlocation")
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
-          done();
-        });
-    });
-    it("/GET First SoundLocation -> 200 status", function (done) {
-      chai
-        .request(app)
-        .get("/api/v1/soundlocation/1")
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
+          const { latitude, longitude } = res.body;
+          chai.assert.equal(latitude, pLatitude);
+          chai.assert.equal(longitude, pLongitude);
           done();
         });
     });
