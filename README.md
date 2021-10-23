@@ -1,6 +1,5 @@
 # SoundBond
 
-[![Build Status](https://app.travis-ci.com/gu1lhem/soundbond.svg?token=7WD7QLSzFYsXRujYsxQ5&branch=develop)](https://app.travis-ci.com/gu1lhem/soundbond)
 [![Build](https://github.com/gu1lhem/soundbond/actions/workflows/ci.yml/badge.svg)](https://github.com/gu1lhem/soundbond/actions/workflows/ci.yml)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/gu1lhem/soundbond)
 ![GitHub repo size](https://img.shields.io/github/repo-size/gu1lhem/soundbond)
@@ -10,13 +9,14 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=security_rating)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=gu1lhem_soundbond&metric=sqale_index)](https://sonarcloud.io/dashboard?id=gu1lhem_soundbond)
+
 ## A propos
 
 __SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le comme un Instagram des sons. Tous droits réservés.
 
 ### Intégration continue
 
-Pour notre intégration continue, nous utilisons [GitHub Actions](https://fr.github.com/features/actions). Les tests sont effectés au moins avant chaque _release_ (lors de _commits_ et _merge_ sur les branches _main_ et _develop_) 
+Pour notre intégration continue, nous utilisons [GitHub Actions](https://fr.github.com/features/actions). Les tests sont effectés au moins avant chaque _release_ (lors de _commits_ et _merge_ sur les branches _main_ et _develop_).
 
 ### Kanban client
 
@@ -54,7 +54,6 @@ sudo npm install -g nodemon
 ```
 
 Pour installer MySQL sur Windows, rendez-vous [ici](https://openclassrooms.com/fr/courses/1959476-administrez-vos-bases-de-donnees-avec-mysql/1959969-installez-mysql). Sur Linux, exécutez simplement `sudo apt install mysql-server`.
-
 
 * Installez `yarn` :
 
