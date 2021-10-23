@@ -1,0 +1,54 @@
+name: Build
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  CI:
+    name: CI SB
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: 16
+      - name: Installation
+        run: yarn install
+      - name: Client installation
+        run: |
+          cd client 
+          yarn install
+      - name: Server installation
+        run: |
+          cd server
+          yarn install
+      - name: Cache
+        uses: actions/cache@v2.1.6
+        env:
+          cache-name: cache-node-modules
+        with:
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            client/node_modules
+            server/node_modules
+      - name: Build
+        run: |
+          cd client
+          yarn run build
+      - name: Tests
+        run: |
+          cd server
+          yarn run coverage
+          rm -r coverage/sonar.xml
+          rm -r coverage/lcov-report
+          rm -r .nyc_output
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
