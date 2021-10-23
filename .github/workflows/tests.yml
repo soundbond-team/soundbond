@@ -1,23 +1,27 @@
-name: Build & Deploy
-
+name: Test
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
   CI:
-    name: CI-CD SB
+    name: CI SB
     runs-on: ubuntu-latest
-    
+
     # The environment this job references. We now use this for our environment variables.
     environment:
-      name: Development
+      name: Test
 
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis.
 
       - name: Writing .env config file
         run: echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nDIALECT = "${{ secrets.DB_DIALECT }}"\STORAGE = "${{ secrets.DB_STORAGE }}"\n" >> .env
@@ -38,20 +42,17 @@ jobs:
           cd server
           yarn install
 
-      - name: Cache
-        uses: actions/cache@v2.1.6
-        env:
-          cache-name: cache-node-modules
-        with:
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          path: |
-            client/node_modules
-            server/node_modules
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - name: Generate docs
-        run: |
-          yarn run asciidoc
-          rm docs/asciidoc/sb.html
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Build
         run: |
@@ -65,21 +66,5 @@ jobs:
           rm -r coverage/sonar.xml
           rm -r coverage/lcov-report
           rm -r .nyc_output
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Version
-        run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
-        id: version
-
-      - name: Release
-        uses: ncipollo/release-action@v1
-        id: create_release
-        with:
-          artifacts: docs/asciidoc/sb.pdf
-          bodyFile: CHANGELOG.md
-          token: ${{ secrets.GITHUB_TOKEN }}
+          CI: true
