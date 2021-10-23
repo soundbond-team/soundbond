@@ -25,8 +25,8 @@ jobs:
           # Shallow clones should be disabled for a better relevancy of analysis.
           # But we choose only 1 commit because it is way enough
 
-      - name: Writing .env config file
-        run: echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nDIALECT = mssql\nSTORAGE = "${{ secrets.DB_STORAGE }}"\n" >> .env
+      - name: Writing .env config file for Development
+        run: echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\n" >> .env
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
@@ -60,6 +60,9 @@ jobs:
         run: |
           cd client
           yarn run build
+
+      - name: Writing .env config file for Tests
+        run: echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nENV=tests" >> .env
 
       - name: Tests
         run: |
