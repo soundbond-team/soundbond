@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha -R @danmasta/mocha-sonar --exit",
-    "coverage": "nyc --reporter=lcov npm run test",
+    "coverage": "nyc --reporter=lcov yarn run test",
     "start": "nodemon server.js"
   },
   "repository": {
