@@ -15,8 +15,8 @@ app.use(express.json());
 require("./routes/sound.routes")(app);
 require("./routes/soundlocation.routes")(app);
 require("./routes/post.routes")(app);
-const userRoute= require("./routes/User.routes");
-app.use('/user',userRoute);
+require("./routes/User.routes")(app);
+
 
 
 

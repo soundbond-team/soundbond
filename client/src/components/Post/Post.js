@@ -19,6 +19,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import { makeStyles } from "@material-ui/styles";
 import { addLike } from "../../actions/post.actions";
+
+
 function Post(props) {
   const faces = [];
   const [like, setLike] = useState(props.like);

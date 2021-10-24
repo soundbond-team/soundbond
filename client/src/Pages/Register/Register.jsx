@@ -1,7 +1,7 @@
 import React, {useState } from "react";
 import Axios from "axios";
 import "./register.css";
-
+import {useHistory} from 'react-router-dom';
 
 export default function Registration() {
   const [usernameReg, setUsernameReg] = useState("");
@@ -9,6 +9,7 @@ export default function Registration() {
 
   
   Axios.defaults.withCredentials = true;
+  let history = useHistory();
 
   const register = () => {
     console.log(usernameReg);
@@ -18,6 +19,8 @@ export default function Registration() {
     }).then((response) => {
       console.log(response);
     });
+    history.push("/login");
+
   };
 
 

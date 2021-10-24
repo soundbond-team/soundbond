@@ -5,20 +5,24 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import home from "../../Pages/Home/Home";
+import Home from "../../Pages/Home";
 //import MapPage from "../../pages/MapPage";
 import Registration from "../../Pages/Register/Register";
 import Login from "../../Pages/Login/Login";
 import Nav from "../Navbar/Navbar";
+import MapPage from "../../Pages/MapPage";
 //le routing ne sert a rien tant quil nya pas une persistance pour tt les elements ( post )
 const routes = () => {
   return (
     <Router>
       <Nav />
       <Switch>
-        <Route path="/" exact component={home} />
+        <Route path="/home" exact component={Home} />
         <Route path="/register" exact component={Registration} />
         <Route path="/login" exact component={Login} />
+        <Route path="/map" exact component={MapPage} />
+
+
 
         <Redirect to="/" />
       </Switch>

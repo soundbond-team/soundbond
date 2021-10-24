@@ -25,7 +25,7 @@ function Login (){
                 localStorage.setItem("loggedIn",true);
                 localStorage.setItem("username", response.data.username);
                 console.log("connected");
-                history.push("/Profil");
+                history.push("/home");
 
             }
             else{

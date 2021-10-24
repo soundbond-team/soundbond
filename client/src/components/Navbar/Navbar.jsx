@@ -26,7 +26,7 @@ function Navbar() {
             <div className ="NavbarRight">
                 
 
-                {loggedIn ? 
+                {!loggedIn ? 
                 
                 <>
 
