@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { AppRegistry, Text, TextInput, View } from 'react-native';
+import { TextInput } from 'react-native';
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
 
