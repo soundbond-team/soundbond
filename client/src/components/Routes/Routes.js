@@ -5,7 +5,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import home from "../../Pages/home";
+import home from "../../Pages/Home/Home";
 //import MapPage from "../../pages/MapPage";
 import Registration from "../../Pages/Register/Register";
 import Login from "../../Pages/Login/Login";

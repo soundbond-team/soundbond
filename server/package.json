@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha -R @danmasta/mocha-sonar --exit",
-    "coverage": "nyc --reporter=lcov npm run test",
+    "coverage": "nyc --reporter=lcov yarn run test",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -24,7 +24,8 @@
     "express": "^4.17.1",
     "mocha": "^9.1.2",
     "nodemon": "^2.0.12",
-    "tedious": "^14.0.0"
+    "sqlite3": "^5.0.2",
+    "tedious": "^13.1.0"
   },
   "devDependencies": {
     "@danmasta/mocha-sonar": "^1.0.1",

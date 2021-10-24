@@ -1,6 +1,8 @@
 import React ,{useState}from "react";
-import Axios from "axios";
 import "./login.css";
+import Axios from "axios";
+
+
 import {useHistory} from 'react-router-dom';
 
 function Login (){
@@ -10,9 +12,10 @@ function Login (){
     
     Axios.defaults.withCredentials = true;
     const[errorMessage,setErrorMessage] = useState(""); 
-    let history = useHistory()
+    let history = useHistory();
 
     const login = () =>{
+        //console.log(usernamelog);
         Axios.post("http://localhost:8080/user/login", {
         username: usernamelog,
         password: passwordlog,
@@ -21,29 +24,34 @@ function Login (){
             if(response.data.loggedIn){
                 localStorage.setItem("loggedIn",true);
                 localStorage.setItem("username", response.data.username);
-                history.push("/Profil")
+                console.log("connected");
+                history.push("/Profil");
 
-            }else{
+            }
+            else{
                 setErrorMessage(response.data.message);
             }
         });
-    }
+    };
     
     
     return (
-        <div classname="Login">
+        <div className="Login">
             <h1>Login</h1>
             <div className="LoginForm">
-                <input type="text"
-                placeholder="username..." 
-                onChange={(e) => {
-                    setUsernamelog(e.target.value);
-                  }}/>
-                <input type="password"
-                placeholder="password..." 
-                onChange={(e) => {
-                    setPasswordlog(e.target.value);
-                  }}/>
+                <input 
+                    type="text"
+                    placeholder="username..." 
+                    onChange={(e) => {
+                        setUsernamelog(e.target.value);
+                }}/>
+                <input 
+                    type="password"
+                    placeholder="password..." 
+                    onChange={(e) => {
+                        setPasswordlog(e.target.value);
+                
+                }}/>
                 <button onClick={login}>Login</button>
                 <h1 style={{color : "red"}}>{errorMessage}</h1>
             </div>   

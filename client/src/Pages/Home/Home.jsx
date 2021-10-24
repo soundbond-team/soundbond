@@ -16,8 +16,7 @@ function Home (){
         <>
             
                 <div className="homeContainer">
-                    <Feed/>
-                    <Rightbar/>
+                    
 
                     
                 </div>
