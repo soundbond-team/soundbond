@@ -85,6 +85,13 @@ describe("Test soundlocalisationService", () => {
 
 describe("Test routes", () => {
   describe("GET /api/v1/soundlocation", () => {
+    beforeEach(async () => {
+      await SoundLocation.truncate({ cascade: true });
+    });
+    after(async () => {
+      await SoundLocation.truncate({ cascade: true });
+    });
+
     it("Successfully GET an empty array of 0 SoundLocation", function (done) {
       chai
         .request(app)
@@ -97,50 +104,68 @@ describe("Test routes", () => {
         });
     });
     it("Successfully GET an array of 1 SoundLocation", function () {
-      //not ok
-      SoundLocation.truncate({}, (err) => {
-        let s = { title: "" };
+      const sl = {
+        latitude: 48.902757,
+        longitude: 2.215944,
+      };
+      SoundLocation.create(sl);
 
-        let sound = Sound.build(s);
-        const sound_in_batiment_g = SoundLocation.build({
-          latitude: 48.902757,
-          longitude: 2.215944,
-          sound_id: sound.id,
-          //Bâtiment G
+      chai
+        .request(app)
+        .get("/api/v1/soundlocation")
+        .end(function (res) {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.a("array");
+          expect(res.body.length).to.be.eql(1);
+          done();
         });
-        sound_in_batiment_g.save({}, (done) => {
-          chai
-            .request(app)
-            .get("/api/v1/soundlocation")
-            .end(function (res) {
-              expect(res).to.have.status(200);
-              expect(res.body).to.be.a("array");
-              expect(res.body.length).to.be.eql(1);
-              done();
-            });
-        });
-      });
     });
   });
 
+  // voir les actions POST de SoundLocation - not ok
   describe("POST /api/v1/soundlocation", () => {
     it("Successfully POST 1 SoundLocation with all parameters specified", function (done) {
-      const pLatitude = 48.902757;
-      const pLongitude = 2.215944;
+      const sl = {
+        latitude: 48.902757,
+        longitude: 2.215944,
+      };
 
       chai
         .request(app)
         .post("/api/v1/soundlocation")
         .send({
-          latitude: pLatitude,
-          longitude: pLongitude,
+          latitude: sl.latitude,
+          longitude: sl.longitude,
         })
         .end(function (res) {
-          console.log(res);
           expect(res).to.have.status(200);
           const { latitude, longitude } = res.body;
-          chai.assert.equal(latitude, pLatitude);
-          chai.assert.equal(longitude, pLongitude);
+          chai.assert.equal(latitude, sl.latitude);
+          chai.assert.equal(longitude, sl.longitude);
+          done();
+        });
+    });
+  });
+
+  describe("DELETE /api/v1/soundlocation/:id", () => {
+    //not ok
+    it("Successfully DELETE 1 SoundLocation", async () => {
+      const sl = {
+        latitude: 48.902757,
+        longitude: 2.215944,
+      };
+      const sl1 = await SoundLocation.create(sl);
+
+      const { id } = sl1;
+      chai.assert.isNotNull(id);
+
+      chai
+        .request(app)
+        .delete(`/api/v1/soundlocation/${id}`)
+        .end(async (err, res, done) => {
+          //res.should.have.status(200);
+          let find = await SoundLocation.findByPk(id);
+          chai.assert.isNull(find);
           done();
         });
     });
