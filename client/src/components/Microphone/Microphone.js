@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-
+import { AppRegistry, Text, TextInput, View } from 'react-native';
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
 
@@ -52,10 +52,10 @@ export default function Microphone(props) {
   const lastsoundlocation = useSelector(
     (state) => state.onesoundlocationReducer
   );
+  const [description, setDescription] = useState(''); // Utilisé pour stocker le description.
   const [record, setRecord] = useState(false);
   const [open, setOpen] = useState(false);
   const [tempFile, setTempFile] = useState(null);
-
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurfer = useRef(null);
 
@@ -86,7 +86,6 @@ export default function Microphone(props) {
   }, [open, tempFile]);
 
   useEffect(() => {
-    console.log("tempFile", tempFile);
     if (tempFile) {
       wavesurfer.current.load(tempFile.blobURL);
     }
@@ -137,17 +136,17 @@ export default function Microphone(props) {
 
   useEffect(() => {
     if (tempFile) {
-      addpost(sound.id);
+      addpost(sound.id, description);
       setTempFile(null);
       setOpen(false);
       setRecord(false);
     }
   }, [sound]);
 
-  const addpost = (id) =>
+  const addpost = (sound_id, _description) =>
   // Poster un Post puis recupérer tous les Posts.
     new Promise((resolve, reject) => {
-      dispatch(post_post(id)).then(() => {
+      dispatch(post_post(sound_id, _description)).then(() => {
         dispatch(getallPost());
       });
       resolve();
@@ -212,6 +211,15 @@ export default function Microphone(props) {
             />
           )}
         </DialogContent>
+
+        <TextInput
+          multiline = {true}
+          style={{height: 40,backgroundColor: 'azure', fontSize: 20}}  
+          placeholder="Description"  
+          onChangeText={description => setDescription(description)}
+          defaultValue={description}
+        />  
+
         <DialogActions>
           <Grid container>
             {tempFile && (

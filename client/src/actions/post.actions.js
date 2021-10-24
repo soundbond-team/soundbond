@@ -8,13 +8,13 @@ export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
 
 // Permet d'ajouter un post en BD
-export const post_post = (sound_id) => {
+export const post_post = (sound_id, description) => {
   return (dispatch) => {
     return axios({
       method: "post",
       url: `http://localhost:8080/api/v1/post/`,
       data: {
-        description: "description",
+        description: description,
         publisher_user_id: 1, //TODO
         sound_id: sound_id,
       },
