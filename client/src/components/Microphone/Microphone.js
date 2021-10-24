@@ -120,10 +120,9 @@ export default function Microphone(props) {
   };
   useEffect(() => {
     if (tempFile) {
-      //  props.pushFile(tempFile);
       addsound(tempFile, lastsoundlocation.id);
     }
-  }, [lastsoundlocation]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [lastsoundlocation]);
 
   const addsound = (tempfile_object, soundlocation_id) =>
   /* Poster un Sound.
@@ -138,13 +137,12 @@ export default function Microphone(props) {
 
   useEffect(() => {
     if (tempFile) {
-      //  props.pushFile(tempFile);
       addpost(sound.id);
       setTempFile(null);
       setOpen(false);
       setRecord(false);
     }
-  }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [sound]);
 
   const addpost = (id) =>
   // Poster un Post puis recupérer tous les Posts.
@@ -198,8 +196,8 @@ export default function Microphone(props) {
       </IconButton>
 
       <Dialog maxWidth="sm" open={open} onClose={handleCancel}>
-        <DialogTitle className={classes.flex}>Record</DialogTitle>
-        <DialogContent>
+        <DialogTitle className={classes.flex}>Enregistrer un son</DialogTitle>
+        <DialogContent> {/* Zone d'affichage  */}
           {tempFile ? (
             <div className={classes.wavesurfer} id="wavesurfer-id" />
           ) : (
