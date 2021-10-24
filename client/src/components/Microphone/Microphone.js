@@ -21,10 +21,14 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import { green, red, blue } from "@material-ui/core/colors";
 import { useDispatch, useSelector } from "react-redux";
+
+
+import { post_soundlocation } from "../../actions/soundlocation.actions";
+import { post_sound } from "../../actions/sound.actions";
+import { post_post, getallPost } from "../../actions/post.actions";
+
 import "./Microphone.css";
-import { postsoundlocation } from "../../actions/onesoundlocation.actions";
-import { postsound } from "../../actions/sound.actions";
-import { addPost, getallPost } from "../../actions/post.actions";
+
 const useStyles = makeStyles((theme) => ({
   icon: {
     height: 38,
@@ -49,8 +53,8 @@ export default function Microphone(props) {
     (state) => state.onesoundlocationReducer
   );
   const [record, setRecord] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [tempFile, setTempFile] = React.useState(null);
+  const [open, setOpen] = useState(false);
+  const [tempFile, setTempFile] = useState(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurfer = useRef(null);
@@ -101,10 +105,11 @@ export default function Microphone(props) {
     setOpen(true);
   };
   const done = () => {
+    /* Lorsqu'un son est enregistré et que l'on appuie sur le bouton coche, cette fonction est appelée. */
     if (tempFile) {
       navigator.geolocation.getCurrentPosition(function (positiongeo) {
         dispatch(
-          postsoundlocation({
+          post_soundlocation({
             lat: positiongeo.coords.latitude,
             lng: positiongeo.coords.longitude,
           })
@@ -115,34 +120,33 @@ export default function Microphone(props) {
   useEffect(() => {
     if (tempFile) {
       //  props.pushFile(tempFile);
-      console.log(lastsoundlocation.id + "fefe");
       addsound(lastsoundlocation.id);
     }
   }, [lastsoundlocation]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (tempFile) {
-      console.log("eeffefe test");
-      //  props.pushFile(tempFile);
-      addpost(sound.id);
-
-      setTempFile(null);
-      setOpen(false);
-
-      setRecord(false);
-    }
-  }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
-  const addpost = (id) =>
+  
+  const addsound = (id) =>
+  // Poster un Sound.
     new Promise((resolve, reject) => {
-      dispatch(addPost(id)).then(() => {
-        dispatch(getallPost());
-      });
+      dispatch(post_sound(id));
       resolve();
     });
 
-  const addsound = (id) =>
+  useEffect(() => {
+    if (tempFile) {
+      //  props.pushFile(tempFile);
+      addpost(sound.id);
+      setTempFile(null);
+      setOpen(false);
+      setRecord(false);
+    }
+  }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const addpost = (id) =>
+  // Poster un Post puis recupérer tous les Posts.
     new Promise((resolve, reject) => {
-      dispatch(postsound(id));
+      dispatch(post_post(id)).then(() => {
+        dispatch(getallPost());
+      });
       resolve();
     });
 

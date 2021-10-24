@@ -7,7 +7,7 @@ export const ADD_POST = "ADD_POST";
 export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
 //permet dajouter un post en BD
-export const addPost = (sound_id) => {
+export const post_post = (sound_id) => {
   return (dispatch) => {
     return axios({
       method: "post",

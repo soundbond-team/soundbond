@@ -2,7 +2,7 @@ import "../App.css";
 import React, { useEffect, useState } from "react";
 import Microphone from "../components/Microphone/Microphone";
 import { useDispatch, useSelector } from "react-redux";
-import { getsoundlocation } from "../actions/soundlocation.actions";
+import { get_soundlocation } from "../actions/soundlocation.actions";
 import Post from "../components/Post/Post";
 import Grid from "@material-ui/core/Grid";
 import Map from "../components/Map/Map";
@@ -20,17 +20,16 @@ function Home() {
 
   useEffect(() => {
     //Posts.shift(); // pour la map
-
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {
       let position = {
         lat: positiongeo.coords.latitude,
         lng: positiongeo.coords.longitude,
       };
-      dispatch(getsoundlocation(position));
-
+      dispatch(get_soundlocation(position));
       dispatch(getallPost());
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     pushPost(allposts);
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {
@@ -38,7 +37,7 @@ function Home() {
         lat: positiongeo.coords.latitude,
         lng: positiongeo.coords.longitude,
       };
-      dispatch(getsoundlocation(position));
+      dispatch(get_soundlocation(position));
     });
   }, [allposts]); // eslint-disable-line react-hooks/exhaustive-deps
 

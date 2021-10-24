@@ -1,4 +1,4 @@
-import { POST_SOUNDLOCATION } from "../actions/onesoundlocation.actions";
+import { POST_SOUNDLOCATION } from "../actions/soundlocation.actions";
 //Ce reducer sert a stocké la position du dernier son posté
 const intialState = [];
 

@@ -45,6 +45,7 @@ const Map = ({ soundlocationdata }) => {
         properties: {
           title: "Mapbox",
           description:
+            soundlocationdata[key] + " " + 
             soundlocationdata[key].latitude +
             "" +
             soundlocationdata[key].latitude,
