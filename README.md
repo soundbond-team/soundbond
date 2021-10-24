@@ -74,6 +74,8 @@ cd ../server
 yarn install
 ```
 
+Si vous rencontrez l'erreur `The engine "node" is incompatible with this module.`, ajoutez l'option `--ignore-engines` à `yarn install`.
+
 ### Installer les variables confidentielles
 
 Copiez le fichier .env.sample en un autre fichier .env.
