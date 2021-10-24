@@ -107,6 +107,7 @@ export default function Microphone(props) {
   const done = () => {
     /* Lorsqu'un son est enregistré et que l'on appuie sur le bouton coche, cette fonction est appelée. */
     if (tempFile) {
+      // Récupérer la géolocalisation
       navigator.geolocation.getCurrentPosition(function (positiongeo) {
         dispatch(
           post_soundlocation({
@@ -120,14 +121,18 @@ export default function Microphone(props) {
   useEffect(() => {
     if (tempFile) {
       //  props.pushFile(tempFile);
-      addsound(lastsoundlocation.id);
+      addsound(tempFile, lastsoundlocation.id);
     }
   }, [lastsoundlocation]); // eslint-disable-line react-hooks/exhaustive-deps
-  
-  const addsound = (id) =>
-  // Poster un Sound.
+
+  const addsound = (tempfile_object, soundlocation_id) =>
+  /* Poster un Sound.
+  Prend en argument :
+    - l'Objet avec les informations du fichier temporaire
+    - l'ID du SoundLocation correspondant.
+  */
     new Promise((resolve, reject) => {
-      dispatch(post_sound(id));
+      dispatch(post_sound(tempfile_object, soundlocation_id));
       resolve();
     });
 

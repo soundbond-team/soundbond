@@ -14,7 +14,6 @@ export const get_soundlocation = (location) => {
       params: { latitude: location.lat, longitude: location.lng },
     })
       .then((res) => {
-        console.log(res);
         dispatch({ type: GET_SOUNDLOCATION, payload: res.data });
       })
       .catch((err) => console.log(err));
@@ -23,7 +22,6 @@ export const get_soundlocation = (location) => {
 
 // Envoie et récupère les données du dernier SoundLocation posté
 export const post_soundlocation = (props) => {
-  console.log(props.lat + "/" + props.lng);
   return (dispatch) => {
     return axios({
       method: "post",
@@ -31,7 +29,6 @@ export const post_soundlocation = (props) => {
       data: { latitude: props.lat, longitude: props.lng },
     })
       .then((res) => {
-        console.log(res);
         dispatch({ type: POST_SOUNDLOCATION, payload: res.data });
       })
       .catch((err) => console.log(err));
