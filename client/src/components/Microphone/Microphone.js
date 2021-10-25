@@ -217,7 +217,7 @@ export default function Microphone(props) {
           style={{height: 40,backgroundColor: 'azure', fontSize: 20}}  
           placeholder="Description"  
           onChangeText={description => setDescription(description)}
-          defaultValue={description}
+          defaultValue={""}
         />  
 
         <DialogActions>
