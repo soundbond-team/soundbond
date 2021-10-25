@@ -212,10 +212,11 @@ export default function Microphone(props) {
           )}
         </DialogContent>
 
+        {/* Description  */}
         <TextInput
           multiline = {true}
-          style={{height: 40,backgroundColor: 'azure', fontSize: 20}}  
-          placeholder="Description"  
+          style={{height: 40,backgroundColor: 'azure', fontSize: 20}}
+          placeholder="Description"
           onChangeText={description => setDescription(description)}
           defaultValue={""}
         />  
