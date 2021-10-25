@@ -1,12 +1,12 @@
 import "../App.css";
 import React, { useEffect, useState } from "react";
-import Microphone from "../components/Microphone/Microphone";
+import Microphone from "../../components/Microphone/Microphone";
 import { useDispatch, useSelector } from "react-redux";
-import { getsoundlocation } from "../actions/soundlocation.actions";
-import Post from "../components/Post/Post";
+import { getsoundlocation } from "../../actions/soundlocation.actions";
+import Post from "../../components/Post/Post";
 import Grid from "@material-ui/core/Grid";
-import Map from "../components/Map/Map";
-import { getallPost } from "../actions/post.actions";
+import Map from "../../components/Map/Map";
+import { getallPost } from "../../actions/post.actions";
 
 function Home() {
   const [allpostdata, setPost] = useState([]);
@@ -31,11 +31,9 @@ function Home() {
 
       dispatch(getallPost());
     });
-    // eslint-disable-next-line
-  }, []);
-
-  // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); 
   
+  // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     pushPost(allposts);
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {
@@ -45,9 +43,9 @@ function Home() {
       };
       dispatch(getsoundlocation(position));
     });
-    // eslint-disable-next-line
   }, [allposts]);
-
+  
+  
   // eslint-disable-line react-hooks/exhaustive-deps
 
   const listItems = soundlocationdata.map((i) => (

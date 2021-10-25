@@ -6,10 +6,11 @@ import { Chat, Notifications, Person, Search } from "@material-ui/icons"
 function Navbar() {
 
     const [loggedIn,setLoggedIn] = useState(false);
+    const isLoggedIn = localStorage.getItem("loggedIn");
 
     useEffect(() => {
-        setLoggedIn(localStorage.getItem("loggedIn"))
-    },[localStorage.getItem("loggedIn")])
+        setLoggedIn(isLoggedIn)
+    },[isLoggedIn])
 
     return (
         <div className="NavbarContainer">
