@@ -11,6 +11,8 @@ import { getallPost } from "../actions/post.actions";
 function Home() {
   const [allpostdata, setPost] = useState([]);
   const dispatch = useDispatch();
+
+  // These, in 'state', are defined in index.js
   const allposts = useSelector((state) => state.postReducer);
   const soundlocationdata = useSelector((state) => state.soundlocationReducer);
 
