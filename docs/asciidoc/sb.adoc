@@ -58,15 +58,15 @@ Partage de données avec BirdNet ?
 ==== WF0.1 Feed 
 
 image::assets/Feed.png[]
-la page d'accueil est accessible en cliquant sue le nom de la plateforme "SoundBond" situé dans la navbar en haut à gauche et contient les posts de l'utilisateur ainsi que les posts de personnes qu'il suit
+La page d'accueil est accessible en cliquant sue le nom de la plateforme "SoundBond" situé dans la navbar en haut à gauche et contient les posts de l'utilisateur ainsi que les posts de personnes qu'il suit.
 
 Scénarios 
 
-1. L'utilisateur est connecté et souhaite défiler lle contenu de son fil d'actualité
-2. L'utilisateur trouvera sur cette page les posts qui l'a créé lui même ou ceux créer par les personnes qu'il follow , il pourra liker ou commenter ces posts
-3. L'icone sous forme d'une clôche permettra à l'utilisateur de voir ces nouvelles notifications
+1. L'utilisateur est connecté et souhaite faire défiler le contenu de son fil d'actualité
+2. L'utilisateur trouvera sur cette page les posts qu'il a créé lui même ou ceux créé par les personnes qu'il suit, il pourra liker ou commenter ces posts
+3. L'icône sous forme d'une cloche permettra à l'utilisateur de voir ces nouvelles notifications
 4. Cliquer sur l'icone map  redirigera l'utilisateur vers la page soundLocation dans laquelle les sons sont positionner sur une carte   
-5. L'utilisateur pourra se déconnecter grâce à l'icone du bonhomme  sur la navbar en haut à gauche 
+5. L'utilisateur pourra se déconnecter grâce à l'icône du bonhomme  sur la navbar en haut à gauche 
 
 ==== WF0.1 Profil 
 
@@ -88,7 +88,7 @@ Cette page regroupe les sons enregistés positionner sur une carte et permet à 
 
 === Diagramme de classes global
 
-image::../../out/docs/asciidoc/models/diagram/SoundBond.png[]
+image::assets/SoundBond.png[]
 
 === Description API back (ex REST)
 
