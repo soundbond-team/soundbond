@@ -33,7 +33,7 @@ const initiateConnection = () => {
     process.env.PASSWORD,
     {
       host: process.env.HOST,
-      dialect: "mysql",
+      dialect: "mssql",
     }
   );
 };

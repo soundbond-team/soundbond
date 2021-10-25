@@ -5,7 +5,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import Home from "../../Pages/Home";
+import Home from "../../Pages/Home/Home";
 //import MapPage from "../../pages/MapPage";
 import Registration from "../../Pages/Register/Register";
 import Login from "../../Pages/Login/Login";
@@ -21,8 +21,6 @@ const routes = () => {
         <Route path="/register" exact component={Registration} />
         <Route path="/login" exact component={Login} />
         <Route path="/map" exact component={MapPage} />
-
-
 
         <Redirect to="/" />
       </Switch>
