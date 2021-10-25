@@ -13,8 +13,8 @@ function Home() {
   const dispatch = useDispatch();
 
   // These, in 'state', are defined in index.js
-  const allposts = useSelector((state) => state.postReducer);
-  const soundlocationdata = useSelector((state) => state.soundlocationReducer);
+  const allposts = useSelector((state) => state.postReducer); // On stocke tous les Posts.
+  const soundlocationdata = useSelector((state) => state.soundlocationReducer); // On stocke tous les SoundLocation les plus proches.
 
   const pushPost = (allpostdata) => {
     setPost(allpostdata);
@@ -104,7 +104,7 @@ function Home() {
           <div className="container">
             <div className="row justify-content-center">
               {" "}
-              <Map soundlocationdata={soundlocationdata} />
+              <Map post_points={allposts} />
             </div>
             <br />
             <div className="container">
