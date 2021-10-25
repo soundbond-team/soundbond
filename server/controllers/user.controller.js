@@ -39,6 +39,7 @@ exports.login = (req, res, next) => {
           res.status(200).json({
             loggedIn: true,
             username: user.username,
+            id_user :  user.id,
             message : "welcome back",
             token: 'TOKEN'
           });

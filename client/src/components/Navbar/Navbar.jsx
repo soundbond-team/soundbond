@@ -35,7 +35,7 @@ function Navbar() {
                 </>
                  : 
                 <>
-                    <a href="/">Home</a>
+                    <a href="/home">Home</a>
                     <a href="/profil" > Profil </a>
                     <a href="/map">Map</a>
                     <div className="NavbarIcon">

@@ -14,6 +14,7 @@ function Home() {
   const allposts = useSelector((state) => state.postReducer);
   const soundlocationdata = useSelector((state) => state.soundlocationReducer);
 
+  //récuperer tous les posts dans la database
   const pushPost = (allpostdata) => {
     setPost(allpostdata);
   };
@@ -30,7 +31,9 @@ function Home() {
 
       dispatch(getallPost());
     });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); 
+  
+  // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     pushPost(allposts);
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {
@@ -40,7 +43,10 @@ function Home() {
       };
       dispatch(getsoundlocation(position));
     });
-  }, [allposts]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [allposts]);
+  
+  
+  // eslint-disable-line react-hooks/exhaustive-deps
 
   const listItems = soundlocationdata.map((i) => (
     <li key={i.id}>
