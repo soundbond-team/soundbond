@@ -1,7 +1,4 @@
 const db = require("../models");
-const Post = db.Post;
-const Sound = db.Sound;
-const SoundLocation = db.SoundLocation;
 const Op = db.Sequelize.Op;
 
 // Création d'un nouveau Post.
@@ -26,7 +23,7 @@ exports.create = (req, res) => {
   };
 
   // Enregistrement dans la base. .create créé et commit dans la base d'un seul coup.
-  Post.create(post)
+  db.Post.create(post)
     .then((data) => {
       res.send(data);
     })
@@ -39,19 +36,23 @@ exports.create = (req, res) => {
 
 // Retrieve all posts from the database.
 exports.findAll = (req, res) => {
-  Post.findAll({
+  db.Post.findAll({
     include: [
       {
-        model: Sound,
+        model: db.Sound,
         as: "publishing",
 
         include: [
           {
-            model: SoundLocation,
+            model: db.SoundLocation,
             as: "soundlocation",
             // where: { id: db.Sequelize.col("Sound.soundlocation_id") },
           },
         ],
+      },
+      {
+        model: db.User,
+        as: "publisher",
       },
     ],
   })
@@ -67,7 +68,7 @@ exports.findAll = (req, res) => {
 exports.getAllLike = (req, res) => {
   const id = req.params.id;
   console.log("salut");
-  Post.findByPk(id)
+  db.Post.findByPk(id)
     .then((data) => {
       console.log(data.like);
       let like = {
@@ -86,7 +87,7 @@ exports.getAllLike = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Post.findByPk(id, {
+  db.Post.findByPk(id, {
     include: [
       {
         model: Sound,
@@ -115,7 +116,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
   console.log(req.body);
-  Post.update(req.body, {
+  db.Post.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
@@ -140,7 +141,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Post.destroy({
+  db.Post.destroy({
     where: { id: id },
   })
     .then((num) => {
@@ -163,7 +164,7 @@ exports.delete = (req, res) => {
 
 // Delete all Posts from the database.
 exports.deleteAll = (req, res) => {
-  Post.destroy({
+  db.Post.destroy({
     where: {},
     truncate: false,
   })
