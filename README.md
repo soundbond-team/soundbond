@@ -99,7 +99,7 @@ Pour le serveur frontend, dans un autre terminal
 
 ``` bash
 cd client
-nodemon start
+npm start
 ```
 
 ## Tester l'API REST
