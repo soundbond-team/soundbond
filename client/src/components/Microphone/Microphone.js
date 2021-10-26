@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { TextInput } from 'react-native';
+import { TextInput } from "react-native";
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
 
@@ -21,7 +21,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import { green, red, blue } from "@material-ui/core/colors";
 import { useDispatch, useSelector } from "react-redux";
-
 
 import { post_soundlocation } from "../../actions/soundlocation.actions";
 import { post_sound } from "../../actions/sound.actions";
@@ -52,7 +51,7 @@ export default function Microphone(props) {
   const lastsoundlocation = useSelector(
     (state) => state.onesoundlocationReducer
   );
-  const [description, setDescription] = useState(''); // Utilisé pour stocker le description.
+  const [description, setDescription] = useState(""); // Utilisé pour stocker le description.
   const [record, setRecord] = useState(false);
   const [open, setOpen] = useState(false);
   const [tempFile, setTempFile] = useState(null);
@@ -89,7 +88,7 @@ export default function Microphone(props) {
     if (tempFile) {
       wavesurfer.current.load(tempFile.blobURL);
     }
-  }, [tempFile]);
+  }, [tempFile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const togglePlayback = () => {
     if (!isPlaying) {
@@ -121,10 +120,10 @@ export default function Microphone(props) {
     if (tempFile) {
       addsound(tempFile, lastsoundlocation.id);
     }
-  }, [lastsoundlocation]);
+  }, [lastsoundlocation]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addsound = (tempfile_object, soundlocation_id) =>
-  /* Poster un Sound.
+    /* Poster un Sound.
   Prend en argument :
     - l'Objet avec les informations du fichier temporaire
     - l'ID du SoundLocation correspondant.
@@ -141,10 +140,10 @@ export default function Microphone(props) {
       setOpen(false);
       setRecord(false);
     }
-  }, [sound]);
+  }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addpost = (sound_id, _description) =>
-  // Poster un Post puis recupérer tous les Posts.
+    // Poster un Post puis recupérer tous les Posts.
     new Promise((resolve, reject) => {
       dispatch(post_post(sound_id, _description)).then(() => {
         dispatch(getallPost());
@@ -196,7 +195,9 @@ export default function Microphone(props) {
 
       <Dialog maxWidth="sm" open={open} onClose={handleCancel}>
         <DialogTitle className={classes.flex}>Enregistrer un son</DialogTitle>
-        <DialogContent> {/* Zone d'affichage  */}
+        <DialogContent>
+          {" "}
+          {/* Zone d'affichage  */}
           {tempFile ? (
             <div className={classes.wavesurfer} id="wavesurfer-id" />
           ) : (
@@ -214,12 +215,12 @@ export default function Microphone(props) {
 
         {/* Description  */}
         <TextInput
-          multiline = {true}
-          style={{height: 40,backgroundColor: 'azure', fontSize: 20}}
+          multiline={true}
+          style={{ height: 40, backgroundColor: "azure", fontSize: 20 }}
           placeholder="Description"
-          onChangeText={description => setDescription(description)}
+          onChangeText={(description) => setDescription(description)}
           defaultValue={""}
-        />  
+        />
 
         <DialogActions>
           <Grid container>

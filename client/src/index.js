@@ -9,6 +9,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import rootReducer from "./reducers";
+import "bootstrap/dist/css/bootstrap.css";
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk, logger))
@@ -17,7 +18,7 @@ const store = createStore(
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App/>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")
