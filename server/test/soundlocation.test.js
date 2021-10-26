@@ -11,8 +11,7 @@ var expect = chai.expect;
 
 chai.use(chaiHttp);
 
-describe("Test soundlocalisationService", function () {
-
+describe("Test soundlocalisationService", () => {
   it("Localisation avec N", function () {
     assert.equal(
       soundlocationservice.distance(
@@ -74,30 +73,52 @@ describe("Test soundlocalisationService", function () {
     // On s'attend à ce que nearestPosition ne renvoie que les sons du bâtiment G et de la bibliothèque,
     // qui sont dans la fac alors que la Grande Arche est bien plus loin.
     assert.notDeepEqual(
-      soundlocationservice.nearestPosition(localisation, [sound_in_batiment_g, sound_in_grand_arche, sound_in_bibliotheque]),
+      soundlocationservice.nearestPosition(localisation, [
+        sound_in_batiment_g,
+        sound_in_grand_arche,
+        sound_in_bibliotheque,
+      ]),
       [sound_in_batiment_g, sound_in_bibliotheque]
     );
   });
 });
 
-describe("Test routes", function () {
-  it("/GET All SoundLocations -> 200 status", function (done) {
-    chai
-      .request(app)
-      .get("/api/v1/soundlocation")
-      .end(function (err, res) {
-        expect(res).to.have.status(200);
-        done();
-      });
-  });
-  it("/GET First SoundLocation -> 200 status", function (done) {
-    chai
-      .request(app)
-      .get("/api/v1/soundlocation/1")
-      .end(function (err, res) {
-        expect(res).to.have.status(200);
-        done();
-      });
+describe("Test routes", () => {
+  describe("GET /api/v1/soundlocation", () => {
+    beforeEach(async () => {
+      await SoundLocation.truncate({ cascade: true });
+    });
+    after(async () => {
+      await SoundLocation.truncate({ cascade: true });
+    });
+
+    it("Successfully GET an empty array of 0 SoundLocation", function (done) {
+      chai
+        .request(app)
+        .get("/api/v1/soundlocation")
+        .end(function (err, res) {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.a("array");
+          expect(res.body.length).to.be.eql(0);
+          done();
+        });
+    });
+    it("Successfully GET an array of 1 SoundLocation", function () {
+      const sl = {
+        latitude: 48.902757,
+        longitude: 2.215944,
+      };
+      SoundLocation.create(sl);
+
+      chai
+        .request(app)
+        .get("/api/v1/soundlocation")
+        .end(function (res) {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.a("array");
+          expect(res.body.length).to.be.eql(1);
+          done();
+        });
+    });
   });
 });
-
