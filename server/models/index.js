@@ -12,20 +12,7 @@ require("dotenv").config();
 // La bd dev est en sqlite pour faciliter les tests alors que prod vocation a réellement stocker les données.
 const initiateConnection = () => {
   if (process.env.ENV == "tests") {
-    return new Sequelize(
-      process.env.DATABASE,
-      process.env.USERNAME,
-      process.env.PASSWORD,
-      {
-        host: process.env.HOST,
-        dialect: "sqlite",
-        storage: "database.sqlite",
-        port: process.env.PORT,
-        dialectOptions: {
-          encrypt: true,
-        },
-      }
-    );
+    return new Sequelize("sqlite:../database.sqlite");
   }
   return new Sequelize(
     process.env.DATABASE,

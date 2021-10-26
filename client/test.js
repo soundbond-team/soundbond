@@ -4,8 +4,8 @@
 var assert = require("assert").strict;
 var webdriver = require("selenium-webdriver");
 require("geckodriver");
-const chrome = require("selenium-webdriver/chrome");
-const chromedriver = require("chromedriver");
+const chrome = require('selenium-webdriver/chrome');
+const chromedriver = require('chromedriver');
 
 chrome.setDefaultService(new chrome.ServiceBuilder(chromedriver.path).build());
 
@@ -107,9 +107,20 @@ describe("Home Page", function () {
    * Fermez le navigateur et quittez.
    */
 
+<<<<<<< HEAD
   after(function () {
     // End of test use this.
     browserC.quit();
     browserF.quit();
   });
 });
+=======
+ after(function() {
+  // End of test use this.
+  browserC.quit();
+  browserF.quit();
+ });
+ 
+ });
+ 
+>>>>>>> b788691fcf6d29dc52f6ef50d6a6411577e7450e
