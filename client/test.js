@@ -4,7 +4,7 @@
  */
 var assert = require("assert").strict;
 var webdriver = require("selenium-webdriver");
-
+require("geckodriver");
 const chrome = require('selenium-webdriver/chrome');
 const chromedriver = require('chromedriver');
 
