@@ -34,10 +34,6 @@ const initiateConnection = () => {
     {
       host: process.env.HOST,
       dialect: "mssql",
-      port: process.env.PORT,
-      dialectOptions: {
-        encrypt: true,
-      },
     }
   );
 };

@@ -4,7 +4,7 @@ var asynclib = require('async');
 
 module.exports = {
     likePost: function(req, res){
-        const userId = 1;
+        const userId = localStorage.getItem(id_user);
 
         //params
         var postId = parseInt(req.query.postId);
@@ -88,6 +88,8 @@ module.exports = {
             }
         });
     },
+
+    
     dislikePost: function(req,res){
         asynclib.waterfall([
             function(done){

@@ -1,20 +1,18 @@
 import "../App.css";
 import React, { useEffect, useState } from "react";
-import Microphone from "../components/Microphone/Microphone";
+import Microphone from "../../components/Microphone/Microphone";
 import { useDispatch, useSelector } from "react-redux";
-import { get_soundlocation } from "../actions/soundlocation.actions";
-import Post from "../components/Post/Post";
+import { getsoundlocation } from "../../actions/soundlocation.actions";
+import Post from "../../components/Post/Post";
 import Grid from "@material-ui/core/Grid";
-import Map from "../components/Map/Map";
-import { getallPost } from "../actions/post.actions";
+import Map from "../../components/Map/Map";
+import { getallPost } from "../../actions/post.actions";
 
 function Home() {
   const [allpostdata, setPost] = useState([]);
   const dispatch = useDispatch();
-
-  // These, in 'state', are defined in index.js
-  const allposts = useSelector((state) => state.postReducer); // On stocke tous les Posts.
-  const soundlocationdata = useSelector((state) => state.soundlocationReducer); // On stocke tous les SoundLocation les plus proches.
+  const allposts = useSelector((state) => state.postReducer);
+  const soundlocationdata = useSelector((state) => state.soundlocationReducer);
 
   //récuperer tous les posts dans la database
   const pushPost = (allpostdata) => {
@@ -23,19 +21,19 @@ function Home() {
 
   useEffect(() => {
     //Posts.shift(); // pour la map
+
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {
       let position = {
         lat: positiongeo.coords.latitude,
         lng: positiongeo.coords.longitude,
       };
-      dispatch(get_soundlocation(position));
+      dispatch(getsoundlocation(position));
+
       dispatch(getallPost());
     });
-    // eslint-disable-next-line
   }, []);
 
   // eslint-disable-line react-hooks/exhaustive-deps
-
   useEffect(() => {
     pushPost(allposts);
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {
@@ -43,9 +41,8 @@ function Home() {
         lat: positiongeo.coords.latitude,
         lng: positiongeo.coords.longitude,
       };
-      dispatch(get_soundlocation(position));
+      dispatch(getsoundlocation(position));
     });
-    // eslint-disable-next-line
   }, [allposts]);
 
   // eslint-disable-line react-hooks/exhaustive-deps
@@ -111,7 +108,7 @@ function Home() {
           <div className="container">
             <div className="row justify-content-center">
               {" "}
-              <Map post_points={allposts} />
+              <Map soundlocationdata={soundlocationdata} />
             </div>
             <br />
             <div className="container">

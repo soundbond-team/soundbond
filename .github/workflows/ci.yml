@@ -13,6 +13,11 @@ jobs:
   CI:
     name: CI SB
     runs-on: ubuntu-latest
+    
+    # Canceling previously running job when a new job is requested
+    concurrency: 
+      group: ${{ github.head_ref }}
+      cancel-in-progress: true
 
     # The environment this job references. We now use this for our environment variables.
     environment:
