@@ -43,9 +43,15 @@ const Map = ({ post_points }) => {
           ],
         },
         properties: {
-          title: post_points[key].publishing.soundlocation.latitude + ", " + post_points[key].publishing.soundlocation.longitude,
+          title:
+            post_points[key].publishing.soundlocation.latitude +
+            ", " +
+            post_points[key].publishing.soundlocation.longitude,
           description: post_points[key].description,
-          publisher_name: post_points[key].publisher.first_name + " " + post_points[key].publisher.last_name,
+          publisher_name:
+            post_points[key].publisher.first_name +
+            " " +
+            post_points[key].publisher.last_name,
         },
       });
     });
