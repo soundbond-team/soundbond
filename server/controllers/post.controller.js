@@ -1,4 +1,5 @@
 const db = require("../models");
+const post = require("../models/post");
 const Post = db.Post;
 const Sound = db.Sound;
 const SoundLocation = db.SoundLocation;
@@ -176,5 +177,19 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+//like a post 
+exports.like = (req,res)=>{
+  const id = req.params.id;
+  Post.findByPk(id,{$push:{likes:localStorage.getItem.id_user}
+  },{
+    new:true
+  }).exec((err,result)=>{
+    if(err){
+      return res.status(422).json({error:error})
+    }else{
+      res.json(result)
+    }
+  })
+}
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/

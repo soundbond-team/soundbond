@@ -3,26 +3,44 @@
 const Sequelize = require("sequelize");
 const db = {};
 
-
 /***%%%*** Configuration de la connexion ***%%%***/
 
 // Récupération de la configuration confidentielle.
 require("dotenv").config();
 
-// Instanciation d'une connexion.
-const sequelize = new Sequelize(
-  process.env.DATABASE,
-  process.env.USERNAME,
-  process.env.PASSWORD,
-  {
-    host: process.env.HOST,
-    dialect: "mssql",
-    port: process.env.PORT,
-    dialectOptions: {
-      encrypt: true
-    }
+// Instanciation d'une connexion soit avec une bd dev soit une prod.
+// La bd dev est en sqlite pour faciliter les tests alors que prod vocation a réellement stocker les données.
+const initiateConnection = () => {
+  if (process.env.ENV == "tests") {
+    return new Sequelize(
+      process.env.DATABASE,
+      process.env.USERNAME,
+      process.env.PASSWORD,
+      {
+        host: process.env.HOST,
+        dialect: "sqlite",
+        storage: "database.sqlite",
+        port: process.env.PORT,
+        dialectOptions: {
+          encrypt: true,
+        },
+      }
+    );
   }
-);
+  return new Sequelize(
+    process.env.DATABASE,
+    process.env.USERNAME,
+    process.env.PASSWORD,
+    {
+      host: process.env.HOST,
+      dialect: "mssql",
+    }
+  );
+};
+
+const sequelize = initiateConnection();
+
+/***%%%*** Récupération de chaque modèles dans db pour une utilisation dans les autres modules ***%%%***/
 
 
 /***%%%*** Récupération de chaque modèles dans db pour une utilisation dans les autres modules ***%%%***/
@@ -34,7 +52,6 @@ db.Sound = require("./sound")(sequelize, Sequelize);
 db.SoundLocation = require("./soundlocation")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
 db.Post = require("./post")(sequelize, Sequelize);
-
 
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 
@@ -87,7 +104,6 @@ db.User.belongsToMany(db.Post, {
   as: "liked_posts",
   foreignKey: "post_id",
 });
-
 
 /***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/
 
