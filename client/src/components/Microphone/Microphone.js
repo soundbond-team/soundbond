@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-
+import { TextInput } from "react-native";
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
 
@@ -21,10 +21,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import { green, red, blue } from "@material-ui/core/colors";
 import { useDispatch, useSelector } from "react-redux";
+
+import { post_soundlocation } from "../../actions/soundlocation.actions";
+import { post_sound } from "../../actions/sound.actions";
+import { post_post, getallPost } from "../../actions/post.actions";
+
 import "./Microphone.css";
-import { postsoundlocation } from "../../actions/onesoundlocation.actions";
-import { postsound } from "../../actions/sound.actions";
-import { addPost, getallPost } from "../../actions/post.actions";
+
 const useStyles = makeStyles((theme) => ({
   icon: {
     height: 38,
@@ -48,10 +51,10 @@ export default function Microphone(props) {
   const lastsoundlocation = useSelector(
     (state) => state.onesoundlocationReducer
   );
+  const [description, setDescription] = useState(""); // Utilisé pour stocker le description.
   const [record, setRecord] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [tempFile, setTempFile] = React.useState(null);
-
+  const [open, setOpen] = useState(false);
+  const [tempFile, setTempFile] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurfer = useRef(null);
 
@@ -82,11 +85,10 @@ export default function Microphone(props) {
   }, [open, tempFile]);
 
   useEffect(() => {
-    console.log("tempFile", tempFile);
     if (tempFile) {
       wavesurfer.current.load(tempFile.blobURL);
     }
-  }, [tempFile]);
+  }, [tempFile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const togglePlayback = () => {
     if (!isPlaying) {
@@ -101,10 +103,12 @@ export default function Microphone(props) {
     setOpen(true);
   };
   const done = () => {
+    /* Lorsqu'un son est enregistré et que l'on appuie sur le bouton coche, cette fonction est appelée. */
     if (tempFile) {
+      // Récupérer la géolocalisation
       navigator.geolocation.getCurrentPosition(function (positiongeo) {
         dispatch(
-          postsoundlocation({
+          post_soundlocation({
             lat: positiongeo.coords.latitude,
             lng: positiongeo.coords.longitude,
           })
@@ -114,35 +118,36 @@ export default function Microphone(props) {
   };
   useEffect(() => {
     if (tempFile) {
-      //  props.pushFile(tempFile);
-      console.log(lastsoundlocation.id + "fefe");
-      addsound(lastsoundlocation.id);
+      addsound(tempFile, lastsoundlocation.id);
     }
   }, [lastsoundlocation]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    if (tempFile) {
-      console.log("eeffefe test");
-      //  props.pushFile(tempFile);
-      addpost(sound.id);
-
-      setTempFile(null);
-      setOpen(false);
-
-      setRecord(false);
-    }
-  }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
-  const addpost = (id) =>
+  const addsound = (tempfile_object, soundlocation_id) =>
+    /* Poster un Sound.
+  Prend en argument :
+    - l'Objet avec les informations du fichier temporaire
+    - l'ID du SoundLocation correspondant.
+  */
     new Promise((resolve, reject) => {
-      dispatch(addPost(id)).then(() => {
-        dispatch(getallPost());
-      });
+      dispatch(post_sound(tempfile_object, soundlocation_id));
       resolve();
     });
 
-  const addsound = (id) =>
+  useEffect(() => {
+    if (tempFile) {
+      addpost(sound.id, description);
+      setTempFile(null);
+      setOpen(false);
+      setRecord(false);
+    }
+  }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const addpost = (sound_id, _description) =>
+    // Poster un Post puis recupérer tous les Posts.
     new Promise((resolve, reject) => {
-      dispatch(postsound(id));
+      dispatch(post_post(sound_id, _description)).then(() => {
+        dispatch(getallPost());
+      });
       resolve();
     });
 
@@ -189,8 +194,10 @@ export default function Microphone(props) {
       </IconButton>
 
       <Dialog maxWidth="sm" open={open} onClose={handleCancel}>
-        <DialogTitle className={classes.flex}>Record</DialogTitle>
+        <DialogTitle className={classes.flex}>Enregistrer un son</DialogTitle>
         <DialogContent>
+          {" "}
+          {/* Zone d'affichage  */}
           {tempFile ? (
             <div className={classes.wavesurfer} id="wavesurfer-id" />
           ) : (
@@ -205,6 +212,16 @@ export default function Microphone(props) {
             />
           )}
         </DialogContent>
+
+        {/* Description  */}
+        <TextInput
+          multiline={true}
+          style={{ height: 40, backgroundColor: "azure", fontSize: 20 }}
+          placeholder="Description"
+          onChangeText={(description) => setDescription(description)}
+          defaultValue={""}
+        />
+
         <DialogActions>
           <Grid container>
             {tempFile && (

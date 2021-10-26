@@ -9,12 +9,11 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import rootReducer from "./reducers";
+import "bootstrap/dist/css/bootstrap.css";
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk, logger))
 );
-
-
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,4 +1,4 @@
-name: Build
+name: Test
 on:
   push:
     branches:
@@ -9,11 +9,6 @@ on:
       - main
       - develop
 
-# Canceling previously running job when a new job is requested
-concurrency:
-  group: ${{ github.head_ref }}
-  cancel-in-progress: true
-
 jobs:
   CI:
     name: CI SB
@@ -21,7 +16,7 @@ jobs:
 
     # The environment this job references. We now use this for our environment variables.
     environment:
-      name: Development
+      name: Test
 
     steps:
       - uses: actions/checkout@v2
@@ -30,8 +25,8 @@ jobs:
           # Shallow clones should be disabled for a better relevancy of analysis.
           # But we choose only 1 commit because it is way enough
 
-      - name: Writing .env config file for Development
-        run: echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\n" >> .env
+      - name: Writing .env config file
+        run: echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nDIALECT = "${{ secrets.DB_DIALECT }}"\nSTORAGE = "${{ secrets.DB_STORAGE }}"\n" >> .env
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
@@ -66,11 +61,6 @@ jobs:
           cd client
           yarn run build
 
-      - name: Writing .env config file for Tests
-        run: |
-          rm .env
-          echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nENV="tests"" >> .env
-
       - name: Tests
         run: |
           cd server
@@ -80,8 +70,3 @@ jobs:
           rm -r .nyc_output
         env:
           CI: true
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

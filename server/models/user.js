@@ -5,17 +5,14 @@ plateforme Soundbond. A User sont associés :
 - les posts auxquels il a attribué un "j'aime". */
 
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model { }
   User.init({
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
-    email: DataTypes.STRING,
+    username: DataTypes.STRING,
     password: DataTypes.STRING
-  }, {
+  }, 
+  {
     sequelize,
     modelName: 'user',
   });

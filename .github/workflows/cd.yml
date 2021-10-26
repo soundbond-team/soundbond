@@ -1,0 +1,41 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  CD:
+    name: CD SB
+    runs-on: ubuntu-latest
+
+    # The environment this job references. We now use this for our environment variables.
+    environment:
+      name: Development
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: 16
+
+      - name: Installation
+        run: yarn install
+
+      - name: Generate docs
+        run: |
+          yarn run asciidoc
+          rm docs/asciidoc/sb.html
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        id: create_release
+        with:
+          artifacts: docs/asciidoc/sb.pdf
+          bodyFile: CHANGELOG.md
+          token: ${{ secrets.GITHUB_TOKEN }}

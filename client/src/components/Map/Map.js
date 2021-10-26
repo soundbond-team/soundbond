@@ -6,7 +6,7 @@ import "mapbox-gl/dist/mapbox-gl";
 mapboxgl.accessToken =
   "pk.eyJ1Ijoic2hlbGxzaG9jazIzIiwiYSI6ImNrdHpyeml5aTBtN24yb3BjNnlyMzF0ZXMifQ.jVBnWwAN0suAcWniseo60g";
 
-const Map = ({ soundlocationdata }) => {
+const Map = ({ post_points }) => {
   const mapContainerRef = useRef(null);
 
   const [lng, setLng] = useState(5);
@@ -32,22 +32,26 @@ const Map = ({ soundlocationdata }) => {
       ],
     };
     geojson.features.shift();
-    Object.keys(soundlocationdata).map(function (key, index) {
+    Object.keys(post_points).map(function (key, index) {
       return geojson.features.push({
         type: "Feature",
         geometry: {
           type: "Point",
           coordinates: [
-            soundlocationdata[key].longitude,
-            soundlocationdata[key].latitude,
+            post_points[key].publishing.soundlocation.longitude,
+            post_points[key].publishing.soundlocation.latitude,
           ],
         },
         properties: {
-          title: "Mapbox",
-          description:
-            soundlocationdata[key].latitude +
-            "" +
-            soundlocationdata[key].latitude,
+          title:
+            post_points[key].publishing.soundlocation.latitude +
+            ", " +
+            post_points[key].publishing.soundlocation.longitude,
+          description: post_points[key].description,
+          publisher_name:
+            post_points[key].publisher.first_name +
+            " " +
+            post_points[key].publisher.last_name,
         },
       });
     });
@@ -89,14 +93,16 @@ const Map = ({ soundlocationdata }) => {
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }) // add popups
             .setHTML(
-              `<h3>${properties.title}</h3><p>${properties.description}</p>`
+              `<h5>${properties.title}</h5>
+              <p>${properties.description}</p>
+              <p>posté par <b>${properties.publisher_name}</b></p>` //TODO ajouter un lien vers la page utilisateur de l'User.
             )
         )
         .addTo(map);
     }
     // Clean up on unmount
     return () => map.remove();
-  }, [soundlocationdata]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [post_points]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

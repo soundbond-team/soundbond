@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-
+import { withRouter } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import { useDispatch } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
-
+import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
-import ShareIcon from "@material-ui/icons/Share";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import { red, blue } from "@material-ui/core/colors";
-
+import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
 
 import List from "@material-ui/core/List";
@@ -62,6 +60,7 @@ function Post(props) {
 
     dispatch(addLike({ id: props.id_post, like: like + 1 }));
   };
+
   return (
     <>
       <Card className={classes.card}>
@@ -94,11 +93,6 @@ function Post(props) {
               className={classes.icon}
             />
           </IconButton>
-
-          <IconButton>
-            <ShareIcon style={{ color: red[500] }} className={classes.icon} />
-          </IconButton>
-
           <IconButton>
             <CommentIcon className={classes.icon} />
           </IconButton>
@@ -108,4 +102,4 @@ function Post(props) {
   );
 }
 
-export default Post;
+export default withRouter(Post);
