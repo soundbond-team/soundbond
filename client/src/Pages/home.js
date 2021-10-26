@@ -35,7 +35,7 @@ function Home() {
   }, []);
 
   // eslint-disable-line react-hooks/exhaustive-deps
-  
+
   useEffect(() => {
     pushPost(allposts);
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {

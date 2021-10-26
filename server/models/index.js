@@ -42,6 +42,9 @@ const sequelize = initiateConnection();
 
 /***%%%*** Récupération de chaque modèles dans db pour une utilisation dans les autres modules ***%%%***/
 
+
+/***%%%*** Récupération de chaque modèles dans db pour une utilisation dans les autres modules ***%%%***/
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

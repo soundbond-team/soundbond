@@ -3,7 +3,6 @@ const post = require("../models/post");
 const Post = db.Post;
 const Sound = db.Sound;
 const SoundLocation = db.SoundLocation;
-
 const Op = db.Sequelize.Op;
 
 // Création d'un nouveau Post.

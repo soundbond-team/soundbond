@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-
+import { withRouter, useHistory } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
-//import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
-
+import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
 import ShareIcon from "@material-ui/icons/Share";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import { red, blue } from "@material-ui/core/colors";
-
 import Grid from "@material-ui/core/Grid";
 
 import List from "@material-ui/core/List";
@@ -18,17 +17,11 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import { makeStyles } from "@material-ui/styles";
-//import { addLike } from "../../actions/post.actions";
-import axios from "axios";
-
+import { addLike } from "../../actions/post.actions";
 function Post(props) {
   const faces = [];
   const [like, setLike] = useState(props.like);
-  const [isLiked, setIsLiked] = useState(false);
-  //const [user, setUser] = useState({});
-  const user_id = localStorage.getItem.id_user;
-
- // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const useStyles = makeStyles((theme) => ({
     card: {
@@ -62,24 +55,14 @@ function Post(props) {
     },
   }));
   const classes = useStyles();
-
-  /*const pushLike = async () => {
+  const pushLike = async () => {
     let p = like + 1;
     setLike(p);
 
     dispatch(addLike({ id: props.id_post, like: like + 1 }));
-    
   };
 
-  */
-  const likeHandler = () => {
-    try {
-      axios.put("/post/" +props.id_post + "/like", { user_id });
-    } catch (err) {}
-    setLike(isLiked ? like - 1 : like + 1);
-    setIsLiked(!isLiked);
-  };
-  
+  let history = useHistory();
 
   return (
     <>
@@ -106,20 +89,19 @@ function Post(props) {
         }
 
         <Grid item container justifyContent="flex-end">
-          <IconButton >
-            <span style={{ margin: "2px 5px" }}>{like}</span>
+          <IconButton onClick={pushLike}>
+            <span style={{ margin: "2px 5px" }}>{like} </span>
             <ThumbUpIcon
               style={{ color: blue[500] }}
               className={classes.icon}
-              onClick ={likeHandler}
             />
           </IconButton>
 
-          <IconButton>
+          <IconButton onclick={history.push("/share")}>
             <ShareIcon style={{ color: red[500] }} className={classes.icon} />
           </IconButton>
 
-          <IconButton>
+          <IconButton onclick>
             <CommentIcon className={classes.icon} />
           </IconButton>
         </Grid>
@@ -128,4 +110,4 @@ function Post(props) {
   );
 }
 
-export default Post;
+export default withRouter(Post);
