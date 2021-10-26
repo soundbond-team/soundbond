@@ -31,8 +31,8 @@ function Home() {
 
       dispatch(getallPost());
     });
-  }, []); 
-  
+  }, []);
+
   // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     pushPost(allposts);
@@ -44,8 +44,7 @@ function Home() {
       dispatch(getsoundlocation(position));
     });
   }, [allposts]);
-  
-  
+
   // eslint-disable-line react-hooks/exhaustive-deps
 
   const listItems = soundlocationdata.map((i) => (
