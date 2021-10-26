@@ -8,13 +8,14 @@ const { Sequelize } = require("sequelize"); // ORM
 const app = express();
 const port = process.env.PORT || 8080; // Port du serveur de développement.
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
 
 // On dit au serveur de servir ces pages.
 require("./routes/sound.routes")(app);
 require("./routes/soundlocation.routes")(app);
 require("./routes/post.routes")(app);
+require("./routes/User.routes")(app);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

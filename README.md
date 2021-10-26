@@ -74,6 +74,8 @@ cd ../server
 yarn install
 ```
 
+Si vous rencontrez l'erreur `The engine "node" is incompatible with this module.`, ajoutez l'option `--ignore-engines` à `yarn install`.
+
 ### Installer les variables confidentielles
 
 Copiez le fichier .env.sample en un autre fichier .env.
@@ -97,7 +99,7 @@ Pour le serveur frontend, dans un autre terminal
 
 ``` bash
 cd client
-nodemon start
+npm start
 ```
 
 ## Tester l'API REST

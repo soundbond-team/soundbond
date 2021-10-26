@@ -1,8 +1,8 @@
-import { POST_SOUNDLOCATION } from "../actions/onesoundlocation.actions";
+import { POST_SOUNDLOCATION } from "../actions/soundlocation.actions";
 //Ce reducer sert a stocké la position du dernier son posté
-const intialState = [];
+const initialState = [];
 
-export default function onesoundlocationReducer(state = intialState, action) {
+export default function onesoundlocationReducer(state = initialState, action) {
   switch (action.type) {
     case POST_SOUNDLOCATION:
       return action.payload;
