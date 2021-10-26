@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.4.1",
+    "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@material-ui/core": "^5.0.0-beta.5",
     "@material-ui/icons": "^4.11.2",
@@ -11,15 +11,21 @@
     "@mui/icons-material": "^5.0.4",
     "@mui/material": "^5.0.1",
     "@mui/styles": "^5.0.1",
+    "@syncfusion/ej2-react-buttons": "^19.3.44",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.4",
     "bootstrap": "5.1.1",
+    "chai": "^4.3.4",
+    "chromedriver": "^94.0.0",
     "dotenv": "^10.0.0",
     "dotenv-webpack": "^7.0.3",
+    "edgedriver": "^4.17134.1",
+    "geckodriver": "^2.0.4",
     "mapbox-gl": "^2.4.1",
     "material-ui": "^1.0.0-beta.47",
+    "ms-chromium-edge-driver": "^0.4.3",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.4",
     "react-dom": "^17.0.2",
@@ -33,6 +39,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "selenium-webdriver": "^4.0.0",
     "semantic-ui-react": "^2.0.4",
     "uuidv4": "^6.2.12",
     "wavesurfer.js": "^5.2.0",
@@ -41,7 +48,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "mocha test --timeout 25000",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -59,7 +66,11 @@
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 safari version",
+      "last 1 edge version"
     ]
+  },
+  "devDependencies": {
+    "mocha": "^9.1.3"
   }
 }

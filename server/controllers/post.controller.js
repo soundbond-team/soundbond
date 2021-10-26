@@ -126,7 +126,7 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-            error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
+          error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
         });
       }
     })
@@ -151,7 +151,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-            error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
+          error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
         });
       }
     })
@@ -177,19 +177,22 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-//like a post 
-exports.like = (req,res)=>{
+//like a post
+exports.like = (req, res) => {
   const id = req.params.id;
-  Post.findByPk(id,{$push:{likes:localStorage.getItem.id_user}
-  },{
-    new:true
-  }).exec((err,result)=>{
-    if(err){
-      return res.status(422).json({error:error})
-    }else{
-      res.json(result)
+  Post.findByPk(
+    id,
+    { $push: { likes: localStorage.getItem.id_user } },
+    {
+      new: true,
     }
-  })
-}
+  ).exec((err, result) => {
+    if (err) {
+      return res.status(422).json({ error: error });
+    } else {
+      res.json(result);
+    }
+  });
+};
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
