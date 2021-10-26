@@ -93,7 +93,7 @@ function Post(props) {
               className={classes.icon}
             />
           </IconButton>
-          <IconButton onclick>
+          <IconButton>
             <CommentIcon className={classes.icon} />
           </IconButton>
         </Grid>
