@@ -82,7 +82,7 @@ describe("Test soundlocalisationService", () => {
     );
   });
 });
-
+/*
 describe("Test routes", () => {
   describe("GET /api/v1/soundlocation", () => {
     beforeEach(async () => {
@@ -121,4 +121,5 @@ describe("Test routes", () => {
         });
     });
   });
-});
+
+});*/
