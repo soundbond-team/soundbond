@@ -5,7 +5,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import home from "../../Pages/home";
+import Home from "../../Pages/home";
 import Share from "../../components/Share/Share";
 import Nav from "../../components/Navbar/Navbar";
 import MapPage from "../../Pages/MapPage";
@@ -17,7 +17,7 @@ const routes = () => {
     <Router>
       <Nav />
       <Switch>
-        <Route path="/" exact component={home} />
+        <Route path="/" exact component={Home} />
         <Route path="/share" exact component={Share} />
         <Route path="/home" exact component={Home} />
         <Route path="/register" exact component={Registration} />
