@@ -1,6 +1,6 @@
 module.exports = (app) => {
   const post = require("../controllers/post.controller");
-  var router = require("express").Router();
+  const router = require("express").Router();
 
   // Create a new Post
   router.post("/", post.create);
@@ -20,8 +20,8 @@ module.exports = (app) => {
   // Delete all Post
   router.delete("/", post.deleteAll);
 
-  router.put("/like",post.like);
-  
+  router.put("/like", post.like);
+
   router.get("/getAllLike/:id", post.getAllLike);
 
   app.use("/api/v1/post", router);
