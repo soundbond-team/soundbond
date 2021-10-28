@@ -7,10 +7,6 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
 function NavigationBar() {
-  const handleClick = (e) => {
-    e.preventDefault();
-  };
-
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -39,7 +35,6 @@ function NavigationBar() {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <NavLink
-                  onClick={handleClick}
                   className="nav-link"
                   exact
                   to="/map"
@@ -93,7 +88,6 @@ function NavigationBar() {
             </ul>
             <form className="d-flex">
               <NavLink
-                onClick={handleClick}
                 className="nav-link"
                 exact
                 to="/login"
@@ -103,7 +97,6 @@ function NavigationBar() {
               </NavLink>
 
               <NavLink
-                onClick={handleClick}
                 className="nav-link"
                 exact
                 to="/register"
