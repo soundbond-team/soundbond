@@ -25,8 +25,8 @@ compare = async function (username, password) {
     if (auth) {
       return user;
     }
-    throw Error("incorrect password");
+    return null;
   }
-  throw Error("incorrect email");
+  return null;
 };
 module.exports = { createToken, crypt, maxAge, compare };

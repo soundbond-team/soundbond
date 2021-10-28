@@ -22,11 +22,14 @@ module.exports.login = async (req, res) => {
   console.log(username);
   try {
     const user = await UserService.compare(username, password);
-    console.log(user.id);
-    const token = UserService.createToken(user.id);
-    console.log(token);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: UserService.maxAge });
-    res.status(200).json({ user: user.id });
+    if (user != null) {
+      const token = UserService.createToken(user.id);
+
+      res.cookie("jwt", token, { httpOnly: true, maxAge: UserService.maxAge });
+      res.status(200).json({ user: user.id });
+    } else {
+      res.status(200).send(null);
+    }
   } catch (err) {
     res.status(200).send(err);
   }
