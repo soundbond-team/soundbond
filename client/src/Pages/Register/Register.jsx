@@ -1,53 +1,64 @@
 import React, {useState } from "react";
-import Axios from "axios";
+
 import "./register.css";
 import {useHistory} from 'react-router-dom';
+import axios from "axios";
 
 export default function Registration() {
-  const [usernameReg, setUsernameReg] = useState("");
-  const [passwordReg, setPasswordReg] = useState("");
+ 
+  const history = useHistory();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [err, setErr] = useState("");
 
   
-  Axios.defaults.withCredentials = true;
-  let history = useHistory();
+  const handleSignup=async (e)=>{
+    e.preventDefault();
+    await axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/user/register`,
+      data:{
+        username:username,
+        password:password
+      }
+    }).then((res)=>{
+      if(res.data.err){
+        console.log(res.data.err);
+        setErr("Username déja utilisé (ou autre erreur)");
+      }
+      else{
+        history.push("/login");
+        console.log(res.data);
+      }
+    }).catch((err)=>{
+      console.log(err);
+      
+    })
 
-  const register = () => {
-    console.log(usernameReg);
-    Axios.post("http://localhost:8080/user/register", {
-      username: usernameReg,
-      password: passwordReg,
-    }).then((response) => {
-      console.log(response);
-    });
-    history.push("/login");
-
-  };
+  }
+ 
 
 
     return (
-        <div className="Register">
-            <h1>Registration</h1>
-            <div className="RegisterForm">
-                <label>Username</label>
-                <input type="text" placeholder="username..." 
-                 className="loginInput"
-                 onChange={(e) => {
-                  setUsernameReg(e.target.value);
-                }}
-                />
-                <label>Password</label>
-                <input type="password"
-                placeholder="password..." 
-                className="loginInput"
-                onChange={(e) => {
-                  setPasswordReg(e.target.value);
-                }}
+        <>
+      <div className="container">
+        <h1> S'inscrire </h1>
+        <form action="" onSubmit={handleSignup} id="sign-up">
+          <label htmlFor="username">Pseudo</label>
+          <br/>
+          <input type="text" name="username" id="username" onChange={(e)=>setUsername(e.target.value)} value={username}/>
+          <br /><br />
+          <label htmlFor="password">Mot de passe</label>
+          <br/>
+          <input type="password" name="password" id="password" onChange={(e)=>setPassword(e.target.value)} value={password}/>
+          <br /><br />
+          <input type="submit" value="S'inscrire"/>
 
-                />
-                <button onClick={register} >Register</button>
-            </div>
+        </form>
+        {err}
         </div>
+     </>
     );
-    
+
 }
 
