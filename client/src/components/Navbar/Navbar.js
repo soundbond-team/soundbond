@@ -1,12 +1,16 @@
-import React /*, { useEffect, useState }*/ from "react";
+import React, { useContext } from "react";
 import "./Navbar.css";
 
 //import { Chat, Notifications, Person, Search } from "@material-ui/icons"
-import Navbar from "react-bootstrap/Navbar";
 
-import Nav from "react-bootstrap/Nav";
+import Logout from "../Logout";
+
 import { NavLink } from "react-router-dom";
+import { UidContext } from "../Appcontext";
+import { useSelector } from "react-redux";
 function NavigationBar() {
+  const uid = useContext(UidContext);
+  const userData = useSelector((state) => state.userReducer);
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -43,67 +47,34 @@ function NavigationBar() {
                   Map
                 </NavLink>
               </li>
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Dropdown
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Action
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Another action
-                    </a>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Something else here
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link disabled"
-                  href="#"
-                  tabindex="-1"
-                  aria-disabled="true"
-                >
-                  Disabled
-                </a>
-              </li>
             </ul>
             <form className="d-flex">
-              <NavLink
-                className="nav-link"
-                exact
-                to="/login"
-                style={{ textDecoration: "none" }}
-              >
-                Se connecter
-              </NavLink>
-
-              <NavLink
-                className="nav-link"
-                exact
-                to="/register"
-                style={{ textDecoration: "none" }}
-              >
-                S'inscrire
-              </NavLink>
+              {uid ? (
+                <>
+                  <p style={{ margin: "4px" }}> Bonjour {userData.username} </p>
+                  <Logout />
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <NavLink
+                    className="nav-link"
+                    exact
+                    to="/login"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Se connecter
+                  </NavLink>
+                  <NavLink
+                    className="nav-link"
+                    exact
+                    to="/register"
+                    style={{ textDecoration: "none" }}
+                  >
+                    S'inscrire
+                  </NavLink>
+                </>
+              )}
             </form>
           </div>
         </div>

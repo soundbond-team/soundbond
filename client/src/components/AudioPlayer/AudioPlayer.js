@@ -95,7 +95,7 @@ export default function AudioPlayer(props) {
   if (!isPlaying) {
     transportPlayButton = (
       <PlayArrowIcon
-        style={{ margin: "4px" }}
+        style={{ margin: "4px", cursor: "pointer" }}
         onClick={togglePlayback}
         className={classes.icon}
       />
