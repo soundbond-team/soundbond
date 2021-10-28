@@ -46,18 +46,16 @@ function MapPage() {
   ));
   return (
     <>
-      <div className="col-6">
+      <div className="container">
+        <div className="row justify-content-center">
+          {" "}
+          <Map post_points={allposts} />
+        </div>
+        <br />
         <div className="container">
           <div className="row justify-content-center">
-            {" "}
-            <Map post_points={allposts} />
-          </div>
-          <br />
-          <div className="container">
-            <div className="row justify-content-center">
-              <h2>Positions des sons les plus proches:</h2>
-              <div>{listItems}</div>
-            </div>
+            <h2>Positions des sons les plus proches:</h2>
+            <div>{listItems}</div>
           </div>
         </div>
       </div>

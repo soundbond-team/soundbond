@@ -10,6 +10,9 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 import rootReducer from "./reducers";
 import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap";
+import "bootstrap/dist/js/bootstrap.bundle";
+import "bootstrap/dist/js/bootstrap.esm";
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk, logger))

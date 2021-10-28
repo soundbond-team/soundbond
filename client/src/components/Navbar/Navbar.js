@@ -7,40 +7,127 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
 function NavigationBar() {
+  const handleClick = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand>
-          <NavLink style={{ textDecoration: "none" }} exact to="/">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container-fluid">
+          <NavLink
+            activeStyle={{ style: "none" }}
+            className="navbar-brand"
+            exact
+            to="/home"
+            style={{ textDecoration: "none" }}
+          >
             Soundbond
           </NavLink>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="mr-auto my-2 my-lg-0"
-            style={{ maxHeight: "100px" }}
-            navbarScroll
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
-            <NavLink to="/map">Map</NavLink>
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/register">Subscribe</NavLink>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <NavLink
+                  onClick={handleClick}
+                  className="nav-link"
+                  exact
+                  to="/map"
+                  style={{ textDecoration: "none" }}
+                >
+                  Map
+                </NavLink>
+              </li>
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Dropdown
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Action
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Another action
+                    </a>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Something else here
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link disabled"
+                  href="#"
+                  tabindex="-1"
+                  aria-disabled="true"
+                >
+                  Disabled
+                </a>
+              </li>
+            </ul>
+            <form className="d-flex">
+              <NavLink
+                onClick={handleClick}
+                className="nav-link"
+                exact
+                to="/login"
+                style={{ textDecoration: "none" }}
+              >
+                Se connecter
+              </NavLink>
 
-      {/* <div className="NavbarContainer">
-            <div className="NavbarLeft">
-                <span className="logo">SoundBond</span>
+              <NavLink
+                onClick={handleClick}
+                className="nav-link"
+                exact
+                to="/register"
+                style={{ textDecoration: "none" }}
+              >
+                S'inscrire
+              </NavLink>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+      {/* <div classNameName="NavbarContainer">
+            <div classNameName="NavbarLeft">
+                <span classNameName="logo">SoundBond</span>
             </div>
-            <div className="NavbarCenter">
-                <div className="searchbar">
-                    <Search className="searchIcon" />
+            <div classNameName="NavbarCenter">
+                <div classNameName="searchbar">
+                    <Search classNameName="searchIcon" />
                     <input placeholder="search for a friend or a post"
-                        className="searchInput" />
+                        classNameName="searchInput" />
                 </div>
             </div>
-            <div className="NavbarRight">
+            <div classNameName="NavbarRight">
 
 
                 {!loggedIn ?
@@ -55,20 +142,20 @@ function NavigationBar() {
                         <a href="/home">Home</a>
                         <a href="/profil" > Profil </a>
                         <a href="/map">Map</a>
-                        <div className="NavbarIcon">
-                            <div className="NavbarIconItem">
+                        <div classNameName="NavbarIcon">
+                            <div classNameName="NavbarIconItem">
                                 <Person />
-                                <span className="NavbarIconbadge">1</span>
+                                <span classNameName="NavbarIconbadge">1</span>
                             </div>
-                            <div className="NavbarIconItem">
+                            <div classNameName="NavbarIconItem">
                                 <Chat />
-                                <span className="NavbarIconbadge">1</span>
+                                <span classNameName="NavbarIconbadge">1</span>
                             </div>
-                            <div className="NavbarIconItem">
+                            <div classNameName="NavbarIconItem">
                                 <Notifications />
-                                <span className="NavbarIconbadge">1</span>
+                                <span classNameName="NavbarIconbadge">1</span>
                             </div>
-                            <img src="../../profil.jpg" alt=" " className="ProfilImg" />
+                            <img src="../../profil.jpg" alt=" " classNameName="ProfilImg" />
 
                         </div>
                     </>

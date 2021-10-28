@@ -51,7 +51,7 @@ export default function Microphone(props) {
   const lastsoundlocation = useSelector(
     (state) => state.onesoundlocationReducer
   );
-  const [description, setDescription] = useState(""); // Utilisé pour stocker le description.
+  const [description, setDescription] = useState(" "); // Utilisé pour stocker le description.
   const [record, setRecord] = useState(false);
   const [open, setOpen] = useState(false);
   const [tempFile, setTempFile] = useState(null);
@@ -227,60 +227,80 @@ export default function Microphone(props) {
             {tempFile && (
               <Grid item container justify="center" xs={12}>
                 {!isPlaying ? (
-                  <IconButton onClick={togglePlayback}>
-                    <PlayArrowIcon className={classes.icon} />
-                  </IconButton>
+                  <PlayArrowIcon
+                    onClick={togglePlayback}
+                    className={classes.icon}
+                    style={{ margin: "4px" }}
+                  />
                 ) : (
-                  <IconButton onClick={togglePlayback}>
-                    <PauseIcon className={classes.icon} />
-                  </IconButton>
+                  <PauseIcon
+                    onClick={togglePlayback}
+                    className={classes.icon}
+                    style={{ margin: "4px" }}
+                  />
                 )}
-                <IconButton onClick={stopPlayback}>
-                  <StopIcon className={classes.icon} />
-                </IconButton>
+
+                <StopIcon
+                  onClick={stopPlayback}
+                  className={classes.icon}
+                  style={{ margin: "4px" }}
+                />
               </Grid>
             )}
             <Grid item container justify="center" xs={12}>
               {!record && !tempFile && (
-                <IconButton onClick={startRecording}>
-                  <FiberManualRecordIcon
-                    style={{ color: red[500] }}
-                    className={classes.icon}
-                  />
-                </IconButton>
+                <FiberManualRecordIcon
+                  onClick={startRecording}
+                  style={{ color: red[500], margin: "4px" }}
+                  className={classes.icon}
+                />
               )}
 
               {!record && tempFile && (
-                <IconButton onClick={startRecording}>
-                  <ReplayIcon className={classes.icon} />
-                </IconButton>
+                <ReplayIcon
+                  onClick={startRecording}
+                  className={classes.icon}
+                  style={{ margin: "4px" }}
+                />
               )}
 
               {record && (
-                <IconButton onClick={stopRecording}>
-                  <StopIcon className={classes.icon} />
-                </IconButton>
+                <StopIcon
+                  onClick={stopRecording}
+                  className={classes.icon}
+                  style={{ margin: "4px" }}
+                />
               )}
 
-              <IconButton onClick={done}>
-                <DoneIcon
-                  style={tempFile && !record ? { color: green[500] } : {}}
-                  className={classes.icon}
-                />
-              </IconButton>
+              <DoneIcon
+                onClick={done}
+                style={
+                  tempFile && !record
+                    ? { color: green[500], margin: "4px" }
+                    : { margin: "4px" }
+                }
+                className={classes.icon}
+              />
 
-              <IconButton onClick={download}>
-                <DownloadIcon
-                  style={tempFile && !record ? { color: blue[500] } : {}}
-                  className={classes.icon}
-                />
-              </IconButton>
-              <IconButton onClick={handleCancel}>
-                <CancelIcon
-                  style={tempFile && !record ? { color: red[500] } : {}}
-                  className={classes.icon}
-                />
-              </IconButton>
+              <DownloadIcon
+                onClick={download}
+                style={
+                  tempFile && !record
+                    ? { color: blue[500], margin: "4px" }
+                    : { margin: "4px" }
+                }
+                className={classes.icon}
+              />
+
+              <CancelIcon
+                onClick={handleCancel}
+                style={
+                  tempFile && !record
+                    ? { color: red[500], margin: "4px" }
+                    : { margin: "4px" }
+                }
+                className={classes.icon}
+              />
             </Grid>
           </Grid>
         </DialogActions>
