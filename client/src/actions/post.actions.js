@@ -8,14 +8,14 @@ export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
 // Permet d'ajouter un post en BD
-export const post_post = (sound_id, description) => {
+export const post_post = (sound_id, description, uid) => {
   return (dispatch) => {
     return axios({
       method: "post",
       url: `http://localhost:8080/api/v1/post/`,
       data: {
         description: description,
-        publisher_user_id: 1, //TODO
+        publisher_user_id: uid, //TODO
         sound_id: sound_id,
       },
     })
@@ -36,7 +36,6 @@ export const getallPost = () => {
     return axios
       .get(`http://localhost:8080/api/v1/post/`)
       .then((res) => {
-        console.log(res.data[0].liked_by[0].username);
         dispatch({ type: GET_ALL_POST, payload: res.data });
       })
       .catch((err) => console.log(err));

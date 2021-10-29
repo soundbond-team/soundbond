@@ -21,7 +21,6 @@ function Login() {
         console.log("mdp ou username incorrect");
         setErr("Mot de passe ou username incorrect");
       } else {
-        console.log(res.data);
         window.location = "/";
       }
     });

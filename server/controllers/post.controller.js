@@ -70,7 +70,7 @@ exports.findAll = (req, res) => {
 };
 exports.getAllLike = (req, res) => {
   const id = req.params.id;
-  console.log("salut");
+
   db.Post.findAndCountAll(id)
     .then((data) => {
       data.co;
@@ -127,7 +127,7 @@ exports.findOne = (req, res) => {
 // Update a Post by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  console.log(req.body);
+
   db.Post.update(req.body, {
     where: { id: id },
   })

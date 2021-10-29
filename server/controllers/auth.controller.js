@@ -19,7 +19,7 @@ module.exports.signUp = async (req, res) => {
 
 module.exports.login = async (req, res) => {
   const { username, password } = req.body;
-  console.log(username);
+
   try {
     const user = await UserService.compare(username, password);
     if (user != null) {

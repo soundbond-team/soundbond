@@ -28,7 +28,7 @@ export default function Registration() {
       }
       else{
         history.push("/login");
-        console.log(res.data);
+        
       }
     }).catch((err)=>{
       console.log(err);

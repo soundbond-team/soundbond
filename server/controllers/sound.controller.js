@@ -18,7 +18,7 @@ exports.create = (req, res) => {
     codec: req.body.codec,
     soundlocation_id: req.body.soundlocation_id,
   };
-  console.log(sound);
+
   // Save Sound in the database
   Sound.create(sound)
     .then((data) => {

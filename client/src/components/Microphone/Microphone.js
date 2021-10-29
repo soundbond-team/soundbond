@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { TextInput } from "react-native";
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { post_soundlocation } from "../../actions/soundlocation.actions";
 import { post_sound } from "../../actions/sound.actions";
 import { post_post, getallPost } from "../../actions/post.actions";
-
+import { UidContext } from "../Appcontext";
 import "./Microphone.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +57,7 @@ export default function Microphone(props) {
   const [tempFile, setTempFile] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurfer = useRef(null);
-
+  const uid = useContext(UidContext);
   useEffect(() => {
     if (!open || (open && !tempFile)) return;
 
@@ -145,7 +145,7 @@ export default function Microphone(props) {
   const addpost = (sound_id, _description) =>
     // Poster un Post puis recupérer tous les Posts.
     new Promise((resolve, reject) => {
-      dispatch(post_post(sound_id, _description)).then(() => {
+      dispatch(post_post(sound_id, _description, uid)).then(() => {
         dispatch(getallPost());
       });
       resolve();

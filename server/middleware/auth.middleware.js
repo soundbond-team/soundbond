@@ -13,7 +13,7 @@ exports.checkUser = (req, res, next) => {
       } else {
         let user = await User.findByPk(decodedToken.id);
         res.locals.user = user;
-        console.log(res.locals.user);
+
         next();
       }
     });
@@ -24,12 +24,9 @@ exports.checkUser = (req, res, next) => {
 };
 
 exports.requireAuth = (req, res, next) => {
-  console.log("cookie:");
-  console.log(req.cookies.jwt);
-
   if (req.cookies.jwt) {
     const token = req.cookies.jwt;
-    console.log(token);
+
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
       if (err) {
         console.log(err);

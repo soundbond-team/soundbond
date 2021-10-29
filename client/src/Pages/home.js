@@ -1,5 +1,5 @@
 import "../App.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Microphone from "../components/Microphone/Microphone";
 import { useDispatch, useSelector } from "react-redux";
 import { get_soundlocation } from "../actions/soundlocation.actions";
@@ -83,6 +83,7 @@ function Home() {
                           : null
                       }
                       like_users={i.liked_by ? i.liked_by : null}
+                      publisher={i.publisher ? i.publisher : null}
                     />
                   </Grid>
                 ))

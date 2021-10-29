@@ -21,10 +21,9 @@ import { getallPost } from "../../actions/post.actions";
 import { UidContext } from "../Appcontext";
 function Post(props) {
   const faces = [];
-  const [like, setLike] = useState(props.like_users);
+
   const [liked, setLiked] = useState(false);
-  console.log(props.like_users);
-  console.log("fe");
+
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
   const [show, setShow] = useState(false);
@@ -32,16 +31,15 @@ function Post(props) {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    var found = false;
     for (var i = 0; i < props.like_users.length; i++) {
-      if (props.like_users[i].id == uid) {
-        found = true;
+      if (props.like_users[i].id === uid) {
         setLiked(true);
       } else {
         setLiked(false);
       }
     }
-  }, [props.like_users]);
+  }, [props.like_users]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const useStyles = makeStyles((theme) => ({
     card: {
       maxWidth: 600,
@@ -75,22 +73,17 @@ function Post(props) {
   }));
   const classes = useStyles();
   const pushLike = async () => {
-    if (liked == true) {
+    if (liked === true) {
       setLiked(false);
 
       await dispatch(removeLike(props.id_post, uid));
     } else {
-      await dispatch(addLike(props.id_post, uid));
       setLiked(true);
+      await dispatch(addLike(props.id_post, uid));
     }
 
-    dispatch(getallPost());
+    await dispatch(getallPost());
   };
-
-  /* useEffect(() => {
-    dispatch(getallPost());
-  }, [liked]);
-*/
 
   return (
     <>
@@ -102,7 +95,10 @@ function Post(props) {
               <ListItemAvatar>
                 <Avatar className={classes.avatar} src={faces[4]} />
               </ListItemAvatar>
-              <ListItemText primary=" Moha" secondary="@Moha · 11h ago" />
+              <ListItemText
+                primary={props.publisher.username}
+                secondary={"@".concat(props.publisher.username + " · 11h ago")}
+              />
             </ListItem>
           </List>
         </Grid>
@@ -121,7 +117,7 @@ function Post(props) {
             <span
               data-toggle="popover"
               onClick={handleShow}
-              style={{ margin: "2px 5px" }}
+              style={{ margin: "2px 5px", cursor: "pointer" }}
             >
               {props.like_users.length}{" "}
             </span>
@@ -129,8 +125,8 @@ function Post(props) {
               onClick={pushLike}
               style={
                 liked
-                  ? { color: blue[500], margin: "4px" }
-                  : { color: "grey", margin: "4px" }
+                  ? { color: blue[500], margin: "4px", cursor: "pointer" }
+                  : { color: "grey", margin: "4px", cursor: "pointer" }
               }
               className={classes.icon}
             />
