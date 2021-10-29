@@ -81,12 +81,12 @@ db.Post.belongsToMany(db.User, {
        https://sequelize.org/master/manual/assocs.html#defining-an-alias */
   through: "likes",
   as: "liked_by",
-  foreignKey: "user_id",
+  foreignKey: "post_id",
 });
 db.User.belongsToMany(db.Post, {
   through: "likes",
   as: "liked_posts",
-  foreignKey: "post_id",
+  foreignKey: "user_id",
 });
 
 /***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/

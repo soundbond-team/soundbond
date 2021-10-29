@@ -6,7 +6,7 @@ export const GET_ALL_POST = "GET_ALL_POST";
 export const ADD_POST = "ADD_POST";
 export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
-
+export const REMOVE_LIKE = "REMOVE_LIKE";
 // Permet d'ajouter un post en BD
 export const post_post = (sound_id, description) => {
   return (dispatch) => {
@@ -36,6 +36,7 @@ export const getallPost = () => {
     return axios
       .get(`http://localhost:8080/api/v1/post/`)
       .then((res) => {
+        console.log(res.data[0].liked_by[0].username);
         dispatch({ type: GET_ALL_POST, payload: res.data });
       })
       .catch((err) => console.log(err));
@@ -43,13 +44,13 @@ export const getallPost = () => {
 };
 
 // Ajoute un like en bd
-export const addLike = ({ id, like }) => {
+export const addLike = (id, user_id) => {
   return (dispatch) => {
     return axios({
-      method: "put",
-      url: `http://localhost:8080/api/v1/post/${id}`,
+      method: "post",
+      url: `http://localhost:8080/api/v1/post/like/${id}`,
       data: {
-        like: like,
+        user_id: user_id,
       },
     })
       .then((res) => {
@@ -57,6 +58,27 @@ export const addLike = ({ id, like }) => {
           dispatch({ type: ADD_LIKE, payload: res.data.errors });
         } else {
           dispatch({ type: ADD_LIKE, payload: "" });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+// Ajoute un like en bd
+export const removeLike = (id, user_id) => {
+  return (dispatch) => {
+    return axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/post/unlike/${id}`,
+      data: {
+        user_id: user_id,
+      },
+    })
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: REMOVE_LIKE, payload: res.data.errors });
+        } else {
+          dispatch({ type: REMOVE_LIKE, payload: "" });
         }
       })
       .catch((err) => console.log(err));

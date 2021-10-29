@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
@@ -9,18 +9,39 @@ import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
-
+import Modal from "react-bootstrap/Modal";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import { makeStyles } from "@material-ui/styles";
 import { addLike } from "../../actions/post.actions";
+import { removeLike } from "../../actions/post.actions";
+import { getallPost } from "../../actions/post.actions";
+import { UidContext } from "../Appcontext";
 function Post(props) {
   const faces = [];
-  const [like, setLike] = useState(props.like);
+  const [like, setLike] = useState(props.like_users);
+  const [liked, setLiked] = useState(false);
+  console.log(props.like_users);
+  console.log("fe");
   const dispatch = useDispatch();
+  const uid = useContext(UidContext);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
+  useEffect(() => {
+    var found = false;
+    for (var i = 0; i < props.like_users.length; i++) {
+      if (props.like_users[i].id == uid) {
+        found = true;
+        setLiked(true);
+      } else {
+        setLiked(false);
+      }
+    }
+  }, [props.like_users]);
   const useStyles = makeStyles((theme) => ({
     card: {
       maxWidth: 600,
@@ -54,11 +75,22 @@ function Post(props) {
   }));
   const classes = useStyles();
   const pushLike = async () => {
-    let p = like + 1;
-    setLike(p);
+    if (liked == true) {
+      setLiked(false);
 
-    dispatch(addLike({ id: props.id_post, like: like + 1 }));
+      await dispatch(removeLike(props.id_post, uid));
+    } else {
+      await dispatch(addLike(props.id_post, uid));
+      setLiked(true);
+    }
+
+    dispatch(getallPost());
   };
+
+  /* useEffect(() => {
+    dispatch(getallPost());
+  }, [liked]);
+*/
 
   return (
     <>
@@ -86,10 +118,20 @@ function Post(props) {
 
         <Grid item container justifyContent="flex-end">
           <span>
-            <span style={{ margin: "2px 5px" }}>{like} </span>
+            <span
+              data-toggle="popover"
+              onClick={handleShow}
+              style={{ margin: "2px 5px" }}
+            >
+              {props.like_users.length}{" "}
+            </span>
             <ThumbUpIcon
               onClick={pushLike}
-              style={{ color: blue[500], margin: "4px" }}
+              style={
+                liked
+                  ? { color: blue[500], margin: "4px" }
+                  : { color: "grey", margin: "4px" }
+              }
               className={classes.icon}
             />
           </span>
@@ -97,6 +139,12 @@ function Post(props) {
           <CommentIcon className={classes.icon} style={{ margin: "4px" }} />
         </Grid>
       </Card>
+
+      <Modal show={show} onHide={handleClose}>
+        {props.like_users.map((d) => (
+          <li key={d.id}>{d.username}</li>
+        ))}
+      </Modal>
     </>
   );
 }

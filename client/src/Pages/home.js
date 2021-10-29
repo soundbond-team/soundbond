@@ -9,16 +9,10 @@ import Grid from "@material-ui/core/Grid";
 import { getallPost } from "../actions/post.actions";
 
 function Home() {
-  const [allpostdata, setPost] = useState([]);
   const dispatch = useDispatch();
 
   // These, in 'state', are defined in index.js
   const allposts = useSelector((state) => state.postReducer); // On stocke tous les Posts (se mettra a jour automatiquement par rapport a letat du reducer).
-
-  //récuperer tous les posts dans la database
-  const pushPost = (allpostdata) => {
-    setPost(allpostdata);
-  };
 
   useEffect(() => {
     //Posts.shift(); // pour la map
@@ -36,7 +30,6 @@ function Home() {
   // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    pushPost(allposts);
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {
       let position = {
         lat: positiongeo.coords.latitude,
@@ -60,8 +53,8 @@ function Home() {
         <div className="container">
           {
             <Grid container direction="column-reverse" spacing={3}>
-              {allpostdata.length > 0 ? (
-                allpostdata.map((i, index) => (
+              {allposts.length > 0 ? (
+                allposts.map((i, index) => (
                   <Grid key={index} item>
                     <Post
                       //post
@@ -89,6 +82,7 @@ function Home() {
                           ? i.publishing.soundlocation.longitude
                           : null
                       }
+                      like_users={i.liked_by ? i.liked_by : null}
                     />
                   </Grid>
                 ))

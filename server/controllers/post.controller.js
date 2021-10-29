@@ -46,13 +46,16 @@ exports.findAll = (req, res) => {
           {
             model: db.SoundLocation,
             as: "soundlocation",
-            // where: { id: db.Sequelize.col("Sound.soundlocation_id") },
           },
         ],
       },
       {
         model: db.User,
         as: "publisher",
+      },
+      {
+        model: db.User,
+        as: "liked_by",
       },
     ],
   })
@@ -68,8 +71,9 @@ exports.findAll = (req, res) => {
 exports.getAllLike = (req, res) => {
   const id = req.params.id;
   console.log("salut");
-  db.Post.findByPk(id)
+  db.Post.findAndCountAll(id)
     .then((data) => {
+      data.co;
       console.log(data.like);
       let like = {
         like: data.like,
@@ -90,15 +94,23 @@ exports.findOne = (req, res) => {
   db.Post.findByPk(id, {
     include: [
       {
-        model: Sound,
+        model: db.Sound,
         as: "publishing",
 
         include: [
           {
-            model: SoundLocation,
+            model: db.SoundLocation,
             as: "soundlocation",
           },
         ],
+      },
+      {
+        model: db.User,
+        as: "publisher",
+      },
+      {
+        model: db.User,
+        as: "liked_by",
       },
     ],
   })
@@ -178,19 +190,29 @@ exports.deleteAll = (req, res) => {
     });
 };
 //like a post
-exports.like = (req, res) => {
+exports.like = async (req, res) => {
   const id = req.params.id;
-  Post.findByPk(
-    id,
-    { $push: { likes: localStorage.getItem.id_user } },
-    {
-      new: true,
+  const user_id = req.body.user_id;
+  db.Post.findByPk(id).then(async (post) => {
+    try {
+      await post.addLiked_by(user_id);
+      res.status(201).json("liked");
+    } catch (e) {
+      res.status(400).json("error");
     }
-  ).exec((err, result) => {
-    if (err) {
-      return res.status(422).json({ error: error });
-    } else {
-      res.json(result);
+  });
+};
+
+//unlike a post
+exports.unlike = async (req, res) => {
+  const id = req.params.id;
+  const user_id = req.body.user_id;
+  db.Post.findByPk(id).then(async (post) => {
+    try {
+      await post.removeLiked_by(user_id);
+      res.status(201).json("unliked");
+    } catch (e) {
+      res.status(400).json("error");
     }
   });
 };
