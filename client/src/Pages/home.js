@@ -38,7 +38,7 @@ function Home() {
       dispatch(get_soundlocation(position));
     });
     // eslint-disable-next-line
-  }, [allposts]);
+  }, []);
 
   // eslint-disable-line react-hooks/exhaustive-deps
 

@@ -11,6 +11,7 @@ import PauseIcon from "@material-ui/icons/Pause";
 import Grid from "@material-ui/core/Grid";
 import DownloadIcon from "@mui/icons-material/Download";
 import { blue } from "@material-ui/core/colors";
+import IconButton from "@material-ui/core/IconButton";
 const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 600,
@@ -94,19 +95,17 @@ export default function AudioPlayer(props) {
 
   if (!isPlaying) {
     transportPlayButton = (
-      <PlayArrowIcon
-        style={{ margin: "4px", cursor: "pointer" }}
-        onClick={togglePlayback}
-        className={classes.icon}
-      />
+      <IconButton>
+        {" "}
+        <PlayArrowIcon onClick={togglePlayback} className={classes.icon} />{" "}
+      </IconButton>
     );
   } else {
     transportPlayButton = (
-      <PauseIcon
-        style={{ margin: "4px" }}
-        className={classes.icon}
-        onClick={togglePlayback}
-      />
+      <IconButton>
+        {" "}
+        <PauseIcon className={classes.icon} onClick={togglePlayback} />{" "}
+      </IconButton>
     );
   }
 
@@ -128,21 +127,19 @@ export default function AudioPlayer(props) {
         <Grid item xs={5}>
           {transportPlayButton}
 
-          <StopIcon
-            className={classes.icon}
-            onClick={stopPlayback}
-            style={{ margin: "4px" }}
-          />
+          <IconButton>
+            {" "}
+            <StopIcon className={classes.icon} onClick={stopPlayback} />{" "}
+          </IconButton>
 
-          <DownloadIcon
-            onClick={download}
-            style={
-              props.file
-                ? { color: blue[500], margin: "4px" }
-                : { margin: "4px" }
-            }
-            className={classes.icon}
-          />
+          <IconButton>
+            {" "}
+            <DownloadIcon
+              onClick={download}
+              style={props.file ? { color: blue[500] } : {}}
+              className={classes.icon}
+            />{" "}
+          </IconButton>
 
           <p style={{ margin: "4px" }}>
             {"  Latitude: " + props.latitude}{" "}

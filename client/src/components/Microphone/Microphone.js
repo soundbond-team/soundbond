@@ -227,80 +227,84 @@ export default function Microphone(props) {
             {tempFile && (
               <Grid item container justify="center" xs={12}>
                 {!isPlaying ? (
-                  <PlayArrowIcon
-                    onClick={togglePlayback}
-                    className={classes.icon}
-                    style={{ margin: "4px" }}
-                  />
+                  <IconButton>
+                    {" "}
+                    <PlayArrowIcon
+                      onClick={togglePlayback}
+                      className={classes.icon}
+                    />
+                  </IconButton>
                 ) : (
-                  <PauseIcon
-                    onClick={togglePlayback}
-                    className={classes.icon}
-                    style={{ margin: "4px" }}
-                  />
+                  <IconButton>
+                    {" "}
+                    <PauseIcon
+                      onClick={togglePlayback}
+                      className={classes.icon}
+                    />
+                  </IconButton>
                 )}
 
-                <StopIcon
-                  onClick={stopPlayback}
-                  className={classes.icon}
-                  style={{ margin: "4px" }}
-                />
+                <IconButton>
+                  {" "}
+                  <StopIcon onClick={stopPlayback} className={classes.icon} />
+                </IconButton>
               </Grid>
             )}
             <Grid item container justify="center" xs={12}>
               {!record && !tempFile && (
-                <FiberManualRecordIcon
-                  onClick={startRecording}
-                  style={{ color: red[500], margin: "4px" }}
-                  className={classes.icon}
-                />
+                <IconButton>
+                  {" "}
+                  <FiberManualRecordIcon
+                    onClick={startRecording}
+                    style={{ color: red[500] }}
+                    className={classes.icon}
+                  />
+                </IconButton>
               )}
 
               {!record && tempFile && (
-                <ReplayIcon
-                  onClick={startRecording}
-                  className={classes.icon}
-                  style={{ margin: "4px" }}
-                />
+                <IconButton>
+                  {" "}
+                  <ReplayIcon
+                    onClick={startRecording}
+                    className={classes.icon}
+                  />
+                </IconButton>
               )}
 
               {record && (
-                <StopIcon
-                  onClick={stopRecording}
-                  className={classes.icon}
-                  style={{ margin: "4px" }}
-                />
+                <IconButton>
+                  {" "}
+                  <StopIcon onClick={stopRecording} className={classes.icon} />
+                </IconButton>
               )}
 
-              <DoneIcon
-                onClick={done}
-                style={
-                  tempFile && !record
-                    ? { color: green[500], margin: "4px" }
-                    : { margin: "4px" }
-                }
-                className={classes.icon}
-              />
+              <IconButton>
+                {" "}
+                <DoneIcon
+                  onClick={done}
+                  style={tempFile && !record ? { color: green[500] } : {}}
+                  className={classes.icon}
+                />
+              </IconButton>
 
-              <DownloadIcon
-                onClick={download}
-                style={
-                  tempFile && !record
-                    ? { color: blue[500], margin: "4px" }
-                    : { margin: "4px" }
-                }
-                className={classes.icon}
-              />
+              <IconButton>
+                {" "}
+                <DownloadIcon
+                  onClick={download}
+                  style={tempFile && !record ? { color: blue[500] } : {}}
+                  className={classes.icon}
+                />
+              </IconButton>
 
-              <CancelIcon
-                onClick={handleCancel}
-                style={
-                  tempFile && !record
-                    ? { color: red[500], margin: "4px" }
-                    : { margin: "4px" }
-                }
-                className={classes.icon}
-              />
+              <IconButton>
+                {" "}
+                <CancelIcon
+                  onClick={handleCancel}
+                  style={tempFile && !record ? { color: red[500] } : {}}
+                  className={classes.icon}
+                />
+              </IconButton>
             </Grid>
           </Grid>
         </DialogActions>

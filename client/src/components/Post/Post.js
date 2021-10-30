@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
@@ -17,13 +17,15 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import { makeStyles } from "@material-ui/styles";
 import { addLike } from "../../actions/post.actions";
 import { removeLike } from "../../actions/post.actions";
-import { getallPost } from "../../actions/post.actions";
+import ModalHeader from "react-bootstrap/ModalHeader";
 import { UidContext } from "../Appcontext";
+import IconButton from "@material-ui/core/IconButton";
 function Post(props) {
   const faces = [];
 
   const [liked, setLiked] = useState(false);
-
+  const userData = useSelector((state) => state.userReducer);
+  const postData = useSelector((state) => state.postReducer);
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
   const [show, setShow] = useState(false);
@@ -31,14 +33,20 @@ function Post(props) {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    for (var i = 0; i < props.like_users.length; i++) {
-      if (props.like_users[i].id === uid) {
+    let currentpost;
+    for (let i = 0; i < postData.length; i++) {
+      if (postData[i].id === props.id_post) {
+        currentpost = postData[i];
+      }
+    }
+    for (let i = 0; i < currentpost.liked_by.length; i++) {
+      if (currentpost.liked_by[i].id === uid) {
         setLiked(true);
       } else {
         setLiked(false);
       }
     }
-  }, [props.like_users]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const useStyles = makeStyles((theme) => ({
     card: {
@@ -76,13 +84,11 @@ function Post(props) {
     if (liked === true) {
       setLiked(false);
 
-      await dispatch(removeLike(props.id_post, uid));
+      await dispatch(removeLike(props.id_post, uid, userData));
     } else {
       setLiked(true);
-      await dispatch(addLike(props.id_post, uid));
+      await dispatch(addLike(props.id_post, uid, userData));
     }
-
-    await dispatch(getallPost());
   };
 
   return (
@@ -116,30 +122,45 @@ function Post(props) {
           <span>
             <span
               data-toggle="popover"
-              onClick={handleShow}
+              onClick={props.like_users.length > 0 ? handleShow : handleClose}
               style={{ margin: "2px 5px", cursor: "pointer" }}
             >
               {props.like_users.length}{" "}
             </span>
-            <ThumbUpIcon
-              onClick={pushLike}
-              style={
-                liked
-                  ? { color: blue[500], margin: "4px", cursor: "pointer" }
-                  : { color: "grey", margin: "4px", cursor: "pointer" }
-              }
-              className={classes.icon}
-            />
+            <IconButton>
+              <ThumbUpIcon
+                onClick={pushLike}
+                style={
+                  liked
+                    ? { color: blue[500], cursor: "pointer" }
+                    : { color: "grey", cursor: "pointer" }
+                }
+                className={classes.icon}
+              />
+            </IconButton>
           </span>
 
-          <CommentIcon className={classes.icon} style={{ margin: "4px" }} />
+          <IconButton>
+            {" "}
+            <CommentIcon className={classes.icon} />
+          </IconButton>
         </Grid>
       </Card>
 
-      <Modal show={show} onHide={handleClose}>
-        {props.like_users.map((d) => (
-          <li key={d.id}>{d.username}</li>
-        ))}
+      <Modal show={show} onHide={handleClose} size="sm" centered>
+        <ModalHeader closeButton>
+          <Modal.Title>Mentions J'aime</Modal.Title>
+        </ModalHeader>
+        <Modal.Body>
+          <div className="container">
+            {props.like_users.map((d) => (
+              <>
+                {" "}
+                <span key={d.id}>{d.username}</span> <br />
+              </>
+            ))}{" "}
+          </div>
+        </Modal.Body>
       </Modal>
     </>
   );

@@ -43,7 +43,7 @@ export const getallPost = () => {
 };
 
 // Ajoute un like en bd
-export const addLike = (id, user_id) => {
+export const addLike = (id, user_id, user_data) => {
   return (dispatch) => {
     return axios({
       method: "post",
@@ -54,9 +54,9 @@ export const addLike = (id, user_id) => {
     })
       .then((res) => {
         if (res.data.errors) {
-          dispatch({ type: ADD_LIKE, payload: res.data.errors });
-        } else {
           dispatch({ type: ADD_LIKE, payload: "" });
+        } else {
+          dispatch({ type: ADD_LIKE, payload: { id, user_data } });
         }
       })
       .catch((err) => console.log(err));
@@ -64,7 +64,7 @@ export const addLike = (id, user_id) => {
 };
 
 // Ajoute un like en bd
-export const removeLike = (id, user_id) => {
+export const removeLike = (id, user_id, user_data) => {
   return (dispatch) => {
     return axios({
       method: "post",
@@ -77,7 +77,7 @@ export const removeLike = (id, user_id) => {
         if (res.data.errors) {
           dispatch({ type: REMOVE_LIKE, payload: res.data.errors });
         } else {
-          dispatch({ type: REMOVE_LIKE, payload: "" });
+          dispatch({ type: REMOVE_LIKE, payload: { id, user_data } });
         }
       })
       .catch((err) => console.log(err));
