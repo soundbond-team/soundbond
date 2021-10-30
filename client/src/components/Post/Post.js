@@ -20,6 +20,7 @@ import { removeLike } from "../../actions/post.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { UidContext } from "../Appcontext";
 import IconButton from "@material-ui/core/IconButton";
+
 function Post(props) {
   const faces = [];
 
@@ -35,7 +36,7 @@ function Post(props) {
   useEffect(() => {
     let currentpost;
     for (let i = 0; i < postData.length; i++) {
-      if (postData[i].id === props.id_post) {
+      if (postData[i].id === props.post.id) {
         currentpost = postData[i];
       }
     }
@@ -84,10 +85,10 @@ function Post(props) {
     if (liked === true) {
       setLiked(false);
 
-      await dispatch(removeLike(props.id_post, uid, userData));
+      await dispatch(removeLike(props.post.id, uid, userData));
     } else {
       setLiked(true);
-      await dispatch(addLike(props.id_post, uid, userData));
+      await dispatch(addLike(props.post.id, uid, userData));
     }
   };
 
@@ -102,8 +103,10 @@ function Post(props) {
                 <Avatar className={classes.avatar} src={faces[4]} />
               </ListItemAvatar>
               <ListItemText
-                primary={props.publisher.username}
-                secondary={"@".concat(props.publisher.username + " · 11h ago")}
+                primary={props.post.publisher.username}
+                secondary={"@".concat(
+                  props.post.publisher.username + " · 11h ago"
+                )}
               />
             </ListItem>
           </List>
@@ -112,9 +115,9 @@ function Post(props) {
         {
           <AudioPlayer
             file={null}
-            id_son={props.id_position_son}
-            latitude={props.latitude}
-            longitude={props.longitude}
+            id_son={props.post.publishing.id}
+            latitude={props.post.publishing.soundlocation.latitude}
+            longitude={props.post.publishing.soundlocation.longitude}
           />
         }
 
@@ -122,10 +125,12 @@ function Post(props) {
           <span>
             <span
               data-toggle="popover"
-              onClick={props.like_users.length > 0 ? handleShow : handleClose}
+              onClick={
+                props.post.liked_by.length > 0 ? handleShow : handleClose
+              }
               style={{ margin: "2px 5px", cursor: "pointer" }}
             >
-              {props.like_users.length}{" "}
+              {props.post.liked_by.length}{" "}
             </span>
             <IconButton>
               <ThumbUpIcon
@@ -153,7 +158,7 @@ function Post(props) {
         </ModalHeader>
         <Modal.Body>
           <div className="container">
-            {props.like_users.map((d) => (
+            {props.post.liked_by.map((d) => (
               <>
                 {" "}
                 <span key={d.id}>{d.username}</span> <br />

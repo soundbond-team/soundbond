@@ -56,35 +56,7 @@ function Home() {
               {allposts.length > 0 ? (
                 allposts.map((i, index) => (
                   <Grid key={index} item>
-                    <Post
-                      //post
-                      id_post={i.id}
-                      like={i.like}
-                      description={i.description}
-                      //son
-                      id_son={i.publishing ? i.publishing.id : null}
-                      url={i.publishing ? i.publishing.url : null}
-                      size={i.publishing ? i.publishing.size : null}
-                      duration={i.publishing ? i.publishing.duration : null}
-                      //position
-                      id_position_son={
-                        i.publishing.soundlocation
-                          ? i.publishing.soundlocation.id
-                          : null
-                      }
-                      latitude={
-                        i.publishing.soundlocation
-                          ? i.publishing.soundlocation.latitude
-                          : null
-                      }
-                      longitude={
-                        i.publishing.soundlocation
-                          ? i.publishing.soundlocation.longitude
-                          : null
-                      }
-                      like_users={i.liked_by ? i.liked_by : null}
-                      publisher={i.publisher ? i.publisher : null}
-                    />
+                    <Post post={i} />
                   </Grid>
                 ))
               ) : (

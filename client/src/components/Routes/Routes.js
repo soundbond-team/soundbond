@@ -25,7 +25,7 @@ const routes = () => {
         <Route path="/map" exact component={MapPage} />
 
         <Redirect to="/" />
-      </Switch>
+      </Switch>{" "}
     </Router>
   );
 };
