@@ -46,6 +46,8 @@ function NavigationBar() {
                 >
                   Map
                 </NavLink>
+              </li>
+              <li className="nav-item">
                 <NavLink
                   className="nav-link"
                   exact
