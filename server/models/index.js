@@ -22,8 +22,7 @@ const initiateConnection = () => {
 
     {
       host: process.env.HOST,
-      dialect: "mysql",
-      port: 3306,
+      dialect: "mssql",
     }
   );
 };
