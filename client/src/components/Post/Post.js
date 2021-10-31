@@ -25,8 +25,10 @@ function Post(props) {
   const faces = [];
 
   const [liked, setLiked] = useState(false);
+  const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
   const postData = useSelector((state) => state.postReducer);
+
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
   const [show, setShow] = useState(false);
@@ -38,11 +40,13 @@ function Post(props) {
     for (let i = 0; i < postData.length; i++) {
       if (postData[i].id === props.post.id) {
         currentpost = postData[i];
+        break;
       }
     }
     for (let i = 0; i < currentpost.liked_by.length; i++) {
       if (currentpost.liked_by[i].id === uid) {
         setLiked(true);
+        break;
       } else {
         setLiked(false);
       }
@@ -84,10 +88,12 @@ function Post(props) {
   const pushLike = async () => {
     if (liked === true) {
       setLiked(false);
+      setNombrelike(nombrelike - 1);
 
       await dispatch(removeLike(props.post.id, uid, userData));
     } else {
       setLiked(true);
+      setNombrelike(nombrelike + 1);
       await dispatch(addLike(props.post.id, uid, userData));
     }
   };
@@ -130,11 +136,10 @@ function Post(props) {
               }
               style={{ margin: "2px 5px", cursor: "pointer" }}
             >
-              {props.post.liked_by.length}{" "}
+              {nombrelike}{" "}
             </span>
-            <IconButton>
+            <IconButton onClick={pushLike}>
               <ThumbUpIcon
-                onClick={pushLike}
                 style={
                   liked
                     ? { color: blue[500], cursor: "pointer" }
@@ -157,14 +162,11 @@ function Post(props) {
           <Modal.Title>Mentions J'aime</Modal.Title>
         </ModalHeader>
         <Modal.Body>
-          <div className="container">
-            {props.post.liked_by.map((d) => (
-              <>
-                {" "}
-                <span key={d.id}>{d.username}</span> <br />
-              </>
-            ))}{" "}
-          </div>
+          {props.post.liked_by.map((d, index) => (
+            <div key={index}>
+              <span>{d.username}</span> <br />
+            </div>
+          ))}
         </Modal.Body>
       </Modal>
     </>

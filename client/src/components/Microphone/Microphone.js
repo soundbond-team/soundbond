@@ -227,35 +227,28 @@ export default function Microphone(props) {
             {tempFile && (
               <Grid item container justify="center" xs={12}>
                 {!isPlaying ? (
-                  <IconButton>
+                  <IconButton onClick={togglePlayback}>
                     {" "}
-                    <PlayArrowIcon
-                      onClick={togglePlayback}
-                      className={classes.icon}
-                    />
+                    <PlayArrowIcon className={classes.icon} />
                   </IconButton>
                 ) : (
-                  <IconButton>
+                  <IconButton onClick={togglePlayback}>
                     {" "}
-                    <PauseIcon
-                      onClick={togglePlayback}
-                      className={classes.icon}
-                    />
+                    <PauseIcon className={classes.icon} />
                   </IconButton>
                 )}
 
-                <IconButton>
+                <IconButton onClick={stopPlayback}>
                   {" "}
-                  <StopIcon onClick={stopPlayback} className={classes.icon} />
+                  <StopIcon className={classes.icon} />
                 </IconButton>
               </Grid>
             )}
             <Grid item container justify="center" xs={12}>
               {!record && !tempFile && (
-                <IconButton>
+                <IconButton onClick={startRecording}>
                   {" "}
                   <FiberManualRecordIcon
-                    onClick={startRecording}
                     style={{ color: red[500] }}
                     className={classes.icon}
                   />
@@ -263,44 +256,38 @@ export default function Microphone(props) {
               )}
 
               {!record && tempFile && (
-                <IconButton>
+                <IconButton onClick={startRecording}>
                   {" "}
-                  <ReplayIcon
-                    onClick={startRecording}
-                    className={classes.icon}
-                  />
+                  <ReplayIcon className={classes.icon} />
                 </IconButton>
               )}
 
               {record && (
-                <IconButton>
+                <IconButton onClick={stopRecording}>
                   {" "}
-                  <StopIcon onClick={stopRecording} className={classes.icon} />
+                  <StopIcon className={classes.icon} />
                 </IconButton>
               )}
 
-              <IconButton>
+              <IconButton onClick={done}>
                 {" "}
                 <DoneIcon
-                  onClick={done}
                   style={tempFile && !record ? { color: green[500] } : {}}
                   className={classes.icon}
                 />
               </IconButton>
 
-              <IconButton>
+              <IconButton onClick={download}>
                 {" "}
                 <DownloadIcon
-                  onClick={download}
                   style={tempFile && !record ? { color: blue[500] } : {}}
                   className={classes.icon}
                 />
               </IconButton>
 
-              <IconButton>
+              <IconButton onClick={handleCancel}>
                 {" "}
                 <CancelIcon
-                  onClick={handleCancel}
                   style={tempFile && !record ? { color: red[500] } : {}}
                   className={classes.icon}
                 />

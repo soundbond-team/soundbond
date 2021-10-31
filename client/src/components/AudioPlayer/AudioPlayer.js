@@ -95,16 +95,16 @@ export default function AudioPlayer(props) {
 
   if (!isPlaying) {
     transportPlayButton = (
-      <IconButton>
+      <IconButton onClick={togglePlayback}>
         {" "}
-        <PlayArrowIcon onClick={togglePlayback} className={classes.icon} />{" "}
+        <PlayArrowIcon className={classes.icon} />{" "}
       </IconButton>
     );
   } else {
     transportPlayButton = (
-      <IconButton>
+      <IconButton onClick={togglePlayback}>
         {" "}
-        <PauseIcon className={classes.icon} onClick={togglePlayback} />{" "}
+        <PauseIcon className={classes.icon} />{" "}
       </IconButton>
     );
   }
@@ -127,15 +127,14 @@ export default function AudioPlayer(props) {
         <Grid item xs={5}>
           {transportPlayButton}
 
-          <IconButton>
+          <IconButton onClick={stopPlayback}>
             {" "}
-            <StopIcon className={classes.icon} onClick={stopPlayback} />{" "}
+            <StopIcon className={classes.icon} />{" "}
           </IconButton>
 
-          <IconButton>
+          <IconButton onClick={download}>
             {" "}
             <DownloadIcon
-              onClick={download}
               style={props.file ? { color: blue[500] } : {}}
               className={classes.icon}
             />{" "}
