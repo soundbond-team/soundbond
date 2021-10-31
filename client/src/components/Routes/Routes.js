@@ -11,6 +11,7 @@ import Nav from "../../components/Navbar/Navbar";
 import MapPage from "../../Pages/MapPage";
 import Registration from "../../Pages/Register/Register";
 import Login from "../../Pages/Login/Login";
+import Profil from "../../Pages/Profil/Profil";
 //le routing ne sert a rien tant quil nya pas une persistance pour tt les elements ( post )
 const routes = () => {
   return (
@@ -23,6 +24,7 @@ const routes = () => {
         <Route path="/register" exact component={Registration} />
         <Route path="/login" exact component={Login} />
         <Route path="/map" exact component={MapPage} />
+        <Route path="/profil" exact component={Profil}/>
 
         <Redirect to="/" />
       </Switch>{" "}
