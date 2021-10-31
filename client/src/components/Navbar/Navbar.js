@@ -46,6 +46,14 @@ function NavigationBar() {
                 >
                   Map
                 </NavLink>
+                <NavLink
+                  className="nav-link"
+                  exact
+                  to="/profil"
+                  style={{ textDecoration: "none" }}
+                >
+                  Profil
+                </NavLink>
               </li>
             </ul>
             <form className="d-flex">
