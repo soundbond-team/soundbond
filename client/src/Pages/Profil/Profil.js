@@ -50,9 +50,13 @@ function Profil(props) {
         .then((res) => {
           if (res.data != "" && res.data != null) {
             setallposts(res.data);
+          } else {
+            setallposts();
           }
         })
-        .catch((err) => {});
+        .catch((err) => {
+          setallposts();
+        });
     };
     if (currentUserdata) {
       for (let i = 0; i < currentUserdata.following.length; i++) {

@@ -20,7 +20,7 @@ import { removeLike } from "../../actions/post.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { UidContext } from "../Appcontext";
 import IconButton from "@material-ui/core/IconButton";
-
+import { NavLink } from "react-router-dom";
 function Post(props) {
   const faces = [];
 
@@ -100,14 +100,29 @@ function Post(props) {
           <List className={classes.list}>
             <ListItem alignItems="flex-start" className={classes.listItem}>
               <ListItemAvatar>
-                <Avatar className={classes.avatar} src={faces[4]} />
+                <NavLink
+                  className="nav-link"
+                  exact
+                  to={`/profil/${props.post.publisher.username}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Avatar className={classes.avatar} src={faces[4]} />
+                </NavLink>
               </ListItemAvatar>
-              <ListItemText
-                primary={props.post.publisher.username}
-                secondary={"@".concat(
-                  props.post.publisher.username + " · 11h ago"
-                )}
-              />
+              <NavLink
+                className="nav-link"
+                exact
+                to={`/profil/${props.post.publisher.username}`}
+                style={{ textDecoration: "none" }}
+              >
+                {" "}
+                <ListItemText
+                  primary={props.post.publisher.username}
+                  secondary={"@".concat(
+                    props.post.publisher.username + " · 11h ago"
+                  )}
+                />{" "}
+              </NavLink>
             </ListItem>
           </List>
         </Grid>
