@@ -4,6 +4,7 @@ import { UidContext } from "./components/Appcontext";
 import { useDispatch } from "react-redux";
 import { getallPost } from "./actions/post.actions";
 import { getUser } from "./actions/user.actions";
+import { getAllUser } from "./actions/users.actions";
 import axios from "axios";
 const App = () => {
   const [uid, setUid] = useState(null); // eslint-disable-next-line
@@ -28,6 +29,7 @@ const App = () => {
       dispatch(getUser(uid));
     }
     dispatch(getallPost);
+    dispatch(getAllUser);
   }, [uid]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <UidContext.Provider value={uid}>

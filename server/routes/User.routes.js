@@ -9,9 +9,12 @@ module.exports = (app) => {
   router.get("/logout", authCtrl.logout);
 
   //user
+  router.get("/",userCtrl.getAllUsers);
   router.get("/:id", userCtrl.userInformations);
-
   router.put("/:id", userCtrl.updateUser);
+  router.post("/follows/:idToFollow",userCtrl.followUser);
+
+  
 
   app.use("/api/v1/user", router);
 };

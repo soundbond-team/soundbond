@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         });
 
         models.like.belongsTo(models.user, {
-            foreign: 'userId',
+            foreignKey: 'userId',
             as: 'user',
         });
 

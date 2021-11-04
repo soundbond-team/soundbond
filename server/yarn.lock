@@ -3663,10 +3663,10 @@ sequelize@^4.37.10:
     validator "^10.4.0"
     wkx "^0.4.1"
 
-sequelize@^6.7.0:
-  version "6.7.0"
-  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-6.7.0.tgz#6af3149ad9b39c4bfc8b563f25e1598e2a0cf881"
-  integrity sha512-OVw3psUggqQT9kYg5Z9fja/BMdBxX/Ua3Bwx2yif5g6QuYEE4UfWq5jW6LmbacGwgK6bgZs05Q2zCkJZCDFrSA==
+sequelize@^6.9.0:
+  version "6.9.0"
+  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-6.9.0.tgz#bac253fab04beb3c7de5de9e41e359d9666aab9d"
+  integrity sha512-tFROh9T9GgyY6aTV2+aGdfVNvrppuTOo1EFln9AtV8wXJTOOr7Nan7pZum5oLy87CGWl0YeHzAwg99tz04OqNA==
   dependencies:
     debug "^4.1.1"
     dottie "^2.0.0"

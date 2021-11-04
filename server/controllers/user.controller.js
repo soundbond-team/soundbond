@@ -1,5 +1,8 @@
 const db = require("../models");
+const { Op } = require("sequelize");
+
 const User = db.User;
+const Follow = require("../models/follow");
 
 exports.userInformations = (req, res) => {
   const id = req.params.id;
@@ -13,6 +16,20 @@ exports.userInformations = (req, res) => {
         error: "Error retrieving User with id=" + id,
       });
     });
+};
+
+
+exports.getAllUsers = (req,res)=>{
+  //const currentUserId = req.params.id;
+  User.findAll({ attributes: { exclude: ["password"] } }).then((data)=>{
+    console.log(data);
+    res.send(data);
+  })
+  .catch((err)=>{
+    res.status(500).send({
+      error : " Some error occurred while retrievinf user ."
+    });
+  });
 };
 
 exports.updateUser = (req, res) => {
@@ -37,3 +54,27 @@ exports.updateUser = (req, res) => {
       });
     });
 };
+
+
+
+exports.followUser = async(req,res) => {
+    const { user_id } = req.params.idToFollow;
+    const  follower_id = req.body.followerId;
+    const user = User.findByPk(
+      user_id,
+      {
+        $push:{follows : follower_id}
+      },
+      {
+        new:true,
+      }).exec((err,result)=>{
+        if(err){
+          return res.status(422).json({error:error});
+        }else {
+          res.json(result);
+        }
+      });
+};
+
+
+

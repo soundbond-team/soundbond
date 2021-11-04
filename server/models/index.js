@@ -22,7 +22,7 @@ const initiateConnection = () => {
 
     {
       host: process.env.HOST,
-      dialect: "mssql",
+      dialect: "mysql",
     }
   );
 };
@@ -90,6 +90,21 @@ db.User.belongsToMany(db.Post, {
   as: "liked_posts",
   foreignKey: "user_id",
 });
+
+//Relation  plusieurs à plusieurs pour les users followed
+
+db.User.belongsToMany(db.User,{
+  through : "follows",
+  as : " follows",
+  foreignKey :"user_from",
+});
+
+db.User.belongsToMany(db.User,{
+  through : "follows",
+  as : " followed_by",
+  foreignKey :"user_to",
+});
+
 
 /***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/
 
