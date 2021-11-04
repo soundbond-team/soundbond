@@ -36,7 +36,8 @@ export const getallPost = () => {
     return axios
       .get(`http://localhost:8080/api/v1/post/`)
       .then((res) => {
-        dispatch({ type: GET_ALL_POST, payload: res.data });
+        let data = res.data.slice(0, 2);
+        dispatch({ type: GET_ALL_POST, payload: data });
       })
       .catch((err) => console.log(err));
   };
@@ -63,7 +64,7 @@ export const addLike = (id, user_id, user_data) => {
   };
 };
 
-// Ajoute un like en bd
+// remove un like en bd
 export const removeLike = (id, user_id, user_data) => {
   return (dispatch) => {
     return axios({

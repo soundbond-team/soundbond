@@ -24,7 +24,7 @@ const routes = () => {
         <Route path="/register" exact component={Registration} />
         <Route path="/login" exact component={Login} />
         <Route path="/map" exact component={MapPage} />
-        <Route path="/profil" exact component={Profil}/>
+        <Route path="/profil/:username" exact component={Profil} />
 
         <Redirect to="/" />
       </Switch>{" "}

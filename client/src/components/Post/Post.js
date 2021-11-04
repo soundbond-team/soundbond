@@ -27,7 +27,6 @@ function Post(props) {
   const [liked, setLiked] = useState(false);
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
-  const postData = useSelector((state) => state.postReducer);
 
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
@@ -36,13 +35,8 @@ function Post(props) {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    let currentpost;
-    for (let i = 0; i < postData.length; i++) {
-      if (postData[i].id === props.post.id) {
-        currentpost = postData[i];
-        break;
-      }
-    }
+    let currentpost = props.post;
+
     for (let i = 0; i < currentpost.liked_by.length; i++) {
       if (currentpost.liked_by[i].id === uid) {
         setLiked(true);

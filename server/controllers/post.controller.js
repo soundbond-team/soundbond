@@ -68,6 +68,44 @@ exports.findAll = (req, res) => {
       });
     });
 };
+
+// Retrieve all posts from the database.
+exports.findAll2 = (req, res) => {
+  db.Post.findAll({
+    where: {
+      publisher_user_id: req.params.id,
+    },
+    include: [
+      {
+        model: db.Sound,
+        as: "publishing",
+
+        include: [
+          {
+            model: db.SoundLocation,
+            as: "soundlocation",
+          },
+        ],
+      },
+      {
+        model: db.User,
+        as: "publisher",
+      },
+      {
+        model: db.User,
+        as: "liked_by",
+      },
+    ],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: err.message || "Some error occurred while retrieving post.",
+      });
+    });
+};
 exports.getAllLike = (req, res) => {
   const id = req.params.id;
 

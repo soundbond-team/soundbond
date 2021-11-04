@@ -26,8 +26,8 @@ const App = () => {
     token();
     if (uid) {
       dispatch(getUser(uid));
+      dispatch(getallPost());
     }
-    dispatch(getallPost);
   }, [uid]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <UidContext.Provider value={uid}>

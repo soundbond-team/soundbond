@@ -160,6 +160,7 @@ export default function Microphone(props) {
   const download = () => {
     if (tempFile) {
       const url = tempFile.blobURL;
+      console.log(tempFile.blobURL);
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", "rzqr.mp3");

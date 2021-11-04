@@ -91,6 +91,17 @@ db.User.belongsToMany(db.Post, {
   foreignKey: "user_id",
 });
 
+db.User.belongsToMany(db.User, {
+  through: "abonnement",
+  as: "follow",
+  foreignKey: "follower_id",
+});
+
+db.User.belongsToMany(db.User, {
+  through: "abonnement",
+  as: "following",
+  foreignKey: "following_id",
+});
 /***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/
 
 module.exports = db;
