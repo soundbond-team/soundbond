@@ -58,22 +58,43 @@ exports.updateUser = (req, res) => {
 
 
 exports.followUser = async(req,res) => {
-    const { user_id } = req.params.idToFollow;
+    const  user_id  = req.params.idToFollow;
     const  follower_id = req.body.followerId;
-    const user = User.findByPk(
-      user_id,
-      {
-        $push:{follows : follower_id}
-      },
-      {
-        new:true,
-      }).exec((err,result)=>{
-        if(err){
-          return res.status(422).json({error:error});
-        }else {
-          res.json(result);
+    const user =  User.findByPk(user_id);
+
+
+    //verifier l'existence du user à suivre
+
+    if (!user)
+      return res.status(404).send({ message: "User not found" });
+
+    if (user.id === follower_id)
+      return res.status(400).send({ message: "self following isn't allowed" });
+
+    //chercher un record follows entre les deux users
+
+    const follow = Follow.findOrCreate({
+      where: { [Op.and]: [{ user_to: user.id }, { user_from: follower_id }] }
+    });
+
+    //supprimer le record s'il existe 
+    //sinon ajouter le record 
+    if (follow==null || follow==undefined) {
+      Follow.create({
+        user_from: follower_id,
+        user_to: user.id
+      });
+      return res.send();
+    } else {
+      Follow.destroy({
+        where :{
+          user_from:follower_id,
         }
       });
+      
+      return res.send();
+    }
+  
 };
 
 

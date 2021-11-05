@@ -3,32 +3,22 @@ const {
   Model
 } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
-  var follow = sequelize.define(sequelize.define('follow'),{
-    
-    user_from:{
-        type: DataTypes.INTEGER,
-        references : {
-          model :'user',
-          key:'id'
-        }
-        
-    },
-
-    user_to: {
-        type : DataTypes.INTEGER,
-        references : {
-          model :'user',
-          key:'id'
-        }
-    },
-    
-      
-    
-  },{});
+class Follow extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        user_from: DataTypes.INTEGER,
+        user_to: DataTypes.INTEGER
+      },
+      {
+        sequelize,
+        tableName: "follows"
+      }
+    );
+  }
 
   
-  follow.associate=function(models) {
+  static associate(models) {
     models.user.belongsToMany(models.user,{
       through : models.follow,
       foreignKey:user_from,
@@ -52,6 +42,6 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  return follow;
+  
 }
-
+module.exports = Follow;
