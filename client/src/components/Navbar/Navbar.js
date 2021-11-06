@@ -89,59 +89,6 @@ function NavigationBar() {
           </div>
         </div>
       </nav>
-
-      {/* <div classNameName="NavbarContainer">
-            <div classNameName="NavbarLeft">
-                <span classNameName="logo">SoundBond</span>
-            </div>
-            <div classNameName="NavbarCenter">
-                <div classNameName="searchbar">
-                    <Search classNameName="searchIcon" />
-                    <input placeholder="search for a friend or a post"
-                        classNameName="searchInput" />
-                </div>
-            </div>
-            <div classNameName="NavbarRight">
-
-
-                {!loggedIn ?
-
-                    <>
-
-                        <a href="/register">Register</a>
-                        <a href="/login">Login</a>
-                    </>
-                    :
-                    <>
-                        <a href="/home">Home</a>
-                        <a href="/profil" > Profil </a>
-                        <a href="/map">Map</a>
-                        <div classNameName="NavbarIcon">
-                            <div classNameName="NavbarIconItem">
-                                <Person />
-                                <span classNameName="NavbarIconbadge">1</span>
-                            </div>
-                            <div classNameName="NavbarIconItem">
-                                <Chat />
-                                <span classNameName="NavbarIconbadge">1</span>
-                            </div>
-                            <div classNameName="NavbarIconItem">
-                                <Notifications />
-                                <span classNameName="NavbarIconbadge">1</span>
-                            </div>
-                            <img src="../../profil.jpg" alt=" " classNameName="ProfilImg" />
-
-                        </div>
-                    </>
-
-
-                }
-
-
-            </div>
-
-
-        </div>*/}
     </>
   );
 }

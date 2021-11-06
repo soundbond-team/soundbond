@@ -106,6 +106,58 @@ exports.findAll2 = (req, res) => {
       });
     });
 };
+
+exports.trend = async (req, res) => {
+  const id = req.params.id;
+  const list_suivis = await db.User.findAll({
+    include: {
+      model: db.User,
+      as: "following",
+      where: {
+        id: id,
+      },
+    },
+  });
+  let list_suivis2 = list_suivis.map((x) => x.id);
+  console.log(list_suivis2);
+  db.Post.findAll({
+    where: {
+      publisher_user_id: {
+        [Op.in]: list_suivis2,
+      },
+    },
+    include: [
+      {
+        model: db.Sound,
+        as: "publishing",
+
+        include: [
+          {
+            model: db.SoundLocation,
+            as: "soundlocation",
+          },
+        ],
+      },
+      {
+        model: db.User,
+        as: "publisher",
+      },
+      {
+        model: db.User,
+        as: "liked_by",
+      },
+    ],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: err.message || "Some error occurred while retrieving post.",
+      });
+    });
+};
+
 exports.getAllLike = (req, res) => {
   const id = req.params.id;
 

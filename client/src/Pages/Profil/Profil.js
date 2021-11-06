@@ -8,6 +8,7 @@ import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { follow } from "../../actions/user.actions";
 import { unfollow } from "../../actions/user.actions";
+import { getPostTrend } from "../../actions/post.actions";
 function Profil(props) {
   const [currentUserdata, setcurrentUserdata] = useState();
   const [allposts, setallposts] = useState();
@@ -29,7 +30,7 @@ function Profil(props) {
         url: `http://localhost:8080/api/v1/user/username/${username}`,
       })
         .then((res) => {
-          if (res.data != "" && res.data != null) {
+          if (res.data !== "" && res.data != null) {
             pushUserdata(res.data);
           } else window.location = "/";
         })
@@ -48,7 +49,7 @@ function Profil(props) {
         url: `http://localhost:8080/api/v1/post/${id}`,
       })
         .then((res) => {
-          if (res.data != "" && res.data != null) {
+          if (res.data !== "" && res.data !== null) {
             setallposts(res.data);
           } else {
             setallposts();
@@ -60,7 +61,7 @@ function Profil(props) {
     };
     if (currentUserdata) {
       for (let i = 0; i < currentUserdata.following.length; i++) {
-        if (currentUserdata.following[i].id == uid) {
+        if (currentUserdata.following[i].id === uid) {
           setFollow(true);
 
           break;
@@ -70,7 +71,8 @@ function Profil(props) {
       }
       getallCurrentPost(currentUserdata.id);
     }
-  }, [currentUserdata, props]);
+  }, [currentUserdata, props]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
   };
@@ -83,6 +85,7 @@ function Profil(props) {
       following: [userData, ...prevState.following],
     }));
     await dispatch(follow(uid, currentUserdata.id));
+    dispatch(getPostTrend(uid));
   };
   const unfollowclick = async () => {
     setFollow(false);
@@ -94,6 +97,7 @@ function Profil(props) {
       ),
     }));
     await dispatch(unfollow(uid, currentUserdata.id));
+    dispatch(getPostTrend(uid));
   };
 
   return (
@@ -158,13 +162,17 @@ function Profil(props) {
                       )}
                     </h6>
                   </div>
-                  <div>
-                    {isFollow ? (
-                      <button onClick={unfollowclick}>unFollow</button>
-                    ) : (
-                      <button onClick={followclick}>Follow</button>
-                    )}
-                  </div>
+                  {currentUserdata.id !== uid ? (
+                    <div>
+                      {isFollow ? (
+                        <button onClick={unfollowclick}>unFollow</button>
+                      ) : (
+                        <button onClick={followclick}>Follow</button>
+                      )}
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
                 </div>
               </div>
             </div>

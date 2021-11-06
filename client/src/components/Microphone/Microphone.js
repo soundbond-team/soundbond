@@ -190,10 +190,11 @@ export default function Microphone(props) {
 
   return (
     <>
-      <IconButton onClick={handleClickOpen}>
-        <MicIcon className={classes.icon} />
-      </IconButton>
-
+      <div className="container d-flex justify-content-center">
+        <IconButton onClick={handleClickOpen}>
+          <MicIcon className={classes.icon} />
+        </IconButton>
+      </div>
       <Dialog maxWidth="sm" open={open} onClose={handleCancel}>
         <DialogTitle className={classes.flex}>Enregistrer un son</DialogTitle>
         <DialogContent>

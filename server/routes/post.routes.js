@@ -27,6 +27,8 @@ module.exports = (app) => {
 
   router.post("/unlike/:id", post.unlike);
 
+  router.get("/trend/:id", post.trend);
+
   router.get("/getAllLike/:id", post.getAllLike);
 
   app.use("/api/v1/post", router);

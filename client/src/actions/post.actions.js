@@ -7,6 +7,7 @@ export const ADD_POST = "ADD_POST";
 export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
+export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
 // Permet d'ajouter un post en BD
 export const post_post = (sound_id, description, uid) => {
   return (dispatch) => {
@@ -36,8 +37,18 @@ export const getallPost = () => {
     return axios
       .get(`http://localhost:8080/api/v1/post/`)
       .then((res) => {
-        let data = res.data.slice(0, 2);
-        dispatch({ type: GET_ALL_POST, payload: data });
+        dispatch({ type: GET_ALL_POST, payload: res.data });
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const getPostTrend = (id) => {
+  return (dispatch) => {
+    return axios
+      .get(`http://localhost:8080/api/v1/post/trend/${id}`)
+      .then((res) => {
+        dispatch({ type: GET_ALL_POST_TREND, payload: res.data });
       })
       .catch((err) => console.log(err));
   };

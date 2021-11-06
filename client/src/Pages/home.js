@@ -1,38 +1,53 @@
 import "../App.css";
-
+import React, { useState } from "react";
 import Microphone from "../components/Microphone/Microphone";
-import { useSelector } from "react-redux";
 
-import Post from "../components/Post/Post";
-import Grid from "@material-ui/core/Grid";
+import Allposts from "../components/AllPosts/allposts";
+import TrendingPost from "../components/Trending/trending";
 
 function Home() {
-  // These, in 'state', are defined in index.js
-  const allposts = useSelector((state) => state.postReducer); // On stocke tous les Posts (se mettra a jour automatiquement par rapport a letat du reducer).
+  const [postTrendOrAll, setpostTrendOrAll] = useState(1);
 
   return (
     <>
-      <div className="row">
-        <div className="container">
-          <div className="row justify-content-center">
-            <Microphone pushFile={null} />
+      <div className="container">
+        <div className="row">
+          <div className="container">
+            <div className="row justify-content-center">
+              <Microphone pushFile={null} />
+            </div>
           </div>
-        </div>
-        <div className="container">
-          {
-            <Grid container direction="column-reverse" spacing={3}>
-              {allposts.length > 0 ? (
-                allposts.map((i, index) => (
-                  <Grid key={index} item>
-                    <Post post={i} />
-                  </Grid>
-                ))
-              ) : (
-                <p></p>
-              )}
-            </Grid>
-          }
-        </div>
+          <br /> <br />
+          <div className="container">
+            <div className="row d-flex justify-content-center">
+              <button
+                style={{ margin: "4px" }}
+                type="button"
+                onClick={() => setpostTrendOrAll(1)}
+                className="col-4 btn btn-dark"
+              >
+                Touts les posts
+              </button>
+              <button
+                style={{ margin: "4px" }}
+                type="button"
+                onClick={() => setpostTrendOrAll(2)}
+                className="col-4 btn btn-dark"
+              >
+                Abonnements
+              </button>
+            </div>
+          </div>
+          <br /> <br />
+          <br /> <br />
+          <br /> <br />
+          <div className="container d-flex justify-content-center">
+            {" "}
+            <div className="container">
+              {postTrendOrAll === 1 ? <Allposts /> : <TrendingPost />}
+            </div>
+          </div>
+        </div>{" "}
       </div>
     </>
   );
