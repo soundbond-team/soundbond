@@ -1,13 +1,10 @@
 import "../App.css";
-import React, { useState } from "react";
+import React from "react";
 import Microphone from "../components/Microphone/Microphone";
 
-import Allposts from "../components/AllPosts/allposts";
-import TrendingPost from "../components/Trending/trending";
+import { Link, Outlet } from "react-router-dom";
 
 function Home() {
-  const [postTrendOrAll, setpostTrendOrAll] = useState(1);
-
   return (
     <>
       <div className="container">
@@ -20,22 +17,22 @@ function Home() {
           <br /> <br />
           <div className="container">
             <div className="row d-flex justify-content-center">
-              <button
+              <Link
                 style={{ margin: "4px" }}
                 type="button"
-                onClick={() => setpostTrendOrAll(1)}
+                to="allposts"
                 className="col-4 btn btn-dark"
               >
                 Touts les posts
-              </button>
-              <button
+              </Link>
+              <Link
                 style={{ margin: "4px" }}
                 type="button"
-                onClick={() => setpostTrendOrAll(2)}
+                to="trending"
                 className="col-4 btn btn-dark"
               >
                 Abonnements
-              </button>
+              </Link>
             </div>
           </div>
           <br /> <br />
@@ -44,7 +41,7 @@ function Home() {
           <div className="container d-flex justify-content-center">
             {" "}
             <div className="container">
-              {postTrendOrAll === 1 ? <Allposts /> : <TrendingPost />}
+              <Outlet />
             </div>
           </div>
         </div>{" "}

@@ -19,7 +19,7 @@ function NavigationBar() {
             activeStyle={{ style: "none" }}
             className="navbar-brand"
             exact
-            to="/home"
+            to="/home/allposts"
             style={{ textDecoration: "none" }}
           >
             Soundbond

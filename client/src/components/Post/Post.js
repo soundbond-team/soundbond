@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -182,4 +182,4 @@ function Post(props) {
   );
 }
 
-export default withRouter(Post);
+export default Post;

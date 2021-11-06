@@ -1,9 +1,9 @@
 import React from "react";
 import {
   BrowserRouter as Router,
-  Redirect,
+  Navigate,
   Route,
-  Switch,
+  Routes,
 } from "react-router-dom";
 import Home from "../../Pages/home";
 import Share from "../../components/Share/Share";
@@ -19,19 +19,20 @@ const routes = () => {
   return (
     <Router>
       <Nav />
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/share" exact component={Share} />
-        <Route path="/home" exact component={Home} />
-        <Route path="/register" exact component={Registration} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/map" exact component={MapPage} />
-        <Route path="/profil/:username" exact component={Profil} />
-        <Route path="home/allposts" exact component={Allposts} />
-        <Route path="home/trending" exact component={TrendingPost} />
+      <Routes>
+        <Route path="/" element={<Navigate to="home/allposts" />} />
+        <Route path="/share" element={<Share />} />
+        <Route path="/home" element={<Home />}>
+          <Route path="allposts" element={<Allposts />} />
+          <Route path="trending" element={<TrendingPost />} />
+        </Route>
+        <Route path="/register" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/map" element={<MapPage />} />
+        <Route path="/profil/:username" element={<Profil />} />
 
-        <Redirect to="/" />
-      </Switch>{" "}
+        {/* <Navigate to="/" />*/}
+      </Routes>{" "}
     </Router>
   );
 };

@@ -9,7 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { follow } from "../../actions/user.actions";
 import { unfollow } from "../../actions/user.actions";
 import { getPostTrend } from "../../actions/post.actions";
+import { useParams } from "react-router-dom";
+
 function Profil(props) {
+  const params = useParams();
+  console.log(params);
   const [currentUserdata, setcurrentUserdata] = useState();
   const [allposts, setallposts] = useState();
   const [isFollow, setFollow] = useState(false);
@@ -39,8 +43,8 @@ function Profil(props) {
         });
     };
 
-    getcurrentUser(props.match.params.username);
-  }, [props]);
+    getcurrentUser(params.username); // eslint-disable-next-line
+  }, [props]); //react-hooks/exhaustive-deps  eslint-disable-next-line
 
   useEffect(() => {
     const getallCurrentPost = async (id) => {
