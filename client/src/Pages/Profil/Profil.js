@@ -126,7 +126,7 @@ function Profil(props) {
                   <h4>
                     {currentUserdata ? currentUserdata.username : <p></p>}
                   </h4>
-                  <h5>@pseudo</h5>
+
                   <div
                     style={{
                       display: "flex",
@@ -134,7 +134,6 @@ function Profil(props) {
                       width: "150%",
                     }}
                   >
-                    <h6> posts</h6>
                     <h6
                       onClick={
                         currentUserdata.following.length > 0
