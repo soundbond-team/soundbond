@@ -7,6 +7,8 @@ export const ADD_POST = "ADD_POST";
 export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
+export const ADD_COMMENT = "ADD_COMMENT";
+export const REMOVE_COMMENT = "REMOVE_COMMENT";
 
 // Ajoute un post en BD
 export const post_post = (sound_id, description, uid) => {
@@ -79,6 +81,48 @@ export const removeLike = (id, user_id, user_data) => {
           dispatch({ type: REMOVE_LIKE, payload: res.data.errors });
         } else {
           dispatch({ type: REMOVE_LIKE, payload: { id, user_data } });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+// Ajoute un commentaire en bd
+export const addComment = (post_id, user_id, comment) => {
+  return (dispatch) => {
+    return axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/post/comment/${post_id}`,
+      data: {
+        user_id: user_id,
+      },
+    })
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: ADD_COMMENT, payload: "" });
+        } else {
+          dispatch({ type: ADD_COMMENT, payload: { post_id, user_data, comment } });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+// Supprime un commentaire de la bd
+export const removeComment = (id, user_id, user_data) => {
+  return (dispatch) => {
+    return axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/post/uncomment/${id}`,
+      data: {
+        user_id: user_id,
+      },
+    })
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: REMOVE_COMMENT, payload: res.data.errors });
+        } else {
+          dispatch({ type: REMOVE_COMMENT, payload: { id, user_data } });
         }
       })
       .catch((err) => console.log(err));

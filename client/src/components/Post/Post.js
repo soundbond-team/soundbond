@@ -14,12 +14,14 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import { makeStyles } from "@material-ui/styles";
-import { addLike } from "../../actions/post.actions";
-import { removeLike } from "../../actions/post.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
-import { UidContext } from "../Appcontext";
 import IconButton from "@material-ui/core/IconButton";
+import { TextInput } from "react-native";
+
+import { makeStyles } from "@material-ui/styles";
+import { addLike, removeLike, addComment, removeComment } from "../../actions/post.actions";
+import { UidContext } from "../Appcontext";
+
 
 function Post(props) {
   const faces = [];
@@ -28,6 +30,8 @@ function Post(props) {
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
   const postData = useSelector((state) => state.postReducer);
+  const [commentaire, setCommentaire] = useState(" "); // Utilisé pour stocker un commentaire.
+
 
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
@@ -98,10 +102,20 @@ function Post(props) {
     }
   };
 
+  const add_comment = (sound_id, _description) =>
+  // Poster un Commentaire puis recupérer tous les Posts.
+  new Promise((resolve, reject) => {
+    dispatch(addComment(sound_id, _description, uid)).then(() => {
+      dispatch(getallPost());
+    });
+    resolve();
+  });
+
   return (
     <>
       <Card className={classes.card}>
-        <Grid container direction="column"></Grid>
+
+        {/* Utilisateur postant le Post. */}
         <Grid item>
           <List className={classes.list}>
             <ListItem alignItems="flex-start" className={classes.listItem}>
@@ -118,6 +132,8 @@ function Post(props) {
           </List>
         </Grid>
 
+        {/* Lecteur du Sound + SoundLocation. */}
+
         {
           <AudioPlayer
             file={null}
@@ -126,6 +142,8 @@ function Post(props) {
             longitude={props.post.publishing.soundlocation.longitude}
           />
         }
+
+        {/* Boutons like et comment. */}
 
         <Grid item container justifyContent="flex-end">
           <span>
@@ -154,6 +172,19 @@ function Post(props) {
             {" "}
             <CommentIcon className={classes.icon} />
           </IconButton>
+
+        </Grid>
+
+        {/* Commentaire. */}
+
+        <Grid item container justifyContent="center">
+          <TextInput
+            multiline={true}
+            style={{backgroundColor: "lightgray"}}
+            placeholder="Commenter"
+            onChangeText={(comment) => setCommentaire(comment)}
+            defaultValue={""}
+          />
         </Grid>
       </Card>
 
