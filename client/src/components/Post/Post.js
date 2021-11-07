@@ -103,7 +103,7 @@ function Post(props) {
   };
 
   const sendComment = async () => {
-    if (commentaire != "") {
+    if (commentaire !== "") {
       await dispatch(addComment(props.post.id, uid, commentaire));
       setCommentaire("");
     }

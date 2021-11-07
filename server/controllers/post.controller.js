@@ -218,8 +218,9 @@ exports.getAllLike = (req, res) => {
     });
 };
 
-//! Comment a post
+// Comment a post
 exports.comment = async (req, res) => {
+  //! Impossible d'avoir plus d'un commentaire associant le même couple (user, post) : https://github.com/sequelize/sequelize/issues/3493
   try {
     const post = await db.Post.findByPk(req.body.post_id);
     const user = await db.User.findByPk(req.body.user_id);
@@ -231,8 +232,31 @@ exports.comment = async (req, res) => {
   } catch (e) {
     res.status(400).json("error");
   }
+  /* Deuxième solution :
 
+  db.Post.findByPk(req.body.post_id)
+    .then((post) => {
+      if (!post) {
+        res.status(400).json("Post not found");
+      } else {
+        db.User.findByPk(req.body.user_id).then((user) => {
+        if (!user) {
+          res.status(400).json("User not found");
+        } else {
+          try {
+            await post.addCommented_by(
+              user,
+              {through: {comment: req.body.comment_text}}
+            )
+          } catch (e){
+              res.status(400).json("error");
+            }
+          }
+        })
+      }
+    })*/
 };
+
 
 //! Delete a comment from a post
 exports.uncomment = async (req, res) => {
