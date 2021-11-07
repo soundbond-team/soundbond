@@ -102,15 +102,6 @@ function Post(props) {
     }
   };
 
-  const add_comment = (sound_id, _description) =>
-  // Poster un Commentaire puis recupérer tous les Posts.
-  new Promise((resolve, reject) => {
-    dispatch(addComment(sound_id, _description, uid)).then(() => {
-      dispatch(getallPost());
-    });
-    resolve();
-  });
-
   return (
     <>
       <Card className={classes.card}>

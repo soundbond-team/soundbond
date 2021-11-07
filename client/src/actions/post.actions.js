@@ -101,7 +101,7 @@ export const addComment = (post_id, user_id, comment) => {
         if (res.data.errors) {
           dispatch({ type: ADD_COMMENT, payload: "" });
         } else {
-          dispatch({ type: ADD_COMMENT, payload: { post_id, user_data, comment } });
+          dispatch({ type: ADD_COMMENT, payload: { post_id, post_id, comment } });
         }
       })
       .catch((err) => console.log(err));

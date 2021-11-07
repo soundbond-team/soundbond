@@ -38,6 +38,7 @@ db.Sound = require("./sound")(sequelize, Sequelize);
 db.SoundLocation = require("./soundlocation")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
 db.Post = require("./post")(sequelize, Sequelize);
+db.Comments = require("./comment")(sequelize, Sequelize);
 
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 
@@ -80,7 +81,8 @@ db.Post.belongsToMany(db.User, {
   /* L'alias (as:) nous permet d'accéder aux likes d'un
        post et d'un utilisateur aver mon_post.likes ou
        mon_user.likes.
-       https://sequelize.org/master/manual/assocs.html#defining-an-alias */
+       https://sequelize.org/master/manual/assocs.html#defining-an-alias
+    La table likes sera automatiquement définie.*/
   through: "likes",
   as: "liked_by",
   foreignKey: "post_id",
@@ -97,12 +99,12 @@ db.Post.belongsToMany(db.User, {
        post et d'un utilisateur aver mon_post.likes ou
        mon_user.likes.
        https://sequelize.org/master/manual/assocs.html#defining-an-alias */
-  through: "comments",
+  through: "comment", // Utiliser la table comment pour ajouter l'attribut comment.
   as: "commented_by",
-  foreignKey: "comment_id",
+  foreignKey: "post_id",
 });
 db.User.belongsToMany(db.Post, {
-  through: "comments",
+  through: "comment",
   as: "commented_posts",
   foreignKey: "user_id",
 });

@@ -26,7 +26,7 @@ module.exports = (app) => {
   router.get("/getAllLike/:id", post.getAllLike);
 
   // Comments
-  router.post("/comment/:id", post.comment);
+  router.post("/comment/", post.comment);
   router.post("/uncomment/:id", post.uncomment);
   router.get("/getAllComments/:id", post.getAllComments);
 

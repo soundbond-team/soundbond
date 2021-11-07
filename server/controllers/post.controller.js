@@ -218,21 +218,23 @@ exports.getAllLike = (req, res) => {
     });
 };
 
-// Comment a post
+//! Comment a post
 exports.comment = async (req, res) => {
-  const id = req.params.id;
-  const user_id = req.body.user_id;
-  db.Post.findByPk(id).then(async (post) => {
-    try {
-      await post.addCommented_by(user_id);
-      res.status(201).json("commented");
-    } catch (e) {
-      res.status(400).json("error");
-    }
-  });
+  try {
+    const post = await db.Post.findByPk(req.body.post_id);
+    const user = await db.User.findByPk(req.body.user_id);
+    await post.addCommented_by(
+      user,
+      { through: {comment: req.body.comment_text}}
+    );
+    res.status(201).json("commented");
+  } catch (e) {
+    res.status(400).json("error");
+  }
+
 };
 
-// Delete a comment from a post
+//! Delete a comment from a post
 exports.uncomment = async (req, res) => {
   const id = req.params.id;
   const user_id = req.body.user_id;
@@ -246,7 +248,7 @@ exports.uncomment = async (req, res) => {
   });
 };
 
-// Get all the comments for a specific post
+//! Get all the comments for a specific post
 exports.getAllComments = (req, res) => {
   const id = req.params.id;
 
