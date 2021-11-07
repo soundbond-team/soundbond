@@ -219,7 +219,7 @@ exports.getAllLike = (req, res) => {
 };
 
 // Comment a post
-exports.like = async (req, res) => {
+exports.comment = async (req, res) => {
   const id = req.params.id;
   const user_id = req.body.user_id;
   db.Post.findByPk(id).then(async (post) => {
@@ -233,7 +233,7 @@ exports.like = async (req, res) => {
 };
 
 // Delete a comment from a post
-exports.unlike = async (req, res) => {
+exports.uncomment = async (req, res) => {
   const id = req.params.id;
   const user_id = req.body.user_id;
   db.Post.findByPk(id).then(async (post) => {
@@ -247,7 +247,7 @@ exports.unlike = async (req, res) => {
 };
 
 // Get all the comments for a specific post
-exports.getAllLike = (req, res) => {
+exports.getAllComments = (req, res) => {
   const id = req.params.id;
 
   db.Post.findAndCountAll(id)
