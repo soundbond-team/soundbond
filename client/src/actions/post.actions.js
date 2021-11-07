@@ -7,7 +7,8 @@ export const ADD_POST = "ADD_POST";
 export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
-// Permet d'ajouter un post en BD
+
+// Ajoute un post en BD
 export const post_post = (sound_id, description, uid) => {
   return (dispatch) => {
     return axios({
@@ -63,7 +64,7 @@ export const addLike = (id, user_id, user_data) => {
   };
 };
 
-// Ajoute un like en bd
+// Supprime un like de la bd
 export const removeLike = (id, user_id, user_data) => {
   return (dispatch) => {
     return axios({
