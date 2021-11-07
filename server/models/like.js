@@ -5,14 +5,14 @@ const {
 module.exports = (sequelize, DataTypes) => {
     var like = sequelize.define(sequelize.define('like'), {
         postId:{
-            type:DataTypes.INTERGER,
+            type:DataTypes.INTEGER,
             references: {
                 model: 'post',
                 key:'id'
             }
         },
         userId:{
-            type:DataTypes.INTERGER,
+            type:DataTypes.INTEGER,
             references: {
                 model: 'user',
                 key:'id'
