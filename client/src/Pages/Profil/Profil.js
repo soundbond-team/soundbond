@@ -10,7 +10,7 @@ import { follow } from "../../actions/user.actions";
 import { unfollow } from "../../actions/user.actions";
 import { getPostTrend } from "../../actions/post.actions";
 import { useParams } from "react-router-dom";
-
+// il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
 function Profil(props) {
   const params = useParams();
   console.log(params);
