@@ -91,6 +91,22 @@ db.User.belongsToMany(db.Post, {
   foreignKey: "user_id",
 });
 
+// Relation plusieurs à plusieurs pour les commentaires
+db.Post.belongsToMany(db.User, {
+  /* L'alias (as:) nous permet d'accéder aux likes d'un
+       post et d'un utilisateur aver mon_post.likes ou
+       mon_user.likes.
+       https://sequelize.org/master/manual/assocs.html#defining-an-alias */
+  through: "comments",
+  as: "commented_by",
+  foreignKey: "comment_id",
+});
+db.User.belongsToMany(db.Post, {
+  through: "comments",
+  as: "commented_posts",
+  foreignKey: "user_id",
+});
+
 /***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/
 
 module.exports = db;
