@@ -218,4 +218,50 @@ exports.getAllLike = (req, res) => {
     });
 };
 
+// Comment a post
+exports.like = async (req, res) => {
+  const id = req.params.id;
+  const user_id = req.body.user_id;
+  db.Post.findByPk(id).then(async (post) => {
+    try {
+      await post.addCommented_by(user_id);
+      res.status(201).json("commented");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+
+// Delete a comment from a post
+exports.unlike = async (req, res) => {
+  const id = req.params.id;
+  const user_id = req.body.user_id;
+  db.Post.findByPk(id).then(async (post) => {
+    try {
+      await post.removeCommented_by(user_id);
+      res.status(201).json("comment deleted");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+
+// Get all the comments for a specific post
+exports.getAllLike = (req, res) => {
+  const id = req.params.id;
+
+  db.Post.findAndCountAll(id)
+    .then((data) => {
+      let comments = {
+        comments: data.comment,
+      };
+      res.send(comments);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: "Error retrieving Comments for Post with id=" + id,
+      });
+    });
+};
+
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/

@@ -20,11 +20,15 @@ module.exports = (app) => {
   // Delete all Post
   router.delete("/", post.deleteAll);
 
+  // Likes
   router.post("/like/:id", post.like);
-
   router.post("/unlike/:id", post.unlike);
-
   router.get("/getAllLike/:id", post.getAllLike);
+
+  // Comments
+  router.post("/comment/:id", post.comment);
+  router.post("/uncomment/:id", post.uncomment);
+  router.get("/getAllComments/:id", post.getAllComments);
 
   app.use("/api/v1/post", router);
 };
