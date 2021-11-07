@@ -68,24 +68,6 @@ exports.findAll = (req, res) => {
       });
     });
 };
-exports.getAllLike = (req, res) => {
-  const id = req.params.id;
-
-  db.Post.findAndCountAll(id)
-    .then((data) => {
-      data.co;
-      console.log(data.like);
-      let like = {
-        like: data.like,
-      };
-      res.send(like);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        error: "Error retrieving Post with id=" + id,
-      });
-    });
-};
 
 // Find a single Post with an id
 exports.findOne = (req, res) => {
@@ -189,7 +171,8 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-//like a post
+
+// Like a post
 exports.like = async (req, res) => {
   const id = req.params.id;
   const user_id = req.body.user_id;
@@ -203,7 +186,7 @@ exports.like = async (req, res) => {
   });
 };
 
-//unlike a post
+// Dislike a post
 exports.unlike = async (req, res) => {
   const id = req.params.id;
   const user_id = req.body.user_id;
@@ -215,6 +198,24 @@ exports.unlike = async (req, res) => {
       res.status(400).json("error");
     }
   });
+};
+
+// Get all the likes for a specific post
+exports.getAllLike = (req, res) => {
+  const id = req.params.id;
+
+  db.Post.findAndCountAll(id)
+    .then((data) => {
+      let like = {
+        like: data.like,
+      };
+      res.send(like);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: "Error retrieving Likes for Post with id=" + id,
+      });
+    });
 };
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
