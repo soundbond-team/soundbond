@@ -30,7 +30,7 @@ function Post(props) {
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
   const postData = useSelector((state) => state.postReducer);
-  const [commentaire, setCommentaire] = useState(" "); // Utilisé pour stocker un commentaire.
+  const [commentaire, setCommentaire] = useState(""); // Utilisé pour stocker un commentaire.
 
 
   const dispatch = useDispatch();
@@ -89,16 +89,23 @@ function Post(props) {
     },
   }));
   const classes = useStyles();
+
   const pushLike = async () => {
     if (liked === true) {
       setLiked(false);
       setNombrelike(nombrelike - 1);
-
       await dispatch(removeLike(props.post.id, uid, userData));
     } else {
       setLiked(true);
       setNombrelike(nombrelike + 1);
       await dispatch(addLike(props.post.id, uid, userData));
+    }
+  };
+
+  const sendComment = async () => {
+    if (commentaire != "") {
+      await dispatch(addComment(props.post.id, uid, commentaire));
+      setCommentaire("");
     }
   };
 
@@ -175,8 +182,13 @@ function Post(props) {
             placeholder="Commenter"
             onChangeText={(comment) => setCommentaire(comment)}
             defaultValue={""}
+            value={commentaire} // nécessaire pour effacer le texte.
           />
+          <IconButton onClick={sendComment}>
+            Commenter
+          </IconButton>
         </Grid>
+        
       </Card>
 
       <Modal show={show} onHide={handleClose} size="sm" centered>

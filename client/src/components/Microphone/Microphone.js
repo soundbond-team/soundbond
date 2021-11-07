@@ -51,7 +51,7 @@ export default function Microphone(props) {
   const lastsoundlocation = useSelector(
     (state) => state.onesoundlocationReducer
   );
-  const [description, setDescription] = useState(" "); // Utilisé pour stocker la description.
+  const [description, setDescription] = useState(" "); // Utilisé pour stocker le description.
   const [record, setRecord] = useState(false);
   const [open, setOpen] = useState(false);
   const [tempFile, setTempFile] = useState(null);

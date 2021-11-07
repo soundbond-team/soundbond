@@ -92,18 +92,13 @@ export const addComment = (post_id, user_id, comment) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/post/comment/${post_id}`,
+      url: `http://localhost:8080/api/v1/post/comment/`,
       data: {
+        post_id: post_id,
         user_id: user_id,
+        comment_text: comment
       },
     })
-      .then((res) => {
-        if (res.data.errors) {
-          dispatch({ type: ADD_COMMENT, payload: "" });
-        } else {
-          dispatch({ type: ADD_COMMENT, payload: { post_id, post_id, comment } });
-        }
-      })
       .catch((err) => console.log(err));
   };
 };
