@@ -6,7 +6,6 @@ import postReducer from "./post.reducer";
 import onesoundlocationReducer from "./onesoundlocation.reducer";
 import userReducer from "./user.reducer";
 import postTrendReducer from "./postTrend.reducer";
-import commentsReducer from "./comment.reducer";
 
 export default combineReducers({
   soundlocationReducer,
@@ -15,5 +14,4 @@ export default combineReducers({
   onesoundlocationReducer,
   userReducer,
   postTrendReducer,
-  commentsReducer,
 });
