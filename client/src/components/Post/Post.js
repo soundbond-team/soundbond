@@ -8,6 +8,7 @@ import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import SendIcon from '@mui/icons-material/Send';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
 import Modal from "react-bootstrap/Modal";
@@ -35,6 +36,7 @@ function Post(props) {
   const [commentaire, setCommentaire] = useState(""); // Utilisé pour stocker un commentaire.
 
 
+  
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
 
@@ -105,11 +107,15 @@ function Post(props) {
     }
   };
 
-  const sendComment = async () => {
+  const sendAddComment = async () => {
     if (commentaire !== "") {
       await dispatch(addComment(props.post.id, uid, commentaire));
       setCommentaire("");
     }
+  };
+
+  const sendRemoveComment = async (post_id, user_id) => {
+    await dispatch(removeComment(post_id, user_id));
   };
 
   return (
@@ -189,7 +195,7 @@ function Post(props) {
               props.post.liked_by.length > 0 ? handleShowCommentsModal : handleCloseCommentsModal
             }>
             {" "}
-            <CommentIcon className={classes.icon} />
+            <CommentIcon className={classes.icon}/>
           </IconButton>
 
         </Grid>
@@ -203,7 +209,7 @@ function Post(props) {
         <Modal.Body>
           {props.post.liked_by.map((likes, index) => (
             <div key={index}>
-              <span>{likes.username}</span> <br />
+              <span>{likes.username}</span> <br/>
             </div>
           ))}
         </Modal.Body>
@@ -214,16 +220,23 @@ function Post(props) {
           <Modal.Title>Commentaires</Modal.Title>
         </ModalHeader>
         <Modal.Body>
+        {console.log(props.post.commented_by)}
           {props.post.commented_by.map((comment, index) => (
             <div key={index}>
-              <span>{comment.username} | {comment.comment.comment}</span> <br />
+              <span>{comment.username} | {comment.comment.comment}
+                <IconButton onClick={() => {
+                                      sendRemoveComment(comment.comment.post_id, comment.comment.user_id);
+                                    }}>
+                  <DeleteIcon className={classes.icon}/>
+                </IconButton>
+              </span><br/>
             </div>
           ))}
         </Modal.Body>
 
-                {/* Commentaire. */}
+        {/* Commentaire. */}
 
-                <Grid item container justifyContent="center">
+        <Grid item container justifyContent="center">
           <TextInput
             multiline={true}
             style={{backgroundColor: "lightgray"}}
@@ -232,7 +245,7 @@ function Post(props) {
             defaultValue={""}
             value={commentaire} // nécessaire pour effacer le texte.
           />
-          <IconButton onClick={sendComment}>
+          <IconButton onClick={sendAddComment}>
             <SendIcon className={classes.icon} />
           </IconButton>
         </Grid>

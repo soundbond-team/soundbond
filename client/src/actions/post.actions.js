@@ -104,6 +104,7 @@ export const removeLike = (id, user_id, user_data) => {
 
 // Ajoute un commentaire en bd
 export const addComment = (post_id, user_id, comment) => {
+  console.log(post_id, user_id, comment)
   return (dispatch) => {
     return axios({
       method: "post",
@@ -119,20 +120,21 @@ export const addComment = (post_id, user_id, comment) => {
 };
 
 // Supprime un commentaire de la bd
-export const removeComment = (id, user_id, user_data) => {
+export const removeComment = (post_id, user_id) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/post/uncomment/${id}`,
+      url: `http://localhost:8080/api/v1/post/uncomment/`,
       data: {
+        post_id: post_id,
         user_id: user_id,
       },
     })
       .then((res) => {
         if (res.data.errors) {
-          dispatch({ type: REMOVE_COMMENT, payload: res.data.errors });
+          //dispatch({ type: REMOVE_COMMENT, payload: res.data.errors });
         } else {
-          dispatch({ type: REMOVE_COMMENT, payload: { id, user_data } });
+          //dispatch({ type: REMOVE_COMMENT, payload: { id } });
         }
       })
       .catch((err) => console.log(err));
