@@ -2,21 +2,21 @@ import React from "react";
 
 import { useSelector } from "react-redux";
 
-import Post from "../Post/Post";
+import Comment from "./Comment";
 import Grid from "@material-ui/core/Grid";
 
-function Allposts() {
+function Comments() {
   // These, in 'state', are defined in index.js
-  const allposts = useSelector((state) => state.postReducer); // On stocke tous les Posts (se mettra a jour automatiquement par rapport a letat du reducer).
+  const comments = useSelector((state) => state.postReducer); // On stocke tous les Posts (se mettra a jour automatiquement par rapport a letat du reducer).
 
   return (
     <>
       {
         <Grid container direction="column-reverse" spacing={3}>
-          {allposts.length > 0 ? (
-            allposts.map((i, index) => (
+          {comments.length > 0 ? (
+            comments.map((i, index) => (
               <Grid key={index} item>
-                <Post post={i} />
+                <Comment comment={i} />
               </Grid>
             ))
           ) : (
@@ -28,4 +28,4 @@ function Allposts() {
   );
 }
 
-export default Allposts;
+export default Comments;
