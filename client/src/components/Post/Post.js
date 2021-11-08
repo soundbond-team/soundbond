@@ -36,9 +36,15 @@ function Post(props) {
 
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
+  const [showMentionJaimeModal, setShowMentionJaimeModal] = useState(false);
+  const handleCloseMentionJaimeModal = () => setShowMentionJaimeModal(false);
+  const handleShowMentionJaimeModal = () => setShowMentionJaimeModal(true);
+
+  const [showCommentsModal, setShowCommentsModal] = useState(false);
+  const handleCloseCommentsModal = () => setShowCommentsModal(false);
+  const handleShowCommentsModal = () => setShowCommentsModal(true);
+
 
   useEffect(() => {
     let currentpost = props.post;
@@ -159,7 +165,7 @@ function Post(props) {
             <span
               data-toggle="popover"
               onClick={
-                props.post.liked_by.length > 0 ? handleShow : handleClose
+                props.post.liked_by.length > 0 ? handleShowMentionJaimeModal : handleCloseMentionJaimeModal
               }
               style={{ margin: "2px 5px", cursor: "pointer" }}
             >
@@ -177,7 +183,10 @@ function Post(props) {
             </IconButton>
           </span>
 
-          <IconButton>
+          <IconButton
+            onClick={
+              props.post.liked_by.length > 0 ? handleShowCommentsModal : handleCloseCommentsModal
+            }>
             {" "}
             <CommentIcon className={classes.icon} />
           </IconButton>
@@ -202,12 +211,25 @@ function Post(props) {
         
       </Card>
 
-      <Modal show={show} onHide={handleClose} size="sm" centered>
+      <Modal show={showMentionJaimeModal} onHide={handleCloseMentionJaimeModal} size="sm" centered>
         <ModalHeader closeButton>
           <Modal.Title>Mentions J'aime</Modal.Title>
         </ModalHeader>
         <Modal.Body>
-          {props.post.liked_by.map((d, index) => (
+          {props.post.liked_by.map((comment, index) => (
+            <div key={index}>
+              <span>{comment.username} | {comment.username}</span> <br />
+            </div>
+          ))}
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showCommentsModal} onHide={handleCloseCommentsModal} size="sm" centered>
+        <ModalHeader closeButton>
+          <Modal.Title>Commentaires</Modal.Title>
+        </ModalHeader>
+        <Modal.Body>
+          {props.post.commented_by.map((d, index) => (
             <div key={index}>
               <span>{d.username}</span> <br />
             </div>
