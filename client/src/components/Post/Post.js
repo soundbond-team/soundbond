@@ -32,7 +32,6 @@ function Post(props) {
   const [liked, setLiked] = useState(false);
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
-  const postData = useSelector((state) => state.postReducer);
   const [commentaire, setCommentaire] = useState(""); // Utilisé pour stocker un commentaire.
 
 
