@@ -204,10 +204,17 @@ exports.findOne = (req, res) => {
       {
         model: db.User,
         as: "publisher",
+        attributes: ["id", "username"],
       },
       {
         model: db.User,
         as: "liked_by",
+        attributes: ["id", "username"],
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
       },
     ],
   })
