@@ -8,6 +8,8 @@ export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
+export const GET_ALL_COMMENT_FOR_SPECIFIC_POST = "GET_ALL_COMMENT_FOR_SPECIFIC_POST";
+
 // Permet d'ajouter un post en BD
 export const post_post = (sound_id, description, uid) => {
   return (dispatch) => {
@@ -91,6 +93,18 @@ export const removeLike = (id, user_id, user_data) => {
         } else {
           dispatch({ type: REMOVE_LIKE, payload: { id, user_data } });
         }
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+// Charge tous les Posts (ainsi que les données des foregn key)
+export const getallComments = (post_id) => {
+  return (dispatch) => {
+    return axios
+      .get(`http://localhost:8080/api/v1/post/${post_id}/getAllComments`)
+      .then((res) => {
+        dispatch({ type: GET_ALL_COMMENT_FOR_SPECIFIC_POST, payload: res.data });
       })
       .catch((err) => console.log(err));
   };

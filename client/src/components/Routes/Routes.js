@@ -31,6 +31,8 @@ const routes = () => {
         <Route path="/map" element={<MapPage />} />
         <Route path="/profil/:username" element={<Profil />} />
 
+        <Route path="/post/:post_id/comments" element={<Allposts />} />
+
         {/* <Navigate to="/" />*/}
       </Routes>{" "}
     </Router>
