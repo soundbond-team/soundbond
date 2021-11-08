@@ -18,7 +18,7 @@ export const post_post = (sound_id, description, uid) => {
       url: `http://localhost:8080/api/v1/post/`,
       data: {
         description: description,
-        publisher_user_id: uid, //TODO
+        publisher_user_id: uid,
         sound_id: sound_id,
       },
     })
