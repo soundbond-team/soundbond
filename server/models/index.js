@@ -99,15 +99,23 @@ db.Post.belongsToMany(db.User, {
        post et d'un utilisateur aver mon_post.likes ou
        mon_user.likes.
        https://sequelize.org/master/manual/assocs.html#defining-an-alias */
-  through: "comment", // Utiliser la table comment pour ajouter l'attribut comment.
+  through: {
+    model: "comment",
+    unique: false //? semble inutile
+  }, // Utiliser la table comment pour ajouter l'attribut comment.
   as: "commented_by",
   foreignKey: "post_id",
 });
-db.User.belongsToMany(db.Post, {
-  through: "comment",
-  as: "commented_posts",
-  foreignKey: "user_id",
-});
+db.User.belongsToMany(
+  db.Post, {
+    through: {
+      model: "comment",
+      unique: false
+    },
+    as: "commented_posts",
+    foreignKey: "user_id",
+  }
+);
 
 /***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/
 
