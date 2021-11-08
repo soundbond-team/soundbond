@@ -7,8 +7,8 @@ import Grid from "@material-ui/core/Grid";
 
 function Comments() {
   // These, in 'state', are defined in index.js
-  const comments = useSelector((state) => state.postReducer); // On stocke tous les Posts (se mettra a jour automatiquement par rapport a letat du reducer).
-
+  const comments = useSelector((state) => state.commentsReducer); // On stocke tous les Posts (se mettra a jour automatiquement par rapport a letat du reducer).
+console.log(comments);
   return (
     <>
       {

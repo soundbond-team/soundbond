@@ -385,14 +385,14 @@ exports.uncomment = async (req, res) => {
 exports.getAllComments = (req, res) => {
 
   db.Comments.findAll({
-    where: {'post_id': req.params.id}
+    where: {'post_id': req.params.post_id}
   })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        error: "Error retrieving Comments for Post with id=" + id,
+        error: "Error retrieving Comments for Post with id=" + req.params.post_id,
       });
     });
 };
