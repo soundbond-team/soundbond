@@ -216,9 +216,9 @@ function Post(props) {
           <Modal.Title>Mentions J'aime</Modal.Title>
         </ModalHeader>
         <Modal.Body>
-          {props.post.liked_by.map((comment, index) => (
+          {props.post.liked_by.map((likes, index) => (
             <div key={index}>
-              <span>{comment.username} | {comment.username}</span> <br />
+              <span>{likes.username}</span> <br />
             </div>
           ))}
         </Modal.Body>
@@ -229,9 +229,9 @@ function Post(props) {
           <Modal.Title>Commentaires</Modal.Title>
         </ModalHeader>
         <Modal.Body>
-          {props.post.commented_by.map((d, index) => (
+          {props.post.commented_by.map((comment, index) => (
             <div key={index}>
-              <span>{d.username}</span> <br />
+              <span>{comment.username} | {comment.comment.comment}</span> <br />
             </div>
           ))}
         </Modal.Body>
