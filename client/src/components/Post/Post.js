@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -23,6 +23,7 @@ import { addLike, removeLike, addComment, removeComment } from "../../actions/po
 import { UidContext } from "../Appcontext";
 
 
+import { NavLink } from "react-router-dom";
 function Post(props) {
   const faces = [];
 
@@ -40,13 +41,8 @@ function Post(props) {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    let currentpost;
-    for (let i = 0; i < postData.length; i++) {
-      if (postData[i].id === props.post.id) {
-        currentpost = postData[i];
-        break;
-      }
-    }
+    let currentpost = props.post;
+
     for (let i = 0; i < currentpost.liked_by.length; i++) {
       if (currentpost.liked_by[i].id === uid) {
         setLiked(true);
@@ -118,14 +114,29 @@ function Post(props) {
           <List className={classes.list}>
             <ListItem alignItems="flex-start" className={classes.listItem}>
               <ListItemAvatar>
-                <Avatar className={classes.avatar} src={faces[4]} />
+                <NavLink
+                  className="nav-link"
+                  exact
+                  to={`/profil/${props.post.publisher.username}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Avatar className={classes.avatar} src={faces[4]} />
+                </NavLink>
               </ListItemAvatar>
-              <ListItemText
-                primary={props.post.publisher.username}
-                secondary={"@".concat(
-                  props.post.publisher.username + " · 11h ago"
-                )}
-              />
+              <NavLink
+                className="nav-link"
+                exact
+                to={`/profil/${props.post.publisher.username}`}
+                style={{ textDecoration: "none" }}
+              >
+                {" "}
+                <ListItemText
+                  primary={props.post.publisher.username}
+                  secondary={"@".concat(
+                    props.post.publisher.username + " · 11h ago"
+                  )}
+                />{" "}
+              </NavLink>
             </ListItem>
           </List>
         </Grid>
@@ -207,4 +218,4 @@ function Post(props) {
   );
 }
 
-export default withRouter(Post);
+export default Post;

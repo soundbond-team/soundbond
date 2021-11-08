@@ -11,6 +11,11 @@ module.exports = (app) => {
   //user
   router.get("/:id", userCtrl.userInformations);
 
+  router.get("/username/:username", userCtrl.userInformations2);
+
+  router.post("/follow/:id", userCtrl.follow);
+  router.post("/unfollow/:id", userCtrl.unfollow);
+
   router.put("/:id", userCtrl.updateUser);
 
   app.use("/api/v1/user", router);

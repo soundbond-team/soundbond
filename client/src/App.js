@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Routes from "./components/Routes/Routes";
 import { UidContext } from "./components/Appcontext";
 import { useDispatch } from "react-redux";
+import { getPostTrend } from "./actions/post.actions";
 import { getallPost } from "./actions/post.actions";
 import { getUser } from "./actions/user.actions";
 import axios from "axios";
@@ -24,10 +25,11 @@ const App = () => {
         });
     };
     token();
+    dispatch(getallPost());
     if (uid) {
       dispatch(getUser(uid));
+      dispatch(getPostTrend(uid));
     }
-    dispatch(getallPost);
   }, [uid]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <UidContext.Provider value={uid}>

@@ -1,11 +1,11 @@
 import React, {useState } from "react";
 
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import axios from "axios";
 
 export default function Registration() {
  
-  const history = useHistory();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
@@ -26,7 +26,8 @@ export default function Registration() {
         setErr("Username déja utilisé (ou autre erreur)");
       }
       else{
-        history.push("/login");
+       
+        navigate('/login')
         
       }
     }).catch((err)=>{

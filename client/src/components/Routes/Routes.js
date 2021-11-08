@@ -1,9 +1,9 @@
 import React from "react";
 import {
   BrowserRouter as Router,
-  Redirect,
+  Navigate,
   Route,
-  Switch,
+  Routes,
 } from "react-router-dom";
 import Home from "../../Pages/home";
 import Share from "../../components/Share/Share";
@@ -12,22 +12,27 @@ import MapPage from "../../Pages/MapPage";
 import Registration from "../../Pages/Register/Register";
 import Login from "../../Pages/Login/Login";
 import Profil from "../../Pages/Profil/Profil";
+import Allposts from "../../components/AllPosts/allposts";
+import TrendingPost from "../../components/Trending/trending";
 //le routing ne sert a rien tant quil nya pas une persistance pour tt les elements ( post )
 const routes = () => {
   return (
     <Router>
       <Nav />
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/share" exact component={Share} />
-        <Route path="/home" exact component={Home} />
-        <Route path="/register" exact component={Registration} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/map" exact component={MapPage} />
-        <Route path="/profil" exact component={Profil}/>
+      <Routes>
+        <Route path="/" element={<Navigate to="home/allposts" />} />
+        <Route path="/share" element={<Share />} />
+        <Route path="/home" element={<Home />}>
+          <Route path="allposts" element={<Allposts />} />
+          <Route path="trending" element={<TrendingPost />} />
+        </Route>
+        <Route path="/register" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/map" element={<MapPage />} />
+        <Route path="/profil/:username" element={<Profil />} />
 
-        <Redirect to="/" />
-      </Switch>{" "}
+        {/* <Navigate to="/" />*/}
+      </Routes>{" "}
     </Router>
   );
 };

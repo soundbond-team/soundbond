@@ -8,6 +8,9 @@ module.exports = (app) => {
   // Retrieve all Post
   router.get("/", post.findAll);
 
+  // Retrieve all Post (pour un user)
+  router.get("/:id", post.findAll2);
+
   // Retrieve a single Post with id
   router.get("/:id", post.findOne);
 
@@ -23,6 +26,9 @@ module.exports = (app) => {
   // Likes
   router.post("/like/:id", post.like);
   router.post("/unlike/:id", post.unlike);
+
+  router.get("/trend/:id", post.trend);
+
   router.get("/getAllLike/:id", post.getAllLike);
 
   // Comments
