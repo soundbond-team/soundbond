@@ -14,6 +14,8 @@ import Login from "../../Pages/Login/Login";
 import Profil from "../../Pages/Profil/Profil";
 import Allposts from "../../components/AllPosts/allposts";
 import TrendingPost from "../../components/Trending/trending";
+import Comments from "../../components/Comments/Comments";
+
 //le routing ne sert a rien tant quil nya pas une persistance pour tt les elements ( post )
 const routes = () => {
   return (
@@ -31,7 +33,7 @@ const routes = () => {
         <Route path="/map" element={<MapPage />} />
         <Route path="/profil/:username" element={<Profil />} />
 
-        <Route path="/post/:post_id/comments" element={<Allposts />} />
+        <Route path="/post/:post_id/comments" element={<Comments/>} />
 
         {/* <Navigate to="/" />*/}
       </Routes>{" "}
