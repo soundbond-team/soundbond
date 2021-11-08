@@ -28,7 +28,7 @@ module.exports = (app) => {
   // Comments
   router.post("/comment/", post.comment);
   router.post("/uncomment/", post.uncomment);
-  router.get("/getAllComments/:id", post.getAllComments);
+  router.get("/:id/getAllComments/", post.getAllComments);
 
   app.use("/api/v1/post", router);
 };

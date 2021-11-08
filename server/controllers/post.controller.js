@@ -258,8 +258,9 @@ exports.comment = async (req, res) => {
 };
 
 
-//! Delete a comment from a post
+// Delete a comment from a post
 exports.uncomment = async (req, res) => {
+  /* Avec l'id d'un post et l'id d'un user, supprime le commentaire correspondant. */
   const post_id = req.body.post_id;
   const user_id = req.body.user_id;
   db.Post.findByPk(post_id).then(async (post) => {
@@ -272,16 +273,14 @@ exports.uncomment = async (req, res) => {
   });
 };
 
-//! Get all the comments for a specific post
+// Get all the comments for a specific post
 exports.getAllComments = (req, res) => {
-  const id = req.params.id;
 
-  db.Post.findAndCountAll(id)
+  db.Comments.findAll({
+    where: {'post_id': req.params.id}
+  })
     .then((data) => {
-      let comments = {
-        comments: data.comment,
-      };
-      res.send(comments);
+      res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
@@ -289,5 +288,4 @@ exports.getAllComments = (req, res) => {
       });
     });
 };
-
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
