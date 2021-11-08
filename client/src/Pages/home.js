@@ -23,7 +23,7 @@ function Home() {
                 to="allposts"
                 className="col-4 btn btn-dark"
               >
-                Touts les posts
+                Tous les posts
               </Link>
               <Link
                 style={{ margin: "4px" }}
