@@ -59,7 +59,7 @@ const classes = useStyles();
   return (
     <>
       <Card className={classes.card}>
-      {props.comments}
+      {props.posts.commented_by[0].username}
 
         {/* Commentaire. */}
 
