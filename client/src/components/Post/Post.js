@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import SendIcon from '@mui/icons-material/Send';
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
 import Modal from "react-bootstrap/Modal";
@@ -192,22 +193,6 @@ function Post(props) {
           </IconButton>
 
         </Grid>
-
-        {/* Commentaire. */}
-
-        <Grid item container justifyContent="center">
-          <TextInput
-            multiline={true}
-            style={{backgroundColor: "lightgray"}}
-            placeholder="Commenter"
-            onChangeText={(comment) => setCommentaire(comment)}
-            defaultValue={""}
-            value={commentaire} // nécessaire pour effacer le texte.
-          />
-          <IconButton onClick={sendComment}>
-            Commenter
-          </IconButton>
-        </Grid>
         
       </Card>
 
@@ -235,6 +220,23 @@ function Post(props) {
             </div>
           ))}
         </Modal.Body>
+
+                {/* Commentaire. */}
+
+                <Grid item container justifyContent="center">
+          <TextInput
+            multiline={true}
+            style={{backgroundColor: "lightgray"}}
+            placeholder="Commenter"
+            onChangeText={(comment) => setCommentaire(comment)}
+            defaultValue={""}
+            value={commentaire} // nécessaire pour effacer le texte.
+          />
+          <IconButton onClick={sendComment}>
+            <SendIcon className={classes.icon} />
+          </IconButton>
+        </Grid>
+
       </Modal>
     </>
   );
