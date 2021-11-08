@@ -57,6 +57,10 @@ exports.findAll = (req, res) => {
         model: db.User,
         as: "liked_by",
       },
+      {
+        model: db.User,
+        as: "commented_by",
+      },
     ],
   })
     .then((data) => {
