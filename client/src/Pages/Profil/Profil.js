@@ -6,8 +6,7 @@ import { UidContext } from "../../components/Appcontext";
 import Modal from "react-bootstrap/Modal";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
-import { follow } from "../../actions/user.actions";
-import { unfollow } from "../../actions/user.actions";
+import { follow, unfollow } from "../../actions/user.actions";
 import { getPostTrend } from "../../actions/post.actions";
 import { useParams } from "react-router-dom";
 // il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)

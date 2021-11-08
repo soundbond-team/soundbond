@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 function Allposts() {
   // These, in 'state', are defined in index.js
   const allposts = useSelector((state) => state.postReducer); // On stocke tous les Posts (se mettra a jour automatiquement par rapport a letat du reducer).
-
+  console.log(allposts);
   return (
     <>
       {

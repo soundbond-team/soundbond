@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import SendIcon from '@mui/icons-material/Send';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
 import Modal from "react-bootstrap/Modal";
@@ -14,12 +16,15 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import { makeStyles } from "@material-ui/styles";
-import { addLike } from "../../actions/post.actions";
-import { removeLike } from "../../actions/post.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
-import { UidContext } from "../Appcontext";
 import IconButton from "@material-ui/core/IconButton";
+import { TextInput } from "react-native";
+
+import { makeStyles } from "@material-ui/styles";
+import { addLike, removeLike, addComment, removeComment } from "../../actions/post.actions";
+import { UidContext } from "../Appcontext";
+
+
 import { NavLink } from "react-router-dom";
 function Post(props) {
   const faces = [];
@@ -27,12 +32,21 @@ function Post(props) {
   const [liked, setLiked] = useState(false);
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
+  const [commentaire, setCommentaire] = useState(""); // Utilisé pour stocker un commentaire.
 
+
+  
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
+  const [showMentionJaimeModal, setShowMentionJaimeModal] = useState(false);
+  const handleCloseMentionJaimeModal = () => setShowMentionJaimeModal(false);
+  const handleShowMentionJaimeModal = () => setShowMentionJaimeModal(true);
+
+  const [showCommentsModal, setShowCommentsModal] = useState(false);
+  const handleCloseCommentsModal = () => setShowCommentsModal(false);
+  const handleShowCommentsModal = () => setShowCommentsModal(true);
+
 
   useEffect(() => {
     let currentpost = props.post;
@@ -79,11 +93,11 @@ function Post(props) {
     },
   }));
   const classes = useStyles();
+
   const pushLike = async () => {
     if (liked === true) {
       setLiked(false);
       setNombrelike(nombrelike - 1);
-
       await dispatch(removeLike(props.post.id, uid, userData));
     } else {
       setLiked(true);
@@ -92,10 +106,22 @@ function Post(props) {
     }
   };
 
+  const sendAddComment = async () => {
+    if (commentaire !== "") {
+      await dispatch(addComment(props.post.id, uid, commentaire));
+      setCommentaire("");
+    }
+  };
+
+  const sendRemoveComment = async (post_id, user_id) => {
+    await dispatch(removeComment(post_id, user_id));
+  };
+
   return (
     <>
       <Card className={classes.card}>
-        <Grid container direction="column"></Grid>
+
+        {/* Utilisateur postant le Post. */}
         <Grid item>
           <List className={classes.list}>
             <ListItem alignItems="flex-start" className={classes.listItem}>
@@ -127,6 +153,8 @@ function Post(props) {
           </List>
         </Grid>
 
+        {/* Lecteur du Sound + SoundLocation. */}
+
         {
           <AudioPlayer
             file={null}
@@ -136,12 +164,14 @@ function Post(props) {
           />
         }
 
+        {/* Boutons like et comment. */}
+
         <Grid item container justifyContent="flex-end">
           <span>
             <span
               data-toggle="popover"
               onClick={
-                props.post.liked_by.length > 0 ? handleShow : handleClose
+                props.post.liked_by.length > 0 ? handleShowMentionJaimeModal : handleCloseMentionJaimeModal
               }
               style={{ margin: "2px 5px", cursor: "pointer" }}
             >
@@ -159,24 +189,66 @@ function Post(props) {
             </IconButton>
           </span>
 
-          <IconButton>
+          <IconButton
+            onClick={
+              props.post.liked_by.length > 0 ? handleShowCommentsModal : handleCloseCommentsModal
+            }>
             {" "}
-            <CommentIcon className={classes.icon} />
+            <CommentIcon className={classes.icon}/>
           </IconButton>
+
         </Grid>
+        
       </Card>
 
-      <Modal show={show} onHide={handleClose} size="sm" centered>
+      <Modal show={showMentionJaimeModal} onHide={handleCloseMentionJaimeModal} size="sm" centered>
         <ModalHeader closeButton>
           <Modal.Title>Mentions J'aime</Modal.Title>
         </ModalHeader>
         <Modal.Body>
-          {props.post.liked_by.map((d, index) => (
+          {props.post.liked_by.map((likes, index) => (
             <div key={index}>
-              <span>{d.username}</span> <br />
+              <span>{likes.username}</span> <br/>
             </div>
           ))}
         </Modal.Body>
+      </Modal>
+
+      <Modal show={showCommentsModal} onHide={handleCloseCommentsModal} size="sm" centered>
+        <ModalHeader closeButton>
+          <Modal.Title>Commentaires</Modal.Title>
+        </ModalHeader>
+        <Modal.Body>
+        {console.log(props.post.commented_by)}
+          {props.post.commented_by.map((comment, index) => (
+            <div key={index}>
+              <span>{comment.username} | {comment.comment.comment}
+                <IconButton onClick={() => {
+                                      sendRemoveComment(comment.comment.post_id, comment.comment.user_id);
+                                    }}>
+                  <DeleteIcon className={classes.icon}/>
+                </IconButton>
+              </span><br/>
+            </div>
+          ))}
+        </Modal.Body>
+
+        {/* Commentaire. */}
+
+        <Grid item container justifyContent="center">
+          <TextInput
+            multiline={true}
+            style={{backgroundColor: "lightgray"}}
+            placeholder="Commenter"
+            onChangeText={(comment) => setCommentaire(comment)}
+            defaultValue={""}
+            value={commentaire} // nécessaire pour effacer le texte.
+          />
+          <IconButton onClick={sendAddComment}>
+            <SendIcon className={classes.icon} />
+          </IconButton>
+        </Grid>
+
       </Modal>
     </>
   );

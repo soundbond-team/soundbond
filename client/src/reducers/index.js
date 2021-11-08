@@ -6,6 +6,7 @@ import postReducer from "./post.reducer";
 import onesoundlocationReducer from "./onesoundlocation.reducer";
 import userReducer from "./user.reducer";
 import postTrendReducer from "./postTrend.reducer";
+
 export default combineReducers({
   soundlocationReducer,
   soundReducer,
