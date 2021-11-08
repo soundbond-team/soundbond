@@ -260,9 +260,9 @@ exports.comment = async (req, res) => {
 
 //! Delete a comment from a post
 exports.uncomment = async (req, res) => {
-  const id = req.params.id;
+  const post_id = req.body.post_id;
   const user_id = req.body.user_id;
-  db.Post.findByPk(id).then(async (post) => {
+  db.Post.findByPk(post_id).then(async (post) => {
     try {
       await post.removeCommented_by(user_id);
       res.status(201).json("comment deleted");
