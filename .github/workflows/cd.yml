@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
-            - name: Writing .env config file for Development
+      - name: Writing .env config file for Development
         run: echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\n" >> .env
 
       - name: Setup Node.js environment
