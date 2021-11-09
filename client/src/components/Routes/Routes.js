@@ -11,6 +11,8 @@ import Nav from "../../components/Navbar/Navbar";
 import MapPage from "../../Pages/MapPage";
 import Registration from "../../Pages/Register/Register";
 import Login from "../../Pages/Login/Login";
+import Profile from "../../Pages/Profil/Profile";
+import UsersProfile from "../../Pages/Profil/UsersProfile";
 import Profil from "../../Pages/Profil/Profil";
 import Allposts from "../../components/AllPosts/allposts";
 import TrendingPost from "../../components/Trending/trending";

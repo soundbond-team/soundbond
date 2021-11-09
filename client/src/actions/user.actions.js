@@ -1,5 +1,4 @@
 import axios from "axios";
-
 export const GET_USER = "GET_USER";
 export const FOLLOW = "FOLLOW";
 export const UNFOLLOW = "UNFOLLOW";

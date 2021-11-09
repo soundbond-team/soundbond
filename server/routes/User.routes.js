@@ -10,6 +10,7 @@ module.exports = (app) => {
   router.get("/logout", authCtrl.logout);
 
   //user
+  router.get("/",userCtrl.getAllUsers);
   router.get("/:id", userCtrl.userInformations);
 
   // GET all Posts posted by a specific User.
@@ -21,6 +22,9 @@ module.exports = (app) => {
   router.post("/unfollow/:id", userCtrl.unfollow);
 
   router.put("/:id", userCtrl.updateUser);
+  router.post("/follows/:idToFollow",userCtrl.followUser);
+
+  
 
   app.use("/api/v1/user", router);
 };

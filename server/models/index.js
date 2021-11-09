@@ -22,7 +22,7 @@ const initiateConnection = () => {
 
     {
       host: process.env.HOST,
-      dialect: "mssql",
+      dialect: "mysql",
     }
   );
 };
@@ -31,7 +31,6 @@ const sequelize = initiateConnection();
 
 /***%%%*** Récupération de chaque modèles dans db pour une utilisation dans les autres modules ***%%%***/
 
-db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.Sound = require("./sound")(sequelize, Sequelize);
@@ -39,6 +38,7 @@ db.SoundLocation = require("./soundlocation")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
 db.Post = require("./post")(sequelize, Sequelize);
 db.Comments = require("./comment")(sequelize, Sequelize);
+
 
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 
@@ -92,6 +92,21 @@ db.User.belongsToMany(db.Post, {
   as: "liked_posts",
   foreignKey: "user_id",
 });
+
+//Relation  plusieurs à plusieurs pour les users followed
+
+db.User.belongsToMany(db.User,{
+  through : "follows",
+  as : " follows",
+  foreignKey :"user_from",
+});
+
+db.User.belongsToMany(db.User,{
+  through : "follows",
+  as : " followed_by",
+  foreignKey :"user_to",
+});
+
 
 // Relation plusieurs à plusieurs pour les commentaires
 db.Post.belongsToMany(db.User, {

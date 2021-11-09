@@ -5,6 +5,7 @@ import Routes from "./components/Routes/Routes";
 import { UidContext } from "./components/Appcontext";
 import { getPostTrend, getallPost, getallComments } from "./actions/post.actions";
 import { getUser } from "./actions/user.actions";
+import { getAllUser } from "./actions/users.actions"
 
 const App = () => {
   const [uid, setUid] = useState(null); // eslint-disable-next-line
@@ -30,6 +31,8 @@ const App = () => {
       dispatch(getUser(uid));
       dispatch(getPostTrend(uid));
     }
+    dispatch(getallPost);
+    dispatch(getAllUser);
     dispatch(getallComments(1));
 
   }, [uid]); // eslint-disable-line react-hooks/exhaustive-deps
