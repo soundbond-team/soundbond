@@ -44,7 +44,7 @@ function Profil(props) {
     };
 
     getcurrentUser(params.username); // eslint-disable-next-line
-  }, [props]); //react-hooks/exhaustive-deps  eslint-disable-next-line
+  }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
 
   useEffect(() => {
     const getallCurrentPost = async (id) => {
@@ -75,7 +75,7 @@ function Profil(props) {
       }
       getallCurrentPost(currentUserdata.id);
     }
-  }, [currentUserdata, props]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata, props, params]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
