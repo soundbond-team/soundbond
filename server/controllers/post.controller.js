@@ -343,6 +343,7 @@ exports.getAllLike = (req, res) => {
 // Comment a post
 exports.comment = async (req, res) => {
   //! Impossible d'avoir plus d'un commentaire associant le même couple (user, post) : https://github.com/sequelize/sequelize/issues/3493
+  // We insert the row, and then we look for it in the database to return it under JSON format.
   try {
     const post = await db.Post.findByPk(req.body.post_id);
     const user = await db.User.findByPk(req.body.user_id);
@@ -350,7 +351,14 @@ exports.comment = async (req, res) => {
       user,
       { through: {comment: req.body.comment_text}}
     );
-    res.status(201).json("commented");
+    db.Comments.findOne({
+      where: { post_id:req.body.post_id, user_id: req.body.user_id }
+    })
+      .then((data) => {
+        res.status(201).json(data);
+      })
+  
+    
   } catch (e) {
     res.status(400).json("error");
   }
