@@ -32,7 +32,19 @@ class Post  {
     +pub_date : Date
 }
 
-User -- Post
+class Follow{
+    +user_from : int
+    +user_to : int
+}
+
+class Like{
+    +user_id :int
+    +post_id : int 
+}
+
+
+User --> Post: <<Like>>
+User --> User: <<Follow>>
 Post -- Sound
 Sound -- SoundLocation
 Sound -- User
