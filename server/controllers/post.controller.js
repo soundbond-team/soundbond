@@ -76,11 +76,11 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Retrieve all posts from the database.
-exports.findAll2 = (req, res) => {
+// Get all Posts posted by a specific User.
+exports.allPostsByUser = (req, res) => {
   db.Post.findAll({
     where: {
-      publisher_user_id: req.params.id,
+      publisher_user_id: req.params.user_id,
     },
     include: [
       {
@@ -109,7 +109,7 @@ exports.findAll2 = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: err.message || "Some error occurred while retrieving post.",
+        error: err.message || "Some error occurred while retrieving Posts.",
       });
     });
 };

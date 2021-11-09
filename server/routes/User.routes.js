@@ -1,6 +1,7 @@
 module.exports = (app) => {
   const userCtrl = require("../controllers/user.controller");
   const authCtrl = require("../controllers/auth.controller");
+  const post = require("../controllers/post.controller");
   const router = require("express").Router();
 
   //auth
@@ -10,6 +11,9 @@ module.exports = (app) => {
 
   //user
   router.get("/:id", userCtrl.userInformations);
+
+  // GET all Posts posted by a specific User.
+  router.get("/:user_id/posts", post.allPostsByUser);
 
   router.get("/username/:username", userCtrl.userInformations2);
 
