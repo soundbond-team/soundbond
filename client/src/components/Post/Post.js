@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter,useHistory } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -7,9 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import { blue } from "@material-ui/core/colors";
+import { red, blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
 import Modal from "react-bootstrap/Modal";
+import ShareIcon from "@material-ui/icons/Share";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -98,6 +99,10 @@ function Post(props) {
     }
   };
 
+  const history = useHistory();
+
+ 
+
   return (
     <>
       <Card className={classes.card}>
@@ -119,13 +124,14 @@ function Post(props) {
         </Grid>
 
         {
-          <AudioPlayer
+          <AudioPlayer id="son"
             file={null}
             id_son={props.post.publishing.id}
             latitude={props.post.publishing.soundlocation.latitude}
             longitude={props.post.publishing.soundlocation.longitude}
           />
         }
+       
 
         <Grid item container justifyContent="flex-end">
           <span>
@@ -150,10 +156,16 @@ function Post(props) {
             </IconButton>
           </span>
 
-          <IconButton>
-            {" "}
-            <CommentIcon className={classes.icon} />
-          </IconButton>
+          <CommentIcon className={classes.icon} style={{ margin: "4px" }} />
+          
+          <span>
+            <ShareIcon
+             onclick={history.push('/share')}
+             style={{ color: red[500] }} 
+            className={classes.icon} 
+            />
+          </span>
+        
         </Grid>
       </Card>
 

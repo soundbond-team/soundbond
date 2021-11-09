@@ -31,13 +31,13 @@ const sequelize = initiateConnection();
 
 /***%%%*** Récupération de chaque modèles dans db pour une utilisation dans les autres modules ***%%%***/
 
-db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.Sound = require("./sound")(sequelize, Sequelize);
 db.SoundLocation = require("./soundlocation")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
 db.Post = require("./post")(sequelize, Sequelize);
+
 
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 

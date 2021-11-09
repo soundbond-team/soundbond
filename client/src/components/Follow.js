@@ -28,10 +28,7 @@ const Follow = (props)=>{
         <button style={{margin:"10px"}} 
             className="btn waves-effect waves-light #64b5f6 blue darken-1" 
             onClick={followHandler}
-
-        >
-        Follow
-        </button>
+        >Follow</button>
         
     </>
   )

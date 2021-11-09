@@ -27,12 +27,10 @@ function UsersProfile() {
         <div className="container">
           {
             <Grid container direction="column-reverse" spacing={3}>
-             
               {allUsers.length > 0 ? (
                 allUsers.map((i, index) => (
                   <Grid key={index} item>
                     <Profil user={i.id} username = {i.username}/>
-            
                   </Grid>
                 ))
               ) : (
