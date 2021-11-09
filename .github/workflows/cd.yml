@@ -78,12 +78,12 @@ jobs:
       - name: Generate docs
         run: |
           yarn run asciidoc
-          rm docs/asciidoc/sb.html
+          rm docs/sb.html
 
       - name: Release
         uses: ncipollo/release-action@v1
         id: create_release
         with:
-          artifacts: docs/asciidoc/sb.pdf
+          artifacts: docs/sb.pdf
           bodyFile: CHANGELOG.md
           token: ${{ secrets.GITHUB_TOKEN }}

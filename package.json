@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "asciidoc": "asciidoctor-web-pdf docs/asciidoc/sb.adoc"
+    "asciidoc": "asciidoctor-web-pdf docs/sb.adoc"
   },
   "repository": {
     "type": "git",
