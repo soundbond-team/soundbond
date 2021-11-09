@@ -51,7 +51,7 @@ Pour les cartes, nous utilisons l'API gratuite de "`MapBox`" <<mapbox>>.
 
 Partage de données avec BirdNet ?
 
-== Modélisation - v0.3
+== Modélisation - v0.5
 
 === Maquette du front 
 
