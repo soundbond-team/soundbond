@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "asciidoc": "asciidoctor-web-pdf docs/asciidoc/sb.adoc"
+    "asciidoc": "asciidoctor-web-pdf docs/sb.adoc"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,10 @@
   "dependencies": {
     "@asciidoctor/core": "^2.2.5",
     "asciidoctor-pdf": "^1.0.0-alpha.12",
+    "cookie-parser": "^1.4.5",
+    "js-cookie": "^3.0.1",
     "mysql2": "^2.3.2",
-    "react-bootstrap": "^1.6.4"
+    "react-bootstrap": "^1.6.4",
+    "react-native": "^0.66.1"
   }
 }

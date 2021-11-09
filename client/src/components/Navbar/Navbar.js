@@ -1,86 +1,94 @@
-import React /*, { useEffect, useState }*/ from "react";
+import React, { useContext } from "react";
 import "./Navbar.css";
 
 //import { Chat, Notifications, Person, Search } from "@material-ui/icons"
-import Navbar from "react-bootstrap/Navbar";
 
-import Nav from "react-bootstrap/Nav";
+import Logout from "../Logout";
+
 import { NavLink } from "react-router-dom";
+import { UidContext } from "../Appcontext";
+import { useSelector } from "react-redux";
 function NavigationBar() {
+  const uid = useContext(UidContext);
+  const userData = useSelector((state) => state.userReducer);
   return (
     <>
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand>
-          <NavLink style={{ textDecoration: "none" }} exact to="/">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container-fluid">
+          <NavLink
+            activeStyle={{ style: "none" }}
+            className="navbar-brand"
+            exact
+            to="/home/allposts"
+            style={{ textDecoration: "none" }}
+          >
             Soundbond
           </NavLink>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="mr-auto my-2 my-lg-0"
-            style={{ maxHeight: "100px" }}
-            navbarScroll
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
-            <NavLink to="/map">Map</NavLink>
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/register">Subscribe</NavLink>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-
-      {/* <div className="NavbarContainer">
-            <div className="NavbarLeft">
-                <span className="logo">SoundBond</span>
-            </div>
-            <div className="NavbarCenter">
-                <div className="searchbar">
-                    <Search className="searchIcon" />
-                    <input placeholder="search for a friend or a post"
-                        className="searchInput" />
-                </div>
-            </div>
-            <div className="NavbarRight">
-
-
-                {!loggedIn ?
-
-                    <>
-
-                        <a href="/register">Register</a>
-                        <a href="/login">Login</a>
-                    </>
-                    :
-                    <>
-                        <a href="/home">Home</a>
-                        <a href="/profil" > Profil </a>
-                        <a href="/map">Map</a>
-                        <div className="NavbarIcon">
-                            <div className="NavbarIconItem">
-                                <Person />
-                                <span className="NavbarIconbadge">1</span>
-                            </div>
-                            <div className="NavbarIconItem">
-                                <Chat />
-                                <span className="NavbarIconbadge">1</span>
-                            </div>
-                            <div className="NavbarIconItem">
-                                <Notifications />
-                                <span className="NavbarIconbadge">1</span>
-                            </div>
-                            <img src="../../profil.jpg" alt=" " className="ProfilImg" />
-
-                        </div>
-                    </>
-
-
-                }
-
-
-            </div>
-
-
-        </div>*/}
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  exact
+                  to="/map"
+                  style={{ textDecoration: "none" }}
+                >
+                  Map
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  exact
+                  to={`/profil/${userData.username}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  Profil
+                </NavLink>
+              </li>
+            </ul>
+            <form className="d-flex">
+              {uid ? (
+                <>
+                  <p style={{ margin: "4px" }}> Bonjour {userData.username} </p>
+                  <Logout />
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <NavLink
+                    className="nav-link"
+                    exact
+                    to="/login"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Se connecter
+                  </NavLink>
+                  <NavLink
+                    className="nav-link"
+                    exact
+                    to="/register"
+                    style={{ textDecoration: "none" }}
+                  >
+                    S'inscrire
+                  </NavLink>
+                </>
+              )}
+            </form>
+          </div>
+        </div>
+      </nav>
     </>
   );
 }

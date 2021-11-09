@@ -51,7 +51,7 @@ Pour les cartes, nous utilisons l'API gratuite de "`MapBox`" <<mapbox>>.
 
 Partage de données avec BirdNet ?
 
-== Modélisation - v0.3
+== Modélisation - v0.5
 
 === Maquette du front 
 
@@ -84,7 +84,22 @@ image::assets/SoundLocalisation.png[]
 
 Cette page regroupe les sons enregistés positionner sur une carte et permet à l'utilisateur de chercher un son selon sa position
 
+==== WF0.1 Commenter un post 
+image::assets/Comment_Post.png[]
 
+L’utilisateur souhaite laisser un commentaire sur un post
+
+Scénarios : 
+
+L’utilisateur est connecté et a choisi un post de son fil ou sur son profil 
+
+L’utilisateur clique sur l’icône :speech_balloon:  et une section de commentaire est affichée lui permettant d’ajouter son commentaire ou lire les commentaires des autres  
+
+==== WF0.1 Follow user
+image::assets/follow_unfollow.png[]
+L’utilisateur connecté souhaite s’abonner à un ou plusieurs autres utilisateurs.
+
+Pour cela il ouvrira la page utilisateurs dans laquelle on affichera tous les utilisateurs de la plateforme avec des boutons follow/unfollow à gauche de chaque profil 
 
 === Diagramme de classes global
 

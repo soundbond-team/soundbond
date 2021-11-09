@@ -1,9 +1,8 @@
 # CHANGELOG
 ### Changements notables :bell:
-- Une nouvelle page d'accueil avec plus de couleurs
-- Une navbar qui va vous faciliter la navigation sur le site
+- Une page profil avec d'un côté tous les posts publiés et les posts publiés par les abonnements
+- Vous ne pouvez que liker une seule fois un post et pouvez maintenant voir la liste des personnes qui ont likés
 
 ### Nouvelles fonctionnalités :heavy_check_mark:
-- Une authentification en tant qu'utilisateur; vous pouvez maintenant liker des posts en tant que vous !
-- Vous pouvez maintenant télécharger le son juste avant de le publier
-- La possibilité d'écrire une description dans votre post. Vous pouvez ensuite la retrouver en cliquant sur le lieu du son sur la carte mise à disposition.
+- La possibilité de vous abonner à d'autres utilisateurs
+- Une page Profil sur laquelle vous pouvez voir vos propres posts, la liste de vos abonnements ainsi que la liste des abonnés

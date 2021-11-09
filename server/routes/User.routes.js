@@ -1,23 +1,22 @@
-
-
-
 module.exports = (app) => {
-    const userCtrl = require('../controllers/user.controller');
-    const db = require("../models");
-    const router = require("express").Router();
+  const userCtrl = require("../controllers/user.controller");
+  const authCtrl = require("../controllers/auth.controller");
+  const router = require("express").Router();
 
+  //auth
+  router.post("/register", authCtrl.signUp);
+  router.post("/login", authCtrl.login);
+  router.get("/logout", authCtrl.logout);
 
-    router.post('/register', userCtrl.signup);
-    router.post('/login', userCtrl.login);  
+  //user
+  router.get("/:id", userCtrl.userInformations);
 
+  router.get("/username/:username", userCtrl.userInformations2);
 
-    app.use("/user",router);
+  router.post("/follow/:id", userCtrl.follow);
+  router.post("/unfollow/:id", userCtrl.unfollow);
+
+  router.put("/:id", userCtrl.updateUser);
+
+  app.use("/api/v1/user", router);
 };
-
-
-
-
-
-
-
- 

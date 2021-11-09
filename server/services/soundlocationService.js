@@ -47,7 +47,7 @@ function nearestPosition(localisation, positions) {
   for (i = 1; i < 3; i++) {
     nearestPositions.push(x[i].id);
   }
-  console.log(nearestPositions);
+
   return nearestPositions;
 }
 module.exports = { nearestPosition, distance };

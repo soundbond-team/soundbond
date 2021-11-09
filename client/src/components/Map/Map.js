@@ -48,14 +48,11 @@ const Map = ({ post_points }) => {
             ", " +
             post_points[key].publishing.soundlocation.longitude,
           description: post_points[key].description,
-          publisher_name:
-            post_points[key].publisher.first_name +
-            " " +
-            post_points[key].publisher.last_name,
+          publisher_name: post_points[key].publisher.username,
         },
       });
     });
-    console.log(geojson);
+
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/streets-v11",
@@ -85,7 +82,7 @@ const Map = ({ post_points }) => {
     for (const { geometry, properties } of geojson.features) {
       // create a HTML element for each feature
       const el = document.createElement("div");
-      el.className = "marker";
+      el.className = "marker ";
 
       // make a marker for each feature and add it to the map
       new mapboxgl.Marker(el)

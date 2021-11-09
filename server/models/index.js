@@ -14,10 +14,12 @@ const initiateConnection = () => {
   if (process.env.ENV == "tests") {
     return new Sequelize("sqlite:./database.sqlite");
   }
+
   return new Sequelize(
     process.env.DATABASE,
     process.env.USERNAME,
     process.env.PASSWORD,
+
     {
       host: process.env.HOST,
       dialect: "mssql",
@@ -81,14 +83,25 @@ db.Post.belongsToMany(db.User, {
        https://sequelize.org/master/manual/assocs.html#defining-an-alias */
   through: "likes",
   as: "liked_by",
-  foreignKey: "user_id",
+  foreignKey: "post_id",
 });
 db.User.belongsToMany(db.Post, {
   through: "likes",
   as: "liked_posts",
-  foreignKey: "post_id",
+  foreignKey: "user_id",
 });
 
+db.User.belongsToMany(db.User, {
+  through: "abonnement",
+  as: "follow",
+  foreignKey: "follower_id",
+});
+
+db.User.belongsToMany(db.User, {
+  through: "abonnement",
+  as: "following",
+  foreignKey: "following_id",
+});
 /***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/
 
 module.exports = db;

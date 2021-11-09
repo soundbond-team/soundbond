@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 import { makeStyles } from "@material-ui/styles";
 
-import IconButton from "@material-ui/core/IconButton";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import StopIcon from "@material-ui/icons/Stop";
 
@@ -12,6 +11,7 @@ import PauseIcon from "@material-ui/icons/Pause";
 import Grid from "@material-ui/core/Grid";
 import DownloadIcon from "@mui/icons-material/Download";
 import { blue } from "@material-ui/core/colors";
+import IconButton from "@material-ui/core/IconButton";
 const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 600,
@@ -96,13 +96,15 @@ export default function AudioPlayer(props) {
   if (!isPlaying) {
     transportPlayButton = (
       <IconButton onClick={togglePlayback}>
-        <PlayArrowIcon className={classes.icon} />
+        {" "}
+        <PlayArrowIcon className={classes.icon} />{" "}
       </IconButton>
     );
   } else {
     transportPlayButton = (
       <IconButton onClick={togglePlayback}>
-        <PauseIcon className={classes.icon} />
+        {" "}
+        <PauseIcon className={classes.icon} />{" "}
       </IconButton>
     );
   }
@@ -124,17 +126,21 @@ export default function AudioPlayer(props) {
       <Grid item container className={classes.buttons}>
         <Grid item xs={5}>
           {transportPlayButton}
+
           <IconButton onClick={stopPlayback}>
-            <StopIcon className={classes.icon} />
+            {" "}
+            <StopIcon className={classes.icon} />{" "}
           </IconButton>
+
           <IconButton onClick={download}>
+            {" "}
             <DownloadIcon
               style={props.file ? { color: blue[500] } : {}}
               className={classes.icon}
-            />
+            />{" "}
           </IconButton>
 
-          <p>
+          <p style={{ margin: "4px" }}>
             {"  Latitude: " + props.latitude}{" "}
             {" / Longitude: " + props.longitude}{" "}
           </p>

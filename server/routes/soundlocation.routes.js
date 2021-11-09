@@ -1,7 +1,7 @@
 module.exports = (app) => {
   const soundlocation = require("../controllers/soundlocation.controller");
-  const db = require("../models");
-  var router = require("express").Router();
+
+  const router = require("express").Router();
 
   // Create a new Sound
   router.post("/", soundlocation.create);
