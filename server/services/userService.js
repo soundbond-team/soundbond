@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../models");
 const User = db.User;
+
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 async function crypt(password) {
