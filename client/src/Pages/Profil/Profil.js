@@ -61,7 +61,7 @@ function Profil(props) {
         }
       }
     }
-  }, [currentUserdata, props, params]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
@@ -120,13 +120,7 @@ function Profil(props) {
                       width: "150%",
                     }}
                   >
-                    <h6
-                      onClick={
-                        currentUserdata.following.length > 0
-                          ? handleShow2
-                          : handleClose2
-                      }
-                    >
+                    <h6 onClick={handleShow2}>
                       {" "}
                       Abonnements :
                       {currentUserdata.follow.length > 0 ? (
@@ -135,13 +129,7 @@ function Profil(props) {
                         <span>0</span>
                       )}
                     </h6>
-                    <h6
-                      onClick={
-                        currentUserdata.following.length > 0
-                          ? handleShow
-                          : handleClose
-                      }
-                    >
+                    <h6 onClick={handleShow}>
                       {" "}
                       Abonnés :
                       {currentUserdata.following.length > 0 ? (
