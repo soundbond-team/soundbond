@@ -8,6 +8,7 @@ export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
+export const POST_USER = "POST_USER";
 // Permet d'ajouter un post en BD
 export const post_post = (sound_id, description, uid) => {
   return (dispatch) => {
@@ -94,5 +95,20 @@ export const removeLike = (id, user_id, user_data) => {
         }
       })
       .catch((err) => console.log(err));
+  };
+};
+
+export const getPostsUser = (id) => {
+  return (dispatch) => {
+    return axios({
+      method: "get",
+      url: `http://localhost:8080/api/v1/post/${id}`,
+    })
+      .then((res) => {
+        if (res.data !== "" && res.data !== null) {
+          dispatch({ type: POST_USER, payload: res.data });
+        }
+      })
+      .catch((err) => {});
   };
 };

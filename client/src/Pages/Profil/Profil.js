@@ -10,13 +10,14 @@ import { follow } from "../../actions/user.actions";
 import { unfollow } from "../../actions/user.actions";
 import { getPostTrend } from "../../actions/post.actions";
 import { useParams } from "react-router-dom";
+import { getPostsUser } from "../../actions/post.actions";
 
 function Profil(props) {
   const params = useParams();
-  const allpostsreducer = useSelector((state) => state.postReducer);
+  const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
   console.log(params);
   const [currentUserdata, setcurrentUserdata] = useState();
-  const [allposts, setallposts] = useState();
+
   const [isFollow, setFollow] = useState(false);
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
@@ -48,23 +49,8 @@ function Profil(props) {
   }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
 
   useEffect(() => {
-    const getallCurrentPost = async (id) => {
-      await axios({
-        method: "get",
-        url: `http://localhost:8080/api/v1/post/${id}`,
-      })
-        .then((res) => {
-          if (res.data !== "" && res.data !== null) {
-            setallposts(res.data);
-          } else {
-            setallposts();
-          }
-        })
-        .catch((err) => {
-          setallposts();
-        });
-    };
     if (currentUserdata) {
+      dispatch(getPostsUser(currentUserdata.id));
       for (let i = 0; i < currentUserdata.following.length; i++) {
         if (currentUserdata.following[i].id === uid) {
           setFollow(true);
@@ -74,9 +60,8 @@ function Profil(props) {
           setFollow(false);
         }
       }
-      getallCurrentPost(currentUserdata.id);
     }
-  }, [currentUserdata, props, params, allpostsreducer]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata, props, params]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
@@ -185,8 +170,8 @@ function Profil(props) {
           <div className="container">
             {
               <Grid container direction="column-reverse" spacing={3}>
-                {allposts ? (
-                  allposts.map((i, index) => (
+                {allpostprofilsreducer ? (
+                  allpostprofilsreducer.map((i, index) => (
                     <Grid key={index} item>
                       <Post post={i} />
                     </Grid>
