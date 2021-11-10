@@ -1,10 +1,14 @@
-import { GET_ALL_POST, ADD_LIKE, REMOVE_LIKE } from "../actions/post.actions";
+import {
+  GET_ALL_POST_TREND,
+  ADD_LIKE,
+  REMOVE_LIKE,
+} from "../actions/post.actions";
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
 const initialState = [];
 
-export default function postReducer(state = initialState, action) {
+export default function postTrendReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_ALL_POST:
+    case GET_ALL_POST_TREND:
       return action.payload;
     case ADD_LIKE:
       return state.map((posts) => {

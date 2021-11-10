@@ -1,25 +1,50 @@
-import React, { useState } from "react";
-import { withRouter,useHistory } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import { red, blue } from "@material-ui/core/colors";
+import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
-import ShareIcon from "@material-ui/icons/Share";
+import { FacebookShareButton, FacebookIcon } from "react-share";
+import Modal from "react-bootstrap/Modal";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import { makeStyles } from "@material-ui/styles";
-import { addLike } from "../../actions/post.actions";
+import { addLike, removeLike } from "../../actions/post.actions";
+import ModalHeader from "react-bootstrap/ModalHeader";
+import { UidContext } from "../Appcontext";
+import IconButton from "@material-ui/core/IconButton";
 function Post(props) {
   const faces = [];
-  const [like, setLike] = useState(props.like);
+
+  const [liked, setLiked] = useState(false);
+  const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
+  const userData = useSelector((state) => state.userReducer);
+
   const dispatch = useDispatch();
+  const uid = useContext(UidContext);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    let currentpost = props.post;
+
+    for (let i = 0; i < currentpost.liked_by.length; i++) {
+      if (currentpost.liked_by[i].id === uid) {
+        setLiked(true);
+        break;
+      } else {
+        setLiked(false);
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const useStyles = makeStyles((theme) => ({
     card: {
@@ -54,15 +79,17 @@ function Post(props) {
   }));
   const classes = useStyles();
   const pushLike = async () => {
-    let p = like + 1;
-    setLike(p);
+    if (liked === true) {
+      setLiked(false);
+      setNombrelike(nombrelike - 1);
 
-    dispatch(addLike({ id: props.id_post, like: like + 1 }));
+      await dispatch(removeLike(props.post.id, uid, userData));
+    } else {
+      setLiked(true);
+      setNombrelike(nombrelike + 1);
+      await dispatch(addLike(props.post.id, uid, userData));
+    }
   };
-
-  const history = useHistory();
-
- 
 
   return (
     <>
@@ -72,47 +99,97 @@ function Post(props) {
           <List className={classes.list}>
             <ListItem alignItems="flex-start" className={classes.listItem}>
               <ListItemAvatar>
-                <Avatar className={classes.avatar} src={faces[4]} />
+                <NavLink
+                  className="nav-link"
+                  exact
+                  to={`/profil/${props.post.publisher.username}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Avatar className={classes.avatar} src={faces[4]} />
+                </NavLink>
               </ListItemAvatar>
-              <ListItemText primary=" Moha" secondary="@Moha · 11h ago" />
+              <NavLink
+                className="nav-link"
+                exact
+                to={`/profil/${props.post.publisher.username}`}
+                style={{ textDecoration: "none" }}
+              >
+                {" "}
+                <ListItemText
+                  primary={props.post.publisher.username}
+                  secondary={"@".concat(
+                    props.post.publisher.username + " · 11h ago"
+                  )}
+                />{" "}
+              </NavLink>
             </ListItem>
           </List>
         </Grid>
 
         {
-          <AudioPlayer id="son"
+          <AudioPlayer
+            id="son"
             file={null}
-            id_son={props.id_position_son}
-            latitude={props.latitude}
-            longitude={props.longitude}
+            id_son={props.post.publishing.id}
+            latitude={props.post.publishing.soundlocation.latitude}
+            longitude={props.post.publishing.soundlocation.longitude}
           />
         }
-       
 
         <Grid item container justifyContent="flex-end">
           <span>
-            <span style={{ margin: "2px 5px" }}>{like} </span>
-            <ThumbUpIcon
-              onClick={pushLike}
-              style={{ color: blue[500], margin: "4px" }}
-              className={classes.icon}
-            />
+            <span
+              data-toggle="popover"
+              onClick={
+                props.post.liked_by.length > 0 ? handleShow : handleClose
+              }
+              style={{ margin: "2px 5px", cursor: "pointer" }}
+            >
+              {nombrelike}{" "}
+            </span>
+            <IconButton onClick={pushLike}>
+              <ThumbUpIcon
+                style={
+                  liked
+                    ? { color: blue[500], cursor: "pointer" }
+                    : { color: "grey", cursor: "pointer" }
+                }
+                className={classes.icon}
+              />
+            </IconButton>
           </span>
 
-          <CommentIcon className={classes.icon} style={{ margin: "4px" }} />
-          
           <span>
-            <ShareIcon
-             onclick={history.push('/share')}
-             style={{ color: red[500] }} 
-            className={classes.icon} 
-            />
+            <FacebookShareButton
+              url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
+              quote={`${props.post.description}`}
+              className={classes.socialMediaButton}
+            >
+              <FacebookIcon size={36} />
+            </FacebookShareButton>
           </span>
-        
+
+          <IconButton>
+            {" "}
+            <CommentIcon className={classes.icon} />
+          </IconButton>
         </Grid>
       </Card>
+
+      <Modal show={show} onHide={handleClose} size="sm" centered>
+        <ModalHeader closeButton>
+          <Modal.Title>Mentions J'aime</Modal.Title>
+        </ModalHeader>
+        <Modal.Body>
+          {props.post.liked_by.map((d, index) => (
+            <div key={index}>
+              <span>{d.username}</span> <br />
+            </div>
+          ))}
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
 
-export default withRouter(Post);
+export default Post;
