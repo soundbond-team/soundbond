@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import { TextInput } from "react-native";
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
+import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions";
 
 import { makeStyles } from "@material-ui/styles";
 import MicIcon from "@material-ui/icons/Mic";
@@ -72,6 +73,18 @@ export default function Microphone(props) {
       normalize: true,
       responsive: true,
       fillParent: true,
+      plugins: [
+        RegionsPlugin.create({
+          regions: [
+            {
+              id: 1,
+              start: 0,
+              end: 1,
+              color: "rgba(0, 0, 0, 0.1)",
+            },
+          ],
+        }),
+      ],
     });
 
     const handleResize = wavesurfer.current.util.debounce(() => {
@@ -92,7 +105,7 @@ export default function Microphone(props) {
 
   const togglePlayback = () => {
     if (!isPlaying) {
-      wavesurfer.current.play();
+      wavesurfer.current.regions.list[1].play();
     } else {
       wavesurfer.current.pause();
     }
