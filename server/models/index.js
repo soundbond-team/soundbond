@@ -22,7 +22,7 @@ const initiateConnection = () => {
 
     {
       host: process.env.HOST,
-      dialect: "mssql",
+      dialect: "mysql",
     }
   );
 };
