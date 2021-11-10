@@ -52,7 +52,7 @@ export const getallPost = () => {
 export const getPostTrend = (id) => {
   return (dispatch) => {
     return axios
-      .get(`http://localhost:8080/api/v1/post/trend/${id}`)
+      .get(`http://localhost:8080/api/v1/user/${id}/trending/`)
       .then((res) => {
         dispatch({ type: GET_ALL_POST_TREND, payload: res.data });
       })

@@ -102,6 +102,22 @@ exports.allPostsByUser = (req, res) => {
         model: db.User,
         as: "liked_by",
       },
+            {
+        model: db.Sound,
+        as: "publishing",
+
+        include: [
+          {
+            model: db.SoundLocation,
+            as: "soundlocation",
+          },
+        ],
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
+      },
     ],
   })
     .then((data) => {
@@ -114,14 +130,14 @@ exports.allPostsByUser = (req, res) => {
     });
 };
 
-exports.trend = async (req, res) => {
-  const id = req.params.id;
+exports.trendingPostsForSpecificUser = async (req, res) => {
+  const user_id = req.params.user_id;
   const list_suivis = await db.User.findAll({
     include: {
       model: db.User,
       as: "following",
       where: {
-        id: id,
+        id: user_id,
       },
     },
   });
@@ -152,6 +168,11 @@ exports.trend = async (req, res) => {
       {
         model: db.User,
         as: "liked_by",
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
       },
     ],
   })

@@ -1,4 +1,10 @@
-import { GET_ALL_POST, ADD_LIKE, REMOVE_LIKE, ADD_COMMENT, REMOVE_COMMENT } from "../actions/post.actions";
+import {
+  GET_ALL_POST,
+  ADD_LIKE,
+  REMOVE_LIKE,
+  ADD_COMMENT,
+  REMOVE_COMMENT
+} from "../actions/post.actions";
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
 const initialState = [];
 

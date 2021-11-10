@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 // il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
 function Profil(props) {
   const params = useParams();
-  console.log(params);
+
   const [currentUserdata, setcurrentUserdata] = useState();
   const [allposts, setallposts] = useState();
   const [isFollow, setFollow] = useState(false);
@@ -46,10 +46,10 @@ function Profil(props) {
   }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
 
   useEffect(() => {
-    const getallCurrentPost = async (id) => {
+    const getallCurrentPost = async (user_id) => {
       await axios({
         method: "get",
-        url: `http://localhost:8080/api/v1/post/${id}`,
+        url: `http://localhost:8080/api/v1/user/${user_id}/posts/`, //?
       })
         .then((res) => {
           if (res.data !== "" && res.data !== null) {

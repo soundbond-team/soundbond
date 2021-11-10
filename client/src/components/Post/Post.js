@@ -219,7 +219,7 @@ function Post(props) {
           <Modal.Title>Commentaires</Modal.Title>
         </ModalHeader>
         <Modal.Body>
-        {console.log(props.post.commented_by)}
+
           {props.post.commented_by.map((comment, index) => (
             <div key={index}>
               <span>{comment.username} | {comment.comment.comment}
