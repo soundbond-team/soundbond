@@ -68,6 +68,7 @@ export const addLike = (id, user_id, user_data) => {
         if (res.data.errors) {
           dispatch({ type: ADD_LIKE, payload: "" });
         } else {
+          console.log(id, user_data);
           dispatch({ type: ADD_LIKE, payload: { id, user_data } });
         }
       })

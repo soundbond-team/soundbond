@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 
 function Profil(props) {
   const params = useParams();
+  const allpostsreducer = useSelector((state) => state.postReducer);
   console.log(params);
   const [currentUserdata, setcurrentUserdata] = useState();
   const [allposts, setallposts] = useState();
@@ -75,7 +76,7 @@ function Profil(props) {
       }
       getallCurrentPost(currentUserdata.id);
     }
-  }, [currentUserdata, props, params]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata, props, params, allpostsreducer]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
