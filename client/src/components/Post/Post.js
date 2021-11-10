@@ -167,7 +167,7 @@ function Post(props) {
           <span>
             <FacebookShareButton
               url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
-              quote={`${props.post.description}`}
+              quote={`Écouter ce super post SoundBond -> ${props.post.description}`}
               className={classes.socialMediaButton}
             >
               <FacebookIcon size={36} round />
@@ -177,7 +177,7 @@ function Post(props) {
           <span>
             <TwitterShareButton
               url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
-              title={`${props.post.description}`}
+              title={`Écouter ce super post SoundBond -> ${props.post.description}`}
               className={classes.socialMediaButton}
             >
               <TwitterIcon size={36} round />
