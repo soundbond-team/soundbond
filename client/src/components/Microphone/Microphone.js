@@ -105,7 +105,7 @@ export default function Microphone(props) {
 
   const togglePlayback = () => {
     if (!isPlaying) {
-      wavesurfer.current.play();
+      wavesurfer.current.regions.list[1].play();
     } else {
       wavesurfer.current.pause();
     }
