@@ -1,6 +1,7 @@
 import React from "react";
-
 import { Container, Segment } from "semantic-ui-react";
+import "../AudioPlayer/AudioPlayer";
+import "../Post/Post";
 
 import {
   FacebookShareButton,
@@ -11,43 +12,49 @@ import {
   LinkedinIcon,
   TelegramShareButton,
   TelegramIcon,
+  TwitterShareButton,
+  TwitterIcon
 } from "react-share";
 
+
 function SocialMediaButtons(props) {
+  
   return (
     <>
       <Container>
-        <Segment>
-          <LinkedinShareButton
-            url={"http://www.camperstribe.com"}
-            quote={"partager ...."}
-            hashtag="@React"
-          >
-            <LinkedinIcon>logoFillColor="white" round={true}</LinkedinIcon>
-          </LinkedinShareButton>
+         <Segment>
           <FacebookShareButton
             url={"http://www.camperstribe.com"}
-            quote={"partager ...."}
-            hashtag="@React"
-          >
-            <FacebookIcon logoFillColor="white" round={true}></FacebookIcon>
+            title="Sharing content">
+          <FacebookIcon logoFillColor="white" round={true} size={50}></FacebookIcon>
           </FacebookShareButton>
-
+          
           <WhatsappShareButton
             url={"http://www.camperstribe.com"}
-            title="Sharing content"
-          >
-            <WhatsappIcon logoFillColor="white" round={true}></WhatsappIcon>
+            title="Sharing content">
+            <WhatsappIcon logoFillColor="white" round={true} size={50}></WhatsappIcon>
           </WhatsappShareButton>
 
-          <TelegramShareButton
+           <TelegramShareButton
             url={"http://www.camperstribe.com"}
-            title="Sharing content"
-          >
-            <TelegramIcon>logoFillColor="white" round={true}</TelegramIcon>
+            title="Sharing content">
+           <TelegramIcon logoFillColor="white" round={true} size={50}></TelegramIcon>
           </TelegramShareButton>
-        </Segment>
+
+          <LinkedinShareButton
+            url="https://github.com/mdn/translated-content/blob/main/files/fr/web/api/url/createobjecturl/index.md"
+            title="Sharing content">
+          <LinkedinIcon logoFillColor="white" round={true} size={50}></LinkedinIcon>
+          </LinkedinShareButton>
+
+          <TwitterShareButton
+             url="https://github.com/mdn/translated-content/blob/main/files/fr/web/api/url/createobjecturl/index.md"
+            title="Sharing content">
+            <TwitterIcon logoFillColor="white" round={true} size={50}></TwitterIcon>
+          </TwitterShareButton>
+          </Segment>
       </Container>
+      
     </>
   );
 }
