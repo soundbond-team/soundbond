@@ -1,8 +1,10 @@
+/* Minimal requiered template for a development server. */
+
 // instanciation des frameworks requis.
 const express = require("express");
 const cors = require("cors");
 const { Sequelize } = require("sequelize"); // ORM
-const cookieParser = require("cookie-Parser");
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT || 8080; // Port du serveur de développement.
 const checkUser = require("./middleware/auth.middleware");

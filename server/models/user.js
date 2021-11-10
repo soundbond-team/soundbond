@@ -16,23 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       password: DataTypes.STRING,
-
-      followers: [{
-        type:DataTypes.INTERGER,
-        references: {
-        model: 'user',
-        key:'id'
-        }
-      }],
-
-      following: [{
-        type:DataTypes.INTERGER,
-        references: {
-        model: 'user',
-        key:'id'
-        }
-      }],
-      
     },
     {
       sequelize,

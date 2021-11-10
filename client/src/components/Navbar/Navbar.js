@@ -56,14 +56,6 @@ function NavigationBar() {
                 >
                   Profil
                 </NavLink>
-                <NavLink
-                  className="nav-link"
-                  exact
-                  to="/users"
-                  style={{ textDecoration: "none" }}
-                >
-                  Users
-                </NavLink>
               </li>
             </ul>
             <form className="d-flex">

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {useHistory} from "react-router-dom";
+
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -12,7 +12,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
 import Modal from "react-bootstrap/Modal";
-import ShareIcon from "@material-ui/icons/Share";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -107,9 +106,6 @@ function Post(props) {
     }
   };
 
-  const history = useHistory();
-
- 
   const sendAddComment = async () => {
     if (commentaire !== "") {
       await dispatch(addComment(props.post.id, uid, commentaire));
@@ -160,14 +156,13 @@ function Post(props) {
         {/* Lecteur du Sound + SoundLocation. */}
 
         {
-          <AudioPlayer id="son"
+          <AudioPlayer
             file={null}
             id_son={props.post.publishing.id}
             latitude={props.post.publishing.soundlocation.latitude}
             longitude={props.post.publishing.soundlocation.longitude}
           />
         }
-       
 
         {/* Boutons like et comment. */}
 
@@ -194,16 +189,6 @@ function Post(props) {
             </IconButton>
           </span>
 
-          <CommentIcon className={classes.icon} style={{ margin: "4px" }} />
-          
-          <span>
-            <ShareIcon
-             //onclick={history.push('/share')}
-             style={{ color: blue[500] }} 
-            className={classes.icon} 
-            />
-          </span>
-        
           <IconButton
             onClick={
               props.post.liked_by.length > 0 ? handleShowCommentsModal : handleCloseCommentsModal
