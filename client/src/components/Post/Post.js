@@ -9,7 +9,12 @@ import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
-import { FacebookShareButton, FacebookIcon } from "react-share";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon,
+} from "react-share";
 import Modal from "react-bootstrap/Modal";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -165,8 +170,18 @@ function Post(props) {
               quote={`${props.post.description}`}
               className={classes.socialMediaButton}
             >
-              <FacebookIcon size={36} />
+              <FacebookIcon size={36} round />
             </FacebookShareButton>
+          </span>
+
+          <span>
+            <TwitterShareButton
+              url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
+              title={`${props.post.description}`}
+              className={classes.socialMediaButton}
+            >
+              <TwitterIcon size={36} round />
+            </TwitterShareButton>
           </span>
 
           <IconButton>
