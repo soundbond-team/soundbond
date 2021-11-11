@@ -115,13 +115,14 @@ function Post(props) {
 
   const sendAddComment = async () => {
     if (commentaire !== "") {
+      await dispatch(removeComment(props.post.id, uid, commentaire, userData));
       await dispatch(addComment(props.post.id, uid, commentaire, userData));
-      setCommentaire("");
     }
+    setCommentaire("");
   };
 
-  const sendRemoveComment = async (post_id, user_id) => {
-    await dispatch(removeComment(post_id, user_id));
+  const sendRemoveComment = async (post_id, user_id, commentaire) => {
+    await dispatch(removeComment(post_id, user_id, commentaire, userData));
   };
 
   return (
@@ -260,11 +261,16 @@ function Post(props) {
                   onClick={() => {
                     sendRemoveComment(
                       comment.comment.post_id,
-                      comment.comment.user_id
+                      comment.comment.user_id,
+                      comment.comment.comment
                     );
                   }}
                 >
-                  <DeleteIcon className={classes.icon} />
+                  {userData.id === comment.comment.user_id ? (
+                    <DeleteIcon className={classes.icon} />
+                  ) : (
+                    <span />
+                  )}
                 </IconButton>
               </span>
               <br />

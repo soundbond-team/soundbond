@@ -133,7 +133,7 @@ export const addComment = (post_id, user_id, comment, userData) => {
 };
 
 // Supprime un commentaire de la bd
-export const removeComment = (post_id, user_id) => {
+export const removeComment = (post_id, user_id, comment, userData) => {
   return (dispatch) => {
     return axios({
       method: "post",
@@ -147,7 +147,10 @@ export const removeComment = (post_id, user_id) => {
         if (res.data.errors) {
           //dispatch({ type: REMOVE_COMMENT, payload: res.data.errors });
         } else {
-          //dispatch({ type: REMOVE_COMMENT, payload: { id } });
+          dispatch({
+            type: REMOVE_COMMENT,
+            payload: { post_id, userData, comment },
+          });
         }
       })
       .catch((err) => console.log(err));

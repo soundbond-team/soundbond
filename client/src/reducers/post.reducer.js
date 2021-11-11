@@ -38,7 +38,6 @@ export default function postReducer(state = initialState, action) {
       });
 
     case ADD_COMMENT:
-      let test = action.payload.data;
       const datacomment = {
         id: action.payload.userData.id,
         username: action.payload.userData.username,
@@ -57,11 +56,12 @@ export default function postReducer(state = initialState, action) {
 
     case REMOVE_COMMENT:
       return state.map((posts) => {
-        if (posts.id === action.payload.id) {
+        if (posts.id === action.payload.post_id) {
+          console.log(posts.commented_by);
           return {
             ...posts,
             commented_by: posts.commented_by.filter(
-              (user_data) => user_data.id !== action.payload.user_data.id
+              (data) => data.id !== action.payload.userData.id
             ),
           };
         }
