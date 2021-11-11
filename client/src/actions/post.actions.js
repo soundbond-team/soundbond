@@ -14,6 +14,8 @@ export const REMOVE_COMMENT = "REMOVE_COMMENT";
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
 export const GET_ALL_COMMENT_FOR_SPECIFIC_POST = "GET_ALL_COMMENT_FOR_SPECIFIC_POST";
 
+export const POST_USER = "POST_USER";
+
 // Permet d'ajouter un post en BD
 export const post_post = (sound_id, description, uid) => {
   return (dispatch) => {
@@ -74,6 +76,7 @@ export const addLike = (id, user_id, user_data) => {
         if (res.data.errors) {
           dispatch({ type: ADD_LIKE, payload: "" });
         } else {
+          console.log(id, user_data);
           dispatch({ type: ADD_LIKE, payload: { id, user_data } });
         }
       })
@@ -160,5 +163,20 @@ export const getallComments = () => {
         dispatch({ type: GET_ALL_COMMENT_FOR_SPECIFIC_POST, payload: res.data });
       })
       .catch((err) => console.log(err));
+  };
+};
+
+export const getPostsUser = (id) => {
+  return (dispatch) => {
+    return axios({
+      method: "get",
+      url: `http://localhost:8080/api/v1/post/${id}`,
+    })
+      .then((res) => {
+        if (res.data !== "" && res.data !== null) {
+          dispatch({ type: POST_USER, payload: res.data });
+        }
+      })
+      .catch((err) => {});
   };
 };

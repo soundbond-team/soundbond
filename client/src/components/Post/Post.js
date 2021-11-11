@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
+import { NavLink } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -11,21 +12,25 @@ import SendIcon from '@mui/icons-material/Send';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon,
+} from "react-share";
 import Modal from "react-bootstrap/Modal";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import { makeStyles } from "@material-ui/styles";
+import { addLike, removeLike, addComment, removeComment } from "../../actions/post.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import IconButton from "@material-ui/core/IconButton";
 import { TextInput } from "react-native";
 
-import { makeStyles } from "@material-ui/styles";
-import { addLike, removeLike, addComment, removeComment } from "../../actions/post.actions";
 import { UidContext } from "../Appcontext";
 
-
-import { NavLink } from "react-router-dom";
 function Post(props) {
   const faces = [];
 
@@ -157,6 +162,7 @@ function Post(props) {
 
         {
           <AudioPlayer
+            id="son"
             file={null}
             id_son={props.post.publishing.id}
             latitude={props.post.publishing.soundlocation.latitude}
@@ -196,6 +202,27 @@ function Post(props) {
             {" "}
             <CommentIcon className={classes.icon}/>
           </IconButton>
+          <span>
+            <FacebookShareButton
+              url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
+              quote={`Écouter ce super post SoundBond -> ${props.post.description}`}
+              className={classes.socialMediaButton}
+            >
+              <FacebookIcon size={36} round />
+            </FacebookShareButton>
+          </span>
+
+          <span>
+            <TwitterShareButton
+              url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
+              title={`Écouter ce super post SoundBond -> ${props.post.description}`}
+              className={classes.socialMediaButton}
+            >
+              <TwitterIcon size={36} round />
+            </TwitterShareButton>
+          </span>
+
+
 
         </Grid>
         

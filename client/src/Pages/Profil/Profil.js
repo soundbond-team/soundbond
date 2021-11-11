@@ -7,14 +7,17 @@ import Modal from "react-bootstrap/Modal";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { follow, unfollow } from "../../actions/user.actions";
-import { getPostTrend } from "../../actions/post.actions";
+import { getPostTrend, getPostsUser } from "../../actions/post.actions";
 import { useParams } from "react-router-dom";
+
 // il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
+
 function Profil(props) {
   const params = useParams();
-
+  const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
+  console.log(params);
   const [currentUserdata, setcurrentUserdata] = useState();
-  const [allposts, setallposts] = useState();
+
   const [isFollow, setFollow] = useState(false);
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
@@ -63,6 +66,7 @@ function Profil(props) {
         });
     };
     if (currentUserdata) {
+      dispatch(getPostsUser(currentUserdata.id));
       for (let i = 0; i < currentUserdata.following.length; i++) {
         if (currentUserdata.following[i].id === uid) {
           setFollow(true);
@@ -72,7 +76,6 @@ function Profil(props) {
           setFollow(false);
         }
       }
-      getallCurrentPost(currentUserdata.id);
     }
   }, [currentUserdata, props, params]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -133,13 +136,7 @@ function Profil(props) {
                       width: "150%",
                     }}
                   >
-                    <h6
-                      onClick={
-                        currentUserdata.following.length > 0
-                          ? handleShow2
-                          : handleClose2
-                      }
-                    >
+                    <h6 onClick={handleShow2}>
                       {" "}
                       Abonnements :
                       {currentUserdata.follow.length > 0 ? (
@@ -148,13 +145,7 @@ function Profil(props) {
                         <span>0</span>
                       )}
                     </h6>
-                    <h6
-                      onClick={
-                        currentUserdata.following.length > 0
-                          ? handleShow
-                          : handleClose
-                      }
-                    >
+                    <h6 onClick={handleShow}>
                       {" "}
                       Abonnés :
                       {currentUserdata.following.length > 0 ? (
@@ -183,8 +174,8 @@ function Profil(props) {
           <div className="container">
             {
               <Grid container direction="column-reverse" spacing={3}>
-                {allposts ? (
-                  allposts.map((i, index) => (
+                {allpostprofilsreducer ? (
+                  allpostprofilsreducer.map((i, index) => (
                     <Grid key={index} item>
                       <Post post={i} />
                     </Grid>
