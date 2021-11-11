@@ -110,6 +110,33 @@ Essayez d'insérer un élément dans la base de données depuis l'API.
 curl -i -H "Content-Type: application/json" -X POST -d '{"string_attribute":"hello world"}' http://localhost:5000/example/add
 ```
 
+## Tests d'interface Selenium
+
+### Installation des pré-requis
+
+#### Linux
+
+Pour Linux, installez les navigateurs Google Chrome avec, dans un _shell_ super-utilisateur :
+``` bash
+# curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
+# echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+# apt-get -y update
+# apt-get -y install google-chrome-stable
+```
+et [Mozilla Firefox](https://www.mozilla.org/fr/firefox/linux/).
+
+#### Microsoft Windows
+
+Pour Windows, installez les navigateurs [Google Chrome](https://www.google.com/intl/fr/chrome/) et [Mozilla Firefox](https://www.mozilla.org/fr/firefox/windows/)
+
+### Lancer les test
+
+Pour lancer les tests, exécutez :
+
+``` bash
+$ yarn test
+```
+
 ## License
 
 Tous droits réservés.
