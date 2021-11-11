@@ -166,11 +166,11 @@ export const getallComments = () => {
   };
 };
 
-export const getPostsUser = (id) => {
+export const getPostsUser = (user_id) => {
   return (dispatch) => {
     return axios({
       method: "get",
-      url: `http://localhost:8080/api/v1/post/${id}`,
+      url: `http://localhost:8080/api/v1/user/${user_id}/posts`,
     })
       .then((res) => {
         if (res.data !== "" && res.data !== null) {

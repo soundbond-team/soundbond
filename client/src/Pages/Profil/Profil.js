@@ -15,7 +15,6 @@ import { useParams } from "react-router-dom";
 function Profil(props) {
   const params = useParams();
   const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
-  console.log(params);
   const [currentUserdata, setcurrentUserdata] = useState();
 
   const [isFollow, setFollow] = useState(false);
@@ -49,22 +48,6 @@ function Profil(props) {
   }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
 
   useEffect(() => {
-    const getallCurrentPost = async (user_id) => {
-      await axios({
-        method: "get",
-        url: `http://localhost:8080/api/v1/user/${user_id}/posts/`, //?
-      })
-        .then((res) => {
-          if (res.data !== "" && res.data !== null) {
-            setallposts(res.data);
-          } else {
-            setallposts();
-          }
-        })
-        .catch((err) => {
-          setallposts();
-        });
-    };
     if (currentUserdata) {
       dispatch(getPostsUser(currentUserdata.id));
       for (let i = 0; i < currentUserdata.following.length; i++) {
