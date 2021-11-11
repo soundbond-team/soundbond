@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 import Routes from "./components/Routes/Routes";
 import { UidContext } from "./components/Appcontext";
-import { useDispatch } from "react-redux";
-import { getPostTrend } from "./actions/post.actions";
-import { getallPost } from "./actions/post.actions";
+import { getPostTrend, getallPost, getallComments } from "./actions/post.actions";
 import { getUser } from "./actions/user.actions";
-import axios from "axios";
+
 const App = () => {
   const [uid, setUid] = useState(null); // eslint-disable-next-line
   const dispatch = useDispatch(); // eslint-disable-next-line
@@ -30,6 +30,8 @@ const App = () => {
       dispatch(getUser(uid));
       dispatch(getPostTrend(uid));
     }
+    dispatch(getallComments(1));
+
   }, [uid]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <UidContext.Provider value={uid}>
