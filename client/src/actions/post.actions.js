@@ -12,7 +12,8 @@ export const REMOVE_COMMENT = "REMOVE_COMMENT";
 
 // Ajoute un post en BD
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
-export const GET_ALL_COMMENT_FOR_SPECIFIC_POST = "GET_ALL_COMMENT_FOR_SPECIFIC_POST";
+export const GET_ALL_COMMENT_FOR_SPECIFIC_POST =
+  "GET_ALL_COMMENT_FOR_SPECIFIC_POST";
 
 export const POST_USER = "POST_USER";
 
@@ -106,8 +107,8 @@ export const removeLike = (id, user_id, user_data) => {
 };
 
 // Ajoute un commentaire en bd
-export const addComment = (post_id, user_id, comment) => {
-  console.log(post_id, user_id, comment)
+export const addComment = (post_id, user_id, comment, userData) => {
+  console.log(post_id, user_id, comment);
   return (dispatch) => {
     return axios({
       method: "post",
@@ -115,9 +116,18 @@ export const addComment = (post_id, user_id, comment) => {
       data: {
         post_id: post_id,
         user_id: user_id,
-        comment_text: comment
+        comment_text: comment,
       },
     })
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: ADD_COMMENT, payload: res.data.errors });
+        } else {
+          console.log(res.data);
+          let data = res.data;
+          dispatch({ type: ADD_COMMENT, payload: { data, post_id, userData } });
+        }
+      })
       .catch((err) => console.log(err));
   };
 };
@@ -160,7 +170,10 @@ export const getallComments = () => {
     return axios
       .get(`http://localhost:8080/api/v1/post/1/getAllComments`)
       .then((res) => {
-        dispatch({ type: GET_ALL_COMMENT_FOR_SPECIFIC_POST, payload: res.data });
+        dispatch({
+          type: GET_ALL_COMMENT_FOR_SPECIFIC_POST,
+          payload: res.data,
+        });
       })
       .catch((err) => console.log(err));
   };

@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import SendIcon from '@mui/icons-material/Send';
-import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from "@mui/icons-material/Send";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
 import {
@@ -24,7 +24,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import { makeStyles } from "@material-ui/styles";
-import { addLike, removeLike, addComment, removeComment } from "../../actions/post.actions";
+import {
+  addLike,
+  removeLike,
+  addComment,
+  removeComment,
+} from "../../actions/post.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import IconButton from "@material-ui/core/IconButton";
 import { TextInput } from "react-native";
@@ -39,8 +44,6 @@ function Post(props) {
   const userData = useSelector((state) => state.userReducer);
   const [commentaire, setCommentaire] = useState(""); // Utilisé pour stocker un commentaire.
 
-
-  
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
 
@@ -51,7 +54,6 @@ function Post(props) {
   const [showCommentsModal, setShowCommentsModal] = useState(false);
   const handleCloseCommentsModal = () => setShowCommentsModal(false);
   const handleShowCommentsModal = () => setShowCommentsModal(true);
-
 
   useEffect(() => {
     let currentpost = props.post;
@@ -113,7 +115,7 @@ function Post(props) {
 
   const sendAddComment = async () => {
     if (commentaire !== "") {
-      await dispatch(addComment(props.post.id, uid, commentaire));
+      await dispatch(addComment(props.post.id, uid, commentaire, userData));
       setCommentaire("");
     }
   };
@@ -125,7 +127,6 @@ function Post(props) {
   return (
     <>
       <Card className={classes.card}>
-
         {/* Utilisateur postant le Post. */}
         <Grid item>
           <List className={classes.list}>
@@ -177,7 +178,9 @@ function Post(props) {
             <span
               data-toggle="popover"
               onClick={
-                props.post.liked_by.length > 0 ? handleShowMentionJaimeModal : handleCloseMentionJaimeModal
+                props.post.liked_by.length > 0
+                  ? handleShowMentionJaimeModal
+                  : handleCloseMentionJaimeModal
               }
               style={{ margin: "2px 5px", cursor: "pointer" }}
             >
@@ -195,12 +198,9 @@ function Post(props) {
             </IconButton>
           </span>
 
-          <IconButton
-            onClick={
-              props.post.liked_by.length > 0 ? handleShowCommentsModal : handleCloseCommentsModal
-            }>
+          <IconButton onClick={handleShowCommentsModal}>
             {" "}
-            <CommentIcon className={classes.icon}/>
+            <CommentIcon className={classes.icon} />
           </IconButton>
           <span>
             <FacebookShareButton
@@ -221,41 +221,53 @@ function Post(props) {
               <TwitterIcon size={36} round />
             </TwitterShareButton>
           </span>
-
-
-
         </Grid>
-        
       </Card>
 
-      <Modal show={showMentionJaimeModal} onHide={handleCloseMentionJaimeModal} size="sm" centered>
+      <Modal
+        show={showMentionJaimeModal}
+        onHide={handleCloseMentionJaimeModal}
+        size="sm"
+        centered
+      >
         <ModalHeader closeButton>
           <Modal.Title>Mentions J'aime</Modal.Title>
         </ModalHeader>
         <Modal.Body>
           {props.post.liked_by.map((likes, index) => (
             <div key={index}>
-              <span>{likes.username}</span> <br/>
+              <span>{likes.username}</span> <br />
             </div>
           ))}
         </Modal.Body>
       </Modal>
 
-      <Modal show={showCommentsModal} onHide={handleCloseCommentsModal} size="sm" centered>
+      <Modal
+        show={showCommentsModal}
+        onHide={handleCloseCommentsModal}
+        size="sm"
+        centered
+      >
         <ModalHeader closeButton>
           <Modal.Title>Commentaires</Modal.Title>
         </ModalHeader>
         <Modal.Body>
-
           {props.post.commented_by.map((comment, index) => (
             <div key={index}>
-              <span>{comment.username} | {comment.comment.comment}
-                <IconButton onClick={() => {
-                                      sendRemoveComment(comment.comment.post_id, comment.comment.user_id);
-                                    }}>
-                  <DeleteIcon className={classes.icon}/>
+              <span>
+                {comment.username} | {comment.comment.comment}
+                <IconButton
+                  onClick={() => {
+                    sendRemoveComment(
+                      comment.comment.post_id,
+                      comment.comment.user_id
+                    );
+                  }}
+                >
+                  <DeleteIcon className={classes.icon} />
                 </IconButton>
-              </span><br/>
+              </span>
+              <br />
             </div>
           ))}
         </Modal.Body>
@@ -265,7 +277,7 @@ function Post(props) {
         <Grid item container justifyContent="center">
           <TextInput
             multiline={true}
-            style={{backgroundColor: "lightgray"}}
+            style={{ backgroundColor: "lightgray" }}
             placeholder="Commenter"
             onChangeText={(comment) => setCommentaire(comment)}
             defaultValue={""}
@@ -275,7 +287,6 @@ function Post(props) {
             <SendIcon className={classes.icon} />
           </IconButton>
         </Grid>
-
       </Modal>
     </>
   );
