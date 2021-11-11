@@ -52,10 +52,17 @@ exports.findAll = (req, res) => {
       {
         model: db.User,
         as: "publisher",
+        attributes: ["id", "username"],
       },
       {
         model: db.User,
         as: "liked_by",
+        attributes: ["id", "username"],
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
       },
     ],
   })
@@ -69,11 +76,11 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Retrieve all posts from the database.
-exports.findAll2 = (req, res) => {
+// Get all Posts posted by a specific User.
+exports.allPostsByUser = (req, res) => {
   db.Post.findAll({
     where: {
-      publisher_user_id: req.params.id,
+      publisher_user_id: req.params.user_id,
     },
     include: [
       {
@@ -95,6 +102,22 @@ exports.findAll2 = (req, res) => {
         model: db.User,
         as: "liked_by",
       },
+            {
+        model: db.Sound,
+        as: "publishing",
+
+        include: [
+          {
+            model: db.SoundLocation,
+            as: "soundlocation",
+          },
+        ],
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
+      },
     ],
   })
     .then((data) => {
@@ -102,19 +125,19 @@ exports.findAll2 = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: err.message || "Some error occurred while retrieving post.",
+        error: err.message || "Some error occurred while retrieving Posts.",
       });
     });
 };
 
-exports.trend = async (req, res) => {
-  const id = req.params.id;
+exports.trendingPostsForSpecificUser = async (req, res) => {
+  const user_id = req.params.user_id;
   const list_suivis = await db.User.findAll({
     include: {
       model: db.User,
       as: "following",
       where: {
-        id: id,
+        id: user_id,
       },
     },
   });
@@ -145,6 +168,11 @@ exports.trend = async (req, res) => {
       {
         model: db.User,
         as: "liked_by",
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
       },
     ],
   })
@@ -197,10 +225,17 @@ exports.findOne = (req, res) => {
       {
         model: db.User,
         as: "publisher",
+        attributes: ["id", "username"],
       },
       {
         model: db.User,
         as: "liked_by",
+        attributes: ["id", "username"],
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
       },
     ],
   })
@@ -279,7 +314,8 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-//like a post
+
+// Like a post
 exports.like = async (req, res) => {
   const id = req.params.id;
   const user_id = req.body.user_id;
@@ -293,7 +329,7 @@ exports.like = async (req, res) => {
   });
 };
 
-//unlike a post
+// Dislike a post
 exports.unlike = async (req, res) => {
   const id = req.params.id;
   const user_id = req.body.user_id;
@@ -307,4 +343,100 @@ exports.unlike = async (req, res) => {
   });
 };
 
+// Get all the likes for a specific post
+exports.getAllLike = (req, res) => {
+  const id = req.params.id;
+
+  db.Post.findAndCountAll(id)
+    .then((data) => {
+      let like = {
+        like: data.like,
+      };
+      res.send(like);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: "Error retrieving Likes for Post with id=" + id,
+      });
+    });
+};
+
+// Comment a post
+exports.comment = async (req, res) => {
+  //! Impossible d'avoir plus d'un commentaire associant le même couple (user, post) : https://github.com/sequelize/sequelize/issues/3493
+  // We insert the row, and then we look for it in the database to return it under JSON format.
+  try {
+    const post = await db.Post.findByPk(req.body.post_id);
+    const user = await db.User.findByPk(req.body.user_id);
+    await post.addCommented_by(
+      user,
+      { through: {comment: req.body.comment_text}}
+    );
+    db.Comments.findOne({
+      where: { post_id:req.body.post_id, user_id: req.body.user_id }
+    })
+      .then((data) => {
+        res.status(201).json(data);
+      })
+  
+    
+  } catch (e) {
+    res.status(400).json("error");
+  }
+  /* Deuxième solution :
+
+  db.Post.findByPk(req.body.post_id)
+    .then((post) => {
+      if (!post) {
+        res.status(400).json("Post not found");
+      } else {
+        db.User.findByPk(req.body.user_id).then((user) => {
+        if (!user) {
+          res.status(400).json("User not found");
+        } else {
+          try {
+            await post.addCommented_by(
+              user,
+              {through: {comment: req.body.comment_text}}
+            )
+          } catch (e){
+              res.status(400).json("error");
+            }
+          }
+        })
+      }
+    })*/
+};
+
+
+// Delete a comment from a post
+exports.uncomment = async (req, res) => {
+  /* Avec l'id d'un post et l'id d'un user, supprime le commentaire correspondant. */
+  const post_id = req.body.post_id;
+  const user_id = req.body.user_id;
+  db.Post.findByPk(post_id).then(async (post) => {
+    try {
+      await post.removeCommented_by(user_id);
+      res.status(201).json("comment deleted");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+
+// Get all the comments for a specific post
+exports.getAllComments = (req, res) => {
+
+  db.Comments.findAll({
+    where: {'post_id': req.params.post_id}
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: "Error retrieving Comments for Post with id=" + req.params.post_id,
+      });
+    });
+};
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/

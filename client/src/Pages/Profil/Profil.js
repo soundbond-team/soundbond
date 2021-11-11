@@ -6,16 +6,15 @@ import { UidContext } from "../../components/Appcontext";
 import Modal from "react-bootstrap/Modal";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
-import { follow } from "../../actions/user.actions";
-import { unfollow } from "../../actions/user.actions";
-import { getPostTrend } from "../../actions/post.actions";
+import { follow, unfollow } from "../../actions/user.actions";
+import { getPostTrend, getPostsUser } from "../../actions/post.actions";
 import { useParams } from "react-router-dom";
-import { getPostsUser } from "../../actions/post.actions";
+
+// il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
 
 function Profil(props) {
   const params = useParams();
   const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
-  console.log(params);
   const [currentUserdata, setcurrentUserdata] = useState();
 
   const [isFollow, setFollow] = useState(false);
@@ -61,7 +60,7 @@ function Profil(props) {
         }
       }
     }
-  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata, props, params]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
