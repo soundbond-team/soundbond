@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-
+import { TextInput } from "react-native";
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions";
@@ -28,7 +28,6 @@ import { post_sound } from "../../actions/sound.actions";
 import { post_post, getallPost } from "../../actions/post.actions";
 import { UidContext } from "../Appcontext";
 import "./Microphone.css";
-import { Input } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -54,16 +53,12 @@ export default function Microphone(props) {
     (state) => state.onesoundlocationReducer
   );
   const [description, setDescription] = useState(" "); // Utilisé pour stocker le description.
-  const [tag, setTag] = useState(" ");
-  const [tags, setTags] = useState([]); //tous les tags
   const [record, setRecord] = useState(false);
   const [open, setOpen] = useState(false);
   const [tempFile, setTempFile] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurfer = useRef(null);
   const uid = useContext(UidContext);
-  const buttonTag = useRef();
-
   useEffect(() => {
     if (!open || (open && !tempFile)) return;
 
@@ -153,19 +148,18 @@ export default function Microphone(props) {
 
   useEffect(() => {
     if (tempFile) {
-      addpost(sound.id, description, tags);
+      addpost(sound.id, description);
       setTempFile(null);
       setOpen(false);
       setRecord(false);
     }
   }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const addpost = (sound_id, _description, tags) =>
+  const addpost = (sound_id, _description) =>
     // Poster un Post puis recupérer tous les Posts.
     new Promise((resolve, reject) => {
-      dispatch(post_post(sound_id, _description, uid, tags)).then(() => {
+      dispatch(post_post(sound_id, _description, uid)).then(() => {
         dispatch(getallPost());
-        setTags([]);
       });
       resolve();
     });
@@ -206,10 +200,7 @@ export default function Microphone(props) {
   };
 
   const classes = useStyles();
-  const addTag = () => {
-    setTags((state) => [...state, tag]);
-    setTag("");
-  };
+
   return (
     <>
       <div className="container d-flex justify-content-center">
@@ -238,42 +229,13 @@ export default function Microphone(props) {
         </DialogContent>
 
         {/* Description  */}
-
-        <div className="input-group mb-3 container">
-          <Input
-            type="text"
-            className="form-control"
-            placeholder="Description"
-            aria-label="Description"
-            aria-describedby="basic-addon2"
-            onChange={(e) => setDescription(e.target.value)}
-            defaultValue={""}
-          />
-        </div>
-        {" Tags: " + tags + ", "}
-        <div className="input-group mb-3 container">
-          <Input
-            type="text"
-            multiple
-            className="form-control"
-            placeholder="Tag"
-            aria-label="Tag"
-            aria-describedby="basic-addon2"
-            onChange={(e) => setTag(e.target.value)}
-            defaultValue={""}
-            ref={buttonTag}
-            value={tag}
-          />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              onClick={addTag}
-            >
-              Ajouter
-            </button>
-          </div>
-        </div>
+        <TextInput
+          multiline={true}
+          style={{ height: 40, backgroundColor: "azure", fontSize: 20 }}
+          placeholder="Description"
+          onChangeText={(description) => setDescription(description)}
+          defaultValue={""}
+        />
 
         <DialogActions>
           <Grid container>
