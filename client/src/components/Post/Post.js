@@ -173,7 +173,13 @@ function Post(props) {
         }
 
         {/* Boutons like et comment. */}
-
+        <span>{props.post.description}</span>
+        {props.post.tag.length > 0 ? <span>Tags: </span> : <span></span>}
+        {props.post.tag.length > 0 ? (
+          props.post.tag.map((i, index) => <span>{i.tag + ", "}</span>)
+        ) : (
+          <p></p>
+        )}
         <Grid item container justifyContent="flex-end">
           <span>
             <span

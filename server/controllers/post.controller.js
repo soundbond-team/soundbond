@@ -2,7 +2,7 @@ const db = require("../models");
 const Op = db.Sequelize.Op;
 
 // Création d'un nouveau Post.
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Vérification que la requête contient bien toutes les valeurs.
   if (
     !req.body.description ||
@@ -23,15 +23,50 @@ exports.create = (req, res) => {
   };
 
   // Enregistrement dans la base. .create créé et commit dans la base d'un seul coup.
-  db.Post.create(post)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        error: err.message || "Some error occurred while creating the post.",
-      });
-    });
+  const postcreate = await db.Post.create(post);
+
+  if (Object.keys(req.body.tags).length > 0) {
+    for (let value of Object.values(req.body.tags)) {
+      let tagtocreate = await db.tag.create({ tag: value });
+      await postcreate.addTag(tagtocreate);
+    }
+  } else {
+    console.log("no tags");
+  }
+
+  db.Post.findByPk(postcreate.id, {
+    include: [
+      {
+        model: db.Sound,
+        as: "publishing",
+
+        include: [
+          {
+            model: db.SoundLocation,
+            as: "soundlocation",
+          },
+        ],
+      },
+      {
+        model: db.User,
+        as: "publisher",
+        attributes: ["id", "username"],
+      },
+      {
+        model: db.User,
+        as: "liked_by",
+        attributes: ["id", "username"],
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
+      },
+      { model: db.tag, as: "tag" },
+    ],
+  }).then((data) => {
+    res.send(data);
+  });
 };
 
 // Retrieve all posts from the database.
@@ -63,6 +98,11 @@ exports.findAll = (req, res) => {
         model: db.User,
         as: "commented_by",
         attributes: ["id", "username"],
+      },
+
+      {
+        model: db.tag,
+        as: "tag",
       },
     ],
   })
@@ -102,7 +142,7 @@ exports.allPostsByUser = (req, res) => {
         model: db.User,
         as: "liked_by",
       },
-            {
+      {
         model: db.Sound,
         as: "publishing",
 
@@ -118,6 +158,7 @@ exports.allPostsByUser = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
+      { model: db.tag, as: "tag" },
     ],
   })
     .then((data) => {
@@ -174,6 +215,7 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
+      { model: db.tag, as: "tag" },
     ],
   })
     .then((data) => {
@@ -237,6 +279,7 @@ exports.findOne = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
+      { model: db.tag, as: "tag" },
     ],
   })
     .then((data) => {
@@ -368,18 +411,14 @@ exports.comment = async (req, res) => {
   try {
     const post = await db.Post.findByPk(req.body.post_id);
     const user = await db.User.findByPk(req.body.user_id);
-    await post.addCommented_by(
-      user,
-      { through: {comment: req.body.comment_text}}
-    );
+    await post.addCommented_by(user, {
+      through: { comment: req.body.comment_text },
+    });
     db.Comments.findOne({
-      where: { post_id:req.body.post_id, user_id: req.body.user_id }
-    })
-      .then((data) => {
-        res.status(201).json(data);
-      })
-  
-    
+      where: { post_id: req.body.post_id, user_id: req.body.user_id },
+    }).then((data) => {
+      res.status(201).json(data);
+    });
   } catch (e) {
     res.status(400).json("error");
   }
@@ -408,7 +447,6 @@ exports.comment = async (req, res) => {
     })*/
 };
 
-
 // Delete a comment from a post
 exports.uncomment = async (req, res) => {
   /* Avec l'id d'un post et l'id d'un user, supprime le commentaire correspondant. */
@@ -426,16 +464,16 @@ exports.uncomment = async (req, res) => {
 
 // Get all the comments for a specific post
 exports.getAllComments = (req, res) => {
-
   db.Comments.findAll({
-    where: {'post_id': req.params.post_id}
+    where: { post_id: req.params.post_id },
   })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        error: "Error retrieving Comments for Post with id=" + req.params.post_id,
+        error:
+          "Error retrieving Comments for Post with id=" + req.params.post_id,
       });
     });
 };
