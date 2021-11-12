@@ -12,6 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
+import Search from "../Search/Search";
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -37,8 +38,8 @@ import { TextInput } from "react-native";
 import { UidContext } from "../Appcontext";
 
 function Post(props) {
+ 
   const faces = [];
-
   const [liked, setLiked] = useState(false);
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
@@ -124,9 +125,13 @@ function Post(props) {
   const sendRemoveComment = async (post_id, user_id, commentaire) => {
     await dispatch(removeComment(post_id, user_id, commentaire, userData));
   };
-
+  
   return (
     <>
+    <Search
+        placeholder="Search"
+        onChange={(e) => console.log(e.target.value)}
+       />
       <Card className={classes.card}>
         {/* Utilisateur postant le Post. */}
         <Grid item>
