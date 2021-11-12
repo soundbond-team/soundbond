@@ -39,9 +39,10 @@ db.SoundLocation = require("./soundlocation")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
 db.Post = require("./post")(sequelize, Sequelize);
 db.Comments = require("./comment")(sequelize, Sequelize);
-let a = db.Comments;
+db.tag = require("./tag")(sequelize, Sequelize);
 /***%%%*** Déclaration des clés étrangères ***%%%***/
-
+//Chaque Post a un ou plusieurs tags
+db.Post.hasMany(db.tag, { as: "tag" });
 // Chaque Sound possède des attributs de localisation.
 db.Sound.belongsTo(db.SoundLocation, {
   through: "sound",

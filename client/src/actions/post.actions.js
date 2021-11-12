@@ -18,7 +18,7 @@ export const GET_ALL_COMMENT_FOR_SPECIFIC_POST =
 export const POST_USER = "POST_USER";
 
 // Permet d'ajouter un post en BD
-export const post_post = (sound_id, description, uid) => {
+export const post_post = (sound_id, description, uid, tag) => {
   return (dispatch) => {
     return axios({
       method: "post",
@@ -27,6 +27,7 @@ export const post_post = (sound_id, description, uid) => {
         description: description,
         publisher_user_id: uid,
         sound_id: sound_id,
+        tags: tag,
       },
     })
       .then((res) => {
