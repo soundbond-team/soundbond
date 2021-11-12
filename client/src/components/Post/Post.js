@@ -173,8 +173,9 @@ function Post(props) {
         }
 
         {/* Boutons like et comment. */}
-        <span>{props.post.description}</span>
-        {props.post.tag.length > 0 ? <span>Tags: </span> : <span></span>}
+        <span>{"Description: " + props.post.description}</span>
+        <br />
+        {props.post.tag.length > 0 ? <span>{"Tags: "}</span> : <span></span>}
         {props.post.tag.length > 0 ? (
           props.post.tag.map((i, index) => <span>{i.tag + ", "}</span>)
         ) : (
@@ -189,7 +190,7 @@ function Post(props) {
                   ? handleShowMentionJaimeModal
                   : handleCloseMentionJaimeModal
               }
-              style={{ margin: "2px 5px", cursor: "pointer" }}
+              style={{ cursor: "pointer" }}
             >
               {nombrelike}{" "}
             </span>
@@ -204,11 +205,17 @@ function Post(props) {
               />
             </IconButton>
           </span>
-
-          <IconButton onClick={handleShowCommentsModal}>
-            {" "}
-            <CommentIcon className={classes.icon} />
-          </IconButton>
+          <span>
+            <span
+              style={{ marginLeft: "5px", cursor: "pointer" }}
+              onClick={handleShowCommentsModal}
+            >
+              {props.post.commented_by.length}{" "}
+            </span>
+            <IconButton onClick={handleShowCommentsModal}>
+              <CommentIcon className={classes.icon} />
+            </IconButton>
+          </span>
           <span>
             <FacebookShareButton
               url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
@@ -218,7 +225,6 @@ function Post(props) {
               <FacebookIcon size={36} round />
             </FacebookShareButton>
           </span>
-
           <span>
             <TwitterShareButton
               url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
