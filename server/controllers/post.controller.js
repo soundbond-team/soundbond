@@ -1,6 +1,8 @@
 const db = require("../models");
 const Op = db.Sequelize.Op;
 
+import sanitizeHtml from "sanitize-html";
+
 // Création d'un nouveau Post.
 exports.create = async (req, res) => {
   // Vérification que la requête contient bien toutes les valeurs.
@@ -241,9 +243,11 @@ exports.getAllLike = (req, res) => {
       res.send(like);
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error retrieving Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error retrieving Post with id=" + id,
+        })
+      );
     });
 };
 
@@ -286,9 +290,11 @@ exports.findOne = (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error retrieving Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error retrieving Post with id=" + id,
+        })
+      );
     });
 };
 
@@ -305,15 +311,19 @@ exports.update = (req, res) => {
           message: "Post was updated successfully.",
         });
       } else {
-        res.send({
-          error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
-        });
+        res.send(
+          sanitizeHtml({
+            error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
+          })
+        );
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error updating Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error updating Post with id=" + id,
+        })
+      );
     });
 };
 
@@ -330,15 +340,19 @@ exports.delete = (req, res) => {
           message: "Post was deleted successfully!",
         });
       } else {
-        res.send({
-          error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
-        });
+        res.send(
+          sanitizeHtml({
+            error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
+          })
+        );
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Could not delete Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Could not delete Post with id=" + id,
+        })
+      );
     });
 };
 
