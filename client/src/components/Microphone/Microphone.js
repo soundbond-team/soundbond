@@ -6,6 +6,7 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions";
 
 import { makeStyles } from "@material-ui/styles";
 import MicIcon from "@material-ui/icons/Mic";
+import CropIcon from "@mui/icons-material/Crop";
 import IconButton from "@material-ui/core/IconButton";
 import StopIcon from "@material-ui/icons/Stop";
 import ReplayIcon from "@material-ui/icons/Replay";
@@ -116,6 +117,8 @@ export default function Microphone(props) {
     }
   };
   const stopPlayback = () => wavesurfer.current.stop();
+
+  const cropSound = () => console.log("resize the sound");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -294,6 +297,11 @@ export default function Microphone(props) {
                 <IconButton onClick={stopPlayback}>
                   {" "}
                   <StopIcon className={classes.icon} />
+                </IconButton>
+
+                <IconButton onClick={cropSound}>
+                  {" "}
+                  <CropIcon className={classes.icon} />
                 </IconButton>
               </Grid>
             )}
