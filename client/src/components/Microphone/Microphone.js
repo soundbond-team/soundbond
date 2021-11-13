@@ -111,14 +111,57 @@ export default function Microphone(props) {
 
   const togglePlayback = () => {
     if (!isPlaying) {
-      wavesurfer.current.regions.list[1].play();
+      if (wavesurfer.current.regions.list[1]) {
+        wavesurfer.current.regions.list[1].play();
+      } else {
+        wavesurfer.current.play();
+      }
     } else {
       wavesurfer.current.pause();
     }
   };
   const stopPlayback = () => wavesurfer.current.stop();
 
-  const cropSound = () => console.log("resize the sound");
+  const cropSound = () => {
+    const start =
+      wavesurfer.current.regions.list[
+        Object.keys(wavesurfer.current.regions.list)[0]
+      ].start.toFixed(2);
+    const end =
+      wavesurfer.current.regions.list[
+        Object.keys(wavesurfer.current.regions.list)[0]
+      ].end.toFixed(2);
+    const originalBuffer = wavesurfer.current.backend.buffer;
+    console.log(
+      end,
+      start,
+      end,
+      start,
+      originalBuffer,
+      (end - start) * (originalBuffer.sampleRate * 1)
+    );
+    var newBuffer = wavesurfer.current.backend.ac.createBuffer(
+      originalBuffer.numberOfChannels,
+      //la partition du son que l'on souhaite récupérer
+      (end - start) * (originalBuffer.sampleRate * 1),
+      originalBuffer.sampleRate
+    );
+
+    for (var i = 0; i < originalBuffer.numberOfChannels; i++) {
+      var chanData = originalBuffer.getChannelData(i);
+      var segmentChanData = newBuffer.getChannelData(i);
+      for (
+        var j = 0, len = chanData.length;
+        j < end * originalBuffer.sampleRate;
+        j++
+      ) {
+        segmentChanData[j] = chanData[j + start * originalBuffer.sampleRate];
+      }
+    }
+
+    wavesurfer.current.loadDecodedBuffer(newBuffer);
+    wavesurfer.current.clearRegions();
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
