@@ -41,9 +41,8 @@ function Search(props){
                 }).map((val) =>{
                     if (searchShow){
                     return <div className="search_result" key={val.id}>
-                     <Post post={val} /></div>}
+                     <Post post={val} /><br></br></div>}
                 })}
-                
              </div>
            
         </>

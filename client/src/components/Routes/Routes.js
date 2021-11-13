@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Home from "../../Pages/home";
 import Share from "../../components/Share/Share";
+import Search from "../Search/Search";
 import Nav from "../../components/Navbar/Navbar";
 import MapPage from "../../Pages/MapPage";
 import Registration from "../../Pages/Register/Register";
@@ -31,6 +32,7 @@ const routes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/profil/:username" element={<Profil />} />
+        <Route path="search" element={< Search />} />
         {/* <Navigate to="/" />*/}
       </Routes>{" "}
     </Router>
