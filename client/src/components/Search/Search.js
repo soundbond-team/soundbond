@@ -1,14 +1,11 @@
 import React from 'react';
 import "./Search.css";
 import {useState, useEffect} from 'react';
-import { useSelector } from "react-redux";
 import Post from "../Post/Post";
-import { set } from 'js-cookie';
-
-
 function Search(props){
     const [datas, setDatas] = useState([]);
     const [searchTerm, setsearchTerm] = useState("");
+    const [searchShow, setSearchShow] = useState(false);
 
     useEffect(() => {
         fetch('http://localhost:8080/api/v1/post/')
@@ -19,6 +16,13 @@ function Search(props){
       const handleSearchTerm = (e)=>{
           let value = e.target.value;
           setsearchTerm(value);
+
+          if(e.target.value===""){
+            setSearchShow(false);
+          }
+          else {
+            setSearchShow(true);
+          }
       }
     return (
         <>
@@ -35,8 +39,9 @@ function Search(props){
                 {datas.filter((val)=> {
                     return val.description.toLowerCase().includes(searchTerm.toLowerCase())
                 }).map((val) =>{
+                    if (searchShow){
                     return <div className="search_result" key={val.id}>
-                    {val.description}</div>
+                     <Post post={val} /></div>}
                 })}
                 
              </div>
