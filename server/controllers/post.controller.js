@@ -1,7 +1,6 @@
 const db = require("../models");
+const sanitizeHtml = require("sanitize-html");
 const Op = db.Sequelize.Op;
-
-import sanitizeHtml from "sanitize-html";
 
 // Création d'un nouveau Post.
 exports.create = async (req, res) => {
