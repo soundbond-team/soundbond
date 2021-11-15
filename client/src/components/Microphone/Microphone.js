@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { TextInput } from "react-native";
+
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
+import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions";
 
 import { makeStyles } from "@material-ui/styles";
 import MicIcon from "@material-ui/icons/Mic";
@@ -27,6 +28,7 @@ import { post_sound } from "../../actions/sound.actions";
 import { post_post, getallPost } from "../../actions/post.actions";
 import { UidContext } from "../Appcontext";
 import "./Microphone.css";
+import { Input } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -52,12 +54,16 @@ export default function Microphone(props) {
     (state) => state.onesoundlocationReducer
   );
   const [description, setDescription] = useState(" "); // Utilisé pour stocker le description.
+  const [tag, setTag] = useState(" ");
+  const [tags, setTags] = useState([]); //tous les tags
   const [record, setRecord] = useState(false);
   const [open, setOpen] = useState(false);
   const [tempFile, setTempFile] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurfer = useRef(null);
   const uid = useContext(UidContext);
+  const buttonTag = useRef();
+
   useEffect(() => {
     if (!open || (open && !tempFile)) return;
 
@@ -72,6 +78,18 @@ export default function Microphone(props) {
       normalize: true,
       responsive: true,
       fillParent: true,
+      plugins: [
+        RegionsPlugin.create({
+          regions: [
+            {
+              id: 1,
+              start: 0,
+              end: 1,
+              color: "rgba(0, 0, 0, 0.1)",
+            },
+          ],
+        }),
+      ],
     });
 
     const handleResize = wavesurfer.current.util.debounce(() => {
@@ -92,7 +110,7 @@ export default function Microphone(props) {
 
   const togglePlayback = () => {
     if (!isPlaying) {
-      wavesurfer.current.play();
+      wavesurfer.current.regions.list[1].play();
     } else {
       wavesurfer.current.pause();
     }
@@ -135,18 +153,19 @@ export default function Microphone(props) {
 
   useEffect(() => {
     if (tempFile) {
-      addpost(sound.id, description);
+      addpost(sound.id, description, tags);
       setTempFile(null);
       setOpen(false);
       setRecord(false);
     }
   }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const addpost = (sound_id, _description) =>
+  const addpost = (sound_id, _description, tags) =>
     // Poster un Post puis recupérer tous les Posts.
     new Promise((resolve, reject) => {
-      dispatch(post_post(sound_id, _description, uid)).then(() => {
+      dispatch(post_post(sound_id, _description, uid, tags)).then(() => {
         dispatch(getallPost());
+        setTags([]);
       });
       resolve();
     });
@@ -187,7 +206,10 @@ export default function Microphone(props) {
   };
 
   const classes = useStyles();
-
+  const addTag = () => {
+    setTags((state) => [...state, tag]);
+    setTag("");
+  };
   return (
     <>
       <div className="container d-flex justify-content-center">
@@ -216,13 +238,42 @@ export default function Microphone(props) {
         </DialogContent>
 
         {/* Description  */}
-        <TextInput
-          multiline={true}
-          style={{ height: 40, backgroundColor: "azure", fontSize: 20 }}
-          placeholder="Description"
-          onChangeText={(description) => setDescription(description)}
-          defaultValue={""}
-        />
+
+        <div className="input-group mb-3 container">
+          <Input
+            type="text"
+            className="form-control"
+            placeholder="Description"
+            aria-label="Description"
+            aria-describedby="basic-addon2"
+            onChange={(e) => setDescription(e.target.value)}
+            defaultValue={""}
+          />
+        </div>
+        {" Tags: " + tags + ", "}
+        <div className="input-group mb-3 container">
+          <Input
+            type="text"
+            multiple
+            className="form-control"
+            placeholder="Tag"
+            aria-label="Tag"
+            aria-describedby="basic-addon2"
+            onChange={(e) => setTag(e.target.value)}
+            defaultValue={""}
+            ref={buttonTag}
+            value={tag}
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              onClick={addTag}
+            >
+              Ajouter
+            </button>
+          </div>
+        </div>
 
         <DialogActions>
           <Grid container>

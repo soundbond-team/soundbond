@@ -88,7 +88,7 @@ describe("Home Page", function () {
   it("Doit vérifier si l'item (soundbond) est chargé avec chrome", function () {
     return new Promise((resolve, reject) => {
       browserC
-        .findElement({ id: "sel-button" })
+        .findElement({ id: "sel-title" })
         .then((elem) => resolve())
         .catch((err) => reject(err));
     });
@@ -97,7 +97,7 @@ describe("Home Page", function () {
   it("Doit vérifier si l'item (soundbond) est chargé avec firefoxe", function () {
     return new Promise((resolve, reject) => {
       browserF
-        .findElement({ id: "sel-button" })
+        .findElement({ id: "sel-title" })
         .then((elem) => resolve())
         .catch((err) => reject(err));
     });
@@ -107,14 +107,6 @@ describe("Home Page", function () {
    * Fermez le navigateur et quittez.
    */
 
-<<<<<<< HEAD
-  after(function () {
-    // End of test use this.
-    browserC.quit();
-    browserF.quit();
-  });
-});
-=======
  after(function() {
   // End of test use this.
   browserC.quit();
@@ -123,4 +115,3 @@ describe("Home Page", function () {
  
  });
  
->>>>>>> b788691fcf6d29dc52f6ef50d6a6411577e7450e

@@ -2,6 +2,8 @@ import {
   GET_ALL_POST_TREND,
   ADD_LIKE,
   REMOVE_LIKE,
+  ADD_COMMENT,
+  REMOVE_COMMENT,
 } from "../actions/post.actions";
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
 const initialState = [];
@@ -27,6 +29,36 @@ export default function postTrendReducer(state = initialState, action) {
             ...posts,
             liked_by: posts.liked_by.filter(
               (user_data) => user_data.id !== action.payload.user_data.id
+            ),
+          };
+        }
+        return posts;
+      });
+    case ADD_COMMENT:
+      const datacomment = {
+        id: action.payload.userData.id,
+        username: action.payload.userData.username,
+        comment: action.payload.data,
+      };
+      console.log(datacomment);
+      return state.map((posts) => {
+        if (posts.id === action.payload.post_id) {
+          return {
+            ...posts,
+            commented_by: [datacomment, ...posts.commented_by],
+          };
+        }
+        return posts;
+      });
+
+    case REMOVE_COMMENT:
+      return state.map((posts) => {
+        if (posts.id === action.payload.post_id) {
+          console.log(posts.commented_by);
+          return {
+            ...posts,
+            commented_by: posts.commented_by.filter(
+              (data) => data.id !== action.payload.userData.id
             ),
           };
         }
