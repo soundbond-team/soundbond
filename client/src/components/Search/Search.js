@@ -1,17 +1,17 @@
 import React from 'react';
 import "./Search.css";
+import { useSelector } from "react-redux";
 import {useState, useEffect} from 'react';
 import Post from "../Post/Post";
+import { getAllPostTag, getByTag } from '../../../../server/controllers/post.controller';
 function Search(props){
-    const [datas, setDatas] = useState([]);
-    const [searchTerm, setsearchTerm] = useState("");
-    const [searchShow, setSearchShow] = useState(false);
 
-    useEffect(() => {
-        fetch('http://localhost:8080/api/v1/post/')
-        .then((response) => response.json())
-        .then((json) => setDatas(json));
-      }, []); 
+    const datas= useSelector((state) => state.postReducer);
+    const [searchTerm, setsearchTerm] = useState("");
+    const [searchShow, setSearchShow] = useState(false); 
+
+    
+    const postsTag = getAllPostTag(searchTerm);
 
       const handleSearchTerm = (e)=>{
           let value = e.target.value;
@@ -36,12 +36,13 @@ function Search(props){
                  />
             </div> 
             <div className="search_results">
+
                 {datas.filter((val)=> {
                     return val.description.toLowerCase().includes(searchTerm.toLowerCase())
                 }).map((val) =>{
                     if (searchShow){
                     return <div className="search_result" key={val.id}>
-                     <Post post={val} /><br></br></div>}
+                     <Post post={val} /><br></br><br></br><br></br></div>}
                 })}
              </div>
            
