@@ -29,22 +29,24 @@ function Profil(props) {
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
   useEffect(() => {
-    const getcurrentUser = async (username) => {
-      await axios({
-        method: "get",
-        url: `http://localhost:8080/api/v1/user/username/${username}`,
-      })
-        .then((res) => {
-          if (res.data !== "" && res.data != null) {
-            pushUserdata(res.data);
-          } else window.location = "/";
+    if (currentUserdata !== params.username) {
+      const getcurrentUser = async (username) => {
+        await axios({
+          method: "get",
+          url: `http://localhost:8080/api/v1/user/username/${username}`,
         })
-        .catch((err) => {
-          window.location = "/";
-        });
-    };
+          .then((res) => {
+            if (res.data !== "" && res.data != null) {
+              pushUserdata(res.data);
+            } else window.location = "/";
+          })
+          .catch((err) => {
+            window.location = "/";
+          });
+      };
 
-    getcurrentUser(params.username); // eslint-disable-next-line
+      getcurrentUser(params.username);
+    } // eslint-disable-next-line
   }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
 
   useEffect(() => {
@@ -60,7 +62,7 @@ function Profil(props) {
         }
       }
     }
-  }, [currentUserdata, props, params]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
