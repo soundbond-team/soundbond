@@ -1,4 +1,5 @@
 const db = require("../models");
+const sanitizeHtml = require("sanitize-html");
 const Op = db.Sequelize.Op;
 
 // Création d'un nouveau Post.
@@ -22,51 +23,74 @@ exports.create = async (req, res) => {
     sound_id: req.body.sound_id,
   };
 
+  const findd = () => {
+    db.Post.findByPk(postcreate.id, {
+      include: [
+        {
+          model: db.Sound,
+          as: "publishing",
+
+          include: [
+            {
+              model: db.SoundLocation,
+              as: "soundlocation",
+            },
+          ],
+        },
+        {
+          model: db.User,
+          as: "publisher",
+          attributes: ["id", "username"],
+        },
+        {
+          model: db.User,
+          as: "liked_by",
+          attributes: ["id", "username"],
+        },
+        {
+          model: db.User,
+          as: "commented_by",
+          attributes: ["id", "username"],
+        },
+        {
+          model: db.tag,
+          as: "tagpost",
+        },
+      ],
+    }).then((data) => {
+      res.send(data);
+    });
+  };
+
   // Enregistrement dans la base. .create créé et commit dans la base d'un seul coup.
   const postcreate = await db.Post.create(post);
 
   if (Object.keys(req.body.tags).length > 0) {
     for (let value of Object.values(req.body.tags)) {
-      let tagtocreate = await db.tag.create({ tag: value });
-      await postcreate.addTag(tagtocreate);
+      //
+      db.tag
+        .findOne({
+          where: { tag: value },
+        })
+        .then(async (data) => {
+          if (data != null) {
+            await postcreate.addTagpost(data);
+            findd();
+          } else {
+            const tagcreated = await db.tag.create({ tag: value });
+            await postcreate.addTagpost(tagcreated);
+            findd();
+          }
+        })
+        .catch(async (e) => {
+          const tagcreated = await db.tag.create({ tag: value });
+          await postcreate.addTagpost(tagcreated);
+          findd();
+        });
     }
   } else {
-    console.log("no tags");
+    findd();
   }
-
-  db.Post.findByPk(postcreate.id, {
-    include: [
-      {
-        model: db.Sound,
-        as: "publishing",
-
-        include: [
-          {
-            model: db.SoundLocation,
-            as: "soundlocation",
-          },
-        ],
-      },
-      {
-        model: db.User,
-        as: "publisher",
-        attributes: ["id", "username"],
-      },
-      {
-        model: db.User,
-        as: "liked_by",
-        attributes: ["id", "username"],
-      },
-      {
-        model: db.User,
-        as: "commented_by",
-        attributes: ["id", "username"],
-      },
-      { model: db.tag, as: "tag" },
-    ],
-  }).then((data) => {
-    res.send(data);
-  });
 };
 
 // Retrieve all posts from the database.
@@ -102,7 +126,7 @@ exports.findAll = (req, res) => {
 
       {
         model: db.tag,
-        as: "tag",
+        as: "tagpost",
       },
     ],
   })
@@ -158,7 +182,7 @@ exports.allPostsByUser = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tag" },
+      { model: db.tag, as: "tagpost" },
     ],
   })
     .then((data) => {
@@ -215,7 +239,7 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tag" },
+      { model: db.tag, as: "tagpost" },
     ],
   })
     .then((data) => {
@@ -241,9 +265,11 @@ exports.getAllLike = (req, res) => {
       res.send(like);
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error retrieving Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error retrieving Post with id=" + id,
+        })
+      );
     });
 };
 
@@ -279,16 +305,18 @@ exports.findOne = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tag" },
+      { model: db.tag, as: "tagpost" },
     ],
   })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error retrieving Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error retrieving Post with id=" + id,
+        })
+      );
     });
 };
 
@@ -305,15 +333,19 @@ exports.update = (req, res) => {
           message: "Post was updated successfully.",
         });
       } else {
-        res.send({
-          error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
-        });
+        res.send(
+          sanitizeHtml({
+            error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
+          })
+        );
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error updating Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error updating Post with id=" + id,
+        })
+      );
     });
 };
 
@@ -330,15 +362,19 @@ exports.delete = (req, res) => {
           message: "Post was deleted successfully!",
         });
       } else {
-        res.send({
-          error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
-        });
+        res.send(
+          sanitizeHtml({
+            error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
+          })
+        );
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Could not delete Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Could not delete Post with id=" + id,
+        })
+      );
     });
 };
 

@@ -175,9 +175,13 @@ function Post(props) {
         {/* Boutons like et comment. */}
         <span>{"Description: " + props.post.description}</span>
         <br />
-        {props.post.tag.length > 0 ? <span>{"Tags: "}</span> : <span></span>}
-        {props.post.tag.length > 0 ? (
-          props.post.tag.map((i, index) => <span>{i.tag + ", "}</span>)
+        {props.post.tagpost.length > 0 ? (
+          <span>{"Tags: "}</span>
+        ) : (
+          <span></span>
+        )}
+        {props.post.tagpost.length > 0 ? (
+          props.post.tagpost.map((i, index) => <span>{i.tag + ", "}</span>)
         ) : (
           <p></p>
         )}

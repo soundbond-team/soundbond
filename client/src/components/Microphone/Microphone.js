@@ -210,8 +210,9 @@ export default function Microphone(props) {
     // Poster un Post puis recupérer tous les Posts.
     new Promise((resolve, reject) => {
       dispatch(post_post(sound_id, _description, uid, tags)).then(() => {
-        dispatch(getallPost());
         setTags([]);
+        setDescription(" ");
+        dispatch(getallPost());
       });
       resolve();
     });
@@ -253,9 +254,12 @@ export default function Microphone(props) {
 
   const classes = useStyles();
   const addTag = () => {
-    setTags((state) => [...state, tag]);
-    setTag("");
+    if (tags.includes(tag) === false) {
+      setTags((state) => [...state, tag]);
+      setTag("");
+    }
   };
+
   return (
     <>
       <div className="container d-flex justify-content-center">
@@ -299,16 +303,22 @@ export default function Microphone(props) {
         {" Tags: " + tags + ", "}
         <div className="input-group mb-3 container">
           <Input
+            style={{ whiteSpace: "nowrap" }}
             type="text"
             multiple
+            class="text-break"
             className="form-control"
             placeholder="Tag"
             aria-label="Tag"
             aria-describedby="basic-addon2"
-            onChange={(e) => setTag(e.target.value)}
+            onChange={(e) => {
+              setTag(e.target.value.replace(/\s/g, ""));
+            }}
+            id="tag"
             defaultValue={""}
             ref={buttonTag}
             value={tag}
+            pattern="^\S+$"
           />
           <div class="input-group-append">
             <button
