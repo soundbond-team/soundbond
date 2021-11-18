@@ -9,7 +9,7 @@ export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
-
+export const POSTS_BY_TAG = "POSTS_BY_TAG";
 // Ajoute un post en BD
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
 export const GET_ALL_COMMENT_FOR_SPECIFIC_POST =
@@ -195,5 +195,23 @@ export const getPostsUser = (user_id) => {
         }
       })
       .catch((err) => {});
+  };
+};
+
+export const getpostbytag = (tag) => {
+  return (dispatch) => {
+    return axios({
+      method: "get",
+      url: `http://localhost:8080/api/v1/post/getPostBytag/${tag}`,
+
+      withCredentials: true,
+    })
+      .then((res) => {
+        dispatch({
+          type: POSTS_BY_TAG,
+          payload: res.data.tagging,
+        });
+      })
+      .catch((err) => console.log(err));
   };
 };

@@ -269,20 +269,18 @@ export default function Microphone(props) {
               setTag(e.target.value.replace(/\s/g, ""));
             }}
             id="tag"
-            defaultValue={""}
             ref={buttonTag}
-            value={tag}
+            value={tag != " " ? tag : null}
             pattern="^\S+$"
           />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              onClick={addTag}
-            >
-              Ajouter
-            </button>
-          </div>
+
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={addTag}
+          >
+            Ajouter
+          </button>
         </div>
 
         <DialogActions>
