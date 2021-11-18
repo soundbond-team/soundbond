@@ -31,5 +31,9 @@ module.exports = (app) => {
   router.post("/uncomment/", post.uncomment);
   router.get("/:post_id/getAllComments/", post.getAllComments);
 
+  //shares
+  router.post("/share/",post.share);
+  
+
   app.use("/api/v1/post", router);
 };

@@ -29,12 +29,14 @@ import {
   removeLike,
   addComment,
   removeComment,
+  addShare,
 } from "../../actions/post.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import IconButton from "@material-ui/core/IconButton";
 import { TextInput } from "react-native";
-
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import { UidContext } from "../Appcontext";
+
 
 function Post(props) {
   const faces = [];
@@ -55,6 +57,15 @@ function Post(props) {
   const handleCloseCommentsModal = () => setShowCommentsModal(false);
   const handleShowCommentsModal = () => setShowCommentsModal(true);
 
+  let isShared = false ;
+  const [showSharePostModal, setSharePostModal] = useState(false);
+  const handleShowSharePostModal= () => {
+    share();
+    setSharePostModal(true);
+    isShared = true;
+  }
+  const handleCloseSharePostModal=()=> setSharePostModal(false);
+  
   useEffect(() => {
     let currentpost = props.post;
 
@@ -113,6 +124,10 @@ function Post(props) {
     }
   };
 
+  const share = async()=>{
+      dispatch(addShare(props.post.id,userData.user_id));
+  };
+
   const sendAddComment = async () => {
     if (commentaire !== "") {
       await dispatch(removeComment(props.post.id, uid, commentaire, userData));
@@ -127,12 +142,26 @@ function Post(props) {
 
   return (
     <>
-      <Card className={classes.card}>
+    <Card className={classes.card}>
         {/* Utilisateur postant le Post. */}
         <Grid item>
           <List className={classes.list}>
             <ListItem alignItems="flex-start" className={classes.listItem}>
               <ListItemAvatar>
+                {isShared? (
+                  <NavLink
+                    className="nav-link"
+                    exact
+                    to={`/profil/${userData.username}`}
+                    style={{ textDecoration: "none" }}>
+                    <Avatar className={classes.avatar} src={faces[4]} />
+                    a partagé le post de 
+                  </NavLink>
+                ):(
+                <>
+                </>
+                )}
+
                 <NavLink
                   className="nav-link"
                   exact
@@ -220,6 +249,19 @@ function Post(props) {
               <CommentIcon className={classes.icon} />
             </IconButton>
           </span>
+          {/* share button */}
+          <span>
+            <span
+              style={{ marginLeft: "5px", cursor: "pointer" }}
+            >
+              
+            </span>
+            <IconButton onClick={handleShowSharePostModal}>
+              <ShareOutlinedIcon className={classes.icon}/>
+            </IconButton>
+          </span>
+
+
           <span>
             <FacebookShareButton
               url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
@@ -257,6 +299,21 @@ function Post(props) {
             </div>
           ))}
         </Modal.Body>
+      </Modal>
+
+      <Modal
+      show = {showSharePostModal}
+      onHide={handleCloseSharePostModal}
+      size="sm"
+      centered>
+        <ModalHeader closeButton>
+          <Modal.Title>Partager le post</Modal.Title>
+        </ModalHeader>
+        <Modal.Body>
+          Post partagé!
+          <a href={`http://localhost:3000/profil/${userData.username}`}>Voir la publication sur votre profil .</a>
+        </Modal.Body>
+
       </Modal>
 
       <Modal

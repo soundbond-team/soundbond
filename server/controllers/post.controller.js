@@ -514,3 +514,39 @@ exports.getAllComments = (req, res) => {
     });
 };
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
+
+
+
+//share a post 
+exports.share = (req,res)=>{
+  const id = req.params.id;
+  const user_id = req.body.user_id;
+
+  db.Post.findByPk(id).then(async (post) => {
+    try {
+      await post.addShared_by(user_id);
+      res.status(201).json("shared");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+
+};
+
+//get number of shares of a specific post 
+exports.getAllShares=(req,res)=>{
+  const post_id = req.params.post_id;
+
+  db.Post.findAndCountAll(post_id)
+    .then((data) => {
+      let shares = {
+        share: data.shares,
+      };
+      res.send(shares);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: "Error retrieving Shares for Post with id=" + post_id,
+      });
+    });
+}

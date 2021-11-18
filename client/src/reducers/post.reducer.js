@@ -4,6 +4,7 @@ import {
   REMOVE_LIKE,
   ADD_COMMENT,
   REMOVE_COMMENT,
+  ADD_SHARE,
 } from "../actions/post.actions";
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
 const initialState = [];
@@ -63,6 +64,17 @@ export default function postReducer(state = initialState, action) {
             commented_by: posts.commented_by.filter(
               (data) => data.id !== action.payload.userData.id
             ),
+          };
+        }
+        return posts;
+      });
+
+    case ADD_SHARE :
+      return state.map((posts) => {
+        if (posts.id === action.payload.post_id) {
+          return {
+            ...posts,
+            shared_by: [action.payload.user_data, ...posts.shared_by],
           };
         }
         return posts;

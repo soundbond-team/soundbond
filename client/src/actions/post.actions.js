@@ -9,6 +9,7 @@ export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
+export const ADD_SHARE="ADD_SHARE";
 
 // Ajoute un post en BD
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
@@ -197,3 +198,25 @@ export const getPostsUser = (user_id) => {
       .catch((err) => {});
   };
 };
+
+export const addShare = (post_id,user_id)=>{
+  return (dispatch)=>{
+    return axios({
+      method:"post",
+      url:`http://localhost:8080/api/v1/post/share/`,
+      data: {
+        post_id: post_id,
+        user_id: user_id,
+      },
+    })
+    .then((res)=>{
+      if (res.data !== "" && res.data !== null) {
+        dispatch({ type: ADD_SHARE, payload: res.data });
+      }
+    })
+    .catch((err) => {});
+  };
+
+};
+
+
