@@ -39,16 +39,16 @@ db.SoundLocation = require("./soundlocation")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
 db.Post = require("./post")(sequelize, Sequelize);
 db.Comments = require("./comment")(sequelize, Sequelize);
-db.tag = require("./tag")(sequelize, Sequelize);
+db.Tag = require("./tag")(sequelize, Sequelize);
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 //Chaque Post a un ou plusieurs tags
-db.Post.belongsToMany(db.tag, {
+db.Post.belongsToMany(db.Tag, {
   through: "tag_post",
   as: "tagpost",
   foreignKey: "post_id",
 });
 
-db.tag.belongsToMany(db.Post, {
+db.Tag.belongsToMany(db.Post, {
   through: "tag_post",
   as: "tagging",
   foreignKey: "tagging_id",

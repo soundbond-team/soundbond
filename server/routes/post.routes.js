@@ -20,6 +20,12 @@ module.exports = (app) => {
   // Delete all Post
   router.delete("/", post.deleteAll);
 
+  //getPostBytag
+  router.get("/getPostBytag/:tag", post.gePostByTag);
+
+  //check if tag exist
+  router.get("/getTag/:tag", post.getTag);
+
   // Likes
   router.post("/like/:id", post.like);
   router.post("/unlike/:id", post.unlike);

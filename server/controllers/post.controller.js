@@ -53,7 +53,7 @@ exports.create = async (req, res) => {
           attributes: ["id", "username"],
         },
         {
-          model: db.tag,
+          model: db.Tag,
           as: "tagpost",
         },
       ],
@@ -68,16 +68,15 @@ exports.create = async (req, res) => {
   if (Object.keys(req.body.tags).length > 0) {
     for (let value of Object.values(req.body.tags)) {
       //
-      db.tag
-        .findOne({
-          where: { tag: value },
-        })
+      db.Tag.findOne({
+        where: { tag: value },
+      })
         .then(async (data) => {
           if (data != null) {
             await postcreate.addTagpost(data);
             findd();
           } else {
-            const tagcreated = await db.tag.create({ tag: value });
+            const tagcreated = await db.Tag.create({ tag: value });
             await postcreate.addTagpost(tagcreated);
             findd();
           }
@@ -91,6 +90,75 @@ exports.create = async (req, res) => {
   } else {
     findd();
   }
+};
+
+exports.getTag = (req, res) => {
+  const tagParameter = req.params.tag;
+  db.Tag.findOne({
+    where: { tag: tagParameter },
+  })
+    .then((data) => {
+      if (data.id) {
+        res.status(200).send(true);
+      } else {
+        res.status(200).send(false);
+      }
+    })
+    .catch((err) => {
+      res.status(200).send(false);
+    });
+};
+//get all post by tag
+exports.gePostByTag = (req, res) => {
+  const tagParameter = req.params.tag;
+  db.Tag.findOne({
+    where: { tag: tagParameter },
+    include: [
+      {
+        model: db.Post,
+        as: "tagging",
+        include: [
+          {
+            model: db.Sound,
+            as: "publishing",
+
+            include: [
+              {
+                model: db.SoundLocation,
+                as: "soundlocation",
+              },
+            ],
+          },
+          {
+            model: db.User,
+            as: "publisher",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "liked_by",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "commented_by",
+            attributes: ["id", "username"],
+          },
+
+          {
+            model: db.Tag,
+            as: "tagpost",
+          },
+        ],
+      },
+    ],
+  })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 };
 
 // Retrieve all posts from the database.
@@ -125,7 +193,7 @@ exports.findAll = (req, res) => {
       },
 
       {
-        model: db.tag,
+        model: db.Tag,
         as: "tagpost",
       },
     ],
@@ -182,7 +250,7 @@ exports.allPostsByUser = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tagpost" },
+      { model: db.Tag, as: "tagpost" },
     ],
   })
     .then((data) => {
@@ -239,7 +307,7 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tagpost" },
+      { model: db.Tag, as: "tagpost" },
     ],
   })
     .then((data) => {
@@ -305,7 +373,7 @@ exports.findOne = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tagpost" },
+      { model: db.Tag, as: "tagpost" },
     ],
   })
     .then((data) => {
