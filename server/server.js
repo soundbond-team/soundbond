@@ -35,14 +35,85 @@ app.listen(port, () => {
 const db = require("./models");
 const { response } = require("express");
 
-// Test de la connexion.
-/*try {
-  db.sequelize.authenticate(); //? la documentation suggère d'utiliser await sequelize.authenticate() mais cela génère une erreur.
-  console.log("Connection has been established successfully.");
-} catch (error) {
-  console.error("Unable to connect to the database:", error);
-}
-*/
 db.sequelize.sync({ force: true });
 
 module.exports = app;
+
+
+
+
+
+
+
+
+
+// Azure
+
+// Azure
+const { BlobServiceClient, BaseRequestPolicy, newPipeline, AnonymousCredential } = require("@azure/storage-blob");
+
+// Create a policy factory with create() method provided
+class RequestIDPolicyFactory {
+  // Constructor to accept parameters
+  constructor(prefix) {
+    this.prefix = prefix;
+  }
+
+  // create() method needs to create a new RequestIDPolicy object
+  create(nextPolicy, options) {
+    return new RequestIDPolicy(nextPolicy, options, this.prefix);
+  }
+}
+
+// Create a policy by extending from BaseRequestPolicy
+class RequestIDPolicy extends BaseRequestPolicy {
+  constructor(nextPolicy, options, prefix) {
+    super(nextPolicy, options);
+    this.prefix = prefix;
+  }
+
+  // Customize HTTP requests and responses by overriding sendRequest
+  // Parameter request is WebResource type
+  async sendRequest(request) {
+    // Customize client request ID header
+    request.headers.set(
+      "x-ms-version",
+      `2020-02-10`
+    );
+
+    // response is HttpOperationResponse type
+    const response = await this._nextPolicy.sendRequest(request);
+
+    // Modify response here if needed
+
+    return response;
+  }
+}
+
+const pipeline = newPipeline(new AnonymousCredential());
+
+// Inject customized factory into default pipeline
+pipeline.factories.unshift(new RequestIDPolicyFactory("Prefix"));
+
+const blobServiceClient = new BlobServiceClient(
+  `https://${process.env.AZURE_ACCOUNT_NAME}.blob.core.windows.net${process.env.AZURE_SIGNATURE_ACCES_PARTAGE}`,
+  pipeline
+);
+
+
+
+app.get('/api/containers', async (req, res) => {
+
+  let i = 1;
+  const constainers = [];
+  try {
+    for await (const container of blobServiceClient.listContainers()) {
+      console.log(`Container ${i++}: ${container.name}`);
+      console.log(container);
+      constainers.push(container.name)
+    }
+  }catch(err) {
+    console.error("err:::", err);
+  }
+  res.json(constainers);
+});
