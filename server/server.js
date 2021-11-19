@@ -49,56 +49,11 @@ module.exports = app;
 
 // Azure
 
-// Azure
-const { BlobServiceClient, BaseRequestPolicy, newPipeline, AnonymousCredential } = require("@azure/storage-blob");
+const { BlobServiceClient } = require('@azure/storage-blob');
+const { v1: uuidv1} = require('uuid');
 
-// Create a policy factory with create() method provided
-class RequestIDPolicyFactory {
-  // Constructor to accept parameters
-  constructor(prefix) {
-    this.prefix = prefix;
-  }
-
-  // create() method needs to create a new RequestIDPolicy object
-  create(nextPolicy, options) {
-    return new RequestIDPolicy(nextPolicy, options, this.prefix);
-  }
-}
-
-// Create a policy by extending from BaseRequestPolicy
-class RequestIDPolicy extends BaseRequestPolicy {
-  constructor(nextPolicy, options, prefix) {
-    super(nextPolicy, options);
-    this.prefix = prefix;
-  }
-
-  // Customize HTTP requests and responses by overriding sendRequest
-  // Parameter request is WebResource type
-  async sendRequest(request) {
-    // Customize client request ID header
-    request.headers.set(
-      "x-ms-version",
-      `2020-02-10`
-    );
-
-    // response is HttpOperationResponse type
-    const response = await this._nextPolicy.sendRequest(request);
-
-    // Modify response here if needed
-
-    return response;
-  }
-}
-
-const pipeline = newPipeline(new AnonymousCredential());
-
-// Inject customized factory into default pipeline
-pipeline.factories.unshift(new RequestIDPolicyFactory("Prefix"));
-
-const blobServiceClient = new BlobServiceClient(
-  `https://${process.env.AZURE_ACCOUNT_NAME}.blob.core.windows.net${process.env.AZURE_SIGNATURE_ACCES_PARTAGE}`,
-  pipeline
-);
+const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_CONNECTION_STRING);
+const containerClient = blobServiceClient.getContainerClient("soundcontainer");
 
 
 
@@ -116,4 +71,61 @@ app.get('/api/containers', async (req, res) => {
     console.error("err:::", err);
   }
   res.json(constainers);
+});
+
+app.get('/api/blob/create', async (req, res) => {
+  // Charger des objets sur un BLOB
+  // Create a unique name for the blob
+  const blobName = 'quickstart.txt';
+
+  // Get a block blob client
+  const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+  console.log('\nUploading to Azure storage as blob:\n\t', blobName);
+
+  // Upload data to the blob
+  const data = 'Hello, World!';
+  const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
+  console.log("Blob was uploaded successfully. requestId: ", uploadBlobResponse.requestId);
+});
+
+app.get('/api/blob/list', async (req, res) => {
+  // Lister les BLOBS
+  console.log('\nListing blobs...');
+
+  // List the blob(s) in the container.
+  for await (const blob of containerClient.listBlobsFlat()) {
+      console.log('\t', blob.name);
+  }});
+  
+
+
+  // A helper function used to read a Node.js readable stream into a string
+async function streamToString(readableStream) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    readableStream.on("data", (data) => {
+      chunks.push(data.toString());
+    });
+    readableStream.on("end", () => {
+      resolve(chunks.join(""));
+    });
+    readableStream.on("error", reject);
+  });
+}
+
+app.get('/api/blob/get', async (req, res) => {
+    // Charger des objets sur un BLOB
+  // Create a unique name for the blob
+  const blobName = 'quickstart.txt';
+
+  // Get a block blob client
+  const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+  console.log(blockBlobClient);
+  // Get blob content from position 0 to the end
+  // In Node.js, get downloaded data by accessing downloadBlockBlobResponse.readableStreamBody
+  // In browsers, get downloaded data by accessing downloadBlockBlobResponse.blobBody
+  const downloadBlockBlobResponse = await blockBlobClient.download(0);
+  console.log('\nDownloaded blob content...');
+  console.log('\t', await streamToString(downloadBlockBlobResponse.readableStreamBody));
 });
