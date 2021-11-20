@@ -18,7 +18,7 @@ require("./routes/sound.routes")(app);
 require("./routes/soundlocation.routes")(app);
 require("./routes/post.routes")(app);
 require("./routes/blob.routes")(app);
-require("./routes/User.routes")(app);
+require("./routes/user.routes")(app);
 
 // jwt
 
