@@ -32,8 +32,10 @@ module.exports = (app) => {
   router.get("/:post_id/getAllComments/", post.getAllComments);
 
   //shares
-  router.post("/share/",post.share);
-  
+  router.post("/share/", post.share);
+  router.get("/:post_id/getAllShares/", post.getAllShares);
+ 
+
 
   app.use("/api/v1/post", router);
 };

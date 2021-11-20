@@ -22,6 +22,9 @@ module.exports = (app) => {
   router.post("/follow/:id", userCtrl.follow);
   router.post("/unfollow/:id", userCtrl.unfollow);
 
+  //GET all Posts shared by a specific User.
+  router.get("/:user_id/sharedPosts",post.allPostsSharedByUser);
+
   router.put("/:id", userCtrl.updateUser);
 
   app.use("/api/v1/user", router);

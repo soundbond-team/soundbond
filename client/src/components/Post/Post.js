@@ -57,12 +57,12 @@ function Post(props) {
   const handleCloseCommentsModal = () => setShowCommentsModal(false);
   const handleShowCommentsModal = () => setShowCommentsModal(true);
 
-  let isShared = false ;
+  
   const [showSharePostModal, setSharePostModal] = useState(false);
   const handleShowSharePostModal= () => {
     share();
     setSharePostModal(true);
-    isShared = true;
+    
   }
   const handleCloseSharePostModal=()=> setSharePostModal(false);
   
@@ -125,7 +125,7 @@ function Post(props) {
   };
 
   const share = async()=>{
-      dispatch(addShare(props.post.id,userData.user_id));
+      dispatch(addShare(props.post.id,uid,userData.user_id));
   };
 
   const sendAddComment = async () => {
@@ -148,20 +148,6 @@ function Post(props) {
           <List className={classes.list}>
             <ListItem alignItems="flex-start" className={classes.listItem}>
               <ListItemAvatar>
-                {isShared? (
-                  <NavLink
-                    className="nav-link"
-                    exact
-                    to={`/profil/${userData.username}`}
-                    style={{ textDecoration: "none" }}>
-                    <Avatar className={classes.avatar} src={faces[4]} />
-                    a partagé le post de 
-                  </NavLink>
-                ):(
-                <>
-                </>
-                )}
-
                 <NavLink
                   className="nav-link"
                   exact

@@ -146,13 +146,13 @@ db.User.belongsToMany(db.User, {
 db.User.belongsToMany(db.Post,{
   through:"shares",
   as:"shared_posts",
-  foreignKey:"post_id",
+  foreignKey:"user_id",
 });
 
 db.Post.belongsToMany(db.User,{
   through:"shares",
   as:"shared_by",
-  foreignKey:"user_id",
+  foreignKey:"post_id",
 });
 /***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/
 

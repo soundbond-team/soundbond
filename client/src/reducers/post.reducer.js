@@ -79,7 +79,6 @@ export default function postReducer(state = initialState, action) {
         }
         return posts;
       });
-
     default:
       return state;
   }

@@ -10,6 +10,9 @@ export const REMOVE_LIKE = "REMOVE_LIKE";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
 export const ADD_SHARE="ADD_SHARE";
+export const GET_ALL_Shares_FOR_SPECIFIC_POST="GET_ALL_Shares_FOR_SPECIFIC_POST";
+export const GET_ALL_POSTS_SHARED_BY_USER=" GET_ALL_POSTS_SHARED_BY_USER";
+
 
 // Ajoute un post en BD
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
@@ -53,6 +56,7 @@ export const getallPost = () => {
       .catch((err) => console.log(err));
   };
 };
+
 
 export const getPostTrend = (id) => {
   return (dispatch) => {
@@ -199,7 +203,7 @@ export const getPostsUser = (user_id) => {
   };
 };
 
-export const addShare = (post_id,user_id)=>{
+export const addShare = (post_id,user_id,userData)=>{
   return (dispatch)=>{
     return axios({
       method:"post",
@@ -211,7 +215,7 @@ export const addShare = (post_id,user_id)=>{
     })
     .then((res)=>{
       if (res.data !== "" && res.data !== null) {
-        dispatch({ type: ADD_SHARE, payload: res.data });
+        dispatch({ type: ADD_SHARE, payload: {post_id,userData} });
       }
     })
     .catch((err) => {});
@@ -219,4 +223,30 @@ export const addShare = (post_id,user_id)=>{
 
 };
 
+
+export const getAllShares = (post_id)=>{
+  return (dispatch) => {
+    return axios
+      .get(`http://localhost:8080/api/v1/post/${post_id}/getAllShares`)
+      .then((res) => {
+        dispatch({
+          type: GET_ALL_Shares_FOR_SPECIFIC_POST,
+          payload: res.data,
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const getAllPostSharedByUser=(user_id)=>{
+  return(dispatch)=>{
+    return axios
+    .get(`http://localhost:8080/api/v1/user/${user_id}/sharedPosts`)
+    .then((res)=>{
+      dispatch({type : GET_ALL_POSTS_SHARED_BY_USER, payload:res.data});
+    })
+    .catch((err) => console.log(err));
+  };
+
+};
 
