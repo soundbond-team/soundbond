@@ -513,4 +513,41 @@ exports.getAllComments = (req, res) => {
       });
     });
 };
+
+// Get id tag
+exports. getTag = (req, res) => {
+  db.tags.findOne({
+    where: { tag: req.params.tag },
+  }).then((data)=>{
+    res.send(data);
+  })
+  .catch((err) => {
+    res.status(500).send({
+      error:
+        "Error",
+    });
+  });
+};
+
+//Get all posts for a specific tag
+exports.getByTag = (req, res) => {
+  const id = findOne(req.params.tag)
+  db.tagpost.findAll({
+    where: {taggind_id: id},
+  })
+  .then((data) => {
+    res.send(data);
+  })
+  .catch((err) => {
+    res.status(500).send({
+      error:
+        "Error retrieving tags for Post"
+    });
+  });
+};
+
+
+
+
+
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/

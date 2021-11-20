@@ -29,7 +29,6 @@ const routes = () => {
           <Route path="allposts" element={<Allposts />} />
           <Route path="trending" element={<TrendingPost />} />
         </Route>
-        <Route path="/post/:tag"element= {Post.getByTag} />
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/map" element={<MapPage />} />

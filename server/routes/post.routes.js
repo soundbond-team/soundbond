@@ -31,5 +31,8 @@ module.exports = (app) => {
   router.post("/uncomment/", post.uncomment);
   router.get("/:post_id/getAllComments/", post.getAllComments);
 
+  //search by tag
+  router.get("/post/:tag", post.getByTag);
+
   app.use("/api/v1/post", router);
 };

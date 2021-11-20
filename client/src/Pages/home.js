@@ -17,6 +17,11 @@ function Home() {
           <br /> <br />
           <div className="container">
             <div className="row d-flex justify-content-center">
+              <Search
+                placeholder="Search"
+                className="col-4 btn btn-dark"
+                onChange={(e) => console.log(e.target.value)}
+              />
               <Link
                 style={{ margin: "4px" }}
                 type="button"
@@ -33,12 +38,6 @@ function Home() {
               >
                 Abonnements
               </Link>
-
-              <Search
-                placeholder="Search"
-                className="col-4 btn btn-dark"
-                onChange={(e) => console.log(e.target.value)}
-              />
 
             </div>
           </div>

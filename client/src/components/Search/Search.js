@@ -3,15 +3,14 @@ import "./Search.css";
 import { useSelector } from "react-redux";
 import {useState, useEffect} from 'react';
 import Post from "../Post/Post";
-import { getAllPostTag, getByTag } from '../../../../server/controllers/post.controller';
 function Search(props){
 
-    const datas= useSelector((state) => state.postReducer);
+    //const datas= useSelector((state) => state.postReducer);
+    //const datas = getByTag();
+
     const [searchTerm, setsearchTerm] = useState("");
     const [searchShow, setSearchShow] = useState(false); 
 
-    
-    const postsTag = getAllPostTag(searchTerm);
 
       const handleSearchTerm = (e)=>{
           let value = e.target.value;
@@ -27,18 +26,21 @@ function Search(props){
     return (
         <>
             <div className="search">
+                <form>
                 <input
                     type="text" 
-                    name="searchBar"
-                    id="searchBar"
-                    placeholder="Rechercher"
+                    name="tag"
+                    id="tag"
+                    placeholder="recherche par tag"
                     onChange={handleSearchTerm}
                  />
+                 <button type="submit">Rechercher</button>
+                 </form>
             </div> 
             <div className="search_results">
 
                 {datas.filter((val)=> {
-                    return val.description.toLowerCase().includes(searchTerm.toLowerCase())
+                    return val.tag.toLowerCase().includes(searchTerm.toLowerCase())
                 }).map((val) =>{
                     if (searchShow){
                     return <div className="search_result" key={val.id}>
