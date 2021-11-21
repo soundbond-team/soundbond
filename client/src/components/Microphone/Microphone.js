@@ -147,7 +147,7 @@ export default function Microphone(props) {
     - l'ID du SoundLocation correspondant.
   */
     new Promise((resolve, reject) => {
-      dispatch(post_sound(tempfile_object, soundlocation_id));
+      dispatch(post_sound(tempfile_object, soundlocation_id, uid));
       resolve();
     });
 
@@ -180,7 +180,6 @@ export default function Microphone(props) {
   const download = () => {
     if (tempFile) {
       const url = tempFile.blobURL;
-      console.log(tempFile.blobURL);
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", "rzqr.mp3");
