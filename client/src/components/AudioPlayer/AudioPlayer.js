@@ -75,7 +75,13 @@ export default function AudioPlayer(props) {
 
   useEffect(() => {
     if (props.file) {
-      wavesurfer.current.load(props.file.blobURL);
+      let file_url = process.env.REACT_APP_AZURE_BLOB_STORAGE_ADRESS+"1_.g3oqrpcmy8k.mp3";
+      fetch(file_url).then(r => r.blob()).then(blob => {
+        let audio = new Audio();
+        audio.src = URL.createObjectURL(blob);
+        wavesurfer.current.load(audio);
+      });
+      //wavesurfer.current.load(props.file.blobURL);
     }
   }, [props.file]);
 
