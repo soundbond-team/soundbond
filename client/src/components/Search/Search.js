@@ -1,17 +1,15 @@
-import React from 'react';
-import "./Search.css";
+import {  TextField, IconButton } from '@material-ui/core';
+import { SearchOutlined } from '@material-ui/icons';
 import { useSelector,useDispatch} from "react-redux";
-import {useState, useEffect,useContext} from 'react';
+import React,{useState,useContext} from 'react';
 import Post from "../Post/Post";
-import { UidContext } from "../Appcontext";
-import { useHistory } from 'react-router-dom';
+
 
 function Search(props){
 
     const datas = useSelector((state) => state.postReducer);
-    
-    const dispatch = useDispatch();
-    const uid = useContext(UidContext);
+    //const postData = useSelector((state) => state.postReducer);
+
 
     const [searchTerm, setsearchTerm] = useState("");
     const [searchShow, setSearchShow] = useState(false); 
@@ -20,7 +18,7 @@ function Search(props){
         await dispatch(getByTag(props.tag_id,uid,e.target.value, postData));
     };
     const datas = async () => {
-         await dispatch(getAllPost(props.taggind_id,uid, tag, postData));
+         await dispatch(getAllPostTag(props.taggind_id,uid, tag, postData));
   };*/
 
 
@@ -38,25 +36,29 @@ function Search(props){
 
     return (
         <>
-            <div className="search">
-                <form>
-                <input
-                    type="text" 
-                    name="tag"
-                    id="tag"
-                    placeholder="recherche par tag"
-                    onChange={handleSearchTerm}
-                 />
-                 <button type="submit">Rechercher</button>
-                 </form>
-            </div> 
+            <TextField
+                fullWidth
+                id="tag"
+                name="tag"
+                type="text"
+                placeholder="recherche par tag"
+                InputProps={{
+                  endAdornment: (
+                    <IconButton>
+                      <SearchOutlined />
+                    </IconButton>
+                  ),
+                }}
+                onChange={handleSearchTerm }
+              />
+            
             <div className="search_results">
 
                 {datas.filter((val)=> {
-                    return val.description.toLowerCase().includes(searchTerm.toLowerCase())
+                    return val.description.toLowerCase().includes(searchTerm.toLowerCase()) 
                 }).map((val) =>{
                     if (searchShow){
-                    return <div className="search_result" key={val.id}>
+                    return <div className="search_result" key={val.id}><br></br>
                      <Post post={val} /><br></br><br></br><br></br></div>}
                 })}
              </div>

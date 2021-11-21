@@ -9,7 +9,7 @@ export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
-export const GET_BY_TAG = "GET_BY_TAG";
+export const GET_ALL_POST_TAG = "GET_ALL_POST_TAG";
 
 // Ajoute un post en BD
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
@@ -201,17 +201,17 @@ export const getPostsUser = (user_id) => {
 };
 
 
-/*export const getPostTag = (tag_id) => {
+export const getAllPost = () => {
   return (dispatch) => {
     return axios({
       method: "get",
-      url: `http://localhost:8080/api/v1/tag/{$tag_id}/posts`,
+      url: `http://localhost:8080/api/v1/tag/{$tag_id}/`,
     })
     .then((res)=>{
       if(res.data !=="" && res.data !== null){
-        dispatch({type: GET_BY_TAG, payload: res.data});
+        dispatch({type: GET_ALL_POST_TAG, payload: res.data});
       }
     })
     .catch((err) => {});
   };
-};*/
+};

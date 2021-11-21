@@ -21,7 +21,7 @@ function Home() {
                 placeholder="Search"
                 className="col-4 btn btn-dark"
                 onChange={(e) => console.log(e.target.value)}
-              />
+              /><br></br>
               <Link
                 style={{ margin: "4px" }}
                 type="button"
@@ -37,7 +37,7 @@ function Home() {
                 className="col-4 btn btn-dark"
               >
                 Abonnements
-              </Link>
+              </Link><br></br>
 
             </div>
           </div>
