@@ -34,5 +34,7 @@ module.exports = (app) => {
   //search by tag
   router.get("/post/:tag", post.getByTag);
 
+  router.get("/getAllPost/:tag", post.getAllPost);
+
   app.use("/api/v1/post", router);
 };

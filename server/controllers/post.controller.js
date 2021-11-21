@@ -515,7 +515,7 @@ exports.getAllComments = (req, res) => {
 };
 
 // Get id tag
-exports. getTag = (req, res) => {
+exports. getByTag = (req, res) => {
   db.tags.findOne({
     where: { tag: req.params.tag },
   }).then((data)=>{
@@ -530,7 +530,7 @@ exports. getTag = (req, res) => {
 };
 
 //Get all posts for a specific tag
-exports.getByTag = (req, res) => {
+exports.getAllPost = (req, res) => {
   const id = findOne(req.params.tag)
   db.tagpost.findAll({
     where: {taggind_id: id},
