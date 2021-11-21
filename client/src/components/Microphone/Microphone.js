@@ -150,11 +150,7 @@ export default function Microphone(props) {
     for (var i = 0; i < originalBuffer.numberOfChannels; i++) {
       var chanData = originalBuffer.getChannelData(i);
       var segmentChanData = newBuffer.getChannelData(i);
-      for (
-        var j = 0, len = chanData.length;
-        j < end * originalBuffer.sampleRate;
-        j++
-      ) {
+      for (var j = 0; j < end * originalBuffer.sampleRate; j++) {
         segmentChanData[j] = chanData[j + start * originalBuffer.sampleRate];
       }
     }
