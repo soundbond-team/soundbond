@@ -122,8 +122,8 @@ function Post(props) {
     setCommentaire("");
   };
 
-  const sendRemoveComment = async (post_id, user_id, commentaire) => {
-    await dispatch(removeComment(post_id, user_id, commentaire, userData));
+  const sendRemoveComment = async (post_id, user_id, _commentaire) => {
+    await dispatch(removeComment(post_id, user_id, _commentaire, userData));
   };
 
   const getFileName = () => {
