@@ -201,17 +201,3 @@ export const getPostsUser = (user_id) => {
 };
 
 
-export const getAllPostTag = () => {
-  return (dispatch) => {
-    return axios({
-      method: "get",
-      url: `http://localhost:8080/api/v1/tag/{$tag_id}/`,
-    })
-    .then((res)=>{
-      if(res.data !=="" && res.data !== null){
-        dispatch({type: GET_ALL_POST_TAG, payload: res.data});
-      }
-    })
-    .catch((err) => {});
-  };
-};

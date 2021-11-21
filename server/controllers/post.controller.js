@@ -515,35 +515,56 @@ exports.getAllComments = (req, res) => {
 };
 
 // Get id tag
-exports. getByTag = (req, res) => {
-  db.tags.findOne({
-    where: { tag: req.params.tag },
-  }).then((data)=>{
-    res.send(data);
-  })
-  .catch((err) => {
-    res.status(500).send({
-      error:
-        "Error",
-    });
-  });
-};
+exports.getPostByTag = (req, res) => {
+  const tagParameter = req.params.tag;
+  db.Tag.findOne({
+    where: { tag: tagParameter },
+    include: [
+      {
+        model: db.Post,
+        as: "tagging",
+        include: [
+          {
+            model: db.Sound,
+            as: "publishing",
 
-//Get all posts for a specific tag
-exports.getAllPostTag = (req, res) => {
-  const id = findOne(req.params.tag)
-  db.tagpost.findAll({
-    where: {taggind_id: id},
+            include: [
+              {
+                model: db.SoundLocation,
+                as: "soundlocation",
+              },
+            ],
+          },
+          {
+            model: db.User,
+            as: "publisher",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "liked_by",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "commented_by",
+            attributes: ["id", "username"],
+          },
+
+          {
+            model: db.Tag,
+            as: "tagpost",
+          },
+        ],
+      },
+    ],
   })
-  .then((data) => {
-    res.send(data);
-  })
-  .catch((err) => {
-    res.status(500).send({
-      error:
-        "Error retrieving tags for Post"
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     });
-  });
 };
 
 

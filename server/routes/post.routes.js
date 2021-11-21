@@ -32,9 +32,7 @@ module.exports = (app) => {
   router.get("/:post_id/getAllComments/", post.getAllComments);
 
   //search by tag
-  router.get("/post/:tag", post.getByTag);
-
-  router.get("/getAllPost/:tag", post.getAllPostTag);
+  router.get("/getPostByTag/:tag", post.getPostByTag);
 
   app.use("/api/v1/post", router);
 };
