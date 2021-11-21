@@ -201,7 +201,7 @@ export const getPostsUser = (user_id) => {
 };
 
 
-export const getAllPost = () => {
+export const getAllPostTag = () => {
   return (dispatch) => {
     return axios({
       method: "get",

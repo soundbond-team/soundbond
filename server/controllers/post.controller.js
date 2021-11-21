@@ -530,7 +530,7 @@ exports. getByTag = (req, res) => {
 };
 
 //Get all posts for a specific tag
-exports.getAllPost = (req, res) => {
+exports.getAllPostTag = (req, res) => {
   const id = findOne(req.params.tag)
   db.tagpost.findAll({
     where: {taggind_id: id},
