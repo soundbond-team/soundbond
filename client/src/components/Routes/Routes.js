@@ -15,8 +15,12 @@ import Login from "../../Pages/Login/Login";
 import Profil from "../../Pages/Profil/Profil";
 import Allposts from "../../components/AllPosts/allposts";
 import TrendingPost from "../../components/Trending/trending";
+<<<<<<< HEAD
 import Post from "../Post/Post";
 
+=======
+//import FileUpload from "../../components/FileUpload";
+>>>>>>> 29a0d00ee2ab5b08fcf35531d2e3b57736ee3c95
 //le routing ne sert a rien tant quil nya pas une persistance pour tt les elements ( post )
 const routes = () => {
   return (
@@ -34,6 +38,7 @@ const routes = () => {
         <Route path="/map" element={<MapPage />} />
         <Route path="/profil/:username" element={<Profil />} />
         <Route path="search" element={< Search />} />
+        {/*<Route path="/upload_file" element={<FileUpload/>} />*/}
         {/* <Navigate to="/" />*/}
       </Routes>{" "}
     </Router>
