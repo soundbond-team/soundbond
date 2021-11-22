@@ -31,7 +31,7 @@ import { UidContext } from "../Appcontext";
 import "./Microphone.css";
 import { Input } from "@material-ui/core";
 
-import getWavBytes from './sound_computation.js'; // convertAnAudioBufferToBlob()
+import { getWavBytes, bufferToWave } from './sound_computation.js'; // convertAnAudioBufferToBlob()
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -174,17 +174,16 @@ export default function Microphone(props) {
     }
 
     // get WAV file bytes and audio params of your audio source
-    const wavBytes = getWavBytes(interleaved.buffer, {
+    /*const wavBytes = getWavBytes(interleaved.buffer, {
       isFloat: true,       // floating point or 16-bit integer
       numChannels: 2,
       sampleRate: 48000,
     })
-    const blob = new Blob([wavBytes], { type: 'audio/mp3' })
-
-    console.log(blob);
-    const url = window.URL.createObjectURL(blob);
 
     // Création du nouveau blob.
+    const blob = new Blob([wavBytes], { type: 'audio/mp3' })*/
+    const blob = bufferToWave(audioBuffer)//!, 0);
+    const url = window.URL.createObjectURL(blob);
     let newBlob = tempFile;
     newBlob.blob = blob;
     newBlob.blobURL = url;
@@ -310,7 +309,7 @@ export default function Microphone(props) {
               onData={onData}
               strokeColor="grey"
               backgroundColor="white"
-              mimeType="audio/wav"
+              mimeType="audio/mpeg"
             />
           )}
         </DialogContent>
