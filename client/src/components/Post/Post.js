@@ -55,6 +55,7 @@ function Post(props) {
   const handleCloseCommentsModal = () => setShowCommentsModal(false);
   const handleShowCommentsModal = () => setShowCommentsModal(true);
 
+
   useEffect(() => {
     let currentpost = props.post;
 
@@ -121,9 +122,17 @@ function Post(props) {
     setCommentaire("");
   };
 
-  const sendRemoveComment = async (post_id, user_id, commentaire) => {
-    await dispatch(removeComment(post_id, user_id, commentaire, userData));
+  const sendRemoveComment = async (post_id, user_id, _commentaire) => {
+    await dispatch(removeComment(post_id, user_id, _commentaire, userData));
   };
+
+  const getFileName = () => {
+    // Génère une URL de fichier à partir de l'URL de base Azure blob et du nom de fichier.
+    let azure = process.env.REACT_APP_AZURE_BLOB_STORAGE_ADRESS;
+    let filename = props.post.publishing.url;
+    return azure+filename;
+  }
+  const [blob_url] = useState(getFileName());
 
   return (
     <>
@@ -165,7 +174,7 @@ function Post(props) {
         {
           <AudioPlayer
             id="son"
-            file={null}
+            file_url={blob_url}
             id_son={props.post.publishing.id}
             latitude={props.post.publishing.soundlocation.latitude}
             longitude={props.post.publishing.soundlocation.longitude}
