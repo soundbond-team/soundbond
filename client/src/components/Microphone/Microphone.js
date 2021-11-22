@@ -176,7 +176,7 @@ export default function Microphone(props) {
     // get WAV file bytes and audio params of your audio source
     const wavBytes = getWavBytes(interleaved.buffer, {
       isFloat: true,       // floating point or 16-bit integer
-      numChannels: 2,
+      numChannels: 1,
       sampleRate: 44100,
     })
     const blob = new Blob([wavBytes], { type: 'audio/mp3' })
