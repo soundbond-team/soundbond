@@ -166,8 +166,8 @@ export default function Microphone(props) {
       type: "audio/mp3",
     });
     const url = window.URL.createObjectURL(blob);
-    let newBlob = new Object();
-    newBlob = tempFile;
+
+    let newBlob = tempFile;
     newBlob.blob = blob;
     newBlob.blobURL = url;
     console.log(newBlob);
