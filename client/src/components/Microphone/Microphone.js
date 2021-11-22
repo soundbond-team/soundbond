@@ -164,8 +164,8 @@ export default function Microphone(props) {
     */
 
     // Float32Array samples
-    //const [left, right] =  [audioBuffer.getChannelData(0), audioBuffer.getChannelData(1)]
-    const channel = audioBuffer.getChannelData(0)
+    // Used when left and right channels : const [left, right] =  [audioBuffer.getChannelData(0), audioBuffer.getChannelData(1)]
+    const channel = audioBuffer.getChannelData(0) // But we only have one.
 
     // interleaved
     const interleaved = new Float32Array(channel.length)
@@ -176,8 +176,8 @@ export default function Microphone(props) {
     // get WAV file bytes and audio params of your audio source
     const wavBytes = getWavBytes(interleaved.buffer, {
       isFloat: true,       // floating point or 16-bit integer
-      numChannels: 1,
-      sampleRate: 44100,
+      numChannels: 2,
+      sampleRate: 48000,
     })
     const blob = new Blob([wavBytes], { type: 'audio/mp3' })
 
@@ -310,7 +310,7 @@ export default function Microphone(props) {
               onData={onData}
               strokeColor="grey"
               backgroundColor="white"
-              mimeType="audio/mp3"
+              mimeType="audio/wav"
             />
           )}
         </DialogContent>
