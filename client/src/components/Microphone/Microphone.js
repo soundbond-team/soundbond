@@ -157,6 +157,21 @@ export default function Microphone(props) {
 
     wavesurfer.current.loadDecodedBuffer(newBuffer);
     wavesurfer.current.clearRegions();
+    let newBlob = convertAnAudioBufferToBlob(newBuffer);
+    setTempFile(newBlob);
+  };
+
+  const convertAnAudioBufferToBlob = (audioBuffer) => {
+    const blob = new Blob([audioBuffer], {
+      type: "audio/mp3",
+    });
+    const url = window.URL.createObjectURL(blob);
+    let newBlob = new Object();
+    newBlob = tempFile;
+    newBlob.blob = blob;
+    newBlob.blobURL = url;
+    console.log(newBlob);
+    return newBlob;
   };
 
   const handleClickOpen = () => {
@@ -244,6 +259,7 @@ export default function Microphone(props) {
   };
 
   const onStop = (recordedBlob) => {
+    console.log(recordedBlob);
     setTempFile(recordedBlob);
   };
 
