@@ -143,17 +143,20 @@ db.User.belongsToMany(db.User, {
 });
 
 // Relation M:M pour les posts partagés
+db.Post.belongsToMany(db.User,{
+  through:"shares",
+  as:"shared_by",
+  foreignKey:"post_id",
+  
+});
 db.User.belongsToMany(db.Post,{
   through:"shares",
   as:"shared_posts",
   foreignKey:"user_id",
 });
 
-db.Post.belongsToMany(db.User,{
-  through:"shares",
-  as:"shared_by",
-  foreignKey:"post_id",
-});
+
+
 /***%%%*** Exportation db pour une utilisation dans les autres modules ***%%%***/
 
 module.exports = db;

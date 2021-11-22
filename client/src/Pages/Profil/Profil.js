@@ -7,7 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { follow, unfollow } from "../../actions/user.actions";
-import { getPostTrend, getPostsUser } from "../../actions/post.actions";
+import { getPostTrend, getPostsUser ,getAllPostSharedByUser} from "../../actions/post.actions";
 import { useParams } from "react-router-dom";
 
 // il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
@@ -52,6 +52,7 @@ function Profil(props) {
   useEffect(() => {
     if (currentUserdata) {
       dispatch(getPostsUser(currentUserdata.id));
+      dispatch(getAllPostSharedByUser(currentUserdata.id));
       for (let i = 0; i < currentUserdata.following.length; i++) {
         if (currentUserdata.following[i].id === uid) {
           setFollow(true);

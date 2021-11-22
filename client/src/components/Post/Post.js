@@ -125,7 +125,7 @@ function Post(props) {
   };
 
   const share = async()=>{
-      dispatch(addShare(props.post.id,uid,userData.user_id));
+      dispatch(addShare(props.post.id,uid,userData));
   };
 
   const sendAddComment = async () => {

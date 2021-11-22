@@ -56,11 +56,7 @@ exports.create = async (req, res) => {
           model: db.tag,
           as: "tagpost",
         },
-        {
-          model:db.User,
-          as:"shared_by",
-          attributes: ["id","username"],
-        },
+        
       ],
     }).then((data) => {
       res.send(data);
@@ -133,11 +129,7 @@ exports.findAll = (req, res) => {
         model: db.tag,
         as: "tagpost",
       },
-      {
-        model:db.User,
-        as:"shared_by",
-        attributes: ["id","username"],
-    },
+      
     ],
   })
     .then((data) => {
@@ -195,11 +187,7 @@ exports.allPostsByUser = (req, res) => {
       },
       { model: db.tag, 
         as: "tagpost" },
-      {
-          model:db.User,
-          as:"shared_by",
-          attributes: ["id","username"],
-      },
+        
     ],
   })
     .then((data) => {
@@ -257,11 +245,8 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
         attributes: ["id", "username"],
       },
       { model: db.tag, as: "tagpost" },
-      {
-        model:db.User,
-        as:"shared_by",
-        attributes: ["id","username"],
-      },
+      
+    
     ],
   })
     .then((data) => {
@@ -277,55 +262,15 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
 
 exports.allPostsSharedByUser =(req,res)=>{
   
-  db.Post.findAll({
-    where : {
-        shared_by_user_id:req.params.user_id,
+  const listPost=db.Post.findAll({
+    include: {
+      model: db.User,
+      as: "shared_by",
+      where: {
+        user_id: user_id,
+      },
     },
-    include: [
-      {
-        model: db.Sound,
-        as: "publishing",
-
-        include: [
-          {
-            model: db.SoundLocation,
-            as: "soundlocation",
-          },
-        ],
-      },
-      {
-        model: db.User,
-        as: "publisher",
-      },
-      {
-        model: db.User,
-        as: "liked_by",
-      },
-      {
-        model: db.Sound,
-        as: "publishing",
-
-        include: [
-          {
-            model: db.SoundLocation,
-            as: "soundlocation",
-          },
-        ],
-      },
-      {
-        model: db.User,
-        as: "commented_by",
-        attributes: ["id", "username"],
-      },
-      { model: db.tag, 
-        as: "tagpost" 
-      },
-      {
-          model:db.User,
-          as:"shared_by",
-          attributes: ["id","username"],
-      },
-    ],
+    
   })
     .then((data) => {
       res.send(data);
@@ -392,11 +337,8 @@ exports.findOne = (req, res) => {
         attributes: ["id", "username"],
       },
       { model: db.tag, as: "tagpost" },
-      {
-        model:db.User,
-        as:"shared_by",
-        attributes: ["id","username"],
-    },
+      
+    
     ],
   })
     .then((data) => {
@@ -607,23 +549,6 @@ exports.getAllComments = (req, res) => {
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
 
 
-
-//share a post 
-exports.share = (req,res)=>{
-  const post_id = req.body.post_id;
-  const user_id = req.body.user_id;
-
-  db.Post.findByPk(post_id).then(async (post) => {
-    try {
-      await post.addShared_by(user_id);
-      res.status(201).json("shared");
-    } catch (e) {
-      res.status(400).json("error");
-    }
-  });
-
-};
-
 //get number of shares of a specific post 
 exports.getAllShares=(req,res)=>{
   const post_id = req.params.post_id;
@@ -642,4 +567,18 @@ exports.getAllShares=(req,res)=>{
     });
 };
 
-//get all posts shared
+exports.share=async(req,res)=>{
+  const post_id = req.body.post_id;
+  const user_id = req.body.user_id;
+
+  db.Post.findByPk(post_id).then(async(post)=>{
+    try{
+      await post.addShared_by(user_id);
+      res.status(201).json("shared");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+
+

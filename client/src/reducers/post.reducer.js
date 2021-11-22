@@ -74,7 +74,7 @@ export default function postReducer(state = initialState, action) {
         if (posts.id === action.payload.post_id) {
           return {
             ...posts,
-            shared_by: [action.payload.user_data, ...posts.shared_by],
+            shared_by: [action.payload.userData, ...posts.shared_by],
           };
         }
         return posts;

@@ -213,13 +213,16 @@ export const addShare = (post_id,user_id,userData)=>{
         user_id: user_id,
       },
     })
-    .then((res)=>{
-      if (res.data !== "" && res.data !== null) {
-        dispatch({ type: ADD_SHARE, payload: {post_id,userData} });
+    .then((res) => {
+      if (res.data.errors) {
+        dispatch({ type: ADD_SHARE, payload: "" });
+      } else {
+        console.log(post_id, userData);
+        dispatch({ type: ADD_SHARE, payload: { post_id, userData } });
       }
     })
-    .catch((err) => {});
-  };
+    .catch((err) => console.log(err));
+};
 
 };
 
