@@ -1,20 +1,16 @@
 import {  TextField, IconButton } from '@material-ui/core';
 import { SearchOutlined } from '@material-ui/icons';
-import React,{useState,useEffect} from 'react';
+import { useDispatch } from "react-redux";
+import React,{useState} from 'react';
 import Post from "../Post/Post";
-
+import axios from "axios";
+export const GET_POST_BY_TAG = "GET_POST_BY_TAG ";
 function Search(props){
     const [datas, setDatas] = useState([]);
     const [searchTerm, setsearchTerm] = useState("");
     const [searchShow, setSearchShow] = useState(false); 
 
-    useEffect(() =>{
-        fetch('http://localhost:8080/api/v1/post/getPostByTag')
-        .then((response) => response.json())
-        .then((json) => setDatas(json));
-    },[]);
-
-    console.log(datas);
+    const dispatch = useDispatch();
 
       const handleSearchTerm = (e)=>{
           let value = e.target.value;
@@ -25,6 +21,17 @@ function Search(props){
           else {
             setSearchShow(true);
           }
+          return (dispatch) => {
+            return axios
+              .get(`http://localhost:8080/api/v1/post/getPostByTag/${searchTerm}`)
+              .then((res) => {
+                dispatch({ type: GET_POST_BY_TAG , payload: res.data });
+                console.log(res.data);
+                setDatas(res.data);
+              })
+              .catch((err) => console.log(err));
+          }; 
+          
       }
 
     return (
@@ -46,13 +53,13 @@ function Search(props){
               />
             
             <div className="search_results">
-                {datas.filter((val)=> {
+                {datas?datas.filter((val)=> {
                     return val.tag.toLowerCase().includes(searchTerm.toLowerCase()) 
-                }).map((val,index) =>{
+                }).map((val) =>{
                     if (searchShow){
                     return <div className="search_result" key={val.id}><br></br>
                      <Post post={val} /><br></br><br></br><br></br></div>}
-                })}
+                }):<span></span>}
              </div>
            
         </>
