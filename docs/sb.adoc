@@ -111,7 +111,7 @@ image::assets/son_after_trim.png[]
 Après création d’un post l’utilisateur a la possibilité de couper un son et lire / télécharger le morceau coupé.
 
 ==== wF01 Chercher un son par son tag 
-
+image::assets/search_tag.png[]
 Je peux rentrer un tag qui m’intéresse dans une barre de recherche et obtenir tous les posts qui ont ce tag.
 
 
