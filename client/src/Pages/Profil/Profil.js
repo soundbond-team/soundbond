@@ -7,7 +7,11 @@ import Modal from "react-bootstrap/Modal";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { follow, unfollow } from "../../actions/user.actions";
-import { getPostTrend, getPostsUser } from "../../actions/post.actions";
+import {
+  getPostTrend,
+  getPostsUser,
+  getAllPostSharedByUser,
+} from "../../actions/post.actions";
 import { useParams } from "react-router-dom";
 
 // il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
@@ -15,6 +19,7 @@ import { useParams } from "react-router-dom";
 function Profil(props) {
   const params = useParams();
   const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
+  const allpostshare = useSelector((state) => state.allpostsharedReducer);
   const [currentUserdata, setcurrentUserdata] = useState();
 
   const [isFollow, setFollow] = useState(false);
@@ -52,6 +57,7 @@ function Profil(props) {
   useEffect(() => {
     if (currentUserdata) {
       dispatch(getPostsUser(currentUserdata.id));
+
       for (let i = 0; i < currentUserdata.following.length; i++) {
         if (currentUserdata.following[i].id === uid) {
           setFollow(true);
@@ -61,6 +67,7 @@ function Profil(props) {
           setFollow(false);
         }
       }
+      dispatch(getAllPostSharedByUser(currentUserdata.id));
     }
   }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -171,6 +178,24 @@ function Profil(props) {
               </Grid>
             }
           </div>
+          <p>
+            Share:
+            <div className="container">
+              {
+                <Grid container direction="column-reverse" spacing={3}>
+                  {allpostshare ? (
+                    allpostshare.map((i, index) => (
+                      <Grid key={index} item>
+                        <Post post={i} />
+                      </Grid>
+                    ))
+                  ) : (
+                    <p></p>
+                  )}
+                </Grid>
+              }
+            </div>
+          </p>
           <Modal show={show} onHide={handleClose} size="sm" centered>
             <ModalHeader closeButton>
               <Modal.Title>Abonnés</Modal.Title>

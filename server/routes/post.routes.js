@@ -33,6 +33,8 @@ module.exports = (app) => {
 
   //search by tag
   router.get("/getPostByTag/:tag", post.getPostByTag);
+  //shares
+  router.post("/share/", post.share);
 
   app.use("/api/v1/post", router);
 };

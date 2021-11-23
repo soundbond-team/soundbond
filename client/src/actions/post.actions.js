@@ -10,6 +10,10 @@ export const REMOVE_LIKE = "REMOVE_LIKE";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
 export const GET_POST_TAG = "GET_POST_TAG";
+export const ADD_SHARE = "ADD_SHARE";
+export const GET_ALL_Shares_FOR_SPECIFIC_POST =
+  "GET_ALL_Shares_FOR_SPECIFIC_POST";
+export const GET_ALL_POSTS_SHARED_BY_USER = " GET_ALL_POSTS_SHARED_BY_USER";
 
 // Ajoute un post en BD
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
@@ -177,22 +181,11 @@ export const removeComment = (post_id, user_id, comment, userData) => {
       .catch((err) => console.log(err));
   };
 };
-// Charge tous les Posts (ainsi que les données des foregn key)
-/*export const getallComments = (post_id) => {
+
+export const getallComments = (post_id) => {
   return (dispatch) => {
     return axios
       .get(`http://localhost:8080/api/v1/post/${post_id}/getAllComments`)
-      .then((res) => {
-        dispatch({ type: GET_ALL_COMMENT_FOR_SPECIFIC_POST, payload: res.data });
-      })
-      .catch((err) => console.log(err));
-  };
-};*/
-//TODO
-export const getallComments = () => {
-  return (dispatch) => {
-    return axios
-      .get(`http://localhost:8080/api/v1/post/1/getAllComments`)
       .then((res) => {
         dispatch({
           type: GET_ALL_COMMENT_FOR_SPECIFIC_POST,
@@ -215,5 +208,44 @@ export const getPostsUser = (user_id) => {
         }
       })
       .catch((err) => {});
+  };
+};
+
+export const addShare = (post_id, user_id, userData) => {
+  return (dispatch) => {
+    return axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/post/share/`,
+      data: {
+        post_id: post_id,
+        user_id: user_id,
+      },
+    })
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: ADD_SHARE, payload: "" });
+        } else {
+          console.log(post_id, userData);
+          dispatch({ type: ADD_SHARE, payload: { post_id, userData } });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const getAllPostSharedByUser = (user_id) => {
+  return (dispatch) => {
+    return axios
+      .get(`http://localhost:8080/api/v1/user/${user_id}/sharedPosts`)
+      .then((res) => {
+        console.log(res.data.shared_posts);
+        if (res.data.shared_posts) {
+          dispatch({
+            type: GET_ALL_POSTS_SHARED_BY_USER,
+            payload: res.data.shared_posts,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   };
 };

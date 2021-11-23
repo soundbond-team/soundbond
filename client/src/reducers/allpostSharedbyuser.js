@@ -1,17 +1,17 @@
 import {
-  POST_USER,
   ADD_LIKE,
   REMOVE_LIKE,
   ADD_COMMENT,
   REMOVE_COMMENT,
   ADD_SHARE,
+  GET_ALL_POSTS_SHARED_BY_USER,
 } from "../actions/post.actions";
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des KF)
 const initialState = [];
 
-export default function profilPostReducer(state = initialState, action) {
+export default function allpostsharedReducer(state = initialState, action) {
   switch (action.type) {
-    case POST_USER:
+    case GET_ALL_POSTS_SHARED_BY_USER:
       return action.payload;
 
     case ADD_LIKE:
