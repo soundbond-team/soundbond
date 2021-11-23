@@ -31,16 +31,10 @@ module.exports = (app) => {
   router.post("/uncomment/", post.uncomment);
   router.get("/:post_id/getAllComments/", post.getAllComments);
 
-<<<<<<< HEAD
   //search by tag
   router.get("/getPostByTag/:tag", post.getPostByTag);
-=======
   //shares
   router.post("/share/", post.share);
-  
- 
-
->>>>>>> 99646c511894ed04684e8a4ce54470cf68a14900
 
   app.use("/api/v1/post", router);
 };

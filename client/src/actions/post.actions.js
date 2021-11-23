@@ -249,7 +249,13 @@ export const getAllPostSharedByUser = (user_id) => {
     return axios
       .get(`http://localhost:8080/api/v1/user/${user_id}/sharedPosts`)
       .then((res) => {
-        dispatch({ type: GET_ALL_POSTS_SHARED_BY_USER, payload: res.data });
+        console.log(res.data.shared_posts);
+        if (res.data.shared_posts) {
+          dispatch({
+            type: GET_ALL_POSTS_SHARED_BY_USER,
+            payload: res.data.shared_posts,
+          });
+        }
       })
       .catch((err) => console.log(err));
   };
