@@ -4,14 +4,18 @@ import {
   REMOVE_LIKE,
   ADD_COMMENT,
   REMOVE_COMMENT,
+  ADD_SHARE,
+  GET_ALL_POSTS_SHARED_BY_USER,
 } from "../actions/post.actions";
-// Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
+// Ce reducer sert a stocker tous les posts reçus (ainsi que les données des KF)
 const initialState = [];
 
 export default function profilPostReducer(state = initialState, action) {
   switch (action.type) {
     case POST_USER:
       return action.payload;
+    case GET_ALL_POSTS_SHARED_BY_USER:
+        return action.payload;
     case ADD_LIKE:
       return state.map((posts) => {
         if (posts.id === action.payload.id) {
@@ -61,6 +65,16 @@ export default function profilPostReducer(state = initialState, action) {
             commented_by: posts.commented_by.filter(
               (data) => data.id !== action.payload.userData.id
             ),
+          };
+        }
+        return posts;
+      });
+      case ADD_SHARE :
+      return state.map((posts) => {
+        if (posts.id === action.payload.post_id) {
+          return {
+            ...posts,
+            shared_by: [action.payload.user_data, ...posts.shared_by],
           };
         }
         return posts;
