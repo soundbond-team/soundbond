@@ -76,11 +76,13 @@ export default function AudioPlayer(props) {
   useEffect(() => {
     if (props.file_url) {
       // Si une URL est spécifiée, on charge un un blob puis un audio.
-      fetch(props.file_url).then(r => r.blob()).then(blob => {
-        let audio = new Audio();
-        audio.src = URL.createObjectURL(blob);
-        wavesurfer.current.load(audio);
-      });
+      fetch(props.file_url)
+        .then((r) => r.blob())
+        .then((blob) => {
+          let audio = new Audio();
+          audio.src = URL.createObjectURL(blob);
+          wavesurfer.current.load(audio);
+        });
     }
   }, [props.file_url]);
 
@@ -115,11 +117,11 @@ export default function AudioPlayer(props) {
   }
 
   const download = () => {
-    if (props.file) {
-      const url = props.file.blobURL;
+    if (props.file_url) {
+      const url = props.file_url;
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "rzqr.mp3");
+
       document.body.appendChild(link);
       link.click();
     }
@@ -140,7 +142,7 @@ export default function AudioPlayer(props) {
           <IconButton onClick={download}>
             {" "}
             <DownloadIcon
-              style={props.file ? { color: blue[500] } : {}}
+              style={props.file_url ? { color: blue[500] } : {}}
               className={classes.icon}
             />{" "}
           </IconButton>

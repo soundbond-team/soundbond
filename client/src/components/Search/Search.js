@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Post from "../Post/Post";
 import { getPostByTag } from "../../actions/post.actions";
-
+import Grid from "@material-ui/core/Grid";
 function Search(props) {
   const [searchTerm, setsearchTerm] = useState(" ");
   const [searchShow, setSearchShow] = useState(false);
@@ -39,22 +39,19 @@ function Search(props) {
           <SearchOutlined />
         </IconButton>
       </div>
-      <div className="search_results">
-        {datas.map((val) => {
+      <Grid container direction="row" spacing={3}>
+        {datas.map((val, index) => {
           if (searchShow) {
             return (
-              <div className="search_result" key={val.id}>
-                <br></br>
+              <Grid key={index} item>
+                {" "}
                 <Post post={val} />
-                <br></br>
-                <br></br>
-                <br></br>
-              </div>
+              </Grid>
             );
           }
           return null;
         })}
-      </div>
+      </Grid>
     </>
   );
 }
