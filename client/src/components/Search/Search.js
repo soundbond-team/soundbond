@@ -3,7 +3,7 @@ import { SearchOutlined } from "@material-ui/icons";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Post from "../Post/Post";
-import { getPostByTag } from "../../actions/search.actions";
+import { getPostByTag } from "../../actions/post.actions";
 
 function Search(props) {
   const [searchTerm, setsearchTerm] = useState(" ");

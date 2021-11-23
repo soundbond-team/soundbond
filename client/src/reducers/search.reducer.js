@@ -4,7 +4,7 @@ import {
   ADD_LIKE,
   REMOVE_COMMENT,
   REMOVE_LIKE,
-} from "../actions/search.actions";
+} from "../actions/post.actions";
 
 const initialState = [];
 
