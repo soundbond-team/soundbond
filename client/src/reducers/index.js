@@ -7,7 +7,7 @@ import onesoundlocationReducer from "./onesoundlocation.reducer";
 import userReducer from "./user.reducer";
 import postTrendReducer from "./postTrend.reducer";
 import profilPostReducer from "./profilPostReducer";
-
+import searchReducer from "./search.reducer"; //pour les tags
 export default combineReducers({
   soundlocationReducer,
   soundReducer,
@@ -16,4 +16,5 @@ export default combineReducers({
   userReducer,
   postTrendReducer,
   profilPostReducer,
+  searchReducer,
 });

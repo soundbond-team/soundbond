@@ -13,6 +13,7 @@ export const ADD_SHARE="ADD_SHARE";
 export const GET_ALL_Shares_FOR_SPECIFIC_POST="GET_ALL_Shares_FOR_SPECIFIC_POST";
 export const GET_ALL_POSTS_SHARED_BY_USER=" GET_ALL_POSTS_SHARED_BY_USER";
 
+export const GET_POST_TAG = "GET_POST_TAG";
 
 // Ajoute un post en BD
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
@@ -20,6 +21,25 @@ export const GET_ALL_COMMENT_FOR_SPECIFIC_POST =
   "GET_ALL_COMMENT_FOR_SPECIFIC_POST";
 
 export const POST_USER = "POST_USER";
+
+export const GET_POST_BY_TAG = "GET_POST_BY_TAG";
+
+export const getPostByTag = (tag) => {
+  return (dispatch) => {
+    return axios({
+      method: "get",
+      url: `http://localhost:8080/api/v1/post/getPostByTag/${tag}`,
+    })
+      .then((res) => {
+        console.log(res.data.tagging);
+        dispatch({
+          type: GET_POST_BY_TAG,
+          payload: res.data.tagging,
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+};
 
 // Permet d'ajouter un post en BD
 export const post_post = (sound_id, description, uid, tag) => {

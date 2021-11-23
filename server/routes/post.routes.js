@@ -33,9 +33,9 @@ module.exports = (app) => {
 
   //shares
   router.post("/share/", post.share);
-  
- 
 
+  //search by tag
+  router.get("/getPostByTag/:tag", post.getPostByTag);
 
   app.use("/api/v1/post", router);
 };

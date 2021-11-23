@@ -1,7 +1,7 @@
 import "../App.css";
 import React from "react";
 import Microphone from "../components/Microphone/Microphone";
-
+import Search from "../components/Search/Search";
 import { Link, Outlet } from "react-router-dom";
 
 function Home() {
@@ -17,6 +17,11 @@ function Home() {
           <br /> <br />
           <div className="container">
             <div className="row d-flex justify-content-center">
+              <Search
+                placeholder="Search"
+                className="col-4 btn btn-dark"
+                onChange={(e) => console.log(e.target.value)}
+              /><br></br>
               <Link
                 style={{ margin: "4px" }}
                 type="button"
@@ -32,7 +37,8 @@ function Home() {
                 className="col-4 btn btn-dark"
               >
                 Abonnements
-              </Link>
+              </Link><br></br>
+
             </div>
           </div>
           <br /> <br />
