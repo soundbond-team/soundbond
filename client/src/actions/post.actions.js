@@ -227,20 +227,6 @@ export const addShare = (post_id,user_id,userData)=>{
 };
 
 
-export const getAllShares = (post_id)=>{
-  return (dispatch) => {
-    return axios
-      .get(`http://localhost:8080/api/v1/post/${post_id}/getAllShares`)
-      .then((res) => {
-        dispatch({
-          type: GET_ALL_Shares_FOR_SPECIFIC_POST,
-          payload: res.data,
-        });
-      })
-      .catch((err) => console.log(err));
-  };
-};
-
 export const getAllPostSharedByUser=(user_id)=>{
   return(dispatch)=>{
     return axios

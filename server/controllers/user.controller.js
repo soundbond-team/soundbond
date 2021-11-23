@@ -1,5 +1,6 @@
 const db = require("../models");
 const sanitizeHtml = require("sanitize-html");
+const { Post } = require("../models");
 const User = db.User;
 
 exports.userInformations = (req, res) => {
@@ -57,6 +58,10 @@ exports.userInformations2 = (req, res) => {
           exclude: ["password"],
         },
       },
+      {
+        model : Post,
+        as:"shared_posts",
+      }
     ],
     attributes: { exclude: ["password"] },
   })

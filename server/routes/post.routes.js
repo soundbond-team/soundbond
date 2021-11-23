@@ -33,7 +33,7 @@ module.exports = (app) => {
 
   //shares
   router.post("/share/", post.share);
-  router.get("/:post_id/getAllShares/", post.getAllShares);
+  
  
 
 
