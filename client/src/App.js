@@ -30,7 +30,7 @@ const App = () => {
       dispatch(getUser(uid));
       dispatch(getPostTrend(uid));
     }
-    dispatch(getallComments(uid));
+    dispatch(getallComments(1));
 
   }, [uid]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
