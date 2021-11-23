@@ -517,7 +517,7 @@ exports.getAllComments = (req, res) => {
 // Get id tag
 exports.getPostByTag = (req, res) => {
   const tagParameter = req.params.tag;
-  db.Tag.findOne({
+  db.tag.findOne({
     where: { tag: tagParameter },
     include: [
       {
@@ -552,7 +552,7 @@ exports.getPostByTag = (req, res) => {
           },
 
           {
-            model: db.Tag,
+            model: db.tag,
             as: "tagpost",
           },
         ],

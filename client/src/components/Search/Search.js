@@ -1,18 +1,19 @@
 import {  TextField, IconButton } from '@material-ui/core';
 import { SearchOutlined } from '@material-ui/icons';
-import { useDispatch } from "react-redux";
 import React,{useState} from 'react';
+import { useDispatch} from "react-redux";
 import Post from "../Post/Post";
-import axios from "axios";
-export const GET_POST_BY_TAG = "GET_POST_BY_TAG ";
+import {getPostByTag} from "../../actions/search.actions";
+
+
 function Search(props){
     const [datas, setDatas] = useState([]);
     const [searchTerm, setsearchTerm] = useState("");
     const [searchShow, setSearchShow] = useState(false); 
-
+    
     const dispatch = useDispatch();
 
-      const handleSearchTerm = (e)=>{
+    const handleSearchTerm = (e)=>{
           let value = e.target.value;
           setsearchTerm(value);
           if(e.target.value===""){
@@ -20,20 +21,13 @@ function Search(props){
           }
           else {
             setSearchShow(true);
+            const getTag = async() =>{
+              await dispatch(getPostByTag(searchTerm));
+            };
+            setDatas(getTag);   
           }
-          return (dispatch) => {
-            return axios
-              .get(`http://localhost:8080/api/v1/post/getPostByTag/${searchTerm}`)
-              .then((res) => {
-                dispatch({ type: GET_POST_BY_TAG , payload: res.data });
-                console.log(res.data);
-                setDatas(res.data);
-              })
-              .catch((err) => console.log(err));
-          }; 
-          
-      }
-
+    }
+    console.log(datas);
     return (
         <>
             <TextField
@@ -51,19 +45,17 @@ function Search(props){
                 }}
                 onChange={handleSearchTerm }
               />
-            
             <div className="search_results">
-                {datas?datas.filter((val)=> {
+                {datas.filter((val)=> {
                     return val.tag.toLowerCase().includes(searchTerm.toLowerCase()) 
                 }).map((val) =>{
                     if (searchShow){
                     return <div className="search_result" key={val.id}><br></br>
                      <Post post={val} /><br></br><br></br><br></br></div>}
-                }):<span></span>}
-             </div>
-           
+                })}
+             </div> 
         </>
     );
 }
 
-export default Search
+export default Search;
