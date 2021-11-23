@@ -39,8 +39,8 @@ import { UidContext } from "../Appcontext";
 
 
 function Post(props) {
+ 
   const faces = [];
-
   const [liked, setLiked] = useState(false);
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
@@ -140,6 +140,7 @@ function Post(props) {
   const sendRemoveComment = async (post_id, user_id, _commentaire) => {
     await dispatch(removeComment(post_id, user_id, _commentaire, userData));
   };
+  
 
   const getFileName = () => {
     // Génère une URL de fichier à partir de l'URL de base Azure blob et du nom de fichier.
