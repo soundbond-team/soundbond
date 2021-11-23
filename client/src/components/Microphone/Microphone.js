@@ -159,33 +159,6 @@ export default function Microphone(props) {
   };
 
   const convertAnAudioBufferToBlob = (audioBuffer) => {
-    /* Conversion d'un AudioBuffer, après découpage, en un objet
-        Blob traitable par le reste du programme.
-      - https://stackoverflow.com/questions/62172398/convert-audiobuffer-to-arraybuffer-blob-for-wav-download
-      - https://stackoverflow.com/questions/61253805/whats-the-best-way-to-get-an-audio-buffer-into-a-blob-that-can-be-played-by-an
-    */
-
-    // Float32Array samples
-    // Used when left and right channels : const [left, right] =  [audioBuffer.getChannelData(0), audioBuffer.getChannelData(1)]
-    //const channel = audioBuffer.getChannelData(0); // But we only have one.
-
-    // interleaved
-    /*
-    const interleaved = new Float32Array(channel.length);
-    for (let src = 0, dst = 0; src < channel.length; src++, dst += 2) {
-      interleaved[dst] = channel[src];
-    }*/
-
-    // get WAV file bytes and audio params of your audio source
-    /*const wavBytes = getWavBytes(interleaved.buffer, {
-      isFloat: true,       // floating point or 16-bit integer
-      numChannels: 2,
-      sampleRate: 48000,
-    })
-
-    // Création du nouveau blob.
-    const blob = new Blob([wavBytes], { type: 'audio/mp3' })
-    */
     // utilisation de toWav https://github.com/Jam3/audiobuffer-to-wav
     let wav = toWav(audioBuffer);
     const blob = new Blob([wav], { type: "audio/wav" }); //!, 0);
