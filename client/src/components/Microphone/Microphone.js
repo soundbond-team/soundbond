@@ -31,7 +31,9 @@ import { UidContext } from "../Appcontext";
 import "./Microphone.css";
 import { Input } from "@material-ui/core";
 
-import { getWavBytes, bufferToWave } from './sound_computation.js'; // convertAnAudioBufferToBlob()
+import { getWavBytes, bufferToWave } from "./sound_computation.js"; // convertAnAudioBufferToBlob()
+
+var toWav = require("audiobuffer-to-wav");
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -165,13 +167,14 @@ export default function Microphone(props) {
 
     // Float32Array samples
     // Used when left and right channels : const [left, right] =  [audioBuffer.getChannelData(0), audioBuffer.getChannelData(1)]
-    const channel = audioBuffer.getChannelData(0) // But we only have one.
+    //const channel = audioBuffer.getChannelData(0); // But we only have one.
 
     // interleaved
-    const interleaved = new Float32Array(channel.length)
-    for (let src=0, dst=0; src < channel.length; src++, dst+=2) {
-      interleaved[dst] = channel[src]
-    }
+    /*
+    const interleaved = new Float32Array(channel.length);
+    for (let src = 0, dst = 0; src < channel.length; src++, dst += 2) {
+      interleaved[dst] = channel[src];
+    }*/
 
     // get WAV file bytes and audio params of your audio source
     /*const wavBytes = getWavBytes(interleaved.buffer, {
@@ -181,8 +184,11 @@ export default function Microphone(props) {
     })
 
     // Création du nouveau blob.
-    const blob = new Blob([wavBytes], { type: 'audio/mp3' })*/
-    const blob = bufferToWave(audioBuffer)//!, 0);
+    const blob = new Blob([wavBytes], { type: 'audio/mp3' })
+    */
+    // utilisation de toWav https://github.com/Jam3/audiobuffer-to-wav
+    let wav = toWav(audioBuffer);
+    const blob = new Blob([wav], { type: "audio/wav" }); //!, 0);
     const url = window.URL.createObjectURL(blob);
     let newBlob = tempFile;
     newBlob.blob = blob;
