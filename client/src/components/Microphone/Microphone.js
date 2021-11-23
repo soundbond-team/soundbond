@@ -6,6 +6,7 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions";
 
 import { makeStyles } from "@material-ui/styles";
 import MicIcon from "@material-ui/icons/Mic";
+import CropIcon from "@mui/icons-material/Crop";
 import IconButton from "@material-ui/core/IconButton";
 import StopIcon from "@material-ui/icons/Stop";
 import ReplayIcon from "@material-ui/icons/Replay";
@@ -29,6 +30,8 @@ import { post_post, getallPost } from "../../actions/post.actions";
 import { UidContext } from "../Appcontext";
 import "./Microphone.css";
 import { Input } from "@material-ui/core";
+
+var toWav = require("audiobuffer-to-wav");
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -110,12 +113,60 @@ export default function Microphone(props) {
 
   const togglePlayback = () => {
     if (!isPlaying) {
-      wavesurfer.current.regions.list[1].play();
+      if (wavesurfer.current.regions.list[1]) {
+        wavesurfer.current.regions.list[1].play();
+      } else {
+        wavesurfer.current.play();
+      }
     } else {
       wavesurfer.current.pause();
     }
   };
   const stopPlayback = () => wavesurfer.current.stop();
+
+  const cropSound = () => {
+    const start =
+      wavesurfer.current.regions.list[
+        Object.keys(wavesurfer.current.regions.list)[0]
+      ].start.toFixed(2);
+    const end =
+      wavesurfer.current.regions.list[
+        Object.keys(wavesurfer.current.regions.list)[0]
+      ].end.toFixed(2);
+    const originalBuffer = wavesurfer.current.backend.buffer;
+
+    var newBuffer = wavesurfer.current.backend.ac.createBuffer(
+      originalBuffer.numberOfChannels,
+      //la partition du son que l'on souhaite récupérer
+      (end - start) * (originalBuffer.sampleRate * 1),
+      originalBuffer.sampleRate
+    );
+
+    for (var i = 0; i < originalBuffer.numberOfChannels; i++) {
+      var chanData = originalBuffer.getChannelData(i);
+      var segmentChanData = newBuffer.getChannelData(i);
+      for (var j = 0; j < end * originalBuffer.sampleRate; j++) {
+        segmentChanData[j] = chanData[j + start * originalBuffer.sampleRate];
+      }
+    }
+
+    wavesurfer.current.loadDecodedBuffer(newBuffer);
+    wavesurfer.current.clearRegions();
+    let newBlob = convertAnAudioBufferToBlob(newBuffer);
+    setTempFile(newBlob);
+  };
+
+  const convertAnAudioBufferToBlob = (audioBuffer) => {
+    // utilisation de toWav https://github.com/Jam3/audiobuffer-to-wav
+    let wav = toWav(audioBuffer);
+    const blob = new Blob([wav], { type: "audio/wav" }); //!, 0);
+    const url = window.URL.createObjectURL(blob);
+    let newBlob = tempFile;
+    newBlob.blob = blob;
+    newBlob.blobURL = url;
+
+    return newBlob;
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -147,7 +198,7 @@ export default function Microphone(props) {
     - l'ID du SoundLocation correspondant.
   */
     new Promise((resolve, reject) => {
-      dispatch(post_sound(tempfile_object, soundlocation_id));
+      dispatch(post_sound(tempfile_object, soundlocation_id, uid));
       resolve();
     });
 
@@ -164,8 +215,9 @@ export default function Microphone(props) {
     // Poster un Post puis recupérer tous les Posts.
     new Promise((resolve, reject) => {
       dispatch(post_post(sound_id, _description, uid, tags)).then(() => {
-        dispatch(getallPost());
         setTags([]);
+        setDescription(" ");
+        dispatch(getallPost());
       });
       resolve();
     });
@@ -179,7 +231,6 @@ export default function Microphone(props) {
   const download = () => {
     if (tempFile) {
       const url = tempFile.blobURL;
-      console.log(tempFile.blobURL);
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", "rzqr.mp3");
@@ -207,9 +258,12 @@ export default function Microphone(props) {
 
   const classes = useStyles();
   const addTag = () => {
-    setTags((state) => [...state, tag]);
-    setTag("");
+    if (tags.includes(tag) === false) {
+      setTags((state) => [...state, tag]);
+      setTag("");
+    }
   };
+
   return (
     <>
       <div className="container d-flex justify-content-center">
@@ -232,7 +286,7 @@ export default function Microphone(props) {
               onData={onData}
               strokeColor="grey"
               backgroundColor="white"
-              mimeType="audio/mp3"
+              mimeType="audio/mpeg"
             />
           )}
         </DialogContent>
@@ -253,16 +307,22 @@ export default function Microphone(props) {
         {" Tags: " + tags + ", "}
         <div className="input-group mb-3 container">
           <Input
+            style={{ whiteSpace: "nowrap" }}
             type="text"
             multiple
+            class="text-break"
             className="form-control"
             placeholder="Tag"
             aria-label="Tag"
             aria-describedby="basic-addon2"
-            onChange={(e) => setTag(e.target.value)}
+            onChange={(e) => {
+              setTag(e.target.value.replace(/\s/g, ""));
+            }}
+            id="tag"
             defaultValue={""}
             ref={buttonTag}
             value={tag}
+            pattern="^\S+$"
           />
           <div class="input-group-append">
             <button
@@ -294,6 +354,11 @@ export default function Microphone(props) {
                 <IconButton onClick={stopPlayback}>
                   {" "}
                   <StopIcon className={classes.icon} />
+                </IconButton>
+
+                <IconButton onClick={cropSound}>
+                  {" "}
+                  <CropIcon className={classes.icon} />
                 </IconButton>
               </Grid>
             )}
