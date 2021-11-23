@@ -1,8 +1,8 @@
 # CHANGELOG
 
 ### Nouvelles fonctionnalités :heavy_check_mark:
-- La possibilité de vous abonner à d'autres utilisateurs
-- Un fil d'actualité dans lequel vous pouvez voir soit tous les posts, soit seulement ceux de vos abonnements
-- Une page Profil sur laquelle vous pouvez voir vos propres posts, la liste de vos abonnements ainsi que la liste des abonnés
-- Vous pouvez maintenant partager les descriptions des posts ainsi que la page profil de l'utilisateur qui l'a posté 
-- À la création d'un post, vous pouvez partitionner un son et rejouer que la partie que vous voulez.
+- La possibilité de lire vos sons ou ceux de vos amis à tout moment.
+- Laisser un commentaire sous un post ou lire les commantaires ajoutés par d'autres utilisateurs est aussi possible. 
+- Vous pouvez maintenant chercher un son par un tag qui vous interesse dans la barre de recherche  et vous obtenez les posts qui possèdent ce tag 
+- À la création d'un post, vous pouvez partitionner un son,rejouer et télécharger la partie que vous avez coupé  .
+- Vous avez la possibilité de partager des posts d'autres utilisateurs sur votre profil.

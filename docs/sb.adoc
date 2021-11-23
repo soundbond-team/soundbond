@@ -51,7 +51,7 @@ Pour les cartes, nous utilisons l'API gratuite de "`MapBox`" <<mapbox>>.
 
 Partage de données avec BirdNet ?
 
-== Modélisation - v0.5
+== Modélisation - v0.6
 
 === Maquette du front 
 
@@ -101,6 +101,33 @@ L’utilisateur connecté souhaite s’abonner à un ou plusieurs autres utilisa
 
 Pour cela il ouvrira la page utilisateurs dans laquelle on affichera tous les utilisateurs de la plateforme avec des boutons follow/unfollow à gauche de chaque profil 
 
+==== WF01 Lecture des sons 
+image::assets/play_son.png[]
+L'utilisateur souhaite lire ses sons ou ceux de ses amis à tout moment et cela en cliquant sur le bouton play [1 dans la maquette] de chaque post.
+
+==== WF01 Trim son 
+image::assets/son_before_trim.png[]
+image::assets/son_after_trim.png[]
+Après création d’un post l’utilisateur a la possibilité de couper un son et lire / télécharger le morceau coupé.
+
+==== wF01 Chercher un son par son tag 
+
+Je peux rentrer un tag qui m’intéresse dans une barre de recherche et obtenir tous les posts qui ont ce tag.
+
+
+
+==== WF01 Partager un post 
+image::assets/before_share.png[]
+image::assets/after_share.png[]
+Un utilisateur souhaite partager un post d’un autre utilisateur sur son profil
+
+Scénarios : 
+
+l’utilisateur est connecté et est sur son fil d’actualité 
+
+l’utilisateur choisi un post et clique sur le boutton partagé 
+
+Une pop-up s'affichera avec un message indiquant que le partage est fait et invitant l'utilisateur  à voir le post sur son profil.
 === Diagramme de classes global
 
 image::assets/SoundBond.png[]
