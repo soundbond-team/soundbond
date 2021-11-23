@@ -74,10 +74,15 @@ export default function AudioPlayer(props) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (props.file) {
-      wavesurfer.current.load(props.file.blobURL);
+    if (props.file_url) {
+      // Si une URL est spécifiée, on charge un un blob puis un audio.
+      fetch(props.file_url).then(r => r.blob()).then(blob => {
+        let audio = new Audio();
+        audio.src = URL.createObjectURL(blob);
+        wavesurfer.current.load(audio);
+      });
     }
-  }, [props.file]);
+  }, [props.file_url]);
 
   const togglePlayback = () => {
     if (!isPlaying) {
