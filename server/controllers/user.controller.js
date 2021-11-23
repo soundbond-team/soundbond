@@ -1,4 +1,5 @@
 const db = require("../models");
+const sanitizeHtml = require("sanitize-html");
 const User = db.User;
 
 exports.userInformations = (req, res) => {
@@ -29,9 +30,11 @@ exports.userInformations = (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error retrieving User with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error retrieving User with id=" + id,
+        })
+      );
     });
 };
 exports.userInformations2 = (req, res) => {
@@ -78,15 +81,19 @@ exports.updateUser = (req, res) => {
           message: "User was updated successfully.",
         });
       } else {
-        res.send({
-          error: `Cannot update User with id=${id}. Maybe Post was not found or req.body is empty!`,
-        });
+        res.send(
+          sanitizeHtml({
+            error: `Cannot update User with id=${id}. Maybe Post was not found or req.body is empty!`,
+          })
+        );
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error updating User with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error updating User with id=" + id,
+        })
+      );
     });
 };
 

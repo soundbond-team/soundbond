@@ -1,5 +1,5 @@
 import {
-  GET_ALL_POST,
+  POST_USER,
   ADD_LIKE,
   REMOVE_LIKE,
   ADD_COMMENT,
@@ -8,11 +8,10 @@ import {
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
 const initialState = [];
 
-export default function postReducer(state = initialState, action) {
+export default function profilPostReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_ALL_POST:
+    case POST_USER:
       return action.payload;
-
     case ADD_LIKE:
       return state.map((posts) => {
         if (posts.id === action.payload.id) {
@@ -23,7 +22,6 @@ export default function postReducer(state = initialState, action) {
         }
         return posts;
       });
-
     case REMOVE_LIKE:
       return state.map((posts) => {
         if (posts.id === action.payload.id) {

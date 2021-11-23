@@ -1,4 +1,5 @@
 const db = require("../models");
+const sanitizeHtml = require("sanitize-html");
 const Sound = db.Sound;
 const SoundLocation = db.SoundLocation;
 const Op = db.Sequelize.Op;
@@ -33,9 +34,6 @@ exports.create = (req, res) => {
 
 // Retrieve all Sounds from the database.
 exports.findAll = (req, res) => {
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-
   Sound.findAll({
     include: [
       {
@@ -64,9 +62,11 @@ exports.findOne = (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving Sound with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          message: "Error retrieving Sound with id=" + id,
+        })
+      );
     });
 };
 
@@ -83,15 +83,19 @@ exports.update = (req, res) => {
           message: "Sound was updated successfully.",
         });
       } else {
-        res.send({
-          message: `Cannot update Sound with id=${id}. Maybe Sound was not found or req.body is empty!`,
-        });
+        res.send(
+          sanitizeHtml({
+            message: `Cannot update Sound with id=${id}. Maybe Sound was not found or req.body is empty!`,
+          })
+        );
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Error updating Sound with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          message: "Error updating Sound with id=" + id,
+        })
+      );
     });
 };
 
@@ -108,15 +112,19 @@ exports.delete = (req, res) => {
           message: "Sound was deleted successfully!",
         });
       } else {
-        res.send({
-          message: `Cannot delete Sound with id=${id}. Maybe Sound was not found!`,
-        });
+        res.send(
+          sanitizeHtml({
+            message: `Cannot delete Sound with id=${id}. Maybe Sound was not found!`,
+          })
+        );
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete Sound with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          message: "Could not delete Sound with id=" + id,
+        })
+      );
     });
 };
 

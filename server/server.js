@@ -43,6 +43,6 @@ const { response } = require("express");
   console.error("Unable to connect to the database:", error);
 }
 */
-db.sequelize.sync();
+db.sequelize.sync({ force: true });
 
 module.exports = app;
