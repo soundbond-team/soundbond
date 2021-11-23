@@ -9,6 +9,7 @@ export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
+export const GET_POST_TAG = "GET_POST_TAG";
 
 // Ajoute un post en BD
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
@@ -16,6 +17,25 @@ export const GET_ALL_COMMENT_FOR_SPECIFIC_POST =
   "GET_ALL_COMMENT_FOR_SPECIFIC_POST";
 
 export const POST_USER = "POST_USER";
+
+export const GET_POST_BY_TAG = "GET_POST_BY_TAG";
+
+export const getPostByTag = (tag) => {
+  return (dispatch) => {
+    return axios({
+      method: "get",
+      url: `http://localhost:8080/api/v1/post/getPostByTag/${tag}`,
+    })
+      .then((res) => {
+        console.log(res.data.tagging);
+        dispatch({
+          type: GET_POST_BY_TAG,
+          payload: res.data.tagging,
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+};
 
 // Permet d'ajouter un post en BD
 export const post_post = (sound_id, description, uid, tag) => {
