@@ -182,27 +182,13 @@ export const removeComment = (post_id, user_id, comment, userData) => {
       .catch((err) => console.log(err));
   };
 };
-// Charge tous les Posts (ainsi que les données des foregn key)
-/*export const getallComments = (post_id) => {
+
+export const getallComments = (post_id) => {
   return (dispatch) => {
     return axios
       .get(`http://localhost:8080/api/v1/post/${post_id}/getAllComments`)
       .then((res) => {
         dispatch({ type: GET_ALL_COMMENT_FOR_SPECIFIC_POST, payload: res.data });
-      })
-      .catch((err) => console.log(err));
-  };
-};*/
-//TODO
-export const getallComments = () => {
-  return (dispatch) => {
-    return axios
-      .get(`http://localhost:8080/api/v1/post/1/getAllComments`)
-      .then((res) => {
-        dispatch({
-          type: GET_ALL_COMMENT_FOR_SPECIFIC_POST,
-          payload: res.data,
-        });
       })
       .catch((err) => console.log(err));
   };
