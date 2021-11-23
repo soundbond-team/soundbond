@@ -4,11 +4,10 @@ const Sound = db.Sound;
 const SoundLocation = db.SoundLocation;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Sound
 exports.create = (req, res) => {
-  // Validate request
+  // Create and Save a new Sound
 
-  // Create a Sound
+  // Create a Sound instance
   const sound = {
     url: req.body.url,
     size: req.body.size,
