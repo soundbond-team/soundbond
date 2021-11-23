@@ -39,6 +39,7 @@
     "react-router": "^6.0.1",
     "react-router-dom": "^6.0.1",
     "react-scripts": "^4.0.3",
+    "react-search": "^2.1.1",
     "react-share": "^4.4.0",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
