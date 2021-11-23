@@ -31,8 +31,6 @@ import { UidContext } from "../Appcontext";
 import "./Microphone.css";
 import { Input } from "@material-ui/core";
 
-import { getWavBytes, bufferToWave } from "./sound_computation.js"; // convertAnAudioBufferToBlob()
-
 var toWav = require("audiobuffer-to-wav");
 
 const useStyles = makeStyles((theme) => ({
