@@ -5,7 +5,7 @@ import {
   REMOVE_COMMENT,
   REMOVE_LIKE,
 } from "../actions/search.actions";
-//ce reducer garde tt les sound lcoations recu
+
 const initialState = [];
 
 export default function searchReducer(state = initialState, action) {
