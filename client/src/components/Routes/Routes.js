@@ -14,11 +14,7 @@ import Login from "../../Pages/Login/Login";
 import Profil from "../../Pages/Profil/Profil";
 import Allposts from "../../components/AllPosts/allposts";
 import TrendingPost from "../../components/Trending/trending";
-<<<<<<< HEAD
 import TagPage from "../../Pages/TagPage/tagpage";
-=======
-//import FileUpload from "../../components/FileUpload";
->>>>>>> develop
 //le routing ne sert a rien tant quil nya pas une persistance pour tt les elements ( post )
 const routes = () => {
   return (
