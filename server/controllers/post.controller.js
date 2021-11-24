@@ -56,6 +56,11 @@ exports.create = async (req, res) => {
           model: db.Tag,
           as: "tagpost",
         },
+        {
+          model: db.User,
+          as: "shared_by",
+          attributes: ["id", "username"],
+        },
       ],
     }).then((data) => {
       res.send(data);
@@ -196,6 +201,11 @@ exports.findAll = (req, res) => {
         model: db.Tag,
         as: "tagpost",
       },
+      {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
+      },
     ],
   })
     .then((data) => {
@@ -250,7 +260,16 @@ exports.allPostsByUser = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
+<<<<<<< HEAD
       { model: db.Tag, as: "tagpost" },
+=======
+      { model: db.tag, as: "tagpost" },
+      {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
+      },
+>>>>>>> 7665c55857eee774b2a62e2899f821af5ca815fa
     ],
   })
     .then((data) => {
@@ -307,7 +326,16 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
+<<<<<<< HEAD
       { model: db.Tag, as: "tagpost" },
+=======
+      { model: db.tag, as: "tagpost" },
+      {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
+      },
+>>>>>>> 7665c55857eee774b2a62e2899f821af5ca815fa
     ],
   })
     .then((data) => {
@@ -316,6 +344,58 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
     .catch((err) => {
       res.status(500).send({
         error: err.message || "Some error occurred while retrieving post.",
+      });
+    });
+};
+
+exports.allPostsSharedByUser = (req, res) => {
+  id = req.params.user_id;
+  db.User.findByPk(id, {
+    include: [
+      {
+        model: db.Post,
+        as: "shared_posts",
+        include: [
+          {
+            model: db.Sound,
+            as: "publishing",
+
+            include: [
+              {
+                model: db.SoundLocation,
+                as: "soundlocation",
+              },
+            ],
+          },
+          {
+            model: db.User,
+            as: "publisher",
+          },
+          {
+            model: db.User,
+            as: "liked_by",
+          },
+          {
+            model: db.User,
+            as: "commented_by",
+            attributes: ["id", "username"],
+          },
+          { model: db.tag, as: "tagpost" },
+          {
+            model: db.User,
+            as: "shared_by",
+            attributes: ["id", "username"],
+          },
+        ],
+      },
+    ],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: err.message || "Some error occurred while retrieving Posts.",
       });
     });
 };
@@ -373,7 +453,16 @@ exports.findOne = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
+<<<<<<< HEAD
       { model: db.Tag, as: "tagpost" },
+=======
+      { model: db.tag, as: "tagpost" },
+      {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
+      },
+>>>>>>> 7665c55857eee774b2a62e2899f821af5ca815fa
     ],
   })
     .then((data) => {
@@ -581,4 +670,73 @@ exports.getAllComments = (req, res) => {
       });
     });
 };
+
+// Get id tag
+exports.getPostByTag = (req, res) => {
+  const tagParameter = req.params.tag;
+  db.tag
+    .findOne({
+      where: { tag: tagParameter },
+      include: [
+        {
+          model: db.Post,
+          as: "tagging",
+          include: [
+            {
+              model: db.Sound,
+              as: "publishing",
+
+              include: [
+                {
+                  model: db.SoundLocation,
+                  as: "soundlocation",
+                },
+              ],
+            },
+            {
+              model: db.User,
+              as: "publisher",
+              attributes: ["id", "username"],
+            },
+            {
+              model: db.User,
+              as: "liked_by",
+              attributes: ["id", "username"],
+            },
+            {
+              model: db.User,
+              as: "commented_by",
+              attributes: ["id", "username"],
+            },
+
+            {
+              model: db.tag,
+              as: "tagpost",
+            },
+          ],
+        },
+      ],
+    })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
+
+exports.share = async (req, res) => {
+  const post_id = req.body.post_id;
+  const user_id = req.body.user_id;
+
+  db.Post.findByPk(post_id).then(async (post) => {
+    try {
+      await post.addShared_by(user_id);
+      res.status(201).json("shared");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};

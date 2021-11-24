@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       description: DataTypes.TEXT,
       like: DataTypes.INTEGER,
+      share : DataTypes.INTEGER,
     },
     {
       sequelize,

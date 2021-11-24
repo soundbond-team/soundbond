@@ -1,17 +1,16 @@
 import {
-  POST_USER,
-  ADD_LIKE,
-  REMOVE_LIKE,
+  GET_POST_BY_TAG,
   ADD_COMMENT,
+  ADD_LIKE,
   REMOVE_COMMENT,
-  ADD_SHARE,
+  REMOVE_LIKE,
 } from "../actions/post.actions";
-// Ce reducer sert a stocker tous les posts reçus (ainsi que les données des KF)
+
 const initialState = [];
 
-export default function profilPostReducer(state = initialState, action) {
+export default function searchReducer(state = initialState, action) {
   switch (action.type) {
-    case POST_USER:
+    case GET_POST_BY_TAG:
       return action.payload;
 
     case ADD_LIKE:
@@ -24,6 +23,7 @@ export default function profilPostReducer(state = initialState, action) {
         }
         return posts;
       });
+
     case REMOVE_LIKE:
       return state.map((posts) => {
         if (posts.id === action.payload.id) {
@@ -63,16 +63,6 @@ export default function profilPostReducer(state = initialState, action) {
             commented_by: posts.commented_by.filter(
               (data) => data.id !== action.payload.userData.id
             ),
-          };
-        }
-        return posts;
-      });
-    case ADD_SHARE:
-      return state.map((posts) => {
-        if (posts.id === action.payload.post_id) {
-          return {
-            ...posts,
-            shared_by: [action.payload.user_data, ...posts.shared_by],
           };
         }
         return posts;

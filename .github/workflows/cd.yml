@@ -17,10 +17,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 1
+          # Shallow clones should be disabled for a better relevancy of analysis.
+          # But we choose only 1 commit because it is way enough
 
-      - name: Writing .env config file for Development
-        run: echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nAZURE_CONTAINER_NAME = ${{ secrets.AZURE_CONTAINER_NAME }}\nAZURE_CONNECTION_STRING = ${{ secrets.AZURE_CONNECTION_STRING }}\n" >> .env
+      - name: Writing .env config file for Development (/server)
+        run: |
+          cd server
+          echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nAZURE_CONTAINER_NAME = ${{ secrets.AZURE_CONTAINER_NAME }}\nAZURE_CONNECTION_STRING = ${{ secrets.AZURE_CONNECTION_STRING }}\n" >> .env
+
+      - name: Writing .env config file for Development (/client)
+        run: |
+          cd client
+          echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\n" >> .env
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
@@ -57,8 +66,15 @@ jobs:
 
       - name: Writing .env config file for Tests
         run: |
+          cd server
           rm .env
-          echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nENV="tests"" >> .env
+          echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nAZURE_CONTAINER_NAME = ${{ secrets.AZURE_CONTAINER_NAME }}\nAZURE_CONNECTION_STRING = ${{ secrets.AZURE_CONNECTION_STRING }}\n" >> .env
+
+      - name: Writing .env config file for Development (/client)
+        run: |
+          cd client
+          rm .env
+          echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\n" >> .env
 
       - name: Tests
         run: |
