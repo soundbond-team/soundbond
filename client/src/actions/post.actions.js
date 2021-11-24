@@ -9,16 +9,13 @@ export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
-<<<<<<< HEAD
 export const POSTS_BY_TAG = "POSTS_BY_TAG";
-=======
 export const GET_POST_TAG = "GET_POST_TAG";
 export const ADD_SHARE = "ADD_SHARE";
 export const GET_ALL_Shares_FOR_SPECIFIC_POST =
   "GET_ALL_Shares_FOR_SPECIFIC_POST";
 export const GET_ALL_POSTS_SHARED_BY_USER = " GET_ALL_POSTS_SHARED_BY_USER";
 
->>>>>>> 7665c55857eee774b2a62e2899f821af5ca815fa
 // Ajoute un post en BD
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
 export const GET_ALL_COMMENT_FOR_SPECIFIC_POST =
@@ -215,7 +212,6 @@ export const getPostsUser = (user_id) => {
   };
 };
 
-<<<<<<< HEAD
 export const getpostbytag = (tag) => {
   return (dispatch) => {
     return axios({
@@ -223,13 +219,12 @@ export const getpostbytag = (tag) => {
       url: `http://localhost:8080/api/v1/post/getPostBytag/${tag}`,
 
       withCredentials: true,
-    })
-      .then((res) => {
-        dispatch({
-          type: POSTS_BY_TAG,
-          payload: res.data.tagging,
-        });
-=======
+    }).then((res) => {
+      dispatch({ type: POSTS_BY_TAG, payload: res.data.tagging });
+    });
+  };
+};
+
 export const addShare = (post_id, user_id, userData) => {
   return (dispatch) => {
     return axios({
@@ -264,7 +259,6 @@ export const getAllPostSharedByUser = (user_id) => {
             payload: res.data.shared_posts,
           });
         }
->>>>>>> 7665c55857eee774b2a62e2899f821af5ca815fa
       })
       .catch((err) => console.log(err));
   };

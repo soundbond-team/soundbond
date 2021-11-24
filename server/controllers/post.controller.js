@@ -87,7 +87,7 @@ exports.create = async (req, res) => {
           }
         })
         .catch(async (e) => {
-          const tagcreated = await db.tag.create({ tag: value });
+          const tagcreated = await db.Tag.create({ tag: value });
           await postcreate.addTagpost(tagcreated);
           findd();
         });
@@ -260,16 +260,12 @@ exports.allPostsByUser = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-<<<<<<< HEAD
       { model: db.Tag, as: "tagpost" },
-=======
-      { model: db.tag, as: "tagpost" },
       {
         model: db.User,
         as: "shared_by",
         attributes: ["id", "username"],
       },
->>>>>>> 7665c55857eee774b2a62e2899f821af5ca815fa
     ],
   })
     .then((data) => {
@@ -326,16 +322,12 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-<<<<<<< HEAD
       { model: db.Tag, as: "tagpost" },
-=======
-      { model: db.tag, as: "tagpost" },
       {
         model: db.User,
         as: "shared_by",
         attributes: ["id", "username"],
       },
->>>>>>> 7665c55857eee774b2a62e2899f821af5ca815fa
     ],
   })
     .then((data) => {
@@ -380,7 +372,7 @@ exports.allPostsSharedByUser = (req, res) => {
             as: "commented_by",
             attributes: ["id", "username"],
           },
-          { model: db.tag, as: "tagpost" },
+          { model: db.Tag, as: "tagpost" },
           {
             model: db.User,
             as: "shared_by",
@@ -453,16 +445,12 @@ exports.findOne = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-<<<<<<< HEAD
       { model: db.Tag, as: "tagpost" },
-=======
-      { model: db.tag, as: "tagpost" },
       {
         model: db.User,
         as: "shared_by",
         attributes: ["id", "username"],
       },
->>>>>>> 7665c55857eee774b2a62e2899f821af5ca815fa
     ],
   })
     .then((data) => {
@@ -674,49 +662,48 @@ exports.getAllComments = (req, res) => {
 // Get id tag
 exports.getPostByTag = (req, res) => {
   const tagParameter = req.params.tag;
-  db.tag
-    .findOne({
-      where: { tag: tagParameter },
-      include: [
-        {
-          model: db.Post,
-          as: "tagging",
-          include: [
-            {
-              model: db.Sound,
-              as: "publishing",
+  db.Tag.findOne({
+    where: { tag: tagParameter },
+    include: [
+      {
+        model: db.Post,
+        as: "tagging",
+        include: [
+          {
+            model: db.Sound,
+            as: "publishing",
 
-              include: [
-                {
-                  model: db.SoundLocation,
-                  as: "soundlocation",
-                },
-              ],
-            },
-            {
-              model: db.User,
-              as: "publisher",
-              attributes: ["id", "username"],
-            },
-            {
-              model: db.User,
-              as: "liked_by",
-              attributes: ["id", "username"],
-            },
-            {
-              model: db.User,
-              as: "commented_by",
-              attributes: ["id", "username"],
-            },
+            include: [
+              {
+                model: db.SoundLocation,
+                as: "soundlocation",
+              },
+            ],
+          },
+          {
+            model: db.User,
+            as: "publisher",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "liked_by",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "commented_by",
+            attributes: ["id", "username"],
+          },
 
-            {
-              model: db.tag,
-              as: "tagpost",
-            },
-          ],
-        },
-      ],
-    })
+          {
+            model: db.Tag,
+            as: "tagpost",
+          },
+        ],
+      },
+    ],
+  })
     .then((data) => {
       res.status(200).send(data);
     })
