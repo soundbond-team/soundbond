@@ -12,46 +12,8 @@ const Map = ({ post_points }) => {
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
 
-  // Initialize map when component mounts
   useEffect(() => {
-    const geojson = {
-      type: "FeatureCollection",
-      features: [
-        {
-          type: "",
-          geometry: {
-            type: "",
-            coordinates: [-77.032, 38.913],
-          },
-          properties: {
-            title: "",
-            description: "",
-          },
-        },
-      ],
-    };
-    geojson.features.shift();
-    Object.keys(post_points).map(function (key, index) {
-      return geojson.features.push({
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [
-            post_points[key].publishing.soundlocation.longitude,
-            post_points[key].publishing.soundlocation.latitude,
-          ],
-        },
-        properties: {
-          title:
-            post_points[key].publishing.soundlocation.latitude +
-            ", " +
-            post_points[key].publishing.soundlocation.longitude,
-          description: post_points[key].description,
-          publisher_name: post_points[key].publisher.username,
-        },
-      });
-    });
-
+    // Initialize map when component mounts
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/streets-v11",
@@ -78,24 +40,30 @@ const Map = ({ post_points }) => {
       setLat(map.getCenter().lat.toFixed(4));
       setZoom(map.getZoom().toFixed(2));
     });
-    for (const { geometry, properties } of geojson.features) {
+
+    for (const e of post_points) {
       // create a HTML element for each feature
       const el = document.createElement("div");
       el.className = "marker ";
 
       // make a marker for each feature and add it to the map
       new mapboxgl.Marker(el)
-        .setLngLat(geometry.coordinates)
+        .setLngLat([
+          e.publishing.soundlocation.longitude,
+          e.publishing.soundlocation.latitude
+        ])
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }) // add popups
             .setHTML(
-              `<h5>${properties.title}</h5>
-              <p>${properties.description}</p>
-              <p>posté par <b>${properties.publisher_name}</b></p>` //TODO ajouter un lien vers la page utilisateur de l'User.
+              `<h5>${e.publishing.soundlocation.longitude}, ${e.publishing.soundlocation.latitude}</h5>
+              <p>${e.description}</p>
+              <p>posté par <b>${e.publisher.username}</b></p>` //TODO ajouter un lien vers la page utilisateur de l'User.
+
             )
         )
         .addTo(map);
     }
+
     // Clean up on unmount
     return () => map.remove();
   }, [post_points]); // eslint-disable-line react-hooks/exhaustive-deps
