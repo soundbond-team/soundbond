@@ -4,19 +4,20 @@ import { Tooltip } from "@material-ui/core";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 function Search() {
-  const [tag, setTag] = useState(" ");
+  const [recherche, setRecherche] = useState(" ");
   const refinput = React.useRef();
   const [tagexist, setTagexist] = useState(false);
+  const [userexist, setUserexist] = useState(false);
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const navigateToTag = async () => {
-    await findIfTagExist(tag);
+    await findIfTagExist(recherche);
 
     if (tagexist === true) {
       setTagexist(false);
-      let temptag = tag;
+      let temptag = recherche;
 
-      setTag(" ");
+      setRecherche(" ");
       refinput.current.value = null;
       setOpen(false);
       navigate(`/tag/${temptag.substring(1)}`);
@@ -27,8 +28,8 @@ function Search() {
     setOpen(false);
   };
 
-  const findIfTagExist = async (tag) => {
-    let tagbody = tag;
+  const findIfTagExist = async (recherche) => {
+    let tagbody = recherche;
 
     await axios({
       method: "post",
@@ -60,6 +61,39 @@ function Search() {
       setOpen(false); //After 1 second, set render to true
     }, 4000);
   };
+
+  const findifuserexist = async (username) => {
+    await axios({
+      method: "get",
+      url: `http://localhost:8080/api/v1/user/username/${username}`,
+    })
+      .then((res) => {
+        if (res.data !== "" && res.data != null) {
+          setUserexist(true);
+          setOpen(false);
+        } else {
+          setUserexist(false);
+          setOpen(true);
+          showtooltiptofalse();
+        }
+      })
+      .catch((err) => {
+        setUserexist(false);
+      });
+  };
+
+  const navigateTouser = async () => {
+    await findifuserexist(recherche);
+    if (userexist === true) {
+      setUserexist(false);
+      let tempuser = recherche;
+
+      setRecherche(" ");
+      refinput.current.value = null;
+      setOpen(false);
+      navigate(`/profil/${tempuser}`);
+    }
+  };
   return (
     <>
       <div className="d-flex ">
@@ -72,19 +106,23 @@ function Search() {
           disableFocusListener
           disableHoverListener
           disableTouchListener
-          title={"Aucun post ne possède ce tag"}
+          title={
+            recherche.includes("#")
+              ? "Aucun post ne possède ce tag"
+              : "Aucun utilisateur trouvé"
+          }
         >
           <input
             className="form-control me-2"
             type="search"
-            placeholder="Rechercher par tag"
+            placeholder="Rechercher"
             aria-label="Search"
             multiple
             pattern="^\S+$"
             ref={refinput}
-            value={tag !== " " ? tag : null}
+            value={recherche !== " " ? recherche : null}
             onChange={(e) => {
-              setTag(e.target.value.replace(/\s/g, ""));
+              setRecherche(e.target.value.replace(/\s/g, ""));
             }}
             data-toggle="popover"
             data-content="And here's some amazing content. It's very engaging. Right?"
@@ -97,7 +135,7 @@ function Search() {
             <button
               className="btn btn-outline-secondary"
               style={{ marginRight: "50px" }}
-              onClick={navigateToTag}
+              onClick={recherche.includes("#") ? navigateToTag : navigateTouser}
               type="button"
             >
               Search
