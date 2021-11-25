@@ -20,11 +20,8 @@ module.exports = (app) => {
   // Delete all Post
   router.delete("/", post.deleteAll);
 
-  //getPostBytag
-  router.get("/getPostBytag/:tag", post.gePostByTag);
-
   //check if tag exist
-  router.get("/getTag/:tag", post.getTag);
+  router.post("/getTag/", post.getTag);
 
   // Likes
   router.post("/like/:id", post.like);
@@ -38,7 +35,7 @@ module.exports = (app) => {
   router.get("/:post_id/getAllComments/", post.getAllComments);
 
   //search by tag
-  router.get("/getPostByTag/:tag", post.getPostByTag);
+  router.post("/getPostByTag/", post.getPostByTag);
   //shares
   router.post("/share/", post.share);
 

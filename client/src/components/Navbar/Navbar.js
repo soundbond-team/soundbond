@@ -8,59 +8,12 @@ import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { UidContext } from "../Appcontext";
 import { useSelector } from "react-redux";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { Tooltip } from "@material-ui/core";
+import Search from "../Search/Search";
 function NavigationBar() {
   const uid = useContext(UidContext);
   const userData = useSelector((state) => state.userReducer);
-  const [tag, setTag] = useState(" ");
-  const refinput = React.useRef();
-  const [tagexist, setTagexist] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  const navigateToTag = () => {
-    findIfTagExist(tag);
-    if (tagexist) {
-      let temptag = tag;
-      setTag(" ");
-      refinput.current.value = null;
 
-      navigate(`/tag/${temptag}`);
-    }
-  };
-
-  const handleTooltipClose = () => {
-    setOpen(false);
-  };
-
-  const findIfTagExist = async (tag) => {
-    await axios({
-      method: "get",
-      url: `http://localhost:8080/api/v1/post/getTag/${tag}`,
-    })
-      .then((res) => {
-        // document.getElementById("submitbutton").disabled = true;
-        if (res.data === true) {
-          setTagexist(true);
-          setOpen(false);
-        } else {
-          setTagexist(false);
-          setOpen(true);
-          showtooltiptofalse();
-          navigate(`/home/allposts`);
-        }
-      })
-      .catch((err) => {
-        setTagexist(false);
-        console.log(err);
-      });
-  };
-  const showtooltiptofalse = () => {
-    setTimeout(function () {
-      //Start the timer
-      setOpen(false); //After 1 second, set render to true
-    }, 4000);
-  };
-  const navigate = useNavigate();
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -108,49 +61,7 @@ function NavigationBar() {
                 </NavLink>
               </li>
             </ul>
-            <div className="d-flex ">
-              <Tooltip
-                PopperProps={{
-                  disablePortal: true,
-                }}
-                onClose={handleTooltipClose}
-                open={open}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
-                title={"Aucun post ne possède ce tag"}
-              >
-                <input
-                  className="form-control me-2"
-                  type="search"
-                  placeholder="Rechercher par tag"
-                  aria-label="Search"
-                  multiple
-                  pattern="^\S+$"
-                  ref={refinput}
-                  onChange={(e) => {
-                    setTag(e.target.value.replace(/\s/g, ""));
-                  }}
-                  data-toggle="popover"
-                  title="Popover title"
-                  data-content="And here's some amazing content. It's very engaging. Right?"
-                />
-              </Tooltip>
-              <div className="input-group-append">
-                {" "}
-                <div>
-                  {" "}
-                  <button
-                    className="btn btn-outline-secondary"
-                    style={{ marginRight: "50px" }}
-                    onClick={navigateToTag}
-                    type="button"
-                  >
-                    Search
-                  </button>
-                </div>
-              </div>
-            </div>
+            <Search />
             <form className="d-flex">
               {uid ? (
                 <>

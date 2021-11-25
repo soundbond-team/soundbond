@@ -73,6 +73,7 @@ exports.create = async (req, res) => {
   if (Object.keys(req.body.tags).length > 0) {
     for (let value of Object.values(req.body.tags)) {
       //
+
       db.Tag.findOne({
         where: { tag: value },
       })
@@ -98,7 +99,9 @@ exports.create = async (req, res) => {
 };
 
 exports.getTag = (req, res) => {
-  const tagParameter = req.params.tag;
+  console.log("esttedzsddddddddddddddddddddddddddddddddddddddddddddds");
+  const tagParameter = req.body.tag;
+
   db.Tag.findOne({
     where: { tag: tagParameter },
   })
@@ -113,9 +116,10 @@ exports.getTag = (req, res) => {
       res.status(200).send(false);
     });
 };
+
 //get all post by tag
-exports.gePostByTag = (req, res) => {
-  const tagParameter = req.params.tag;
+exports.getPostByTag = (req, res) => {
+  const tagParameter = req.body.tag;
   db.Tag.findOne({
     where: { tag: tagParameter },
     include: [
@@ -661,7 +665,7 @@ exports.getAllComments = (req, res) => {
 
 // Get id tag
 exports.getPostByTag = (req, res) => {
-  const tagParameter = req.params.tag;
+  const tagParameter = req.body.tag;
   db.Tag.findOne({
     where: { tag: tagParameter },
     include: [

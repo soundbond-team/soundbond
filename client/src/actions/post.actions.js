@@ -215,12 +215,16 @@ export const getPostsUser = (user_id) => {
 export const getpostbytag = (tag) => {
   return (dispatch) => {
     return axios({
-      method: "get",
-      url: `http://localhost:8080/api/v1/post/getPostBytag/${tag}`,
-
+      method: "post",
+      url: `http://localhost:8080/api/v1/post/getPostBytag`,
+      data: {
+        tag: tag,
+      },
       withCredentials: true,
     }).then((res) => {
-      dispatch({ type: POSTS_BY_TAG, payload: res.data.tagging });
+      if (res.data) {
+        dispatch({ type: POSTS_BY_TAG, payload: res.data.tagging });
+      }
     });
   };
 };

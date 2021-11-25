@@ -258,8 +258,8 @@ export default function Microphone(props) {
 
   const classes = useStyles();
   const addTag = () => {
-    if (tags.includes(tag) === false) {
-      setTags((state) => [...state, tag]);
+    if (tags.includes("#" + tag) === false) {
+      setTags((state) => [...state, "#" + tag]);
       setTag("");
     }
   };
@@ -306,6 +306,9 @@ export default function Microphone(props) {
         </div>
         {" Tags: " + tags + ", "}
         <div className="input-group mb-3 container">
+          <span class="input-group-text" id="basic-addon1">
+            #
+          </span>
           <Input
             style={{ whiteSpace: "nowrap" }}
             type="text"
@@ -323,7 +326,6 @@ export default function Microphone(props) {
             value={tag != " " ? tag : null}
             pattern="^\S+$"
           />
-
           <button
             className="btn btn-outline-secondary"
             type="button"
