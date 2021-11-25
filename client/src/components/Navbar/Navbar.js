@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import "./Navbar.css";
-import { useNavigate } from "react-router-dom";
+
 //import { Chat, Notifications, Person, Search } from "@material-ui/icons"
 
 import Logout from "../Logout";
-import axios from "axios";
+
 import { NavLink } from "react-router-dom";
 import { UidContext } from "../Appcontext";
 import { useSelector } from "react-redux";
-import { Tooltip } from "@material-ui/core";
+
 import Search from "../Search/Search";
 function NavigationBar() {
   const uid = useContext(UidContext);
@@ -19,7 +19,6 @@ function NavigationBar() {
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
           <NavLink
-            activeStyle={{ style: "none" }}
             className="navbar-brand"
             exact
             to="/home/allposts"

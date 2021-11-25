@@ -1,26 +1,24 @@
-import { TextField, IconButton } from "@material-ui/core";
-import { SearchOutlined } from "@material-ui/icons";
-import React, { useState, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Post from "../Post/Post";
-import { getPostByTag } from "../../actions/post.actions";
-import Grid from "@material-ui/core/Grid";
+import React, { useState } from "react";
+
 import { Tooltip } from "@material-ui/core";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-function Search(props) {
+function Search() {
   const [tag, setTag] = useState(" ");
   const refinput = React.useRef();
   const [tagexist, setTagexist] = useState(false);
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
-  const navigateToTag = () => {
-    findIfTagExist(tag);
-    if (tagexist) {
+  const navigateToTag = async () => {
+    await findIfTagExist(tag);
+
+    if (tagexist === true) {
+      setTagexist(false);
       let temptag = tag;
+
       setTag(" ");
       refinput.current.value = null;
-
+      setOpen(false);
       navigate(`/tag/${temptag.substring(1)}`);
     }
   };
@@ -30,9 +28,8 @@ function Search(props) {
   };
 
   const findIfTagExist = async (tag) => {
-    console.log(tag);
     let tagbody = tag;
-    console.log("fazfaz");
+
     await axios({
       method: "post",
       url: `http://localhost:8080/api/v1/post/getTag`,
@@ -42,6 +39,7 @@ function Search(props) {
     })
       .then((res) => {
         // document.getElementById("submitbutton").disabled = true;
+
         if (res.data === true) {
           setTagexist(true);
           setOpen(false);
@@ -49,7 +47,6 @@ function Search(props) {
           setTagexist(false);
           setOpen(true);
           showtooltiptofalse();
-          navigate(`/home/allposts`);
         }
       })
       .catch((err) => {
@@ -65,33 +62,6 @@ function Search(props) {
   };
   return (
     <>
-      {/* <> <div className="container">
-        <TextField
-          onChange={changevalue}
-          fullWidth
-          id="tag"
-          name="tag"
-          type="text"
-          placeholder="recherche par tag"
-        />
-        <IconButton onClick={handleSearchTerm}>
-          <SearchOutlined />
-        </IconButton>
-      </div>
-      <Grid container direction="row" spacing={3}>
-        {datas.map((val, index) => {
-          if (searchShow) {
-            return (
-              <Grid key={index} item>
-                {" "}
-                <Post post={val} />
-              </Grid>
-            );
-          }
-          return null;
-        })}
-      </Grid>
-      </>*/}
       <div className="d-flex ">
         <Tooltip
           PopperProps={{
@@ -112,6 +82,7 @@ function Search(props) {
             multiple
             pattern="^\S+$"
             ref={refinput}
+            value={tag !== " " ? tag : null}
             onChange={(e) => {
               setTag(e.target.value.replace(/\s/g, ""));
             }}

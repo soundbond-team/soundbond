@@ -38,6 +38,7 @@ module.exports = (app) => {
   router.post("/getPostByTag/", post.getPostByTag);
   //shares
   router.post("/share/", post.share);
+  router.post("/unshare/", post.unshare);
 
   app.use("/api/v1/post", router);
 };

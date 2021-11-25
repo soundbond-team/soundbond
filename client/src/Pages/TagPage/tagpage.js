@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import Post from "../../components/Post/Post";
 import Grid from "@material-ui/core/Grid";
@@ -11,9 +11,8 @@ function TagPage(props) {
   const params = useParams();
   useEffect(() => {
     dispatch(getpostbytag("#" + params.tag));
-  }, [props, params]);
+  }, [props, params]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <>
       <div className="container" style={{ marginTop: "25px" }}>

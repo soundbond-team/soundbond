@@ -4,6 +4,8 @@ import {
   REMOVE_LIKE,
   ADD_COMMENT,
   REMOVE_COMMENT,
+  ADD_SHARE,
+  REMOVE_SHARE,
 } from "../actions/post.actions";
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
 const initialState = [];
@@ -40,7 +42,7 @@ export default function postSearcByTagReducer(state = initialState, action) {
         username: action.payload.userData.username,
         comment: action.payload.data,
       };
-      console.log(datacomment);
+
       return state.map((posts) => {
         if (posts.id === action.payload.post_id) {
           return {
@@ -54,11 +56,33 @@ export default function postSearcByTagReducer(state = initialState, action) {
     case REMOVE_COMMENT:
       return state.map((posts) => {
         if (posts.id === action.payload.post_id) {
-          console.log(posts.commented_by);
           return {
             ...posts,
             commented_by: posts.commented_by.filter(
               (data) => data.id !== action.payload.userData.id
+            ),
+          };
+        }
+        return posts;
+      });
+
+    case ADD_SHARE:
+      return state.map((posts) => {
+        if (posts.id === action.payload.post_id) {
+          return {
+            ...posts,
+            shared_by: [action.payload.userData, ...posts.shared_by],
+          };
+        }
+        return posts;
+      });
+    case REMOVE_SHARE:
+      return state.map((posts) => {
+        if (posts.id === action.payload.id) {
+          return {
+            ...posts,
+            shared_by: posts.shared_by.filter(
+              (data) => action.payload.userData.id !== data.id
             ),
           };
         }

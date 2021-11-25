@@ -99,9 +99,8 @@ exports.create = async (req, res) => {
 };
 
 exports.getTag = (req, res) => {
-  console.log("esttedzsddddddddddddddddddddddddddddddddddddddddddddds");
   const tagParameter = req.body.tag;
-
+  console.log(tagParameter);
   db.Tag.findOne({
     where: { tag: tagParameter },
   })
@@ -157,6 +156,11 @@ exports.getPostByTag = (req, res) => {
           {
             model: db.Tag,
             as: "tagpost",
+          },
+          {
+            model: db.User,
+            as: "shared_by",
+            attributes: ["id", "username"],
           },
         ],
       },
@@ -249,6 +253,11 @@ exports.allPostsByUser = (req, res) => {
         as: "liked_by",
       },
       {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
+      },
+      {
         model: db.Sound,
         as: "publishing",
 
@@ -265,11 +274,6 @@ exports.allPostsByUser = (req, res) => {
         attributes: ["id", "username"],
       },
       { model: db.Tag, as: "tagpost" },
-      {
-        model: db.User,
-        as: "shared_by",
-        attributes: ["id", "username"],
-      },
     ],
   })
     .then((data) => {
@@ -401,8 +405,6 @@ exports.getAllLike = (req, res) => {
 
   db.Post.findAndCountAll(id)
     .then((data) => {
-      data.co;
-      console.log(data.like);
       let like = {
         like: data.like,
       };
@@ -704,6 +706,11 @@ exports.getPostByTag = (req, res) => {
             model: db.Tag,
             as: "tagpost",
           },
+          {
+            model: db.User,
+            as: "shared_by",
+            attributes: ["id", "username"],
+          },
         ],
       },
     ],
@@ -726,6 +733,19 @@ exports.share = async (req, res) => {
     try {
       await post.addShared_by(user_id);
       res.status(201).json("shared");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+exports.unshare = async (req, res) => {
+  const post_id = req.body.post_id;
+  const user_id = req.body.user_id;
+
+  db.Post.findByPk(post_id).then(async (post) => {
+    try {
+      await post.removeShared_by(user_id);
+      res.status(201).json("unshared");
     } catch (e) {
       res.status(400).json("error");
     }

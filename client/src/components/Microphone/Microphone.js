@@ -306,15 +306,14 @@ export default function Microphone(props) {
         </div>
         {" Tags: " + tags + ", "}
         <div className="input-group mb-3 container">
-          <span class="input-group-text" id="basic-addon1">
+          <span className="input-group-text" id="basic-addon1">
             #
           </span>
           <Input
             style={{ whiteSpace: "nowrap" }}
             type="text"
             multiple
-            class="text-break"
-            className="form-control"
+            className="text-break form-control"
             placeholder="Tag"
             aria-label="Tag"
             aria-describedby="basic-addon2"
@@ -323,7 +322,7 @@ export default function Microphone(props) {
             }}
             id="tag"
             ref={buttonTag}
-            value={tag != " " ? tag : null}
+            value={tag !== " " ? tag : ""}
             pattern="^\S+$"
           />
           <button
