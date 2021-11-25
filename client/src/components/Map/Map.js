@@ -3,8 +3,7 @@ import mapboxgl from "mapbox-gl";
 import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
-mapboxgl.accessToken =
-  "pk.eyJ1Ijoic2hlbGxzaG9jazIzIiwiYSI6ImNrdHpyeml5aTBtN24yb3BjNnlyMzF0ZXMifQ.jVBnWwAN0suAcWniseo60g";
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Map = ({ post_points }) => {
   const mapContainerRef = useRef(null);
