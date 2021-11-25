@@ -38,7 +38,7 @@ jobs:
       - name: Writing .env config file for Development (/client)
         run: |
           cd client
-          echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\n" >> .env
+          echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\nREACT_APP_MAPBOX_ACCESS_TOKEN = "${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}"\n" >> .env
 
 
       - name: Setup Node.js environment
@@ -74,7 +74,7 @@ jobs:
           cd client
           yarn run build
 
-      - name: Writing .env config file for Tests
+      - name: Writing .env config file for Tests (/server)
         run: |
           cd server
           rm .env
@@ -84,7 +84,7 @@ jobs:
         run: |
           cd client
           rm .env
-          echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\n" >> .env
+          echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\nREACT_APP_MAPBOX_ACCESS_TOKEN = "${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}"\n" >> .env
 
       - name: Tests
         run: |
