@@ -6,16 +6,22 @@ import { UidContext } from "../../components/Appcontext";
 import Modal from "react-bootstrap/Modal";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
-import { follow } from "../../actions/user.actions";
-import { unfollow } from "../../actions/user.actions";
-import { getPostTrend } from "../../actions/post.actions";
+import { follow, unfollow } from "../../actions/user.actions";
+import {
+  getPostTrend,
+  getPostsUser,
+  getAllPostSharedByUser,
+} from "../../actions/post.actions";
 import { useParams } from "react-router-dom";
+
+// il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
 
 function Profil(props) {
   const params = useParams();
-  console.log(params);
+  const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
+  const allpostshare = useSelector((state) => state.allpostsharedReducer);
   const [currentUserdata, setcurrentUserdata] = useState();
-  const [allposts, setallposts] = useState();
+
   const [isFollow, setFollow] = useState(false);
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
@@ -28,42 +34,30 @@ function Profil(props) {
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
   useEffect(() => {
-    const getcurrentUser = async (username) => {
-      await axios({
-        method: "get",
-        url: `http://localhost:8080/api/v1/user/username/${username}`,
-      })
-        .then((res) => {
-          if (res.data !== "" && res.data != null) {
-            pushUserdata(res.data);
-          } else window.location = "/";
+    if (currentUserdata !== params.username) {
+      const getcurrentUser = async (username) => {
+        await axios({
+          method: "get",
+          url: `http://localhost:8080/api/v1/user/username/${username}`,
         })
-        .catch((err) => {
-          window.location = "/";
-        });
-    };
+          .then((res) => {
+            if (res.data !== "" && res.data != null) {
+              pushUserdata(res.data);
+            } else window.location = "/";
+          })
+          .catch((err) => {
+            window.location = "/";
+          });
+      };
 
-    getcurrentUser(params.username); // eslint-disable-next-line
+      getcurrentUser(params.username);
+    } // eslint-disable-next-line
   }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
 
   useEffect(() => {
-    const getallCurrentPost = async (id) => {
-      await axios({
-        method: "get",
-        url: `http://localhost:8080/api/v1/post/${id}`,
-      })
-        .then((res) => {
-          if (res.data !== "" && res.data !== null) {
-            setallposts(res.data);
-          } else {
-            setallposts();
-          }
-        })
-        .catch((err) => {
-          setallposts();
-        });
-    };
     if (currentUserdata) {
+      dispatch(getPostsUser(currentUserdata.id));
+
       for (let i = 0; i < currentUserdata.following.length; i++) {
         if (currentUserdata.following[i].id === uid) {
           setFollow(true);
@@ -73,9 +67,9 @@ function Profil(props) {
           setFollow(false);
         }
       }
-      getallCurrentPost(currentUserdata.id);
+      dispatch(getAllPostSharedByUser(currentUserdata.id));
     }
-  }, [currentUserdata, props, params]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
@@ -134,13 +128,7 @@ function Profil(props) {
                       width: "150%",
                     }}
                   >
-                    <h6
-                      onClick={
-                        currentUserdata.following.length > 0
-                          ? handleShow2
-                          : handleClose2
-                      }
-                    >
+                    <h6 onClick={handleShow2}>
                       {" "}
                       Abonnements :
                       {currentUserdata.follow.length > 0 ? (
@@ -149,13 +137,7 @@ function Profil(props) {
                         <span>0</span>
                       )}
                     </h6>
-                    <h6
-                      onClick={
-                        currentUserdata.following.length > 0
-                          ? handleShow
-                          : handleClose
-                      }
-                    >
+                    <h6 onClick={handleShow}>
                       {" "}
                       Abonnés :
                       {currentUserdata.following.length > 0 ? (
@@ -184,8 +166,8 @@ function Profil(props) {
           <div className="container">
             {
               <Grid container direction="column-reverse" spacing={3}>
-                {allposts ? (
-                  allposts.map((i, index) => (
+                {allpostprofilsreducer ? (
+                  allpostprofilsreducer.map((i, index) => (
                     <Grid key={index} item>
                       <Post post={i} />
                     </Grid>
@@ -196,6 +178,24 @@ function Profil(props) {
               </Grid>
             }
           </div>
+          <p>
+            Share:
+            <div className="container">
+              {
+                <Grid container direction="column-reverse" spacing={3}>
+                  {allpostshare ? (
+                    allpostshare.map((i, index) => (
+                      <Grid key={index} item>
+                        <Post post={i} />
+                      </Grid>
+                    ))
+                  ) : (
+                    <p></p>
+                  )}
+                </Grid>
+              }
+            </div>
+          </p>
           <Modal show={show} onHide={handleClose} size="sm" centered>
             <ModalHeader closeButton>
               <Modal.Title>Abonnés</Modal.Title>

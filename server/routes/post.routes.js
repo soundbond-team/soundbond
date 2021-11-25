@@ -8,9 +8,6 @@ module.exports = (app) => {
   // Retrieve all Post
   router.get("/", post.findAll);
 
-  // Retrieve all Post (pour un user)
-  router.get("/:id", post.findAll2);
-
   // Retrieve a single Post with id
   router.get("/:id", post.findOne);
 
@@ -23,13 +20,21 @@ module.exports = (app) => {
   // Delete all Post
   router.delete("/", post.deleteAll);
 
+  // Likes
   router.post("/like/:id", post.like);
-
   router.post("/unlike/:id", post.unlike);
 
-  router.get("/trend/:id", post.trend);
-
   router.get("/getAllLike/:id", post.getAllLike);
+
+  // Comments
+  router.post("/comment/", post.comment);
+  router.post("/uncomment/", post.uncomment);
+  router.get("/:post_id/getAllComments/", post.getAllComments);
+
+  //search by tag
+  router.get("/getPostByTag/:tag", post.getPostByTag);
+  //shares
+  router.post("/share/", post.share);
 
   app.use("/api/v1/post", router);
 };

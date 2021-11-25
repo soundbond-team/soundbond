@@ -1,21 +1,19 @@
 import {
-  GET_ALL_POST_TREND,
+  POST_USER,
   ADD_LIKE,
   REMOVE_LIKE,
   ADD_COMMENT,
   REMOVE_COMMENT,
   ADD_SHARE,
-  GET_ALL_POSTS_SHARED_BY_USER,
 } from "../actions/post.actions";
-// Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
+// Ce reducer sert a stocker tous les posts reçus (ainsi que les données des KF)
 const initialState = [];
 
-export default function postTrendReducer(state = initialState, action) {
+export default function profilPostReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_ALL_POST_TREND:
+    case POST_USER:
       return action.payload;
-    case GET_ALL_POSTS_SHARED_BY_USER:
-      return action.payload;
+
     case ADD_LIKE:
       return state.map((posts) => {
         if (posts.id === action.payload.id) {
@@ -38,6 +36,7 @@ export default function postTrendReducer(state = initialState, action) {
         }
         return posts;
       });
+
     case ADD_COMMENT:
       const datacomment = {
         id: action.payload.userData.id,
@@ -68,17 +67,16 @@ export default function postTrendReducer(state = initialState, action) {
         }
         return posts;
       });
-
-      case ADD_SHARE :
-        return state.map((posts) => {
-          if (posts.id === action.payload.post_id) {
-            return {
-              ...posts,
-              shared_by: [action.payload.user_data, ...posts.shared_by],
-            };
-          }
-          return posts;
-        });  
+    case ADD_SHARE:
+      return state.map((posts) => {
+        if (posts.id === action.payload.post_id) {
+          return {
+            ...posts,
+            shared_by: [action.payload.user_data, ...posts.shared_by],
+          };
+        }
+        return posts;
+      });
 
     default:
       return state;

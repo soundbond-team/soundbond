@@ -1,8 +1,9 @@
 const db = require("../models");
+const sanitizeHtml = require("sanitize-html");
 const Op = db.Sequelize.Op;
 
 // Création d'un nouveau Post.
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Vérification que la requête contient bien toutes les valeurs.
   if (
     !req.body.description ||
@@ -22,16 +23,79 @@ exports.create = (req, res) => {
     sound_id: req.body.sound_id,
   };
 
-  // Enregistrement dans la base. .create créé et commit dans la base d'un seul coup.
-  db.Post.create(post)
-    .then((data) => {
+  const findd = () => {
+    db.Post.findByPk(postcreate.id, {
+      include: [
+        {
+          model: db.Sound,
+          as: "publishing",
+
+          include: [
+            {
+              model: db.SoundLocation,
+              as: "soundlocation",
+            },
+          ],
+        },
+        {
+          model: db.User,
+          as: "publisher",
+          attributes: ["id", "username"],
+        },
+        {
+          model: db.User,
+          as: "liked_by",
+          attributes: ["id", "username"],
+        },
+        {
+          model: db.User,
+          as: "commented_by",
+          attributes: ["id", "username"],
+        },
+        {
+          model: db.tag,
+          as: "tagpost",
+        },
+        {
+          model: db.User,
+          as: "shared_by",
+          attributes: ["id", "username"],
+        },
+      ],
+    }).then((data) => {
       res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        error: err.message || "Some error occurred while creating the post.",
-      });
     });
+  };
+
+  // Enregistrement dans la base. .create créé et commit dans la base d'un seul coup.
+  const postcreate = await db.Post.create(post);
+
+  if (Object.keys(req.body.tags).length > 0) {
+    for (let value of Object.values(req.body.tags)) {
+      //
+      db.tag
+        .findOne({
+          where: { tag: value },
+        })
+        .then(async (data) => {
+          if (data != null) {
+            await postcreate.addTagpost(data);
+            findd();
+          } else {
+            const tagcreated = await db.tag.create({ tag: value });
+            await postcreate.addTagpost(tagcreated);
+            findd();
+          }
+        })
+        .catch(async (e) => {
+          const tagcreated = await db.tag.create({ tag: value });
+          await postcreate.addTagpost(tagcreated);
+          findd();
+        });
+    }
+  } else {
+    findd();
+  }
 };
 
 // Retrieve all posts from the database.
@@ -52,10 +116,27 @@ exports.findAll = (req, res) => {
       {
         model: db.User,
         as: "publisher",
+        attributes: ["id", "username"],
       },
       {
         model: db.User,
         as: "liked_by",
+        attributes: ["id", "username"],
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
+      },
+
+      {
+        model: db.tag,
+        as: "tagpost",
+      },
+      {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
       },
     ],
   })
@@ -69,11 +150,11 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Retrieve all posts from the database.
-exports.findAll2 = (req, res) => {
+// Get all Posts posted by a specific User.
+exports.allPostsByUser = (req, res) => {
   db.Post.findAll({
     where: {
-      publisher_user_id: req.params.id,
+      publisher_user_id: req.params.user_id,
     },
     include: [
       {
@@ -95,6 +176,28 @@ exports.findAll2 = (req, res) => {
         model: db.User,
         as: "liked_by",
       },
+      {
+        model: db.Sound,
+        as: "publishing",
+
+        include: [
+          {
+            model: db.SoundLocation,
+            as: "soundlocation",
+          },
+        ],
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
+      },
+      { model: db.tag, as: "tagpost" },
+      {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
+      },
     ],
   })
     .then((data) => {
@@ -102,19 +205,19 @@ exports.findAll2 = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: err.message || "Some error occurred while retrieving post.",
+        error: err.message || "Some error occurred while retrieving Posts.",
       });
     });
 };
 
-exports.trend = async (req, res) => {
-  const id = req.params.id;
+exports.trendingPostsForSpecificUser = async (req, res) => {
+  const user_id = req.params.user_id;
   const list_suivis = await db.User.findAll({
     include: {
       model: db.User,
       as: "following",
       where: {
-        id: id,
+        id: user_id,
       },
     },
   });
@@ -146,6 +249,17 @@ exports.trend = async (req, res) => {
         model: db.User,
         as: "liked_by",
       },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
+      },
+      { model: db.tag, as: "tagpost" },
+      {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
+      },
     ],
   })
     .then((data) => {
@@ -154,6 +268,58 @@ exports.trend = async (req, res) => {
     .catch((err) => {
       res.status(500).send({
         error: err.message || "Some error occurred while retrieving post.",
+      });
+    });
+};
+
+exports.allPostsSharedByUser = (req, res) => {
+  id = req.params.user_id;
+  db.User.findByPk(id, {
+    include: [
+      {
+        model: db.Post,
+        as: "shared_posts",
+        include: [
+          {
+            model: db.Sound,
+            as: "publishing",
+
+            include: [
+              {
+                model: db.SoundLocation,
+                as: "soundlocation",
+              },
+            ],
+          },
+          {
+            model: db.User,
+            as: "publisher",
+          },
+          {
+            model: db.User,
+            as: "liked_by",
+          },
+          {
+            model: db.User,
+            as: "commented_by",
+            attributes: ["id", "username"],
+          },
+          { model: db.tag, as: "tagpost" },
+          {
+            model: db.User,
+            as: "shared_by",
+            attributes: ["id", "username"],
+          },
+        ],
+      },
+    ],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: err.message || "Some error occurred while retrieving Posts.",
       });
     });
 };
@@ -171,9 +337,11 @@ exports.getAllLike = (req, res) => {
       res.send(like);
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error retrieving Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error retrieving Post with id=" + id,
+        })
+      );
     });
 };
 
@@ -197,10 +365,23 @@ exports.findOne = (req, res) => {
       {
         model: db.User,
         as: "publisher",
+        attributes: ["id", "username"],
       },
       {
         model: db.User,
         as: "liked_by",
+        attributes: ["id", "username"],
+      },
+      {
+        model: db.User,
+        as: "commented_by",
+        attributes: ["id", "username"],
+      },
+      { model: db.tag, as: "tagpost" },
+      {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
       },
     ],
   })
@@ -208,9 +389,11 @@ exports.findOne = (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error retrieving Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error retrieving Post with id=" + id,
+        })
+      );
     });
 };
 
@@ -227,15 +410,19 @@ exports.update = (req, res) => {
           message: "Post was updated successfully.",
         });
       } else {
-        res.send({
-          error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
-        });
+        res.send(
+          sanitizeHtml({
+            error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
+          })
+        );
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Error updating Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Error updating Post with id=" + id,
+        })
+      );
     });
 };
 
@@ -252,15 +439,19 @@ exports.delete = (req, res) => {
           message: "Post was deleted successfully!",
         });
       } else {
-        res.send({
-          error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
-        });
+        res.send(
+          sanitizeHtml({
+            error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
+          })
+        );
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        error: "Could not delete Post with id=" + id,
-      });
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Could not delete Post with id=" + id,
+        })
+      );
     });
 };
 
@@ -279,7 +470,8 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-//like a post
+
+// Like a post
 exports.like = async (req, res) => {
   const id = req.params.id;
   const user_id = req.body.user_id;
@@ -293,7 +485,7 @@ exports.like = async (req, res) => {
   });
 };
 
-//unlike a post
+// Dislike a post
 exports.unlike = async (req, res) => {
   const id = req.params.id;
   const user_id = req.body.user_id;
@@ -307,4 +499,164 @@ exports.unlike = async (req, res) => {
   });
 };
 
+// Get all the likes for a specific post
+exports.getAllLike = (req, res) => {
+  const id = req.params.id;
+
+  db.Post.findAndCountAll(id)
+    .then((data) => {
+      let like = {
+        like: data.like,
+      };
+      res.send(like);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: "Error retrieving Likes for Post with id=" + id,
+      });
+    });
+};
+
+// Comment a post
+exports.comment = async (req, res) => {
+  //! Impossible d'avoir plus d'un commentaire associant le même couple (user, post) : https://github.com/sequelize/sequelize/issues/3493
+  // We insert the row, and then we look for it in the database to return it under JSON format.
+  try {
+    const post = await db.Post.findByPk(req.body.post_id);
+    const user = await db.User.findByPk(req.body.user_id);
+    await post.addCommented_by(user, {
+      through: { comment: req.body.comment_text },
+    });
+    db.Comments.findOne({
+      where: { post_id: req.body.post_id, user_id: req.body.user_id },
+    }).then((data) => {
+      res.status(201).json(data);
+    });
+  } catch (e) {
+    res.status(400).json("error");
+  }
+  /* Deuxième solution :
+
+  db.Post.findByPk(req.body.post_id)
+    .then((post) => {
+      if (!post) {
+        res.status(400).json("Post not found");
+      } else {
+        db.User.findByPk(req.body.user_id).then((user) => {
+        if (!user) {
+          res.status(400).json("User not found");
+        } else {
+          try {
+            await post.addCommented_by(
+              user,
+              {through: {comment: req.body.comment_text}}
+            )
+          } catch (e){
+              res.status(400).json("error");
+            }
+          }
+        })
+      }
+    })*/
+};
+
+// Delete a comment from a post
+exports.uncomment = async (req, res) => {
+  /* Avec l'id d'un post et l'id d'un user, supprime le commentaire correspondant. */
+  const post_id = req.body.post_id;
+  const user_id = req.body.user_id;
+  db.Post.findByPk(post_id).then(async (post) => {
+    try {
+      await post.removeCommented_by(user_id);
+      res.status(201).json("comment deleted");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+
+// Get all the comments for a specific post
+exports.getAllComments = (req, res) => {
+  db.Comments.findAll({
+    where: { post_id: req.params.post_id },
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error:
+          "Error retrieving Comments for Post with id=" + req.params.post_id,
+      });
+    });
+};
+
+// Get id tag
+exports.getPostByTag = (req, res) => {
+  const tagParameter = req.params.tag;
+  db.tag
+    .findOne({
+      where: { tag: tagParameter },
+      include: [
+        {
+          model: db.Post,
+          as: "tagging",
+          include: [
+            {
+              model: db.Sound,
+              as: "publishing",
+
+              include: [
+                {
+                  model: db.SoundLocation,
+                  as: "soundlocation",
+                },
+              ],
+            },
+            {
+              model: db.User,
+              as: "publisher",
+              attributes: ["id", "username"],
+            },
+            {
+              model: db.User,
+              as: "liked_by",
+              attributes: ["id", "username"],
+            },
+            {
+              model: db.User,
+              as: "commented_by",
+              attributes: ["id", "username"],
+            },
+
+            {
+              model: db.tag,
+              as: "tagpost",
+            },
+          ],
+        },
+      ],
+    })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
+
+exports.share = async (req, res) => {
+  const post_id = req.body.post_id;
+  const user_id = req.body.user_id;
+
+  db.Post.findByPk(post_id).then(async (post) => {
+    try {
+      await post.addShared_by(user_id);
+      res.status(201).json("shared");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
