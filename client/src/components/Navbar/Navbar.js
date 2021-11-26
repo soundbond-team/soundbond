@@ -53,7 +53,7 @@ function NavigationBar() {
                 <NavLink
                   className="nav-link"
                   exact
-                  to={`/profil/${userData.username}`}
+                  to={`/profil/${userData.username}/posts`}
                   style={{ textDecoration: "none" }}
                 >
                   Profil

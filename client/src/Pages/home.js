@@ -1,10 +1,16 @@
 import "../App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import Microphone from "../components/Microphone/Microphone";
 
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(`/home/allposts`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <div className="container">
@@ -36,7 +42,6 @@ function Home() {
               <br></br>
             </div>
           </div>
-          <br /> <br />
           <br /> <br />
           <br /> <br />
           <div className="container d-flex justify-content-center">

@@ -98,7 +98,7 @@ function Search() {
       refinput.current.value = null;
       setOpen(false);
       setUserSuggestion([]);
-      navigate(`/profil/${tempuser}`);
+      navigate(`/profil/${tempuser}/posts`);
     }
   };
   function onChangesearch(e) {
@@ -140,7 +140,7 @@ function Search() {
     refinput.current.value = null;
     setUserSuggestion([]);
     setOpen(false);
-    navigate(`/profil/${name}`);
+    navigate(`/profil/${name}/posts`);
   }
 
   function navigateToTagOption(tag) {

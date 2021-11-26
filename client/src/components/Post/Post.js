@@ -171,7 +171,7 @@ function Post(props) {
                 <NavLink
                   className="nav-link"
                   exact
-                  to={`/profil/${props.post.publisher.username}`}
+                  to={`/profil/${props.post.publisher.username}/posts`}
                   style={{ textDecoration: "none" }}
                 >
                   <Avatar className={classes.avatar} src={faces[4]} />
