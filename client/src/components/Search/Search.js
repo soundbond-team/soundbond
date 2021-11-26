@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { ReactSearchAutocomplete } from "react-search-autocomplete";
+
 import { Tooltip } from "@material-ui/core";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
-import Autocomplete from "@mui/material/Autocomplete";
+
 import "./Search.css";
 function Search() {
   const [recherche, setRecherche] = useState(" ");
@@ -16,6 +14,7 @@ function Search() {
   const navigate = useNavigate();
 
   const [userSuggestion, setUserSuggestion] = useState([]);
+  const [tagSuggestion, setTagSuggestion] = useState([]);
   const navigateToTag = async () => {
     await findIfTagExist(recherche);
 
@@ -105,7 +104,14 @@ function Search() {
   function onChangesearch(e) {
     setOpen(false);
     setRecherche(e.target.value.replace(/\s/g, ""));
-    getAllUsers();
+    if (recherche.includes("#")) {
+      getAllTags();
+      setUserSuggestion([]);
+    } else {
+      getAllUsers();
+      setTagSuggestion([]);
+    }
+
     console.log(userSuggestion);
   }
 
@@ -129,7 +135,6 @@ function Search() {
 
   function navigateToUserOption(name) {
     setUserexist(false);
-    let tempuser = recherche;
 
     setRecherche(" ");
     refinput.current.value = null;
@@ -138,7 +143,36 @@ function Search() {
     navigate(`/profil/${name}`);
   }
 
-  function getAllTags() {}
+  function navigateToTagOption(tag) {
+    setTagexist(false);
+
+    setRecherche(" ");
+    refinput.current.value = null;
+    setTagSuggestion([]);
+    setOpen(false);
+    navigate(`/tag/${tag}`);
+  }
+
+  async function getAllTags() {
+    await axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/tag/recherche`,
+      data: {
+        tag: recherche,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.data !== "" && res.data != null) {
+          setTagSuggestion(res.data);
+        } else {
+          setTagSuggestion([]);
+        }
+      })
+      .catch((err) => {
+        setTagSuggestion([]);
+      });
+  }
   return (
     <>
       <div className="d-flex ">
@@ -182,7 +216,8 @@ function Search() {
             <ul
               style={{
                 listStyle: "none",
-
+                height: "200px",
+                overflow: "auto",
                 width: "200px",
                 position: "fixed",
                 zIndex: "10",
@@ -201,6 +236,25 @@ function Search() {
                     key={user.id}
                   >
                     {user.username}
+                  </li>
+                ))
+              ) : (
+                <span />
+              )}
+
+              {tagSuggestion.length > 0 ? (
+                tagSuggestion.map((tag) => (
+                  <li
+                    onClick={() => navigateToTagOption(tag.tag.substring(1))}
+                    style={{
+                      padding: "5px 10px 5px 10px",
+                      border: "1px solid black",
+                      cursor: "pointer",
+                      backgroundColor: "white",
+                    }}
+                    key={tag.id}
+                  >
+                    {tag.tag}
                   </li>
                 ))
               ) : (

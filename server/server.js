@@ -28,7 +28,7 @@ require("./routes/post.routes")(app);
 require("./routes/blob.routes")(app);
 require("./routes/user.routes")(app);
 require("./routes/file.routes")(app);
-
+require("./routes/tag.routes")(app);
 // jwt
 
 app.use(checkUser.checkUser); //a chaque requete nous verifions si l'utilisateur est bien connecté

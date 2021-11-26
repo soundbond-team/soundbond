@@ -140,6 +140,7 @@ exports.userSuggestion = (req, res) => {
         [Op.startsWith]: "%" + recherche + "%",
       },
     },
+    limit: 10,
     include: [
       {
         model: User,
