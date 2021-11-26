@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-
+import ReactTags from 'react-tag-autocomplete';
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions";
@@ -66,7 +66,45 @@ export default function Microphone(props) {
   const wavesurfer = useRef(null);
   const uid = useContext(UidContext);
   const buttonTag = useRef();
+  const suggestions = ["humour","drole","oiseau","horreur"];
+  const [suggest, setSuggest] = useState([]);
 
+  const handleChange = (e) =>{
+    let k = e.target.value;
+    let sug = [];
+    if(k.length > 0){
+      sug = suggestions.sort()
+      .filter((e)=>e.toLowerCase().includes(k.toLowerCase()));
+    }
+    setSuggest(sug);
+    setTag(k.replace(/\s/g, ""));
+
+    
+  };
+  const suggestText = (value)=>{
+    setTag(value);
+    setSuggest([]);
+  };
+  const getSuggestions = () =>{
+    if(suggest.length === 0 && tag !==""){
+      return <p>Tag content not found</p>;
+    }
+    return(
+      <ul>
+        {
+          suggest.map((item,index)=>{
+            return(
+              <div key={index}>
+                <li onclick={() =>suggestText(item)}>{item}</li>
+                {index!== suggest.length - 1 && <hr></hr>}
+                
+              </div>
+            );
+          })
+        }
+      </ul>
+    );
+  };
   useEffect(() => {
     if (!open || (open && !tempFile)) return;
 
@@ -264,6 +302,8 @@ export default function Microphone(props) {
     }
   };
 
+ 
+
   return (
     <>
       <div className="container d-flex justify-content-center">
@@ -306,7 +346,7 @@ export default function Microphone(props) {
         </div>
         {" Tags: " + tags + ", "}
         <div className="input-group mb-3 container">
-          <Input
+          <input
             style={{ whiteSpace: "nowrap" }}
             type="text"
             multiple
@@ -315,9 +355,7 @@ export default function Microphone(props) {
             placeholder="Tag"
             aria-label="Tag"
             aria-describedby="basic-addon2"
-            onChange={(e) => {
-              setTag(e.target.value.replace(/\s/g, ""));
-            }}
+            onChange={handleChange}
             id="tag"
             defaultValue={""}
             ref={buttonTag}
@@ -334,6 +372,7 @@ export default function Microphone(props) {
             </button>
           </div>
         </div>
+        {getSuggestions()}
 
         <DialogActions>
           <Grid container>
