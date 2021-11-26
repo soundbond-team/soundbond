@@ -2,7 +2,7 @@ const db = require("../models");
 const sanitizeHtml = require("sanitize-html");
 const { Post } = require("../models");
 const User = db.User;
-
+const Op = db.Sequelize.Op;
 exports.userInformations = (req, res) => {
   const id = req.params.id;
 
@@ -59,9 +59,9 @@ exports.userInformations2 = (req, res) => {
         },
       },
       {
-        model : Post,
-        as:"shared_posts",
-      }
+        model: Post,
+        as: "shared_posts",
+      },
     ],
     attributes: { exclude: ["password"] },
   })
@@ -130,3 +130,44 @@ exports.unfollow = async (req, res) => {
   });
 };
 
+//Suggestion users
+exports.userSuggestion = (req, res) => {
+  const recherche = req.params.username;
+
+  User.findAll({
+    where: {
+      username: {
+        [Op.startsWith]: "%" + recherche + "%",
+      },
+    },
+    include: [
+      {
+        model: User,
+        as: "follow",
+        attributes: {
+          exclude: ["password"],
+        },
+      },
+      {
+        model: User,
+        as: "following",
+        attributes: {
+          exclude: ["password"],
+        },
+      },
+      {
+        model: Post,
+        as: "shared_posts",
+      },
+    ],
+    attributes: { exclude: ["password"] },
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: "Error retrieving User with id=" + id,
+      });
+    });
+};
