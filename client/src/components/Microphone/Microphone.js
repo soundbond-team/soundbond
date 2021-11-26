@@ -258,18 +258,15 @@ export default function Microphone(props) {
 
   const classes = useStyles();
   const addTag = () => {
-    if (tags.includes("#" + tag) === false) {
-      setTags((state) => [...state, "#" + tag]);
+    if (tags.includes(tag) === false) {
+      setTags((state) => [...state, tag]);
       setTag("");
     }
   };
 
   return (
     <>
-      <div
-        className="container d-flex justify-content-center"
-        style={{ marginBottom: "35px" }}
-      >
+      <div className="container d-flex justify-content-center">
         <IconButton onClick={handleClickOpen}>
           <MicIcon className={classes.icon} />
         </IconButton>
@@ -309,14 +306,12 @@ export default function Microphone(props) {
         </div>
         {" Tags: " + tags + ", "}
         <div className="input-group mb-3 container">
-          <span className="input-group-text" id="basic-addon1">
-            #
-          </span>
           <Input
             style={{ whiteSpace: "nowrap" }}
             type="text"
             multiple
-            className="text-break form-control"
+            class="text-break"
+            className="form-control"
             placeholder="Tag"
             aria-label="Tag"
             aria-describedby="basic-addon2"
@@ -324,17 +319,20 @@ export default function Microphone(props) {
               setTag(e.target.value.replace(/\s/g, ""));
             }}
             id="tag"
+            defaultValue={""}
             ref={buttonTag}
-            value={tag !== " " ? tag : ""}
+            value={tag}
             pattern="^\S+$"
           />
-          <button
-            className="btn btn-outline-secondary"
-            type="button"
-            onClick={addTag}
-          >
-            Ajouter
-          </button>
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              onClick={addTag}
+            >
+              Ajouter
+            </button>
+          </div>
         </div>
 
         <DialogActions>

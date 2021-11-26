@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { get_soundlocation } from "../actions/soundlocation.actions";
 import { getallPost } from "../actions/post.actions";
 import Map from "../components/Map/Map";
+import CreatePlaylist from "../components/CreatePlaylist/createplaylist";
 function MapPage() {
   const dispatch = useDispatch();
 
@@ -47,16 +48,23 @@ function MapPage() {
   ));
   return (
     <>
-      <div className="container">
-        <div className="row justify-content-center">
+      <div className="container-xxl">
+        <div className="row">
           {" "}
-          <Map post_points={allposts} />
-        </div>
-        <br />
-        <div className="container">
-          <div className="row justify-content-center">
-            <h2>Positions des sons les plus proches:</h2>
-            <div>{listItems}</div>
+          <div className="col-1">
+            <CreatePlaylist />
+          </div>
+          <div className="col-11">
+            <div className="row justify-content-center">
+              {" "}
+              <Map post_points={allposts} />
+            </div>
+            <br />
+
+            <div className="row justify-content-center">
+              <h2>Positions des sons les plus proches:</h2>
+              <div>{listItems}</div>
+            </div>
           </div>
         </div>
       </div>
