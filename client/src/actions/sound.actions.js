@@ -24,9 +24,18 @@ const send_file = (tempfile_object, filename) => {
 
 }
 
+function get_random_string() {
+  /* Returns 9 random string with modern crypto solution.
+  Base on :
+  - https://stackoverflow.com/questions/60738424/javascript-generate-random-hexadecimal
+  - https://stackoverflow.com/questions/7463658/how-to-trim-a-string-to-n-chars-in-javascript
+  */
+  const crypto = window.crypto || window.msCrypto;
+  return [...crypto.getRandomValues(new Uint8Array(20))].map(m=>('0'+m.toString(16)).slice(-2)).join('').substring(0,9);
+}
+
 export const post_sound = (tempfile_object, soundlocation_id, user_id) => {
-  let random = Math.random().toString(36).substring(1); // Générer un nom aléatoire.
-  let filename = user_id+'_'+random+".mp3"; // Nom de fichier : [user_id]_[aléatoire].mp3
+  let filename = user_id+'_'+get_random_string()+".mp3"; // Nom de fichier : [user_id]_[aléatoire].mp3
   send_file(tempfile_object, filename); // On poste le fichier.
 
   // Envoi de la requête POST du Sound.
