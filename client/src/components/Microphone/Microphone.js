@@ -266,7 +266,10 @@ export default function Microphone(props) {
 
   return (
     <>
-      <div className="container d-flex justify-content-center">
+      <div
+        className="container d-flex justify-content-center"
+        style={{ marginBottom: "35px" }}
+      >
         <IconButton onClick={handleClickOpen}>
           <MicIcon className={classes.icon} />
         </IconButton>

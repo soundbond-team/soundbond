@@ -17,7 +17,7 @@ import TrendingPost from "../../components/Trending/trending";
 import TagPage from "../../Pages/TagPage/tagpage";
 import MesPartages from "../MesPartages/MesPartages";
 import MyPosts from "../MyPosts/MyPosts";
-
+import MyPlaylists from "../MyPlayLists/MyPlaylists";
 //le routing ne sert a rien tant quil nya pas une persistance pour tt les elements ( post )
 const routes = () => {
   return (
@@ -37,6 +37,7 @@ const routes = () => {
         <Route exact path="/profil/:username" element={<Profil />}>
           <Route exact path="posts" element={<MyPosts />} />
           <Route exact path="partages" element={<MesPartages />} />
+          <Route exact path="playlists" element={<MyPlaylists />} />
         </Route>
 
         {/*<Route path="/upload_file" element={<FileUpload/>} />*/}

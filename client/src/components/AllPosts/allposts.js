@@ -20,7 +20,13 @@ function Allposts() {
               </Grid>
             ))
           ) : (
-            <p></p>
+            <Grid item>
+              <br />
+              <div className="container ">
+                {" "}
+                <p className="d-flex  justify-content-center">Aucun posts</p>
+              </div>
+            </Grid>
           )}
         </Grid>
       }
