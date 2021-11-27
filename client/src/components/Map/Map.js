@@ -1,9 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
+import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+
 
 function clearMarkers(markers_list){
   // Deletes markers from the map.
@@ -83,6 +85,11 @@ const Map = ({ post_points }) => {
 
   return (
     <>
+                  <SearchBox
+                placeholder="SearchBox"
+                className="col-4 btn btn-dark"
+              /><br></br>
+
       <div className="container-fluid">
         <div className="sidebarStyle">
           <div>
