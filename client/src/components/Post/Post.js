@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { blue } from "@material-ui/core/colors";
@@ -49,6 +50,8 @@ function Post(props) {
 
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
+
+  const navigate = useNavigate();
 
   const [showMentionJaimeModal, setShowMentionJaimeModal] = useState(false);
   const handleCloseMentionJaimeModal = () => setShowMentionJaimeModal(false);
@@ -138,6 +141,12 @@ function Post(props) {
 
       await dispatch(addShare(props.post.id, uid, userData));
     }
+  };
+
+  const goToMap = async () => {
+    navigate("/map");
+    console.log(props.post.publishing.soundlocation.latitude);
+    console.log(props.post.publishing.soundlocation.longitude);
   };
 
   const sendAddComment = async () => {
@@ -260,6 +269,19 @@ function Post(props) {
             <span style={{ marginLeft: "5px", cursor: "pointer" }}></span>
             <IconButton onClick={share}>
               <RepeatIcon
+                style={
+                  rePosted
+                    ? { color: blue[500], cursor: "pointer" }
+                    : { color: "grey", cursor: "pointer" }
+                }
+                className={classes.icon}
+              />
+            </IconButton>
+          </span>
+          <span>
+            <span style={{ marginLeft: "5px", cursor: "pointer" }}></span>
+            <IconButton onClick={goToMap}>
+              <LocationOnIcon
                 style={
                   rePosted
                     ? { color: blue[500], cursor: "pointer" }
