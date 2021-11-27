@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Tooltip } from "@material-ui/core";
 import axios from "axios";
@@ -104,6 +104,8 @@ function Search() {
   function onChangesearch(e) {
     setOpen(false);
     setRecherche(e.target.value.replace(/\s/g, ""));
+  }
+  useEffect(() => {
     if (recherche.includes("#")) {
       getAllTags();
       setUserSuggestion([]);
@@ -111,9 +113,7 @@ function Search() {
       getAllUsers();
       setTagSuggestion([]);
     }
-
-    console.log(userSuggestion);
-  }
+  }, [recherche]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function getAllUsers() {
     await axios({
@@ -121,7 +121,6 @@ function Search() {
       url: `http://localhost:8080/api/v1/user/recherche/${recherche}`,
     })
       .then((res) => {
-        console.log(res);
         if (res.data !== "" && res.data != null) {
           setUserSuggestion(res.data);
         } else {
@@ -223,7 +222,7 @@ function Search() {
                 zIndex: "10",
               }}
             >
-              {userSuggestion.length > 0 ? (
+              {userSuggestion ? (
                 userSuggestion.map((user) => (
                   <li
                     onClick={() => navigateToUserOption(user.username)}
@@ -242,7 +241,7 @@ function Search() {
                 <span />
               )}
 
-              {tagSuggestion.length > 0 ? (
+              {tagSuggestion ? (
                 tagSuggestion.map((tag) => (
                   <li
                     onClick={() => navigateToTagOption(tag.tag.substring(1))}
