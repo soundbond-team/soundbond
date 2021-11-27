@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
-import Post from "../../components/Post/Post";
+
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { getAllPostSharedByUser } from "../../actions/post.actions";
+import { findallForUser } from "../../actions/playlist.actions";
 import { useParams } from "react-router-dom";
-
-function MyPlaylists() {
+import Playlist from "../../components/Playlists/Playlist";
+function MyPlayLists() {
   const params = useParams();
-  const allpostshare = useSelector((state) => state.allpostsharedReducer);
+  const allplaylistByUser = useSelector((state) => state.allplaylistByUser);
+
   const [currentUserdata, setcurrentUserdata] = useState();
 
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    console.log(allplaylistByUser);
+    // eslint-disable-next-line
+  }, [allplaylistByUser]);
   useEffect(() => {
     if (currentUserdata !== params.username) {
       const getcurrentUser = async (username) => {
@@ -38,7 +42,7 @@ function MyPlaylists() {
 
   useEffect(() => {
     if (currentUserdata) {
-      dispatch(getAllPostSharedByUser(currentUserdata.id));
+      dispatch(findallForUser(currentUserdata.id));
     }
   }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -50,30 +54,30 @@ function MyPlaylists() {
     <>
       {currentUserdata ? (
         <>
-          <br />
-          <div className="container">
-            {
-              <Grid container direction="column-reverse" spacing={3}>
-                {allpostshare.length > 0 ? (
-                  allpostshare.map((i, index) => (
+          {" "}
+          {
+            <Grid container direction="column-reverse" spacing={3}>
+              {allplaylistByUser ? (
+                allplaylistByUser.map((i, index) => {
+                  return (
                     <Grid key={index} item>
-                      <Post post={i} />
+                      <Playlist playlist={i} />
                     </Grid>
-                  ))
-                ) : (
-                  <Grid item>
-                    <br />
-                    <div className="container ">
-                      {" "}
-                      <p className="d-flex  justify-content-center">
-                        Aucune playlist
-                      </p>
-                    </div>
-                  </Grid>
-                )}
-              </Grid>
-            }
-          </div>
+                  );
+                })
+              ) : (
+                <Grid item>
+                  <br />
+                  <div className="container ">
+                    {" "}
+                    <p className="d-flex  justify-content-center">
+                      Aucune Playlist publié
+                    </p>
+                  </div>
+                </Grid>
+              )}
+            </Grid>
+          }
         </>
       ) : (
         <p></p>
@@ -82,4 +86,4 @@ function MyPlaylists() {
   );
 }
 
-export default MyPlaylists;
+export default MyPlayLists;

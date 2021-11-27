@@ -76,12 +76,12 @@ db.User.hasOne(db.Playlist, {
 
 db.Post.belongsToMany(db.Playlist, {
   through: "post_playlist",
-  as: "list_playlist",
+  as: "listplaylist",
   foreignKey: "post_id",
 });
 db.Playlist.belongsToMany(db.Post, {
   through: "post_playlist",
-  as: "list_post",
+  as: "listpost",
   foreignKey: "playlist_id",
 });
 

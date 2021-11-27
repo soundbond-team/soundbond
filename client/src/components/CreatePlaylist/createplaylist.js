@@ -14,6 +14,8 @@ import Post from "../../components/Post/Post";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getPostsUser } from "../../actions/post.actions";
+import { create_playlist } from "../../actions/playlist.actions";
+import { findallForUser } from "../../actions/playlist.actions";
 const useStyles = makeStyles((theme) => ({
   icon: {
     height: 38,
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreatePlaylist(props) {
   //const [description, setDescription] = useState(" "); // Utilisé pour stocker le description.
-
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [list_post, setList_post] = useState([]);
   const handleClickOpen = () => {
@@ -41,7 +43,13 @@ export default function CreatePlaylist(props) {
   };
 
   const handleDone = () => {
-    setOpen(false);
+    new Promise((resolve, reject) => {
+      dispatch(create_playlist(userData.id, list_post)).then(() => {
+        setOpen(false);
+        dispatch(findallForUser(userData.id));
+      });
+      resolve();
+    });
   };
   const handleCancel = () => {
     setOpen(false);
@@ -49,7 +57,6 @@ export default function CreatePlaylist(props) {
 
   const userData = useSelector((state) => state.userReducer);
   const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getPostsUser(userData.id));
@@ -109,7 +116,7 @@ export default function CreatePlaylist(props) {
                               postSelected(i);
                             }}
                           />{" "}
-                          <Post post={i} />
+                          <Post post={i} parent="createplaylist" />
                         </Grid>
                       ))
                     ) : (

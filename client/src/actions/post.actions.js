@@ -104,7 +104,10 @@ export const addLike = (id, user_id, user_data) => {
           dispatch({ type: ADD_LIKE, payload: "" });
         } else {
           console.log(id, user_data);
-          dispatch({ type: ADD_LIKE, payload: { id, user_data } });
+          dispatch({
+            type: ADD_LIKE,
+            payload: { id, user_data, playlist_id: 1 },
+          });
         }
       })
       .catch((err) => console.log(err));
