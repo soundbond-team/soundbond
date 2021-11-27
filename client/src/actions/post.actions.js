@@ -102,7 +102,6 @@ export const addLike = (id, user_id, user_data) => {
         if (res.data.errors) {
           dispatch({ type: ADD_LIKE, payload: "" });
         } else {
-          console.log(id, user_data);
           dispatch({ type: ADD_LIKE, payload: { id, user_data } });
         }
       })
@@ -127,7 +126,6 @@ export const removeLike = (id, user_id, user_data) => {
           dispatch({ type: REMOVE_LIKE, payload: { id, user_data } });
         }
       })
-      .catch((err) => console.log(err));
   };
 };
 
@@ -148,7 +146,6 @@ export const addComment = (post_id, user_id, comment, userData) => {
         if (res.data.errors) {
           dispatch({ type: ADD_COMMENT, payload: res.data.errors });
         } else {
-          console.log(res.data);
           let data = res.data;
           dispatch({ type: ADD_COMMENT, payload: { data, post_id, userData } });
         }
@@ -225,7 +222,6 @@ export const addShare = (post_id, user_id, userData) => {
         if (res.data.errors) {
           dispatch({ type: ADD_SHARE, payload: "" });
         } else {
-          console.log(post_id, userData);
           dispatch({ type: ADD_SHARE, payload: { post_id, userData } });
         }
       })
@@ -238,7 +234,6 @@ export const getAllPostSharedByUser = (user_id) => {
     return axios
       .get(`http://localhost:8080/api/v1/user/${user_id}/sharedPosts`)
       .then((res) => {
-        console.log(res.data.shared_posts);
         if (res.data.shared_posts) {
           dispatch({
             type: GET_ALL_POSTS_SHARED_BY_USER,

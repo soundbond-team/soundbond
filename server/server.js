@@ -48,7 +48,6 @@ const multer = require("multer");
 
 db.sequelize.sync({ force: true });
 app.post('/upload', (req, res, next) => {
-  console.log(req);
   let imageFile = req.files.file;
 
   imageFile.mv(`${__dirname}/public/${req.body.filename}.jpg`, function(err) {

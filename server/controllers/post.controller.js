@@ -222,7 +222,6 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
     },
   });
   let list_suivis2 = list_suivis.map((x) => x.id);
-  console.log(list_suivis2);
   db.Post.findAll({
     where: {
       publisher_user_id: {
@@ -330,7 +329,6 @@ exports.getAllLike = (req, res) => {
   db.Post.findAndCountAll(id)
     .then((data) => {
       data.co;
-      console.log(data.like);
       let like = {
         like: data.like,
       };
