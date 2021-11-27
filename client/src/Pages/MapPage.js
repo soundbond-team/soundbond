@@ -12,7 +12,6 @@ function MapPage() {
   const soundlocationdata = useSelector((state) => state.soundlocationReducer); // On stocke tous les SoundLocation les plus proches(se mettra a jour automatiquement par rapport a letat du reducer).
 
   useEffect(() => {
-    //Posts.shift(); // pour la map
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {
       let position = {
         lat: positiongeo.coords.latitude,
