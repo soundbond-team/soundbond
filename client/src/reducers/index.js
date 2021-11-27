@@ -7,6 +7,7 @@ import onesoundlocationReducer from "./onesoundlocation.reducer";
 import userReducer from "./user.reducer";
 import postTrendReducer from "./postTrend.reducer";
 import profilPostReducer from "./profilPostReducer";
+import postSearcByTagReducer from "./postSearcByTag.reducer";
 import searchReducer from "./search.reducer"; //pour les tags
 import allpostsharedReducer from "./allpostSharedbyuser";
 export default combineReducers({
@@ -17,6 +18,7 @@ export default combineReducers({
   userReducer,
   postTrendReducer,
   profilPostReducer,
+  postSearcByTagReducer,
   searchReducer,
   allpostsharedReducer,
 });

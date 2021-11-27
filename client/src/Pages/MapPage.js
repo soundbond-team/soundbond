@@ -10,6 +10,7 @@ function MapPage() {
   // These, in 'state', are defined in index.js
   const allposts = useSelector((state) => state.postReducer); // On stocke tous les Posts (se mettra a jour automatiquement par rapport a letat du reducer).
   const soundlocationdata = useSelector((state) => state.soundlocationReducer); // On stocke tous les SoundLocation les plus proches(se mettra a jour automatiquement par rapport a letat du reducer).
+
   useEffect(() => {
     //Posts.shift(); // pour la map
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {

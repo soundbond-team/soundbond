@@ -24,6 +24,8 @@ module.exports = (app) => {
 
   router.get("/username/:username", userCtrl.userInformations2);
 
+  router.get("/recherche/:username", userCtrl.userSuggestion);
+
   router.post("/follow/:id", userCtrl.follow);
   router.post("/unfollow/:id", userCtrl.unfollow);
 

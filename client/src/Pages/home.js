@@ -1,10 +1,16 @@
 import "../App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import Microphone from "../components/Microphone/Microphone";
-import Search from "../components/Search/Search";
-import { Link, Outlet } from "react-router-dom";
+
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(`/home/allposts`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <div className="container">
@@ -17,11 +23,6 @@ function Home() {
           <br /> <br />
           <div className="container">
             <div className="row d-flex justify-content-center">
-              <Search
-                placeholder="Search"
-                className="col-4 btn btn-dark"
-                onChange={(e) => console.log(e.target.value)}
-              /><br></br>
               <Link
                 style={{ margin: "4px" }}
                 type="button"
@@ -37,11 +38,10 @@ function Home() {
                 className="col-4 btn btn-dark"
               >
                 Abonnements
-              </Link><br></br>
-
+              </Link>
+              <br></br>
             </div>
           </div>
-          <br /> <br />
           <br /> <br />
           <br /> <br />
           <div className="container d-flex justify-content-center">

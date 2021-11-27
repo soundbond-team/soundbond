@@ -258,8 +258,8 @@ export default function Microphone(props) {
 
   const classes = useStyles();
   const addTag = () => {
-    if (tags.includes(tag) === false) {
-      setTags((state) => [...state, tag]);
+    if (tags.includes("#" + tag) === false) {
+      setTags((state) => [...state, "#" + tag]);
       setTag("");
     }
   };
@@ -306,12 +306,14 @@ export default function Microphone(props) {
         </div>
         {" Tags: " + tags + ", "}
         <div className="input-group mb-3 container">
+          <span className="input-group-text" id="basic-addon1">
+            #
+          </span>
           <Input
             style={{ whiteSpace: "nowrap" }}
             type="text"
             multiple
-            class="text-break"
-            className="form-control"
+            className="text-break form-control"
             placeholder="Tag"
             aria-label="Tag"
             aria-describedby="basic-addon2"
@@ -319,20 +321,17 @@ export default function Microphone(props) {
               setTag(e.target.value.replace(/\s/g, ""));
             }}
             id="tag"
-            defaultValue={""}
             ref={buttonTag}
-            value={tag}
+            value={tag !== " " ? tag : ""}
             pattern="^\S+$"
           />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              onClick={addTag}
-            >
-              Ajouter
-            </button>
-          </div>
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={addTag}
+          >
+            Ajouter
+          </button>
         </div>
 
         <DialogActions>
