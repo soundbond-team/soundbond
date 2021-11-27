@@ -1,25 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
-import Post from "../../components/Post/Post";
+
 import axios from "axios";
-import Grid from "@material-ui/core/Grid";
+
 import { UidContext } from "../../components/Appcontext";
 import Modal from "react-bootstrap/Modal";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { follow, unfollow } from "../../actions/user.actions";
-import {
-  getPostTrend,
-  getPostsUser,
-  getAllPostSharedByUser,
-} from "../../actions/post.actions";
-import { useParams } from "react-router-dom";
+import { getPostTrend } from "../../actions/post.actions";
+
+import { useParams, Link, Outlet, useNavigate } from "react-router-dom";
 
 // il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
 
 function Profil(props) {
   const params = useParams();
-  const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
-  const allpostshare = useSelector((state) => state.allpostsharedReducer);
+  const navigate = useNavigate();
+
   const [currentUserdata, setcurrentUserdata] = useState();
 
   const [isFollow, setFollow] = useState(false);
@@ -53,24 +50,10 @@ function Profil(props) {
       getcurrentUser(params.username);
     } // eslint-disable-next-line
   }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
-
   useEffect(() => {
-    if (currentUserdata) {
-      dispatch(getPostsUser(currentUserdata.id));
-
-      for (let i = 0; i < currentUserdata.following.length; i++) {
-        if (currentUserdata.following[i].id === uid) {
-          setFollow(true);
-
-          break;
-        } else {
-          setFollow(false);
-        }
-      }
-      dispatch(getAllPostSharedByUser(currentUserdata.id));
-    }
-  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
-
+    navigate(`/profil/${params.username}/posts`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
   };
@@ -164,38 +147,28 @@ function Profil(props) {
           </div>
           <br />
           <div className="container">
-            {
-              <Grid container direction="column-reverse" spacing={3}>
-                {allpostprofilsreducer ? (
-                  allpostprofilsreducer.map((i, index) => (
-                    <Grid key={index} item>
-                      <Post post={i} />
-                    </Grid>
-                  ))
-                ) : (
-                  <p></p>
-                )}
-              </Grid>
-            }
+            <div className="row d-flex justify-content-center">
+              <Link
+                style={{ margin: "4px" }}
+                type="button"
+                to="posts"
+                className="col-4 btn btn-dark"
+              >
+                Posts
+              </Link>
+              <Link
+                style={{ margin: "4px" }}
+                type="button"
+                to="partages"
+                className="col-4 btn btn-dark"
+              >
+                Partages
+              </Link>
+            </div>{" "}
           </div>
-          <p>
-            Share:
-            <div className="container">
-              {
-                <Grid container direction="column-reverse" spacing={3}>
-                  {allpostshare ? (
-                    allpostshare.map((i, index) => (
-                      <Grid key={index} item>
-                        <Post post={i} />
-                      </Grid>
-                    ))
-                  ) : (
-                    <p></p>
-                  )}
-                </Grid>
-              }
-            </div>
-          </p>
+          <div className="container">
+            <Outlet />
+          </div>
           <Modal show={show} onHide={handleClose} size="sm" centered>
             <ModalHeader closeButton>
               <Modal.Title>Abonnés</Modal.Title>

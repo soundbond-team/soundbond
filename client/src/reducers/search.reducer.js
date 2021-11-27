@@ -4,6 +4,8 @@ import {
   ADD_LIKE,
   REMOVE_COMMENT,
   REMOVE_LIKE,
+  ADD_SHARE,
+  REMOVE_SHARE,
 } from "../actions/post.actions";
 
 const initialState = [];
@@ -43,6 +45,7 @@ export default function searchReducer(state = initialState, action) {
         username: action.payload.userData.username,
         comment: action.payload.data,
       };
+
       return state.map((posts) => {
         if (posts.id === action.payload.post_id) {
           return {
@@ -66,6 +69,28 @@ export default function searchReducer(state = initialState, action) {
         return posts;
       });
 
+    case ADD_SHARE:
+      return state.map((posts) => {
+        if (posts.id === action.payload.post_id) {
+          return {
+            ...posts,
+            shared_by: [action.payload.userData, ...posts.shared_by],
+          };
+        }
+        return posts;
+      });
+    case REMOVE_SHARE:
+      return state.map((posts) => {
+        if (posts.id === action.payload.id) {
+          return {
+            ...posts,
+            shared_by: posts.shared_by.filter(
+              (data) => action.payload.userData.id !== data.id
+            ),
+          };
+        }
+        return posts;
+      });
     default:
       return state;
   }

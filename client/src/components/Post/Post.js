@@ -30,18 +30,19 @@ import {
   addComment,
   removeComment,
   addShare,
+  removeShare,
 } from "../../actions/post.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import IconButton from "@material-ui/core/IconButton";
 import { TextInput } from "react-native";
-import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import { UidContext } from "../Appcontext";
 
+import { UidContext } from "../Appcontext";
+import RepeatIcon from "@mui/icons-material/Repeat";
 
 function Post(props) {
- 
   const faces = [];
   const [liked, setLiked] = useState(false);
+  const [rePosted, setRePosted] = useState(false);
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
   const [commentaire, setCommentaire] = useState(""); // Utilisé pour stocker un commentaire.
@@ -57,25 +58,27 @@ function Post(props) {
   const handleCloseCommentsModal = () => setShowCommentsModal(false);
   const handleShowCommentsModal = () => setShowCommentsModal(true);
 
-  
-  const [showSharePostModal, setSharePostModal] = useState(false);
-  const handleShowSharePostModal= () => {
-    share();
-    setSharePostModal(true);
-    
-  }
-  const handleCloseSharePostModal=()=> setSharePostModal(false);
-  
-
   useEffect(() => {
     let currentpost = props.post;
+    if (currentpost) {
+      if (currentpost.liked_by) {
+        for (let i = 0; i < currentpost.liked_by.length; i++) {
+          if (currentpost.liked_by[i].id === uid) {
+            setLiked(true);
+            break;
+          } else {
+            setLiked(false);
+          }
+        }
+      }
 
-    for (let i = 0; i < currentpost.liked_by.length; i++) {
-      if (currentpost.liked_by[i].id === uid) {
-        setLiked(true);
-        break;
-      } else {
-        setLiked(false);
+      for (let i = 0; i < currentpost.shared_by.length; i++) {
+        if (currentpost.shared_by[i].id === uid) {
+          setRePosted(true);
+          break;
+        } else {
+          setRePosted(false);
+        }
       }
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -125,8 +128,16 @@ function Post(props) {
     }
   };
 
-  const share = async()=>{
-      dispatch(addShare(props.post.id,uid,userData));
+  const share = async () => {
+    if (rePosted === true) {
+      setRePosted(false);
+
+      await dispatch(removeShare(props.post.id, uid, userData));
+    } else {
+      setRePosted(true);
+
+      await dispatch(addShare(props.post.id, uid, userData));
+    }
   };
 
   const sendAddComment = async () => {
@@ -140,19 +151,18 @@ function Post(props) {
   const sendRemoveComment = async (post_id, user_id, _commentaire) => {
     await dispatch(removeComment(post_id, user_id, _commentaire, userData));
   };
-  
 
   const getFileName = () => {
     // Génère une URL de fichier à partir de l'URL de base Azure blob et du nom de fichier.
     let azure = process.env.REACT_APP_AZURE_BLOB_STORAGE_ADRESS;
     let filename = props.post.publishing.url;
-    return azure+filename;
-  }
+    return azure + filename;
+  };
   const [blob_url] = useState(getFileName());
 
   return (
     <>
-    <Card className={classes.card}>
+      <Card className={classes.card}>
         {/* Utilisateur postant le Post. */}
         <Grid item>
           <List className={classes.list}>
@@ -161,7 +171,7 @@ function Post(props) {
                 <NavLink
                   className="nav-link"
                   exact
-                  to={`/profil/${props.post.publisher.username}`}
+                  to={`/profil/${props.post.publisher.username}/posts`}
                   style={{ textDecoration: "none" }}
                 >
                   <Avatar className={classes.avatar} src={faces[4]} />
@@ -247,16 +257,18 @@ function Post(props) {
           </span>
           {/* share button */}
           <span>
-            <span
-              style={{ marginLeft: "5px", cursor: "pointer" }}
-            >
-              
-            </span>
-            <IconButton onClick={handleShowSharePostModal}>
-              <ShareOutlinedIcon className={classes.icon}/>
+            <span style={{ marginLeft: "5px", cursor: "pointer" }}></span>
+            <IconButton onClick={share}>
+              <RepeatIcon
+                style={
+                  rePosted
+                    ? { color: blue[500], cursor: "pointer" }
+                    : { color: "grey", cursor: "pointer" }
+                }
+                className={classes.icon}
+              />
             </IconButton>
           </span>
-
 
           <span>
             <FacebookShareButton
@@ -295,21 +307,6 @@ function Post(props) {
             </div>
           ))}
         </Modal.Body>
-      </Modal>
-
-      <Modal
-      show = {showSharePostModal}
-      onHide={handleCloseSharePostModal}
-      size="sm"
-      centered>
-        <ModalHeader closeButton>
-          <Modal.Title>Partager le post</Modal.Title>
-        </ModalHeader>
-        <Modal.Body>
-          Post partagé!
-          <a href={`http://localhost:3000/profil/${userData.username}`}>Voir la publication sur votre profil .</a>
-        </Modal.Body>
-
       </Modal>
 
       <Modal

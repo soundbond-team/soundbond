@@ -53,7 +53,7 @@ exports.create = async (req, res) => {
           attributes: ["id", "username"],
         },
         {
-          model: db.tag,
+          model: db.Tag,
           as: "tagpost",
         },
         {
@@ -73,22 +73,22 @@ exports.create = async (req, res) => {
   if (Object.keys(req.body.tags).length > 0) {
     for (let value of Object.values(req.body.tags)) {
       //
-      db.tag
-        .findOne({
-          where: { tag: value },
-        })
+
+      db.Tag.findOne({
+        where: { tag: value },
+      })
         .then(async (data) => {
           if (data != null) {
             await postcreate.addTagpost(data);
             findd();
           } else {
-            const tagcreated = await db.tag.create({ tag: value });
+            const tagcreated = await db.Tag.create({ tag: value });
             await postcreate.addTagpost(tagcreated);
             findd();
           }
         })
         .catch(async (e) => {
-          const tagcreated = await db.tag.create({ tag: value });
+          const tagcreated = await db.Tag.create({ tag: value });
           await postcreate.addTagpost(tagcreated);
           findd();
         });
@@ -96,6 +96,82 @@ exports.create = async (req, res) => {
   } else {
     findd();
   }
+};
+
+exports.getTag = (req, res) => {
+  const tagParameter = req.body.tag;
+  console.log(tagParameter);
+  db.Tag.findOne({
+    where: { tag: tagParameter },
+  })
+    .then((data) => {
+      if (data.id) {
+        res.status(200).send(true);
+      } else {
+        res.status(200).send(false);
+      }
+    })
+    .catch((err) => {
+      res.status(200).send(false);
+    });
+};
+
+//get all post by tag
+exports.getPostByTag = (req, res) => {
+  const tagParameter = req.body.tag;
+  db.Tag.findOne({
+    where: { tag: tagParameter },
+    include: [
+      {
+        model: db.Post,
+        as: "tagging",
+        include: [
+          {
+            model: db.Sound,
+            as: "publishing",
+
+            include: [
+              {
+                model: db.SoundLocation,
+                as: "soundlocation",
+              },
+            ],
+          },
+          {
+            model: db.User,
+            as: "publisher",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "liked_by",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "commented_by",
+            attributes: ["id", "username"],
+          },
+
+          {
+            model: db.Tag,
+            as: "tagpost",
+          },
+          {
+            model: db.User,
+            as: "shared_by",
+            attributes: ["id", "username"],
+          },
+        ],
+      },
+    ],
+  })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 };
 
 // Retrieve all posts from the database.
@@ -130,7 +206,7 @@ exports.findAll = (req, res) => {
       },
 
       {
-        model: db.tag,
+        model: db.Tag,
         as: "tagpost",
       },
       {
@@ -177,6 +253,11 @@ exports.allPostsByUser = (req, res) => {
         as: "liked_by",
       },
       {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
+      },
+      {
         model: db.Sound,
         as: "publishing",
 
@@ -192,12 +273,7 @@ exports.allPostsByUser = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tagpost" },
-      {
-        model: db.User,
-        as: "shared_by",
-        attributes: ["id", "username"],
-      },
+      { model: db.Tag, as: "tagpost" },
     ],
   })
     .then((data) => {
@@ -253,7 +329,7 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tagpost" },
+      { model: db.Tag, as: "tagpost" },
       {
         model: db.User,
         as: "shared_by",
@@ -303,7 +379,7 @@ exports.allPostsSharedByUser = (req, res) => {
             as: "commented_by",
             attributes: ["id", "username"],
           },
-          { model: db.tag, as: "tagpost" },
+          { model: db.Tag, as: "tagpost" },
           {
             model: db.User,
             as: "shared_by",
@@ -328,7 +404,6 @@ exports.getAllLike = (req, res) => {
 
   db.Post.findAndCountAll(id)
     .then((data) => {
-      data.co;
       let like = {
         like: data.like,
       };
@@ -375,7 +450,7 @@ exports.findOne = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tagpost" },
+      { model: db.Tag, as: "tagpost" },
       {
         model: db.User,
         as: "shared_by",
@@ -591,50 +666,54 @@ exports.getAllComments = (req, res) => {
 
 // Get id tag
 exports.getPostByTag = (req, res) => {
-  const tagParameter = req.params.tag;
-  db.tag
-    .findOne({
-      where: { tag: tagParameter },
-      include: [
-        {
-          model: db.Post,
-          as: "tagging",
-          include: [
-            {
-              model: db.Sound,
-              as: "publishing",
+  const tagParameter = req.body.tag;
+  db.Tag.findOne({
+    where: { tag: tagParameter },
+    include: [
+      {
+        model: db.Post,
+        as: "tagging",
+        include: [
+          {
+            model: db.Sound,
+            as: "publishing",
 
-              include: [
-                {
-                  model: db.SoundLocation,
-                  as: "soundlocation",
-                },
-              ],
-            },
-            {
-              model: db.User,
-              as: "publisher",
-              attributes: ["id", "username"],
-            },
-            {
-              model: db.User,
-              as: "liked_by",
-              attributes: ["id", "username"],
-            },
-            {
-              model: db.User,
-              as: "commented_by",
-              attributes: ["id", "username"],
-            },
+            include: [
+              {
+                model: db.SoundLocation,
+                as: "soundlocation",
+              },
+            ],
+          },
+          {
+            model: db.User,
+            as: "publisher",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "liked_by",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "commented_by",
+            attributes: ["id", "username"],
+          },
 
-            {
-              model: db.tag,
-              as: "tagpost",
-            },
-          ],
-        },
-      ],
-    })
+          {
+            model: db.Tag,
+            as: "tagpost",
+          },
+          {
+            model: db.User,
+            as: "shared_by",
+            attributes: ["id", "username"],
+          },
+        ],
+      },
+    ],
+  })
     .then((data) => {
       res.status(200).send(data);
     })
@@ -653,6 +732,19 @@ exports.share = async (req, res) => {
     try {
       await post.addShared_by(user_id);
       res.status(201).json("shared");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+exports.unshare = async (req, res) => {
+  const post_id = req.body.post_id;
+  const user_id = req.body.user_id;
+
+  db.Post.findByPk(post_id).then(async (post) => {
+    try {
+      await post.removeShared_by(user_id);
+      res.status(201).json("unshared");
     } catch (e) {
       res.status(400).json("error");
     }
