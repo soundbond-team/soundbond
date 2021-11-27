@@ -5,8 +5,18 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
+function clearMarkers(markers_list){
+  // Deletes markers from the map.
+  if(markers_list){
+    for (var i = markers_list.length - 1; i >= 0; i--) {
+      markers_list[i].remove();
+   }
+ }
+}
+
 const Map = ({ post_points }) => {
   const mapContainerRef = useRef(null);
+  const markers_list = [];
 
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
@@ -62,7 +72,10 @@ const Map = ({ post_points }) => {
             )
         )
         .addTo(map);
+        markers_list.push(el);
     }
+
+    clearMarkers(markers_list);
 
     // Clean up on unmount
     return () => map.remove();
