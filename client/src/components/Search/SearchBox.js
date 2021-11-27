@@ -5,20 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import Post from "../Post/Post";
 import { getPostByTag } from "../../actions/post.actions";
 import Grid from "@material-ui/core/Grid";
-function SearchBox(props) {
+
+
+export default function SearchBox(props) {
   const [searchTerm, setsearchTerm] = useState(" ");
   const [searchShow, setSearchShow] = useState(false);
   const datas = useSelector((state) => state.searchReducer);
   const dispatch = useDispatch();
 
   const handleSearchTerm = async () => {
-    if (searchTerm === " ") {
-      setSearchShow(false);
-    } else {
-      setSearchShow(true);
-
       await dispatch(getPostByTag(searchTerm));
-    }
   };
 
   const changevalue = (e) => {
@@ -26,6 +22,9 @@ function SearchBox(props) {
   };
   return (
     <>
+    {datas.map((val, index) => {
+      props.childToParent(datas);
+    })}
       <div className="container">
         <TextField
           onChange={changevalue}
@@ -42,5 +41,3 @@ function SearchBox(props) {
     </>
   );
 }
-
-export default SearchBox;

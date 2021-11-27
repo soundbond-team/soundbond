@@ -31,7 +31,6 @@ export const getPostByTag = (tag) => {
       url: `http://localhost:8080/api/v1/post/getPostByTag/${tag}`,
     })
       .then((res) => {
-        console.log(res.data.tagging);
         dispatch({
           type: GET_POST_BY_TAG,
           payload: res.data.tagging,

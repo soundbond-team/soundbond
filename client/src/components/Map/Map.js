@@ -1,28 +1,42 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import mapboxgl from "mapbox-gl";
 import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
+import { ReactReduxContext } from 'react-redux'
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 
-function clearMarkers(markers_list){
+const clearMarkers = async (markers_list) => {
   // Deletes markers from the map.
   if(markers_list){
     for (var i = markers_list.length - 1; i >= 0; i--) {
       markers_list[i].remove();
-   }
- }
+    }
+  }
+  return true;
 }
 
 const Map = ({ post_points }) => {
+    // Access the store via the `useContext` hook
+    const { store } = useContext(ReactReduxContext)
+
   const mapContainerRef = useRef(null);
   const markers_list = [];
 
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
+
+  const [search_results, setSearchResults] = useState('');
+
+  const childToParent = async (results) => {
+    console.log("tamer")
+    store.dispatch(clearMarkers(markers_list));
+    console.log("putain");
+    setSearchResults(results);
+  }
 
   useEffect(() => {
     // Initialize map when component mounts
@@ -76,19 +90,20 @@ const Map = ({ post_points }) => {
         .addTo(map);
         markers_list.push(el);
     }
-
-    clearMarkers(markers_list);
+    console.log("tamer2");
 
     // Clean up on unmount
     return () => map.remove();
+    
   }, [post_points]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
-                  <SearchBox
-                placeholder="SearchBox"
-                className="col-4 btn btn-dark"
-              /><br></br>
+      <SearchBox
+        placeholder="SearchBox"
+        className="col-4 btn btn-dark"
+        childToParent={childToParent}
+      />
 
       <div className="container-fluid">
         <div className="sidebarStyle">
@@ -98,6 +113,7 @@ const Map = ({ post_points }) => {
         </div>
         <div className="map-container" ref={mapContainerRef} />
       </div>
+      
     </>
   );
 };
