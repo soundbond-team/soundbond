@@ -1,26 +1,16 @@
-import React, { useRef, useEffect, useState, useContext } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
-import { ReactReduxContext } from 'react-redux'
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 
-const clearMarkers = async (markers_list) => {
-  // Deletes markers from the map.
-  if(markers_list){
-    for (var i = markers_list.length - 1; i >= 0; i--) {
-      markers_list[i].remove();
-    }
-  }
-  return true;
-}
-
 const Map = ({ post_points }) => {
     // Access the store via the `useContext` hook
-    const { store } = useContext(ReactReduxContext)
+    //const { store } = useContext(ReactReduxContext)
 
   const mapContainerRef = useRef(null);
   const markers_list = [];
@@ -32,10 +22,44 @@ const Map = ({ post_points }) => {
   const [search_results, setSearchResults] = useState('');
 
   const childToParent = async (results) => {
-    console.log("tamer")
-    store.dispatch(clearMarkers(markers_list));
-    console.log("putain");
+    clearMarkers();
     setSearchResults(results);
+  }
+
+  function clearMarkers () {
+    // Deletes markers from the map.
+    if(markers_list){
+      for (var i = markers_list.length - 1; i >= 0; i--) {
+        markers_list[i].remove();
+      }
+    }
+  }
+  
+  function addMarkers(map) {
+    for (const e of post_points) {
+      // create a HTML element for each feature
+      const el = document.createElement("div");
+      el.className = "marker ";
+  
+      // make a marker for each feature and add it to the map
+      new mapboxgl.Marker(el)
+        .setLngLat([
+          e.publishing.soundlocation.longitude,
+          e.publishing.soundlocation.latitude
+        ])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML(
+              `<h5>${e.publishing.soundlocation.longitude}, ${e.publishing.soundlocation.latitude}</h5>
+              <p>${e.description}</p>
+              <p>posté par <b>${e.publisher.username}</b></p>` //TODO ajouter un lien vers la page utilisateur de l'User.
+  
+            )
+        )
+        .addTo(map);
+        markers_list.push(el);
+    }
+  
   }
 
   useEffect(() => {
@@ -67,30 +91,7 @@ const Map = ({ post_points }) => {
       setZoom(map.getZoom().toFixed(2));
     });
 
-    for (const e of post_points) {
-      // create a HTML element for each feature
-      const el = document.createElement("div");
-      el.className = "marker ";
-
-      // make a marker for each feature and add it to the map
-      new mapboxgl.Marker(el)
-        .setLngLat([
-          e.publishing.soundlocation.longitude,
-          e.publishing.soundlocation.latitude
-        ])
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25 }) // add popups
-            .setHTML(
-              `<h5>${e.publishing.soundlocation.longitude}, ${e.publishing.soundlocation.latitude}</h5>
-              <p>${e.description}</p>
-              <p>posté par <b>${e.publisher.username}</b></p>` //TODO ajouter un lien vers la page utilisateur de l'User.
-
-            )
-        )
-        .addTo(map);
-        markers_list.push(el);
-    }
-    console.log("tamer2");
+    addMarkers(map);
 
     // Clean up on unmount
     return () => map.remove();

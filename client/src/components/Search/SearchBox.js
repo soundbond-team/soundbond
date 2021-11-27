@@ -1,42 +1,167 @@
-import { TextField, IconButton } from "@material-ui/core";
-import { SearchOutlined } from "@material-ui/icons";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Post from "../Post/Post";
-import { getPostByTag } from "../../actions/post.actions";
-import Grid from "@material-ui/core/Grid";
+import React, { useState, useEffect } from "react";
 
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function SearchBox(props) {
-  const [searchTerm, setsearchTerm] = useState(" ");
-  const [searchShow, setSearchShow] = useState(false);
-  const datas = useSelector((state) => state.searchReducer);
-  const dispatch = useDispatch();
+import "./Search.css";
 
-  const handleSearchTerm = async () => {
-      await dispatch(getPostByTag(searchTerm));
+export default function Search(props) {
+  const [recherche, setRecherche] = useState(" ");
+  const refinput = React.useRef();
+  const [tagexist, setTagexist] = useState(false);
+  const navigate = useNavigate();
+
+  const [tagSuggestion, setTagSuggestion] = useState([]);
+  const navigateToTag = async () => {
+    await findIfTagExist(recherche);
+
+    if (tagexist === true) {
+      setTagexist(false);
+      setRecherche(" ");
+      refinput.current.value = null;
+      props.childToParent(recherche.substring(1));
+    }
   };
 
-  const changevalue = (e) => {
-    setsearchTerm(e.target.value);
+
+  const findIfTagExist = async (recherche) => {
+    let tagbody = recherche;
+
+    await axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/post/getTag`,
+      data: {
+        tag: tagbody,
+      },
+    })
+      .then((res) => {
+        // document.getElementById("submitbutton").disabled = true;
+
+        if (res.data === true) {
+          setTagexist(true);
+        } else {
+          setTagexist(false);
+        }
+      })
+      .catch((err) => {
+        setTagexist(false);
+      });
   };
+
+  function onChangesearch(e) {
+    setRecherche(e.target.value.replace(/\s/g, ""));
+  }
+  useEffect(() => {
+    if (recherche.includes("#")) {
+      getAllTags();
+    } else {
+      setTagSuggestion([]);
+    }
+  }, [recherche]); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+
+  function navigateToTagOption(tag) {
+    setTagexist(false);
+
+    setRecherche(" ");
+    refinput.current.value = null;
+    setTagSuggestion([]);
+
+    props.childToParent(tag);
+  }
+
+  async function getAllTags() {
+    await axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/tag/recherche`,
+      data: {
+        tag: recherche,
+      },
+    })
+      .then((res) => {
+        if (res.data !== "" && res.data != null) {
+          setTagSuggestion(res.data);
+        } else {
+          setTagSuggestion([]);
+        }
+      })
+      .catch((err) => {
+        setTagSuggestion([]);
+      });
+  }
   return (
     <>
-    {datas.map((val, index) => {
-      props.childToParent(datas);
-    })}
-      <div className="container">
-        <TextField
-          onChange={changevalue}
-          fullWidth
-          id="tag"
-          name="tag"
-          type="text"
-          placeholder="recherche par tag"
-        />
-        <IconButton onClick={handleSearchTerm}>
-          <SearchOutlined />
-        </IconButton>
+      <div className="d-flex ">
+        <>
+          <div
+            style={{
+              width: "200px",
+            }}
+          >
+              <input
+                className="form-control me-2"
+                type="search"
+                autocomplete
+                list="suggestion"
+                placeholder="Rechercher"
+                aria-label="Search"
+                multiple
+                pattern="^\S+$"
+                ref={refinput}
+                value={recherche !== " " ? recherche : null}
+                onChange={onChangesearch}
+                data-toggle="popover"
+                data-content="And here's some amazing content. It's very engaging. Right?"
+              />
+
+            <ul
+              style={{
+                listStyle: "none",
+                height: "200px",
+                overflow: "auto",
+                width: "200px",
+                position: "fixed",
+                zIndex: "10",
+              }}
+            >
+
+              {tagSuggestion ? (
+                tagSuggestion.map((tag) => (
+                  <li
+                    onClick={() => navigateToTagOption(tag.tag.substring(1))}
+                    style={{
+                      padding: "5px 10px 5px 10px",
+                      border: "1px solid black",
+                      cursor: "pointer",
+                      backgroundColor: "white",
+                    }}
+                    key={tag.id}
+                  >
+                    {tag.tag}
+                  </li>
+                ))
+              ) : (
+                <span />
+              )}
+            </ul>
+          </div>
+        </>
+
+        <div className="input-group-append">
+          {" "}
+          <div>
+            {" "}
+            <button
+              className="btn btn-outline-secondary"
+              style={{ marginRight: "50px" }}
+              onClick={navigateToTag}
+              type="button"
+            >
+              Search
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
