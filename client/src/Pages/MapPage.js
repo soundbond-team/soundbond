@@ -5,6 +5,8 @@ import { get_soundlocation } from "../actions/soundlocation.actions";
 import { getallPost } from "../actions/post.actions";
 import Map from "../components/Map/Map";
 import CreatePlaylist from "../components/CreatePlaylist/createplaylist";
+
+import MesPlaylistOnMap from "../components/MesPlaylistOnMap/MesPlaylistOnMap";
 function MapPage() {
   const dispatch = useDispatch();
 
@@ -60,10 +62,18 @@ function MapPage() {
               <Map post_points={allposts} />
             </div>
             <br />
-
+            <br />
             <div className="row justify-content-center">
-              <h2>Positions des sons les plus proches:</h2>
+              <h3>Positions des sons les plus proches:</h3>
               <div>{listItems}</div>
+            </div>
+            <br />
+            <br />
+            <div className="row justify-content-center">
+              <h3>Vos playlists:</h3>
+              <div>
+                <br /> <MesPlaylistOnMap />
+              </div>
             </div>
           </div>
         </div>

@@ -46,9 +46,12 @@ function Playlist(props) {
     <>
       <div
         className="container d-flex justify-content-center"
-        style={{ marginBottom: "35px" }}
+        style={{ marginBottom: "25px", height: "8rem" }}
       >
-        <Card onClick={handleClickOpen} style={{ width: "35rem" }}>
+        <Card
+          onClick={handleClickOpen}
+          style={props.parent ? { width: "15rem" } : { width: "30rem" }}
+        >
           <Card.Header> Playlist</Card.Header>
           <Card.Body>
             <Card.Title>{props.playlist.title} </Card.Title>
