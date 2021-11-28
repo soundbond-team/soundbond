@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
+
 import { useDispatch, useSelector } from "react-redux";
 import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
@@ -225,15 +226,19 @@ function Post(props) {
             <span
               data-toggle="popover"
               onClick={
-                props.post.liked_by.length > 0
+                props.post.liked_by.length > 0 && !props.parent
                   ? handleShowMentionJaimeModal
                   : handleCloseMentionJaimeModal
               }
+              disabled={props.parent ? true : false}
               style={{ cursor: "pointer" }}
             >
               {nombrelike}{" "}
             </span>
-            <IconButton onClick={pushLike}>
+            <IconButton
+              onClick={pushLike}
+              disabled={props.parent ? true : false}
+            >
               <ThumbUpIcon
                 style={
                   liked
@@ -247,18 +252,21 @@ function Post(props) {
           <span>
             <span
               style={{ marginLeft: "5px", cursor: "pointer" }}
-              onClick={handleShowCommentsModal}
+              onClick={!props.parent ? handleShowCommentsModal : null}
             >
               {props.post.commented_by.length}{" "}
             </span>
-            <IconButton onClick={handleShowCommentsModal}>
+            <IconButton
+              onClick={handleShowCommentsModal}
+              disabled={props.parent ? true : false}
+            >
               <CommentIcon className={classes.icon} />
             </IconButton>
           </span>
           {/* share button */}
           <span>
             <span style={{ marginLeft: "5px", cursor: "pointer" }}></span>
-            <IconButton onClick={share}>
+            <IconButton onClick={share} disabled={props.parent ? true : false}>
               <RepeatIcon
                 style={
                   rePosted
@@ -355,7 +363,10 @@ function Post(props) {
             defaultValue={""}
             value={commentaire} // nécessaire pour effacer le texte.
           />
-          <IconButton onClick={sendAddComment}>
+          <IconButton
+            disabled={props.parent ? true : false}
+            onClick={sendAddComment}
+          >
             <SendIcon className={classes.icon} />
           </IconButton>
         </Grid>
