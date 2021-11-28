@@ -66,6 +66,7 @@ export default function Microphone(props) {
   const wavesurfer = useRef(null);
   const uid = useContext(UidContext);
   const buttonTag = useRef();
+  //suggestion tag
   const suggestions = ["humour","drole","oiseau","horreur"];
   const [suggest, setSuggest] = useState([]);
 
@@ -85,6 +86,7 @@ export default function Microphone(props) {
     setTag(value);
     setSuggest([]);
   };
+  //afficher la liste de suggestion de tags
   const getSuggestions = () =>{
     if(suggest.length === 0 && tag !==""){
       return <p>Tag content not found</p>;
