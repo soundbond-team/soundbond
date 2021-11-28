@@ -49,15 +49,17 @@ function Playlist(props) {
         style={{ marginBottom: "35px" }}
       >
         <Card onClick={handleClickOpen} style={{ width: "35rem" }}>
-          <Card.Header>Playlist{props.playlist.id} </Card.Header>
+          <Card.Header> Playlist</Card.Header>
           <Card.Body>
-            <Card.Title>Titre : </Card.Title>
-            <Card.Text>Description:</Card.Text>
+            <Card.Title>{props.playlist.title} </Card.Title>
+            <Card.Text>{props.playlist.description}</Card.Text>
           </Card.Body>
         </Card>
       </div>
       <Dialog fullWidth maxWidth="lg" open={open} onClose={handleCancel}>
-        <DialogTitle className={classes.flex}>{props.playlist.id}</DialogTitle>
+        <DialogTitle className={classes.flex}>
+          {props.playlist.title}{" "}
+        </DialogTitle>
         <DialogContent>
           <>
             {

@@ -57,7 +57,7 @@ function MyPlayLists() {
           {" "}
           {
             <Grid container direction="column-reverse" spacing={3}>
-              {allplaylistByUser ? (
+              {allplaylistByUser.length > 0 ? (
                 allplaylistByUser.map((i, index) => {
                   return (
                     <Grid key={index} item>

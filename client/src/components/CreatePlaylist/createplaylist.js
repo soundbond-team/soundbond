@@ -10,7 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DoneIcon from "@material-ui/icons/Done";
 import Post from "../../components/Post/Post";
-
+import { Input } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getPostsUser } from "../../actions/post.actions";
@@ -34,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CreatePlaylist(props) {
-  //const [description, setDescription] = useState(" "); // Utilisé pour stocker le description.
+  const [title, setTitle] = useState(" "); // Utilisé pour stocker le description.
+  const [description, setDescription] = useState(" "); // Utilisé pour stocker le description.
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [list_post, setList_post] = useState([]);
@@ -44,7 +45,9 @@ export default function CreatePlaylist(props) {
 
   const handleDone = () => {
     new Promise((resolve, reject) => {
-      dispatch(create_playlist(userData.id, list_post)).then(() => {
+      dispatch(
+        create_playlist(userData.id, list_post, title, description)
+      ).then(() => {
         setOpen(false);
         dispatch(findallForUser(userData.id));
       });
@@ -137,6 +140,28 @@ export default function CreatePlaylist(props) {
               <p></p>
             )}
           </>
+          <div className="input-group mb-3 container">
+            <Input
+              type="text"
+              className="form-control"
+              placeholder="Title"
+              aria-label="Title"
+              aria-describedby="basic-addon2"
+              onChange={(e) => setTitle(e.target.value)}
+              defaultValue={""}
+            />
+          </div>
+          <div className="input-group mb-3 container">
+            <Input
+              type="text"
+              className="form-control"
+              placeholder="Description"
+              aria-label="Description"
+              aria-describedby="basic-addon2"
+              onChange={(e) => setDescription(e.target.value)}
+              defaultValue={""}
+            />
+          </div>
         </DialogContent>
 
         <DialogActions>

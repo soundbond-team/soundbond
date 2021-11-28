@@ -4,13 +4,14 @@ require("dotenv").config();
 export const CREATE_PLAYLIST = "CREATE_PLAYLIST";
 export const FIND_ALL_PLAYLIST_FOR_USER = "FIND_ALL_PLAYLIST_FOR_USER";
 // Récupérer tous les SoundLocation
-export const create_playlist = (user_id, posts_list) => {
+export const create_playlist = (user_id, posts_list, title, description) => {
   return (dispatch) => {
     return axios({
       method: "post",
       url: `http://localhost:8080/api/v1/playlist/create`,
       data: {
-        description: null,
+        title: title,
+        description: description,
         publisher_user_id: user_id,
         list_post: posts_list,
       },
