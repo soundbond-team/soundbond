@@ -48,8 +48,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 export default function Microphone(props) {
   const dispatch = useDispatch();
   const sound = useSelector((state) => state.soundReducer);
@@ -68,7 +66,7 @@ export default function Microphone(props) {
   const buttonTag = useRef();
   const [resfound,setResfound] = useState(true);
   //suggestion tag
-  const suggestions = ["humour","drole","oiseau","horreur"];
+  const suggestions = ["humour","drôle","oiseau","horreur",];
   const [suggest, setSuggest] = useState([]);
 
   const handleChange = (e) =>{
@@ -81,11 +79,9 @@ export default function Microphone(props) {
     }
     setSuggest(sug);
     setTag(k.replace(/\s/g, ""));
-
-    
   };
+
   const suggestText = (value)=>{
-    console.log(value);
     setTag(value);
     setSuggest([]);
   };
