@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import ReactTags from 'react-tag-autocomplete';
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions";
-
 import { makeStyles } from "@material-ui/styles";
 import MicIcon from "@material-ui/icons/Mic";
 import CropIcon from "@mui/icons-material/Crop";
@@ -50,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 export default function Microphone(props) {
   const dispatch = useDispatch();
   const sound = useSelector((state) => state.soundReducer);
@@ -66,6 +66,7 @@ export default function Microphone(props) {
   const wavesurfer = useRef(null);
   const uid = useContext(UidContext);
   const buttonTag = useRef();
+  const [resfound,setResfound] = useState(true);
   //suggestion tag
   const suggestions = ["humour","drole","oiseau","horreur"];
   const [suggest, setSuggest] = useState([]);
@@ -76,6 +77,7 @@ export default function Microphone(props) {
     if(k.length > 0){
       sug = suggestions.sort()
       .filter((e)=>e.toLowerCase().includes(k.toLowerCase()));
+      setResfound(sug.length!==0 ? true:false);
     }
     setSuggest(sug);
     setTag(k.replace(/\s/g, ""));
@@ -83,12 +85,13 @@ export default function Microphone(props) {
     
   };
   const suggestText = (value)=>{
+    console.log(value);
     setTag(value);
     setSuggest([]);
   };
   //afficher la liste de suggestion de tags
   const getSuggestions = () =>{
-    if(suggest.length === 0 && tag !==""){
+    if(suggest.length === 0 && tag !=="" && !resfound){
       return <p>Tag content not found</p>;
     }
     return(
@@ -97,9 +100,8 @@ export default function Microphone(props) {
           suggest.map((item,index)=>{
             return(
               <div key={index}>
-                <li onclick={() =>suggestText(item)}>{item}</li>
+                <li onClick={() =>suggestText(item)}>{item}</li>
                 {index!== suggest.length - 1 && <hr></hr>}
-                
               </div>
             );
           })
