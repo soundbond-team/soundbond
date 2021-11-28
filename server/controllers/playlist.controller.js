@@ -15,6 +15,7 @@ exports.create = async (req, res) => {
 
   // Créer un post à partir des données dans la requête POST.
   const playlist = {
+    title: req.body.title,
     description: req.body.description,
     publisher_user_id: req.body.publisher_user_id,
   };
