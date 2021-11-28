@@ -15,10 +15,7 @@ function MyPlayLists() {
   const [currentUserdata, setcurrentUserdata] = useState();
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log(allplaylistByUser);
-    // eslint-disable-next-line
-  }, [allplaylistByUser]);
+
   useEffect(() => {
     if (currentUserdata !== params.username) {
       const getcurrentUser = async (username) => {
