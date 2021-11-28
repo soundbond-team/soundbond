@@ -18,11 +18,7 @@ function MesPlaylistOnMap(props) {
 
   const [selected, setSelected] = useState();
   const handleColor = (index) => {
-    if (selected === index) {
-      setSelected();
-    } else {
-      setSelected(index);
-    }
+    setSelected(index);
   };
 
   const pushitineraire = (i) => {
