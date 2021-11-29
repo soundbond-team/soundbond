@@ -17,10 +17,18 @@ const Map = ({ post_points }) => {
   // Initialize map when component mounts
   useEffect(() => {
     console.log(itineraire);
-    navigator.geolocation.getCurrentPosition(function (positiongeo) {
-      setLat(positiongeo.coords.latitude);
-      setLng(positiongeo.coords.longitude);
-    });
+    navigator.geolocation.getCurrentPosition(
+      function (positiongeo) {
+        setLat(positiongeo.coords.latitude);
+        setLng(positiongeo.coords.longitude);
+      },
+      function errorCallback(error) {
+        //do error handling
+      },
+      {
+        timeout: 7000,
+      }
+    );
     const geojson = {
       type: "FeatureCollection",
       features: [
