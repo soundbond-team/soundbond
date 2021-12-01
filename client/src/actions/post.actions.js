@@ -103,15 +103,11 @@ export const addLike = (id, user_id, user_data) => {
         if (res.data.errors) {
           dispatch({ type: ADD_LIKE, payload: "" });
         } else {
-<<<<<<< HEAD
           console.log(id, user_data);
           dispatch({
             type: ADD_LIKE,
             payload: { id, user_data, playlist_id: 1 },
           });
-=======
-          dispatch({ type: ADD_LIKE, payload: { id, user_data } });
->>>>>>> 724398bd085d688be743848f4e93a96a35c8731f
         }
       })
       .catch((err) => console.log(err));
@@ -127,14 +123,13 @@ export const removeLike = (id, user_id, user_data) => {
       data: {
         user_id: user_id,
       },
-    })
-      .then((res) => {
-        if (res.data.errors) {
-          dispatch({ type: REMOVE_LIKE, payload: res.data.errors });
-        } else {
-          dispatch({ type: REMOVE_LIKE, payload: { id, user_data } });
-        }
-      })
+    }).then((res) => {
+      if (res.data.errors) {
+        dispatch({ type: REMOVE_LIKE, payload: res.data.errors });
+      } else {
+        dispatch({ type: REMOVE_LIKE, payload: { id, user_data } });
+      }
+    });
   };
 };
 

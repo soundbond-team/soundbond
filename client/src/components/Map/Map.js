@@ -17,9 +17,8 @@ const Map = ({ post_points }) => {
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
-
+  const markers_list = [];
   //const [search_results, setSearchResults] = useState('');
-
   const childToParent = async (results) => {
     clearMarkers();
     //setSearchResults(results);
@@ -33,7 +32,6 @@ const Map = ({ post_points }) => {
       }
     }
   }
-
   function addMarkers(map) {
     for (const e of post_points) {
       // create a HTML element for each feature
@@ -72,43 +70,7 @@ const Map = ({ post_points }) => {
         timeout: 7000,
       }
     );
-    const geojson = {
-      type: "FeatureCollection",
-      features: [
-        {
-          type: "geojson",
-          geometry: {
-            type: "",
-            coordinates: [-77.032, 38.913],
-          },
-          properties: {
-            title: "",
-            description: "",
-          },
-        },
-      ],
-    };
-    geojson.features.shift();
-    Object.keys(post_points).map(function (key, index) {
-      return geojson.features.push({
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [
-            post_points[key].publishing.soundlocation.longitude,
-            post_points[key].publishing.soundlocation.latitude,
-          ],
-        },
-        properties: {
-          title:
-            post_points[key].publishing.soundlocation.latitude +
-            ", " +
-            post_points[key].publishing.soundlocation.longitude,
-          description: post_points[key].description,
-          publisher_name: post_points[key].publisher.username,
-        },
-      });
-    });
+
     // Initialize map when component mounts
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
@@ -136,25 +98,6 @@ const Map = ({ post_points }) => {
       setLat(map.getCenter().lat.toFixed(4));
       setZoom(map.getZoom().toFixed(2));
     });
-
-    for (const { geometry, properties } of geojson.features) {
-      // create a HTML element for each feature
-      const el = document.createElement("div");
-      el.className = "marker ";
-
-      // make a marker for each feature and add it to the map
-      new mapboxgl.Marker(el)
-        .setLngLat(geometry.coordinates)
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25 }) // add popups
-            .setHTML(
-              `<h5>${properties.title}</h5>
-              <p>${properties.description}</p>
-              <p>posté par <b>${properties.publisher_name}</b></p>` //TODO ajouter un lien vers la page utilisateur de l'User.
-            )
-        )
-        .addTo(map);
-    }
 
     const start = [lng, lat];
 
@@ -208,17 +151,14 @@ const Map = ({ post_points }) => {
           },
         });
       }
-
-      // add turn instructions here at the end
     }
 
     map.on("load", () => {
-      // make an initial directions request that
-      // starts and ends at the same location
-
-      // Add starting point to the map
-      getRoute();
       addMarkers(map);
+
+      getRoute();
+      // clearMarkers(); clear bien les markers quand on supprime tt
+
       // this is where the code from the next step will go
     });
     // Clean up on unmount
