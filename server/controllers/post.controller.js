@@ -302,7 +302,6 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
     },
   });
   let list_suivis2 = list_suivis.map((x) => x.id);
-  console.log(list_suivis2);
   db.Post.findAll({
     where: {
       publisher_user_id: {

@@ -103,11 +103,15 @@ export const addLike = (id, user_id, user_data) => {
         if (res.data.errors) {
           dispatch({ type: ADD_LIKE, payload: "" });
         } else {
+<<<<<<< HEAD
           console.log(id, user_data);
           dispatch({
             type: ADD_LIKE,
             payload: { id, user_data, playlist_id: 1 },
           });
+=======
+          dispatch({ type: ADD_LIKE, payload: { id, user_data } });
+>>>>>>> 724398bd085d688be743848f4e93a96a35c8731f
         }
       })
       .catch((err) => console.log(err));
@@ -131,7 +135,6 @@ export const removeLike = (id, user_id, user_data) => {
           dispatch({ type: REMOVE_LIKE, payload: { id, user_data } });
         }
       })
-      .catch((err) => console.log(err));
   };
 };
 
@@ -151,7 +154,6 @@ export const addComment = (post_id, user_id, comment, userData) => {
         if (res.data.errors) {
           dispatch({ type: ADD_COMMENT, payload: res.data.errors });
         } else {
-          console.log(res.data);
           let data = res.data;
           dispatch({ type: ADD_COMMENT, payload: { data, post_id, userData } });
         }
