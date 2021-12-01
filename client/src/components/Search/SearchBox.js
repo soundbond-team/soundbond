@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 import "./Search.css";
 
@@ -9,7 +9,7 @@ export default function Search(props) {
   const [recherche, setRecherche] = useState(" ");
   const refinput = React.useRef();
   const [tagexist, setTagexist] = useState(false);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const [tagSuggestion, setTagSuggestion] = useState([]);
   const navigateToTag = async () => {

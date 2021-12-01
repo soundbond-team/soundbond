@@ -19,11 +19,11 @@ const Map = ({ post_points }) => {
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
 
-  const [search_results, setSearchResults] = useState('');
+  //const [search_results, setSearchResults] = useState('');
 
   const childToParent = async (results) => {
     clearMarkers();
-    setSearchResults(results);
+    //setSearchResults(results);
   }
 
   function clearMarkers () {
