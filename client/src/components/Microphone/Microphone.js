@@ -80,15 +80,16 @@ export default function Microphone(props) {
     setSuggest(sug);
     setTag(k.replace(/\s/g, ""));
   };
-
   const suggestText = (value)=>{
     setTag(value);
     setSuggest([]);
   };
+
   //afficher la liste de suggestion de tags
   const getSuggestions = () =>{
     if(suggest.length === 0 && tag !=="" && !resfound){
       return <p>Tag content not found</p>;
+      setSuggest(suggest.concat(tag));
     }
     return(
       <ul>
@@ -105,6 +106,7 @@ export default function Microphone(props) {
       </ul>
     );
   };
+  
   useEffect(() => {
     if (!open || (open && !tempFile)) return;
 
@@ -301,8 +303,6 @@ export default function Microphone(props) {
       setTag("");
     }
   };
-
- 
 
   return (
     <>
