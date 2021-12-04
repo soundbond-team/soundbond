@@ -1,42 +1,33 @@
 import React, { useState, useEffect } from "react";
-
 import axios from "axios";
-//import { useNavigate } from "react-router-dom";
-
 import "./Search.css";
 
 export default function Search(props) {
   const [recherche, setRecherche] = useState(" ");
   const refinput = React.useRef();
   const [tagexist, setTagexist] = useState(false);
-  //const navigate = useNavigate();
 
   const [tagSuggestion, setTagSuggestion] = useState([]);
   const navigateToTag = async () => {
-    await findIfTagExist(recherche);
-
-    if (tagexist === true) {
-      setTagexist(false);
-      setRecherche(" ");
-      refinput.current.value = null;
-      props.childToParent(recherche.substring(1));
-    }
+    await findIfTagExist().then(() => {
+      if (tagexist === true) {
+        setTagexist(false);
+        setRecherche("");
+        refinput.current.value = null;
+        props.childToParent(recherche.substring(1));
+      }
+    })
   };
 
-
-  const findIfTagExist = async (recherche) => {
-    let tagbody = recherche;
-
+  const findIfTagExist = async () => {
     await axios({
       method: "post",
       url: `http://localhost:8080/api/v1/post/getTag`,
       data: {
-        tag: tagbody,
+        tag: recherche,
       },
     })
       .then((res) => {
-        // document.getElementById("submitbutton").disabled = true;
-
         if (res.data === true) {
           setTagexist(true);
         } else {
@@ -68,6 +59,7 @@ export default function Search(props) {
     refinput.current.value = null;
     setTagSuggestion([]);
 
+    console.log("I CALLED CHILDTOPARENT WITH "+ tag);
     props.childToParent(tag);
   }
 
@@ -158,7 +150,7 @@ export default function Search(props) {
               onClick={navigateToTag}
               type="button"
             >
-              Search
+              Rechercher
             </button>
           </div>
         </div>

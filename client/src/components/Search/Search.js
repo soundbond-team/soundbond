@@ -15,38 +15,34 @@ function Search() {
 
   const [userSuggestion, setUserSuggestion] = useState([]);
   const [tagSuggestion, setTagSuggestion] = useState([]);
+
   const navigateToTag = async () => {
-    await findIfTagExist(recherche);
-
-    if (tagexist === true) {
-      setTagexist(false);
-      let temptag = recherche;
-
-      setRecherche(" ");
-      refinput.current.value = null;
-      setOpen(false);
-      setUserSuggestion([]);
-      navigate(`/tag/${temptag.substring(1)}`);
-    }
+    await findIfTagExist().then(() => {
+      if (tagexist === true) {
+        setTagexist(false);
+        setRecherche("");
+        refinput.current.value = null;
+        setOpen(false);
+        setUserSuggestion([]);
+        navigate(`/tag/${recherche.substring(1)}`);
+      }
+    });
   };
 
   const handleTooltipClose = () => {
     setOpen(false);
   };
 
-  const findIfTagExist = async (recherche) => {
-    let tagbody = recherche;
+  const findIfTagExist = async () => {
 
     await axios({
       method: "post",
       url: `http://localhost:8080/api/v1/post/getTag`,
       data: {
-        tag: tagbody,
+        tag: recherche,
       },
     })
       .then((res) => {
-        // document.getElementById("submitbutton").disabled = true;
-
         if (res.data === true) {
           setTagexist(true);
           setOpen(false);
@@ -144,7 +140,6 @@ function Search() {
 
   function navigateToTagOption(tag) {
     setTagexist(false);
-
     setRecherche(" ");
     refinput.current.value = null;
     setTagSuggestion([]);
