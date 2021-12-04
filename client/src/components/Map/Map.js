@@ -104,10 +104,12 @@ const Map = ({ post_points }) => {
     const start = [lng, lat];
 
     async function getCoordinates() {
-      map.flyTo({
-        center: [linkFromPost.longitude, linkFromPost.latitude],
-        zoom: 8,
-      });
+      if (linkFromPost.latitude != null && linkFromPost.longitude != null) {
+        map.flyTo({
+          center: [linkFromPost.longitude, linkFromPost.latitude],
+          zoom: 8,
+        });
+      }
     }
 
     async function getRoute() {
