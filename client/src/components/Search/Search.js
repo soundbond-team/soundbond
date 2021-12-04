@@ -6,9 +6,9 @@ import "./Search.css";
 export default function Search() {
   const navigate = useNavigate();
   const childToParent = async (results, type) => {
-    if(type == "tag"){
+    if(type === "tag"){
       navigate(`/tag/${results}`);
-    } else if (type == "user"){
+    } else if (type === "user"){
       navigate(`/profil/${results}/posts`);
     }
   };
