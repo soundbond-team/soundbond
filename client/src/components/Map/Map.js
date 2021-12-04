@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
+import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
@@ -8,16 +9,57 @@ import { useSelector } from "react-redux";
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Map = ({ post_points }) => {
+  // Access the store via the `useContext` hook
+  //const { store } = useContext(ReactReduxContext)
+
   const mapContainerRef = useRef(null);
   const itineraire = useSelector((state) => state.itinerairereducer);
   const linkFromPost = useSelector((state) => state.postToMapReducer);
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
+  const markers_list = [];
+  //const [search_results, setSearchResults] = useState('');
+  const childToParent = async (results) => {
+    clearMarkers();
+    //setSearchResults(results);
+  };
 
-  // Initialize map when component mounts
+  function clearMarkers() {
+    // Deletes markers from the map.
+    if (markers_list) {
+      for (var i = markers_list.length - 1; i >= 0; i--) {
+        markers_list[i].remove();
+      }
+    }
+  }
+  function addMarkers(map) {
+    for (const e of post_points) {
+      // create a HTML element for each feature
+      const el = document.createElement("div");
+      el.className = "marker ";
+
+      // make a marker for each feature and add it to the map
+      new mapboxgl.Marker(el)
+        .setLngLat([
+          e.publishing.soundlocation.longitude,
+          e.publishing.soundlocation.latitude,
+        ])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML(
+              `<h5>${e.publishing.soundlocation.longitude}, ${e.publishing.soundlocation.latitude}</h5>
+              <p>${e.description}</p>
+              <p>posté par <b>${e.publisher.username}</b></p>` //TODO ajouter un lien vers la page utilisateur de l'User.
+            )
+        )
+        .addTo(map);
+
+      markers_list.push(el);
+    }
+  }
+
   useEffect(() => {
-    console.log(itineraire);
     navigator.geolocation.getCurrentPosition(
       function (positiongeo) {
         setLat(positiongeo.coords.latitude);
@@ -30,44 +72,8 @@ const Map = ({ post_points }) => {
         timeout: 7000,
       }
     );
-    const geojson = {
-      type: "FeatureCollection",
-      features: [
-        {
-          type: "geojson",
-          geometry: {
-            type: "",
-            coordinates: [-77.032, 38.913],
-          },
-          properties: {
-            title: "",
-            description: "",
-          },
-        },
-      ],
-    };
-    geojson.features.shift();
-    Object.keys(post_points).map(function (key, index) {
-      return geojson.features.push({
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [
-            post_points[key].publishing.soundlocation.longitude,
-            post_points[key].publishing.soundlocation.latitude,
-          ],
-        },
-        properties: {
-          title:
-            post_points[key].publishing.soundlocation.latitude +
-            ", " +
-            post_points[key].publishing.soundlocation.longitude,
-          description: post_points[key].description,
-          publisher_name: post_points[key].publisher.username,
-        },
-      });
-    });
 
+    // Initialize map when component mounts
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/streets-v11",
@@ -94,31 +100,6 @@ const Map = ({ post_points }) => {
       setLat(map.getCenter().lat.toFixed(4));
       setZoom(map.getZoom().toFixed(2));
     });
-
-    for (const { geometry, properties } of geojson.features) {
-      // create a HTML element for each feature
-      const el = document.createElement("div");
-      el.className = "marker ";
-
-      // make a marker for each feature and add it to the map
-      let mapMarker = new mapboxgl.Marker(el)
-        .setLngLat(geometry.coordinates)
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25 }) // add popups
-            .setHTML(
-              `<h5>${properties.title}</h5>
-              <p>${properties.description}</p>
-              <p>posté par <b>${properties.publisher_name}</b></p>` //TODO ajouter un lien vers la page utilisateur de l'User.
-            )
-        )
-        .addTo(map);
-
-      el.addEventListener("click", () => {
-        const lngLat = mapMarker.getLngLat();
-        map.flyTo({ center: lngLat, zoom: 8 });
-        mapMarker.togglePopup();
-      });
-    }
 
     const start = [lng, lat];
 
@@ -179,27 +160,29 @@ const Map = ({ post_points }) => {
           },
         });
       }
-
-      // add turn instructions here at the end
     }
 
     map.on("load", () => {
-      // make an initial directions request that
-      // starts and ends at the same location
+      addMarkers(map);
 
-      // Add starting point to the map
       getRoute();
       getCoordinates();
+      // clearMarkers(); clear bien les markers quand on supprime tt
+
       // this is where the code from the next step will go
     });
     // Clean up on unmount
     return () => map.remove();
   }, [post_points, itineraire, linkFromPost]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  //Functions servant à l'itineraire
-
   return (
     <>
+      <SearchBox
+        placeholder="SearchBox"
+        className="col-4 btn btn-dark"
+        childToParent={childToParent}
+      />
+
       <div className="container-fluid">
         <div className="sidebarStyle">
           <div>
