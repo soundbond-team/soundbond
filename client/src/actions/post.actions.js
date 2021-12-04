@@ -123,15 +123,13 @@ export const removeLike = (id, user_id, user_data) => {
       data: {
         user_id: user_id,
       },
-    })
-      .then((res) => {
-        if (res.data.errors) {
-          dispatch({ type: REMOVE_LIKE, payload: res.data.errors });
-        } else {
-          dispatch({ type: REMOVE_LIKE, payload: { id, user_data } });
-        }
-      })
-      .catch((err) => console.log(err));
+    }).then((res) => {
+      if (res.data.errors) {
+        dispatch({ type: REMOVE_LIKE, payload: res.data.errors });
+      } else {
+        dispatch({ type: REMOVE_LIKE, payload: { id, user_data } });
+      }
+    });
   };
 };
 
@@ -151,7 +149,6 @@ export const addComment = (post_id, user_id, comment, userData) => {
         if (res.data.errors) {
           dispatch({ type: ADD_COMMENT, payload: res.data.errors });
         } else {
-          console.log(res.data);
           let data = res.data;
           dispatch({ type: ADD_COMMENT, payload: { data, post_id, userData } });
         }
