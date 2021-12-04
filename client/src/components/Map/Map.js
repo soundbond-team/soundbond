@@ -100,7 +100,7 @@ const Map = ({ post_points }) => {
       el.className = "marker ";
 
       // make a marker for each feature and add it to the map
-      new mapboxgl.Marker(el)
+      let mapMarker = new mapboxgl.Marker(el)
         .setLngLat(geometry.coordinates)
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }) // add popups
@@ -111,6 +111,12 @@ const Map = ({ post_points }) => {
             )
         )
         .addTo(map);
+
+      el.addEventListener("click", () => {
+        const lngLat = mapMarker.getLngLat();
+        mapMarker.togglePopup();
+        map.flyTo({ center: lngLat, zoom: 10 });
+      });
     }
 
     const start = [lng, lat];
