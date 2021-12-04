@@ -52,30 +52,27 @@ function MyPosts() {
       {currentUserdata ? (
         <>
           {" "}
-          <br />
-          <div className="container">
-            {
-              <Grid container direction="column-reverse" spacing={3}>
-                {allpostprofilsreducer.length > 0 ? (
-                  allpostprofilsreducer.map((i, index) => (
-                    <Grid key={index} item>
-                      <Post post={i} />
-                    </Grid>
-                  ))
-                ) : (
-                  <Grid item>
-                    <br />
-                    <div className="container ">
-                      {" "}
-                      <p className="d-flex  justify-content-center">
-                        Aucun post publié
-                      </p>
-                    </div>
+          {
+            <Grid container direction="column-reverse" spacing={3}>
+              {allpostprofilsreducer.length > 0 ? (
+                allpostprofilsreducer.map((i, index) => (
+                  <Grid key={index} item>
+                    <Post post={i} />
                   </Grid>
-                )}
-              </Grid>
-            }
-          </div>
+                ))
+              ) : (
+                <Grid item>
+                  <br />
+                  <div className="container ">
+                    {" "}
+                    <p className="d-flex  justify-content-center">
+                      Aucun post publié
+                    </p>
+                  </div>
+                </Grid>
+              )}
+            </Grid>
+          }
         </>
       ) : (
         <p></p>

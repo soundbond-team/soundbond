@@ -8,7 +8,7 @@ import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { follow, unfollow } from "../../actions/user.actions";
 import { getPostTrend } from "../../actions/post.actions";
-
+import IconButton from "@material-ui/core/IconButton";
 import { useParams, Link, Outlet, useNavigate } from "react-router-dom";
 
 // il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
@@ -86,88 +86,151 @@ function Profil(props) {
       {currentUserdata ? (
         <>
           {" "}
-          <div style={{ maxWidth: "550px", margin: "0px auto" }}>
-            <div
-              style={{
-                margin: "18px 0px",
-                borderBottom: "1px solid grey",
-              }}
-            >
+          <div className="container">
+            {" "}
+            <div style={{ maxWidth: "550px", margin: "0px auto" }}>
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-around",
+                  margin: "18px 0px",
+                  borderBottom: "1px solid grey",
                 }}
               >
-                <div>
-                  <h4>
-                    {currentUserdata ? currentUserdata.username : <p></p>}
-                  </h4>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <div>
+                    <h4>
+                      {currentUserdata ? currentUserdata.username : <p></p>}
+                    </h4>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      width: "150%",
-                    }}
-                  >
-                    <h6 onClick={handleShow2}>
-                      {" "}
-                      Abonnements :
-                      {currentUserdata.follow.length > 0 ? (
-                        currentUserdata.follow.length
-                      ) : (
-                        <span>0</span>
-                      )}
-                    </h6>
-                    <h6 onClick={handleShow}>
-                      {" "}
-                      Abonnés :
-                      {currentUserdata.following.length > 0 ? (
-                        currentUserdata.following.length
-                      ) : (
-                        <span>0</span>
-                      )}
-                    </h6>
-                  </div>
-                  {currentUserdata.id !== uid ? (
-                    <div>
-                      {isFollow ? (
-                        <button onClick={unfollowclick}>unFollow</button>
-                      ) : (
-                        <button onClick={followclick}>Follow</button>
-                      )}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "150%",
+                      }}
+                    >
+                      <h6 onClick={handleShow2}>
+                        {" "}
+                        Abonnements :
+                        {currentUserdata.follow.length > 0 ? (
+                          currentUserdata.follow.length
+                        ) : (
+                          <span>0</span>
+                        )}
+                      </h6>
+                      <h6 onClick={handleShow}>
+                        {" "}
+                        Abonnés :
+                        {currentUserdata.following.length > 0 ? (
+                          currentUserdata.following.length
+                        ) : (
+                          <span>0</span>
+                        )}
+                      </h6>
                     </div>
-                  ) : (
-                    <div></div>
-                  )}
+                    {currentUserdata.id !== uid ? (
+                      <div>
+                        {isFollow ? (
+                          <button onClick={unfollowclick}>unFollow</button>
+                        ) : (
+                          <button onClick={followclick}>Follow</button>
+                        )}
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <br />
-          <div className="container">
-            <div className="row d-flex justify-content-center">
-              <Link
-                style={{ margin: "4px" }}
-                type="button"
-                to="posts"
-                className="col-4 btn btn-dark"
-              >
-                Posts
-              </Link>
-              <Link
-                style={{ margin: "4px" }}
-                type="button"
-                to="partages"
-                className="col-4 btn btn-dark"
-              >
-                Partages
-              </Link>
-            </div>{" "}
+            <br />
           </div>
           <div className="container">
-            <Outlet />
+            <div className="row">
+              <div className="col-1">
+                <Link
+                  style={{
+                    margin: "4px",
+                    width: "120px",
+                    textDecoration: "none",
+                  }}
+                  exact
+                  to="posts"
+                  className="col-4 "
+                >
+                  <IconButton>
+                    {" "}
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                        color: "black",
+                      }}
+                    >
+                      Posts
+                    </span>
+                  </IconButton>
+                </Link>{" "}
+                <Link
+                  style={{
+                    margin: "4px",
+                    width: "120px",
+                    textDecoration: "none",
+                  }}
+                  exact
+                  to="partages"
+                  className="col-4 "
+                >
+                  <IconButton>
+                    {" "}
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                        color: "black",
+                      }}
+                    >
+                      {" "}
+                      Partages
+                    </span>
+                  </IconButton>
+                </Link>{" "}
+                <Link
+                  style={{
+                    margin: "4px",
+                    width: "120px",
+                    textDecoration: "none",
+                  }}
+                  exact
+                  to="playlists"
+                  className="col-4 "
+                >
+                  <IconButton>
+                    {" "}
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                        color: "black",
+                      }}
+                    >
+                      PlayLists
+                    </span>
+                  </IconButton>
+                </Link>
+              </div>
+
+              <div className="col-11">
+                <Outlet />
+              </div>
+            </div>
           </div>
           <Modal show={show} onHide={handleClose} size="sm" centered>
             <ModalHeader closeButton>

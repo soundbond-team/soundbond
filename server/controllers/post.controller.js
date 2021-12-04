@@ -61,6 +61,7 @@ exports.create = async (req, res) => {
           as: "shared_by",
           attributes: ["id", "username"],
         },
+        { model: db.Playlist, as: "listplaylist" },
       ],
     }).then((data) => {
       res.send(data);
@@ -162,6 +163,7 @@ exports.getPostByTag = (req, res) => {
             as: "shared_by",
             attributes: ["id", "username"],
           },
+          { model: db.Playlist, as: "listplaylist" },
         ],
       },
     ],
@@ -214,6 +216,7 @@ exports.findAll = (req, res) => {
         as: "shared_by",
         attributes: ["id", "username"],
       },
+      { model: db.Playlist, as: "listplaylist" },
     ],
   })
     .then((data) => {
@@ -274,6 +277,7 @@ exports.allPostsByUser = (req, res) => {
         attributes: ["id", "username"],
       },
       { model: db.Tag, as: "tagpost" },
+      { model: db.Playlist, as: "listplaylist" },
     ],
   })
     .then((data) => {
@@ -336,6 +340,7 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
         as: "shared_by",
         attributes: ["id", "username"],
       },
+      { model: db.Playlist, as: "listplaylist" },
     ],
   })
     .then((data) => {
@@ -386,6 +391,7 @@ exports.allPostsSharedByUser = (req, res) => {
             as: "shared_by",
             attributes: ["id", "username"],
           },
+          { model: db.Playlist, as: "listplaylist" },
         ],
       },
     ],
@@ -457,6 +463,7 @@ exports.findOne = (req, res) => {
         as: "shared_by",
         attributes: ["id", "username"],
       },
+      { model: db.Playlist, as: "listplaylist" },
     ],
   })
     .then((data) => {
@@ -711,6 +718,7 @@ exports.getPostByTag = (req, res) => {
             as: "shared_by",
             attributes: ["id", "username"],
           },
+          { model: db.Playlist, as: "listplaylist" },
         ],
       },
     ],

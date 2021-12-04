@@ -1,9 +1,10 @@
 import "../App.css";
 import React, { useEffect } from "react";
 import Microphone from "../components/Microphone/Microphone";
-
+import GroupIcon from "@mui/icons-material/Group";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-
+import IconButton from "@material-ui/core/IconButton";
+import HomeIcon from "@mui/icons-material/Home";
 function Home() {
   const navigate = useNavigate();
 
@@ -15,42 +16,54 @@ function Home() {
     <>
       <div className="container">
         <div className="row">
-          <div className="container">
-            <div className="row justify-content-center">
-              <Microphone pushFile={null} />
-            </div>
-          </div>
-          <br /> <br />
-          <div className="container">
-            <div className="row d-flex justify-content-center">
-              <Link
-                style={{ margin: "4px" }}
-                type="button"
-                to="allposts"
-                className="col-4 btn btn-dark"
-              >
-                Tous les posts
-              </Link>
-              <Link
-                style={{ margin: "4px" }}
-                type="button"
-                to="trending"
-                className="col-4 btn btn-dark"
-              >
-                Abonnements
-              </Link>
+          <div className="col-1">
+            <div className="container-fluid">
+              <div className="row">
+                <Link style={{ textDecoration: "none" }} exact to="allposts">
+                  <IconButton>
+                    <HomeIcon style={{ fill: "black", fontSize: "25px" }} />
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Accueil
+                    </span>
+                  </IconButton>
+                </Link>
+              </div>
+              <div className="row">
+                <Link style={{ textDecoration: "none" }} exact to="trending">
+                  <IconButton>
+                    <GroupIcon style={{ fill: "black", fontSize: "25px" }} />
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Abonnements
+                    </span>
+                  </IconButton>
+                </Link>
+              </div>
               <br></br>
             </div>
           </div>
-          <br /> <br />
-          <br /> <br />
-          <div className="container d-flex justify-content-center">
-            {" "}
-            <div className="container">
-              <Outlet />
+          <div className="col-11 ">
+            <div className="row ">
+              {" "}
+              <Microphone pushFile={null} />
+              <br /> <br />{" "}
             </div>
+            <div className="row ">
+              <Outlet />
+            </div>{" "}
           </div>
-        </div>{" "}
+        </div>
       </div>
     </>
   );

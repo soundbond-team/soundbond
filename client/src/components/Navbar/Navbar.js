@@ -16,7 +16,10 @@ function NavigationBar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav
+        className="navbar navbar-expand-lg navbar-light bg-light"
+        style={{ marginBottom: "20px" }}
+      >
         <div className="container-fluid">
           <NavLink
             className="navbar-brand"

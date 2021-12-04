@@ -10,6 +10,8 @@ import profilPostReducer from "./profilPostReducer";
 import postSearcByTagReducer from "./postSearcByTag.reducer";
 import searchReducer from "./search.reducer"; //pour les tags
 import allpostsharedReducer from "./allpostSharedbyuser";
+import allplaylistByUser from "./allplaylistByUser";
+import itinerairereducer from "./itineraire.reducer";
 export default combineReducers({
   soundlocationReducer,
   soundReducer,
@@ -21,4 +23,6 @@ export default combineReducers({
   postSearcByTagReducer,
   searchReducer,
   allpostsharedReducer,
+  allplaylistByUser,
+  itinerairereducer,
 });

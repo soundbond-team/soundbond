@@ -66,7 +66,7 @@ function MesPartages() {
                     <div className="container ">
                       {" "}
                       <p className="d-flex  justify-content-center">
-                        Aucun partage
+                        Aucun post partagé
                       </p>
                     </div>
                   </Grid>
