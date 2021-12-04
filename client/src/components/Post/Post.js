@@ -34,6 +34,7 @@ import {
   addShare,
   removeShare,
 } from "../../actions/post.actions";
+import { change_ZOOM } from "../../actions/post2Map.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import IconButton from "@material-ui/core/IconButton";
 import { TextInput } from "react-native";
@@ -145,10 +146,13 @@ function Post(props) {
     }
   };
 
-  const goToMap = () => {
+  const goToMap = async () => {
     navigate("/map");
-    console.log(props.post.publishing.soundlocation.latitude);
-    console.log(props.post.publishing.soundlocation.longitude);
+    const location = {
+      longitude: props.post.publishing.soundlocation.longitude,
+      latitude: props.post.publishing.soundlocation.latitude,
+    };
+    await dispatch(change_ZOOM(location));
   };
 
   const sendAddComment = async () => {

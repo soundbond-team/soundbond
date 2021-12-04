@@ -10,6 +10,7 @@ mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 const Map = ({ post_points }) => {
   const mapContainerRef = useRef(null);
   const itineraire = useSelector((state) => state.itinerairereducer);
+  const linkFromPost = useSelector((state) => state.postToMapReducer);
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
@@ -114,12 +115,19 @@ const Map = ({ post_points }) => {
 
       el.addEventListener("click", () => {
         const lngLat = mapMarker.getLngLat();
+        map.flyTo({ center: lngLat, zoom: 8 });
         mapMarker.togglePopup();
-        map.flyTo({ center: lngLat, zoom: 10 });
       });
     }
 
     const start = [lng, lat];
+
+    async function getCoordinates() {
+      map.flyTo({
+        center: [linkFromPost.longitude, linkFromPost.latitude],
+        zoom: 8,
+      });
+    }
 
     async function getRoute() {
       // make a directions request using cycling profile
@@ -181,12 +189,12 @@ const Map = ({ post_points }) => {
 
       // Add starting point to the map
       getRoute();
-
+      getCoordinates();
       // this is where the code from the next step will go
     });
     // Clean up on unmount
     return () => map.remove();
-  }, [post_points, itineraire]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [post_points, itineraire, linkFromPost]); // eslint-disable-line react-hooks/exhaustive-deps
 
   //Functions servant à l'itineraire
 
