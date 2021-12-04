@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux"
+import { /*useDispatch,*/ useSelector } from "react-redux"
 import mapboxgl from "mapbox-gl";
 import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
@@ -21,7 +21,7 @@ const Map = ({ post_points }) => {
   const [markers_list] = useState([]);
   const [map, setMap] = useState('');
 
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const allpostbytag = useSelector((state) => state.postSearcByTagReducer);
   
   const childToParent = async (results, type) => {
