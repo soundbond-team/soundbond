@@ -10,39 +10,39 @@ import { getpostbytag } from "../../actions/post.actions";
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Map = ({ post_points }) => {
+  //! case where type is 'user' is not taken into account !
   // Access the store via the `useContext` hook
   //const { store } = useContext(ReactReduxContext)
-  const allpostbytag = useSelector((state) => state.postSearcByTagReducer);
   const mapContainerRef = useRef(null);
   const itineraire = useSelector((state) => state.itinerairereducer);
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
-  const [markers_list, setMarkersList] = useState([]);
+  const [markers_list] = useState([]);
   const [map, setMap] = useState('');
+
+  const dispatch = useDispatch();
+  const allpostbytag = useSelector((state) => state.postSearcByTagReducer);
   
-  const childToParent = async (results) => {
-    console.log("I AM CHILDTOPARENT");
-    console.log(markers_list);
-    console.log("EO MERKERS LIST");
+  const childToParent = async (results, type) => {
     //const dispatch = useDispatch();
     clearMarkers();
-    addMarkersByTag(map, results);
+    await addMarkersByTag(map, results);
   };
 
-  function addMarkersByTag(map, tag){
-    getpostbytag("#" + tag);
+  const addMarkersByTag = async (map, tag) => {
+    //getpostbytag("#" + tag);
 
+    await getpostbytag("#" + tag);
+  
+    
+    console.log("addMarkersByTag with posts =>");
     console.log(allpostbytag);
-    console.log("oui");
     addMarkers(map, allpostbytag);
   }
 
   function clearMarkers() {
     // Deletes markers from the map.
-    console.log("I AM CLEARMARKERS");
-    console.log(markers_list);
-    console.log("EO MERKERS LIST");
     if (markers_list) {
       for (var i = markers_list.length - 1; i >= 0; i--) {
         markers_list[i].remove();
@@ -50,8 +50,6 @@ const Map = ({ post_points }) => {
     }
   }
   function addMarkers(map, points) {
-    console.log("IAM ADDMARKERS");
-    console.log(points);
     for (const e of points) {
       // create a HTML element for each feature
       const el = document.createElement("div");
@@ -74,9 +72,6 @@ const Map = ({ post_points }) => {
         .addTo(map);
       markers_list.push(el);
     }
-    console.log("I AM ADDMARKERS");
-    console.log(markers_list);
-    console.log("EO MERKERS LIST");
   }
 
   useEffect(() => {
