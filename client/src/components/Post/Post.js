@@ -40,6 +40,7 @@ import { TextInput } from "react-native";
 
 import { UidContext } from "../Appcontext";
 import RepeatIcon from "@mui/icons-material/Repeat";
+import Map from "../Map/Map";
 
 function Post(props) {
   const faces = [];
@@ -144,7 +145,7 @@ function Post(props) {
     }
   };
 
-  const goToMap = async () => {
+  const goToMap = () => {
     navigate("/map");
     console.log(props.post.publishing.soundlocation.latitude);
     console.log(props.post.publishing.soundlocation.longitude);
