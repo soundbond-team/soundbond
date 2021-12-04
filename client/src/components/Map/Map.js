@@ -18,13 +18,16 @@ const Map = ({ post_points }) => {
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
-  const markers_list = [];
+  const [markers_list, setMarkersList] = useState([]);
   const [map, setMap] = useState('');
   
   const childToParent = async (results) => {
+    console.log("I AM CHILDTOPARENT");
+    console.log(markers_list);
+    console.log("EO MERKERS LIST");
     //const dispatch = useDispatch();
     clearMarkers();
-    //addMarkersByTag(map, results);
+    addMarkersByTag(map, results);
   };
 
   function addMarkersByTag(map, tag){
@@ -37,6 +40,9 @@ const Map = ({ post_points }) => {
 
   function clearMarkers() {
     // Deletes markers from the map.
+    console.log("I AM CLEARMARKERS");
+    console.log(markers_list);
+    console.log("EO MERKERS LIST");
     if (markers_list) {
       for (var i = markers_list.length - 1; i >= 0; i--) {
         markers_list[i].remove();
@@ -68,6 +74,9 @@ const Map = ({ post_points }) => {
         .addTo(map);
       markers_list.push(el);
     }
+    console.log("I AM ADDMARKERS");
+    console.log(markers_list);
+    console.log("EO MERKERS LIST");
   }
 
   useEffect(() => {
@@ -120,10 +129,9 @@ const Map = ({ post_points }) => {
       // only the end or destination will change
 
       let line = "";
-      let itineraire_list = itineraire.map(
+      itineraire.map(
         (point) => (line = line + `;${point.longitude},${point.latitude}`)
       );
-      console.log(itineraire_list);
       if (itineraire.length > 0) {
         const query = await fetch(
           `https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]}${line}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
@@ -167,13 +175,9 @@ const Map = ({ post_points }) => {
     }
 
     map.on("load", () => {
-      setMap(map);
+      setMap(map); // We declare the map as a State to make it available for every functions.
       addMarkers(map, post_points);
-
       getRoute();
-      // clearMarkers(); clear bien les markers quand on supprime tt
-
-      // this is where the code from the next step will go
     });
     // Clean up on unmount
     return () => map.remove();
