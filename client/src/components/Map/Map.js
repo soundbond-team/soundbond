@@ -1,28 +1,39 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux"
 import mapboxgl from "mapbox-gl";
 import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
-import { useSelector } from "react-redux";
+import { getpostbytag } from "../../actions/post.actions";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Map = ({ post_points }) => {
   // Access the store via the `useContext` hook
   //const { store } = useContext(ReactReduxContext)
-
+  const allpostbytag = useSelector((state) => state.postSearcByTagReducer);
   const mapContainerRef = useRef(null);
   const itineraire = useSelector((state) => state.itinerairereducer);
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
   const markers_list = [];
-  //const [search_results, setSearchResults] = useState('');
+  const [map, setMap] = useState('');
+  
   const childToParent = async (results) => {
+    //const dispatch = useDispatch();
     clearMarkers();
-    //setSearchResults(results);
+    //addMarkersByTag(map, results);
   };
+
+  function addMarkersByTag(map, tag){
+    getpostbytag("#" + tag);
+
+    console.log(allpostbytag);
+    console.log("oui");
+    addMarkers(map, allpostbytag);
+  }
 
   function clearMarkers() {
     // Deletes markers from the map.
@@ -32,8 +43,10 @@ const Map = ({ post_points }) => {
       }
     }
   }
-  function addMarkers(map) {
-    for (const e of post_points) {
+  function addMarkers(map, points) {
+    console.log("IAM ADDMARKERS");
+    console.log(points);
+    for (const e of points) {
       // create a HTML element for each feature
       const el = document.createElement("div");
       el.className = "marker ";
@@ -154,7 +167,8 @@ const Map = ({ post_points }) => {
     }
 
     map.on("load", () => {
-      addMarkers(map);
+      setMap(map);
+      addMarkers(map, post_points);
 
       getRoute();
       // clearMarkers(); clear bien les markers quand on supprime tt
