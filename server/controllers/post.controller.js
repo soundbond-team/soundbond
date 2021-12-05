@@ -2,6 +2,67 @@ const db = require("../models");
 const sanitizeHtml = require("sanitize-html");
 const Op = db.Sequelize.Op;
 
+/*
+  * Helpers
+*/
+
+const helper_include_soundlocation = [
+  {
+    model: db.SoundLocation,
+    as: "soundlocation",
+  },
+];
+
+const helper_sound = {
+  model: db.Sound,
+  as: "publishing",
+  include: helper_include_soundlocation,
+}
+
+const helper_user_publisher = {
+  model: db.User,
+  as: "publisher",
+  attributes: ["id", "username"],
+};
+
+const helper_user_liked_by = {
+  model: db.User,
+  as: "liked_by",
+  attributes: ["id", "username"],
+};
+
+const helper_user_commented_by = {
+  model: db.User,
+  as: "commented_by",
+  attributes: ["id", "username"],
+};
+
+const helper_user_shared_by = {
+  model: db.User,
+  as: "shared_by",
+  attributes: ["id", "username"],
+};
+
+const helper_tag = {
+  model: db.Tag,
+  as: "tagpost",
+};
+
+const helper_playlist = {
+  model: db.Playlist,
+  as: "listplaylist",
+};
+
+const helper_include_everything = [
+  helper_sound,
+  helper_user_publisher,
+  helper_user_liked_by,
+  helper_user_commented_by,
+  helper_tag,
+  helper_user_shared_by,
+  helper_playlist
+]
+
 // Création d'un nouveau Post.
 exports.create = async (req, res) => {
   // Vérification que la requête contient bien toutes les valeurs.
@@ -25,44 +86,7 @@ exports.create = async (req, res) => {
 
   const find = () => {
     db.Post.findByPk(postcreate.id, {
-      include: [
-        {
-          model: db.Sound,
-          as: "publishing",
-
-          include: [
-            {
-              model: db.SoundLocation,
-              as: "soundlocation",
-            },
-          ],
-        },
-        {
-          model: db.User,
-          as: "publisher",
-          attributes: ["id", "username"],
-        },
-        {
-          model: db.User,
-          as: "liked_by",
-          attributes: ["id", "username"],
-        },
-        {
-          model: db.User,
-          as: "commented_by",
-          attributes: ["id", "username"],
-        },
-        {
-          model: db.Tag,
-          as: "tagpost",
-        },
-        {
-          model: db.User,
-          as: "shared_by",
-          attributes: ["id", "username"],
-        },
-        { model: db.Playlist, as: "listplaylist" },
-      ],
+      include: helper_include_everything,
     }).then((data) => {
       res.send(data);
     });
@@ -126,45 +150,7 @@ exports.getPostByTag = (req, res) => {
       {
         model: db.Post,
         as: "tagging",
-        include: [
-          {
-            model: db.Sound,
-            as: "publishing",
-
-            include: [
-              {
-                model: db.SoundLocation,
-                as: "soundlocation",
-              },
-            ],
-          },
-          {
-            model: db.User,
-            as: "publisher",
-            attributes: ["id", "username"],
-          },
-          {
-            model: db.User,
-            as: "liked_by",
-            attributes: ["id", "username"],
-          },
-          {
-            model: db.User,
-            as: "commented_by",
-            attributes: ["id", "username"],
-          },
-
-          {
-            model: db.Tag,
-            as: "tagpost",
-          },
-          {
-            model: db.User,
-            as: "shared_by",
-            attributes: ["id", "username"],
-          },
-          { model: db.Playlist, as: "listplaylist" },
-        ],
+        include: helper_include_everything,
       },
     ],
   })
@@ -179,45 +165,7 @@ exports.getPostByTag = (req, res) => {
 // Retrieve all posts from the database.
 exports.findAll = (req, res) => {
   db.Post.findAll({
-    include: [
-      {
-        model: db.Sound,
-        as: "publishing",
-
-        include: [
-          {
-            model: db.SoundLocation,
-            as: "soundlocation",
-          },
-        ],
-      },
-      {
-        model: db.User,
-        as: "publisher",
-        attributes: ["id", "username"],
-      },
-      {
-        model: db.User,
-        as: "liked_by",
-        attributes: ["id", "username"],
-      },
-      {
-        model: db.User,
-        as: "commented_by",
-        attributes: ["id", "username"],
-      },
-
-      {
-        model: db.Tag,
-        as: "tagpost",
-      },
-      {
-        model: db.User,
-        as: "shared_by",
-        attributes: ["id", "username"],
-      },
-      { model: db.Playlist, as: "listplaylist" },
-    ],
+    include: helper_include_everything,
   })
     .then((data) => {
       res.send(data);
@@ -235,50 +183,7 @@ exports.allPostsByUser = (req, res) => {
     where: {
       publisher_user_id: req.params.user_id,
     },
-    include: [
-      {
-        model: db.Sound,
-        as: "publishing",
-
-        include: [
-          {
-            model: db.SoundLocation,
-            as: "soundlocation",
-          },
-        ],
-      },
-      {
-        model: db.User,
-        as: "publisher",
-      },
-      {
-        model: db.User,
-        as: "liked_by",
-      },
-      {
-        model: db.User,
-        as: "shared_by",
-        attributes: ["id", "username"],
-      },
-      {
-        model: db.Sound,
-        as: "publishing",
-
-        include: [
-          {
-            model: db.SoundLocation,
-            as: "soundlocation",
-          },
-        ],
-      },
-      {
-        model: db.User,
-        as: "commented_by",
-        attributes: ["id", "username"],
-      },
-      { model: db.Tag, as: "tagpost" },
-      { model: db.Playlist, as: "listplaylist" },
-    ],
+    include: helper_include_everything,
   })
     .then((data) => {
       res.send(data);
@@ -308,39 +213,7 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
         [Op.in]: list_suivis2,
       },
     },
-    include: [
-      {
-        model: db.Sound,
-        as: "publishing",
-
-        include: [
-          {
-            model: db.SoundLocation,
-            as: "soundlocation",
-          },
-        ],
-      },
-      {
-        model: db.User,
-        as: "publisher",
-      },
-      {
-        model: db.User,
-        as: "liked_by",
-      },
-      {
-        model: db.User,
-        as: "commented_by",
-        attributes: ["id", "username"],
-      },
-      { model: db.Tag, as: "tagpost" },
-      {
-        model: db.User,
-        as: "shared_by",
-        attributes: ["id", "username"],
-      },
-      { model: db.Playlist, as: "listplaylist" },
-    ],
+    include: helper_include_everything,
   })
     .then((data) => {
       res.send(data);
@@ -353,45 +226,13 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
 };
 
 exports.allPostsSharedByUser = (req, res) => {
-  id = req.params.user_id;
+  let id = req.params.user_id;
   db.User.findByPk(id, {
     include: [
       {
         model: db.Post,
         as: "shared_posts",
-        include: [
-          {
-            model: db.Sound,
-            as: "publishing",
-
-            include: [
-              {
-                model: db.SoundLocation,
-                as: "soundlocation",
-              },
-            ],
-          },
-          {
-            model: db.User,
-            as: "publisher",
-          },
-          {
-            model: db.User,
-            as: "liked_by",
-          },
-          {
-            model: db.User,
-            as: "commented_by",
-            attributes: ["id", "username"],
-          },
-          { model: db.Tag, as: "tagpost" },
-          {
-            model: db.User,
-            as: "shared_by",
-            attributes: ["id", "username"],
-          },
-          { model: db.Playlist, as: "listplaylist" },
-        ],
+        include: helper_include_everything,
       },
     ],
   })
@@ -429,41 +270,7 @@ exports.findOne = (req, res) => {
   const id = req.params.id;
 
   db.Post.findByPk(id, {
-    include: [
-      {
-        model: db.Sound,
-        as: "publishing",
-
-        include: [
-          {
-            model: db.SoundLocation,
-            as: "soundlocation",
-          },
-        ],
-      },
-      {
-        model: db.User,
-        as: "publisher",
-        attributes: ["id", "username"],
-      },
-      {
-        model: db.User,
-        as: "liked_by",
-        attributes: ["id", "username"],
-      },
-      {
-        model: db.User,
-        as: "commented_by",
-        attributes: ["id", "username"],
-      },
-      { model: db.Tag, as: "tagpost" },
-      {
-        model: db.User,
-        as: "shared_by",
-        attributes: ["id", "username"],
-      },
-      { model: db.Playlist, as: "listplaylist" },
-    ],
+    include: helper_include_everything,
   })
     .then((data) => {
       res.send(data);
@@ -615,29 +422,6 @@ exports.comment = async (req, res) => {
   } catch (e) {
     res.status(400).json("error");
   }
-  /* Deuxième solution :
-
-  db.Post.findByPk(req.body.post_id)
-    .then((post) => {
-      if (!post) {
-        res.status(400).json("Post not found");
-      } else {
-        db.User.findByPk(req.body.user_id).then((user) => {
-        if (!user) {
-          res.status(400).json("User not found");
-        } else {
-          try {
-            await post.addCommented_by(
-              user,
-              {through: {comment: req.body.comment_text}}
-            )
-          } catch (e){
-              res.status(400).json("error");
-            }
-          }
-        })
-      }
-    })*/
 };
 
 // Delete a comment from a post
