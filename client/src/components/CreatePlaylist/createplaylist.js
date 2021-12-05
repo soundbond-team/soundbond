@@ -44,15 +44,12 @@ export default function CreatePlaylist(props) {
   };
 
   const handleDone = () => {
-    new Promise((resolve, reject) => {
       dispatch(
         create_playlist(userData.id, list_post, title, description)
       ).then(() => {
         setOpen(false);
         dispatch(findallForUser(userData.id));
       });
-      resolve();
-    });
   };
   const handleCancel = () => {
     setOpen(false);
