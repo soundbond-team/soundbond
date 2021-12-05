@@ -70,12 +70,12 @@ Scénarios
 
 
 ==== v0.3 Carte des sons
-image::assets/SoundLocalisation.png[]
+image::assets/Map.png[]
 
 Cette page regroupe les sons enregistés positionner sur une carte et permet à l'utilisateur de chercher un son selon sa position
 
 ==== v0.4 Commenter un post 
-image::assets/Comment_Post.png[]
+image::assets/Comment.png[]
 
 L’utilisateur souhaite laisser un commentaire sur un post
 
@@ -85,8 +85,8 @@ L’utilisateur est connecté et a choisi un post de son fil ou sur son profil
 
 L’utilisateur clique sur l’icône :speech_balloon:  et une section de commentaire est affichée lui permettant d’ajouter son commentaire ou lire les commentaires des autres  
 
-==== v0.4 Follow user
-image::assets/follow_unfollow.png[]
+==== v0.4 Suivre d'autres utilisateurs
+image::assets/Un-Follow.png[]
 L’utilisateur connecté souhaite s’abonner à un ou plusieurs autres utilisateurs.
 
 Pour cela il ouvrira la page utilisateurs dans laquelle on affichera tous les utilisateurs de la plateforme avec des boutons follow/unfollow à gauche de chaque profil 
@@ -105,10 +105,12 @@ Scénarios
 3. L'utilisateur dispose toujours d'une navbar qui facilite la navigation sur le site
 
 ==== v0.6 Lecture des sons 
+
 image::assets/play_son.png[]
 L'utilisateur souhaite lire ses sons ou ceux de ses amis à tout moment et cela en cliquant sur le bouton play [1 dans la maquette] de chaque post.
 
 ==== v0.6 Trim son 
+
 image::assets/son_before_trim.png[]
 image::assets/son_after_trim.png[]
 Après création d’un post l’utilisateur a la possibilité de couper un son et lire / télécharger le morceau coupé.
@@ -131,8 +133,12 @@ l’utilisateur choisi un post et clique sur le boutton partagé
 Une pop-up s'affichera avec un message indiquant que le partage est fait et invitant l'utilisateur  à voir le post sur son profil.
 
 ==== v1.0 Créer une playlist
+image::assets/Playlist-création.png[]
+image::assets/Playlist-map.png[]
 
 ==== v1.0 N'afficher que les sons avec un tag choisi
+image::assets/FiltreMapTags-before.png[]
+image::assets/FiltreMapTags-after.png[]
 
 ==== v1.0 Recherche avancée
 
