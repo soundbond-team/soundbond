@@ -112,7 +112,7 @@
 * **Error Response:**
 
   * **Code:** 500 INTERNAL SERVER <br />
-    **Content:** `{ error : "Error retrieving Post with id=1" }`
+    **Content:** `{ error : "Error retrieving Post." }`
 
 ### **Update Post**
 ----
@@ -142,12 +142,12 @@
     **Content:** `{ "message": "Post was updated successfully." }`
 
   * **Code:** 200 <br />
-    **Content:** `{ Cannot update Post with id=:id. Maybe Post was not found or req.body is empty!" }`
+    **Content:** `{ Cannot update Post." }`
  
 * **Error Response:**
 
   * **Code:** 500 INTERNAL SERVER <br />
-    **Content:** `{ error : "Error updating Post with id=1" }`
+    **Content:** `{ error : "Error updating Post." }`
 
 ### **Delete Post**
 ----
@@ -177,12 +177,12 @@
     **Content:** `{ "message": "Post was deleted successfully!" }`
 
   * **Code:** 200 <br />
-    **Content:** `{ Cannot delete Post with id=:id. Maybe Post was not found!" }`
+    **Content:** `{ Cannot delete Post." }`
  
 * **Error Response:**
 
   * **Code:** 500 INTERNAL SERVER <br />
-    **Content:** `{ error : "Could not delete Post with id=1" }`
+    **Content:** `{ error : "Could not delete Post." }`
 
 ### **Delete all Posts**
 ----

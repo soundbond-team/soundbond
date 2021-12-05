@@ -418,7 +418,7 @@ exports.getAllLike = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error retrieving Post with id=" + id,
+          error: "Error retrieving Post.",
         })
       );
     });
@@ -471,7 +471,7 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error retrieving Post with id=" + id,
+          error: "Error retrieving Post.",
         })
       );
     });
@@ -492,7 +492,7 @@ exports.update = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
+            error: `Cannot update Post.`,
           })
         );
       }
@@ -500,7 +500,7 @@ exports.update = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error updating Post with id=" + id,
+          error: "Error updating Post.",
         })
       );
     });
@@ -521,7 +521,7 @@ exports.delete = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
+            error: `Cannot delete Post.`,
           })
         );
       }
@@ -529,7 +529,7 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Could not delete Post with id=" + id,
+          error: "Could not delete Post.",
         })
       );
     });
@@ -592,7 +592,7 @@ exports.getAllLike = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: "Error retrieving Likes for Post with id=" + id,
+        error: "Error retrieving Likes for Post",
       });
     });
 };
@@ -666,7 +666,7 @@ exports.getAllComments = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         error:
-          "Error retrieving Comments for Post with id=" + req.params.post_id,
+          "Error retrieving Comments for Post.",
       });
     });
 };

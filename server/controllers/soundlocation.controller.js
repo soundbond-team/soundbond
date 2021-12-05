@@ -55,7 +55,7 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Error retrieving SoundLocation with id=" + id,
+          message: "Error retrieving SoundLocation.",
         })
       );
     });
@@ -76,7 +76,7 @@ exports.update = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            message: `Cannot update SoundLocation with id=${id}. Maybe SoundLocation was not found or req.body is empty!`,
+            message: `Cannot update SoundLocation.`,
           })
         );
       }
@@ -84,7 +84,7 @@ exports.update = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Error updating SoundLocation with id=" + id,
+          message: "Error updating SoundLocation.",
         })
       );
     });
@@ -105,7 +105,7 @@ exports.delete = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            message: `Cannot delete SoundLocation with id=${id}. Maybe SoundLocation was not found!`,
+            message: `Cannot delete SoundLocation.`,
           })
         );
       }
@@ -113,7 +113,7 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Could not delete SoundLocation with id=" + id,
+          message: "Could not delete SoundLocation.",
         })
       );
     });
@@ -165,7 +165,7 @@ exports.findClosestPositionsofsound = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving SoundLocation with id=" + id,
+        message: "Error retrieving SoundLocation.",
       });
     });
 };
@@ -183,7 +183,7 @@ exports.findClosestPositions = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving SoundLocation with id=",
+        message: "Error retrieving SoundLocation.",
       });
     });
 };
