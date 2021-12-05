@@ -66,7 +66,7 @@ export default function Microphone(props) {
   const buttonTag = useRef();
   const [resfound,setResfound] = useState(true);
   //suggestion tag
-  const suggestions = ["humour","drôle","oiseau","horreur",];
+  const [suggestions,setSuggestions ]= useState(["humour","drôle","oiseau","horreur",]);
   const [suggest, setSuggest] = useState([]);
 
   const handleChange = (e) =>{
@@ -83,13 +83,14 @@ export default function Microphone(props) {
   const suggestText = (value)=>{
     setTag(value);
     setSuggest([]);
+    
   };
+  
 
   //afficher la liste de suggestion de tags
   const getSuggestions = () =>{
     if(suggest.length === 0 && tag !=="" && !resfound){
       return <p>Tag content not found</p>;
-      setSuggest(suggest.concat(tag));
     }
     return(
       <ul>
@@ -297,13 +298,18 @@ export default function Microphone(props) {
   };
 
   const classes = useStyles();
+
   const addTag = () => {
     if (tags.includes(tag) === false) {
       setTags((state) => [...state, tag]);
       setTag("");
     }
+    if(suggestions.includes(tag) === false){
+      suggestions.push(tag);
+      setSuggestions(suggestions);
+      console.log(suggestions);
+    }
   };
-
   return (
     <>
       <div className="container d-flex justify-content-center">
