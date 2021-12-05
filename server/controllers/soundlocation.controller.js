@@ -183,7 +183,7 @@ exports.findClosestPositions = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving SoundLocation.",
+        message: "Error retrieving closests SoundLocations.",
       });
     });
 };
