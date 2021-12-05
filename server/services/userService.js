@@ -7,8 +7,7 @@ const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 async function crypt(password) {
   const salt = await bcrypt.genSalt();
-  let passwordhash = await bcrypt.hash(password, salt);
-  return passwordhash;
+  return bcrypt.hash(password, salt);
 }
 
 function createToken(id) {
