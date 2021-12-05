@@ -1,51 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Post from "../../components/Post/Post";
-import axios from "axios";
+
 import Grid from "@material-ui/core/Grid";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import { getPostsUser } from "../../actions/post.actions";
-import { useParams } from "react-router-dom";
 
 function MyPosts() {
-  const params = useParams();
   const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
-
-  const [currentUserdata, setcurrentUserdata] = useState();
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (currentUserdata !== params.username) {
-      const getcurrentUser = async (username) => {
-        await axios({
-          method: "get",
-          url: `http://localhost:8080/api/v1/user/username/${username}`,
-        })
-          .then((res) => {
-            if (res.data !== "" && res.data != null) {
-              pushUserdata(res.data);
-            } else window.location = "/";
-          })
-          .catch((err) => {
-            window.location = "/";
-          });
-      };
-
-      getcurrentUser(params.username);
-    } // eslint-disable-next-line
-  }, [params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
-
+  const currentUserdata = useSelector((state) => state.getotherprofiluser);
   useEffect(() => {
     if (currentUserdata) {
       dispatch(getPostsUser(currentUserdata.id));
     }
   }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const pushUserdata = async (data) => {
-    await setcurrentUserdata(data);
-  };
 
   return (
     <>

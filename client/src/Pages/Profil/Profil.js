@@ -6,7 +6,11 @@ import { UidContext } from "../../components/Appcontext";
 import Modal from "react-bootstrap/Modal";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
-import { follow, unfollow } from "../../actions/user.actions";
+import {
+  follow,
+  unfollow,
+  getotherprofiluser,
+} from "../../actions/user.actions";
 import { getPostTrend } from "../../actions/post.actions";
 import IconButton from "@material-ui/core/IconButton";
 import { useParams, Link, Outlet, useNavigate } from "react-router-dom";
@@ -46,7 +50,7 @@ function Profil(props) {
             window.location = "/";
           });
       };
-
+      dispatch(getotherprofiluser(params.username));
       getcurrentUser(params.username);
     } // eslint-disable-next-line
   }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
@@ -57,19 +61,7 @@ function Profil(props) {
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
   };
-  useEffect(() => {
-    if (currentUserdata) {
-      for (let i = 0; i < currentUserdata.following.length; i++) {
-        if (currentUserdata.following[i].id === uid) {
-          setFollow(true);
 
-          break;
-        } else {
-          setFollow(false);
-        }
-      }
-    }
-  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
   const followclick = async () => {
     setFollow(true);
 
@@ -92,6 +84,20 @@ function Profil(props) {
     await dispatch(unfollow(uid, currentUserdata.id));
     dispatch(getPostTrend(uid));
   };
+
+  useEffect(() => {
+    if (currentUserdata) {
+      for (let i = 0; i < currentUserdata.following.length; i++) {
+        if (currentUserdata.following[i].id === uid) {
+          setFollow(true);
+
+          break;
+        } else {
+          setFollow(false);
+        }
+      }
+    }
+  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

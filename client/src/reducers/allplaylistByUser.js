@@ -1,11 +1,11 @@
-import {
+/*import {
   ADD_LIKE,
   REMOVE_LIKE,
   ADD_COMMENT,
   REMOVE_COMMENT,
   ADD_SHARE,
   REMOVE_SHARE,
-} from "../actions/post.actions";
+} from "../actions/post.actions";*/
 
 import { FIND_ALL_PLAYLIST_FOR_USER } from "../actions/playlist.actions";
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des KF)
@@ -16,7 +16,7 @@ export default function allplaylistByUser(state = initialState, action) {
     case FIND_ALL_PLAYLIST_FOR_USER:
       return action.payload;
 
-    case ADD_LIKE:
+    /*  case ADD_LIKE:
       return state.map((playlist) => {
         if (playlist.id === action.payload.playlist_id) {
           return playlist.map((posts) => {
@@ -96,7 +96,7 @@ export default function allplaylistByUser(state = initialState, action) {
           };
         }
         return posts;
-      });
+      });*/
 
     default:
       return state;
