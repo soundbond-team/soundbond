@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
     sound_id: req.body.sound_id,
   };
 
-  const findd = () => {
+  const find = () => {
     db.Post.findByPk(postcreate.id, {
       include: [
         {
@@ -81,21 +81,21 @@ exports.create = async (req, res) => {
         .then(async (data) => {
           if (data != null) {
             await postcreate.addTagpost(data);
-            findd();
+            find();
           } else {
             const tagcreated = await db.Tag.create({ tag: value });
             await postcreate.addTagpost(tagcreated);
-            findd();
+            find();
           }
         })
         .catch(async (e) => {
           const tagcreated = await db.Tag.create({ tag: value });
           await postcreate.addTagpost(tagcreated);
-          findd();
+          find();
         });
     }
   } else {
-    findd();
+    find();
   }
 };
 
@@ -418,7 +418,7 @@ exports.getAllLike = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error retrieving Post with id=" + id,
+          error: "Error retrieving Post.",
         })
       );
     });
@@ -471,7 +471,7 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error retrieving Post with id=" + id,
+          error: "Error retrieving Post.",
         })
       );
     });
@@ -492,7 +492,7 @@ exports.update = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
+            error: `Cannot update Post.`,
           })
         );
       }
@@ -500,7 +500,7 @@ exports.update = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error updating Post with id=" + id,
+          error: "Error updating Post.",
         })
       );
     });
@@ -521,7 +521,7 @@ exports.delete = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
+            error: `Cannot delete Post.`,
           })
         );
       }
@@ -529,7 +529,7 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Could not delete Post with id=" + id,
+          error: "Could not delete Post.",
         })
       );
     });
@@ -592,7 +592,7 @@ exports.getAllLike = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: "Error retrieving Likes for Post with id=" + id,
+        error: "Error retrieving Likes for Post",
       });
     });
 };
@@ -666,69 +666,11 @@ exports.getAllComments = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         error:
-          "Error retrieving Comments for Post with id=" + req.params.post_id,
+          "Error retrieving Comments for Post.",
       });
     });
 };
 
-// Get id tag
-exports.getPostByTag = (req, res) => {
-  const tagParameter = req.body.tag;
-  db.Tag.findOne({
-    where: { tag: tagParameter },
-    include: [
-      {
-        model: db.Post,
-        as: "tagging",
-        include: [
-          {
-            model: db.Sound,
-            as: "publishing",
-
-            include: [
-              {
-                model: db.SoundLocation,
-                as: "soundlocation",
-              },
-            ],
-          },
-          {
-            model: db.User,
-            as: "publisher",
-            attributes: ["id", "username"],
-          },
-          {
-            model: db.User,
-            as: "liked_by",
-            attributes: ["id", "username"],
-          },
-          {
-            model: db.User,
-            as: "commented_by",
-            attributes: ["id", "username"],
-          },
-
-          {
-            model: db.Tag,
-            as: "tagpost",
-          },
-          {
-            model: db.User,
-            as: "shared_by",
-            attributes: ["id", "username"],
-          },
-          { model: db.Playlist, as: "listplaylist" },
-        ],
-      },
-    ],
-  })
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
 

@@ -63,7 +63,7 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Error retrieving Sound with id=" + id,
+          message: "Error retrieving Sound.",
         })
       );
     });
@@ -84,7 +84,7 @@ exports.update = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            message: `Cannot update Sound with id=${id}. Maybe Sound was not found or req.body is empty!`,
+            message: `Cannot update Sound.`,
           })
         );
       }
@@ -92,7 +92,7 @@ exports.update = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Error updating Sound with id=" + id,
+          message: "Error updating Sound.",
         })
       );
     });
@@ -113,7 +113,7 @@ exports.delete = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            message: `Cannot delete Sound with id=${id}. Maybe Sound was not found!`,
+            message: `Cannot delete Sound.`,
           })
         );
       }
@@ -121,7 +121,7 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Could not delete Sound with id=" + id,
+          message: "Could not delete Sound.",
         })
       );
     });

@@ -20,7 +20,7 @@ exports.tagSuggestion = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        err: "Error retrieving User with id=" + id,
+        err: "Error retrieving User.",
       });
     });
 };

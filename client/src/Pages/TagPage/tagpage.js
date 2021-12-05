@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-
 import Post from "../../components/Post/Post";
 import Grid from "@material-ui/core/Grid";
 import { useDispatch, useSelector } from "react-redux";
 import { getpostbytag } from "../../actions/post.actions";
 import { useParams } from "react-router-dom";
+
 function TagPage(props) {
   const dispatch = useDispatch();
   const allpostbytag = useSelector((state) => state.postSearcByTagReducer);

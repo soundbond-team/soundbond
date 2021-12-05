@@ -1,28 +1,48 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import mapboxgl from "mapbox-gl";
 import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
-import { useSelector } from "react-redux";
+import axios from "axios";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Map = ({ post_points }) => {
-  // Access the store via the `useContext` hook
-  //const { store } = useContext(ReactReduxContext)
-
   const mapContainerRef = useRef(null);
   const itineraire = useSelector((state) => state.itinerairereducer);
   const linkFromPost = useSelector((state) => state.postToMapReducer);
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
-  const markers_list = [];
-  //const [search_results, setSearchResults] = useState('');
-  const childToParent = async (results) => {
+  const [markers_list] = useState([]);
+  const [map, setMap] = useState("");
+
+  const childToParent = async (results, type) => {
+    //const dispatch = useDispatch();
     clearMarkers();
-    //setSearchResults(results);
+    let points = null;
+    if (type === "tag") {
+      points = await getPostByTag(results);
+      addMarkers(map, points);
+    } else if (type === "user") {
+      //points = await getPostByTag(results);
+      //TODO
+      //! Attention : l'API utilise /user/${username}/posts alors que plusieurs utilisateurs peuvent avoir le même username !
+    }
+  };
+
+  const getPostByTag = async (tag) => {
+    let result = await axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/post/getPostBytag`,
+      data: {
+        tag: "#" + tag,
+      },
+      withCredentials: true,
+    });
+    return result.data.tagging;
   };
 
   function clearMarkers() {
@@ -33,8 +53,8 @@ const Map = ({ post_points }) => {
       }
     }
   }
-  function addMarkers(map) {
-    for (const e of post_points) {
+  function addMarkers(map, points) {
+    for (const e of points) {
       // create a HTML element for each feature
       const el = document.createElement("div");
       el.className = "marker ";
@@ -118,10 +138,9 @@ const Map = ({ post_points }) => {
       // only the end or destination will change
 
       let line = "";
-      let itineraire_list = itineraire.map(
+      itineraire.map(
         (point) => (line = line + `;${point.longitude},${point.latitude}`)
       );
-      console.log(itineraire_list);
       if (itineraire.length > 0) {
         const query = await fetch(
           `https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]}${line}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
@@ -165,8 +184,8 @@ const Map = ({ post_points }) => {
     }
 
     map.on("load", () => {
-      addMarkers(map);
-
+      setMap(map); // We declare the map as a State to make it available for every functions.
+      addMarkers(map, post_points);
       getRoute();
       getCoordinates();
       // clearMarkers(); clear bien les markers quand on supprime tt
