@@ -13,6 +13,7 @@
 ## A propos
 
 __SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le comme un Instagram des sons. Tous droits réservés.
+[Documentation en ligne du projet](https://gu1lhem.github.io/soundbond/)
 
 ### Intégration continue
 
@@ -20,7 +21,7 @@ Pour notre intégration continue, nous utilisons [GitHub Actions](https://fr.git
 
 ### Kanban client
 
-Notre kanban client est disponible [sur Jira](https://soundbond.atlassian.net/jira/software/projects/SOUN/boards/2).
+Notre kanban client est disponible [sur Jira](https://soundbond.atlassian.net/jira/software/c/projects/CS/boards/4).
 
 ## Pré-requis
 
