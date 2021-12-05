@@ -4,6 +4,11 @@ const SoundLocation = db.SoundLocation;
 const Op = db.Sequelize.Op;
 const soundlocationservice = require("../services/soundlocationService");
 const sanitize = require("sanitize-html");
+
+const MESSAGE_FIND_ERROR = "Error retrieving SoundLocation.";
+const MESSAGE_DELETE_ERROR = "Could not delete SoundLocation.";
+const MESSAGE_UPDATE_ERROR = "Error updating SoundLocation.";
+
 // Create and Save a new SoundLocation
 exports.create = (req, res) => {
   // Validate request
@@ -55,7 +60,7 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Error retrieving SoundLocation.",
+          message: MESSAGE_FIND_ERROR,
         })
       );
     });
@@ -76,7 +81,7 @@ exports.update = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            message: `Cannot update SoundLocation.`,
+            message: MESSAGE_UPDATE_ERROR,
           })
         );
       }
@@ -84,7 +89,7 @@ exports.update = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Error updating SoundLocation.",
+          message: MESSAGE_UPDATE_ERROR,
         })
       );
     });
@@ -105,7 +110,7 @@ exports.delete = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            message: `Cannot delete SoundLocation.`,
+            message: MESSAGE_DELETE_ERROR,
           })
         );
       }
@@ -113,7 +118,7 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Could not delete SoundLocation.",
+          message: MESSAGE_DELETE_ERROR,
         })
       );
     });
@@ -165,7 +170,7 @@ exports.findClosestPositionsofsound = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving SoundLocation.",
+        message: MESSAGE_FIND_ERROR,
       });
     });
 };
@@ -183,7 +188,7 @@ exports.findClosestPositions = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving SoundLocation.",
+        message: "Error retrieving closests SoundLocations.",
       });
     });
 };

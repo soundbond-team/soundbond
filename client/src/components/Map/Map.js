@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 import mapboxgl from "mapbox-gl";
 import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
@@ -12,21 +12,21 @@ mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 const Map = ({ post_points }) => {
   const mapContainerRef = useRef(null);
   const itineraire = useSelector((state) => state.itinerairereducer);
+  const linkFromPost = useSelector((state) => state.postToMapReducer);
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
   const [markers_list] = useState([]);
-  const [map, setMap] = useState('');
+  const [map, setMap] = useState("");
 
   const childToParent = async (results, type) => {
     //const dispatch = useDispatch();
     clearMarkers();
     let points = null;
-    if(type === 'tag'){
+    if (type === "tag") {
       points = await getPostByTag(results);
       addMarkers(map, points);
-    }
-    else if(type === 'user'){
+    } else if (type === "user") {
       //points = await getPostByTag(results);
       //TODO
       //! Attention : l'API utilise /user/${username}/posts alors que plusieurs utilisateurs peuvent avoir le même username !
@@ -74,6 +74,7 @@ const Map = ({ post_points }) => {
             )
         )
         .addTo(map);
+
       markers_list.push(el);
     }
   }
@@ -121,6 +122,15 @@ const Map = ({ post_points }) => {
     });
 
     const start = [lng, lat];
+
+    async function getCoordinates() {
+      if (linkFromPost.latitude != null && linkFromPost.longitude != null) {
+        map.flyTo({
+          center: [linkFromPost.longitude, linkFromPost.latitude],
+          zoom: 8,
+        });
+      }
+    }
 
     async function getRoute() {
       // make a directions request using cycling profile
@@ -177,10 +187,14 @@ const Map = ({ post_points }) => {
       setMap(map); // We declare the map as a State to make it available for every functions.
       addMarkers(map, post_points);
       getRoute();
+      getCoordinates();
+      // clearMarkers(); clear bien les markers quand on supprime tt
+
+      // this is where the code from the next step will go
     });
     // Clean up on unmount
     return () => map.remove();
-  }, [post_points, itineraire]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [post_points, itineraire, linkFromPost]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
