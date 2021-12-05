@@ -34,7 +34,7 @@ import {
   addShare,
   removeShare,
 } from "../../actions/post.actions";
-import { change_ZOOM } from "../../actions/post2Map.actions";
+import { change_ZOOM } from "../../actions/postToMap.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import IconButton from "@material-ui/core/IconButton";
 import { TextInput } from "react-native";
