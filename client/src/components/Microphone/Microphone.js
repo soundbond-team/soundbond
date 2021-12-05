@@ -300,8 +300,8 @@ export default function Microphone(props) {
   const classes = useStyles();
 
   const addTag = () => {
-    if (tags.includes(tag) === false) {
-      setTags((state) => [...state, tag]);
+    if (tags.includes("#" + tag) === false) {
+      setTags((state) => [...state, "#" + tag]);
       setTag("");
     }
     if(suggestions.includes(tag) === false){
@@ -358,27 +358,23 @@ export default function Microphone(props) {
             style={{ whiteSpace: "nowrap" }}
             type="text"
             multiple
-            class="text-break"
-            className="form-control"
+            className="text-break form-control"
             placeholder="Tag"
             aria-label="Tag"
             aria-describedby="basic-addon2"
             onChange={handleChange}
             id="tag"
-            defaultValue={""}
             ref={buttonTag}
-            value={tag}
+            value={tag !== " " ? tag : ""}
             pattern="^\S+$"
           />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              onClick={addTag}
-            >
-              Ajouter
-            </button>
-          </div>
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={addTag}
+          >
+            Ajouter
+          </button>
         </div>
         {getSuggestions()}
 

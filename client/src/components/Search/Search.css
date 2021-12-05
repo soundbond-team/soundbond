@@ -1,0 +1,22 @@
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+[list]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+input::-webkit-calendar-picker-indicator {
+  background-color: inherit;
+}
+input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+input {
+  z-index: 1;
+}
+
+.srchList {
+  background-color: #6db8d1;
+  border-radius: 5px;
+  padding-top: 10px;
+  margin-top: -7px;
+}

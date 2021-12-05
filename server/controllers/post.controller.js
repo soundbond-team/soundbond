@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
     sound_id: req.body.sound_id,
   };
 
-  const findd = () => {
+  const find = () => {
     db.Post.findByPk(postcreate.id, {
       include: [
         {
@@ -53,7 +53,7 @@ exports.create = async (req, res) => {
           attributes: ["id", "username"],
         },
         {
-          model: db.tag,
+          model: db.Tag,
           as: "tagpost",
         },
         {
@@ -61,6 +61,7 @@ exports.create = async (req, res) => {
           as: "shared_by",
           attributes: ["id", "username"],
         },
+        { model: db.Playlist, as: "listplaylist" },
       ],
     }).then((data) => {
       res.send(data);
@@ -73,29 +74,106 @@ exports.create = async (req, res) => {
   if (Object.keys(req.body.tags).length > 0) {
     for (let value of Object.values(req.body.tags)) {
       //
-      db.tag
-        .findOne({
-          where: { tag: value },
-        })
+
+      db.Tag.findOne({
+        where: { tag: value },
+      })
         .then(async (data) => {
           if (data != null) {
             await postcreate.addTagpost(data);
-            findd();
+            find();
           } else {
-            const tagcreated = await db.tag.create({ tag: value });
+            const tagcreated = await db.Tag.create({ tag: value });
             await postcreate.addTagpost(tagcreated);
-            findd();
+            find();
           }
         })
         .catch(async (e) => {
-          const tagcreated = await db.tag.create({ tag: value });
+          const tagcreated = await db.Tag.create({ tag: value });
           await postcreate.addTagpost(tagcreated);
-          findd();
+          find();
         });
     }
   } else {
-    findd();
+    find();
   }
+};
+
+exports.getTag = (req, res) => {
+  const tagParameter = req.body.tag;
+  console.log(tagParameter);
+  db.Tag.findOne({
+    where: { tag: tagParameter },
+  })
+    .then((data) => {
+      if (data.id) {
+        res.status(200).send(true);
+      } else {
+        res.status(200).send(false);
+      }
+    })
+    .catch((err) => {
+      res.status(200).send(false);
+    });
+};
+
+//get all post by tag
+exports.getPostByTag = (req, res) => {
+  const tagParameter = req.body.tag;
+  db.Tag.findOne({
+    where: { tag: tagParameter },
+    include: [
+      {
+        model: db.Post,
+        as: "tagging",
+        include: [
+          {
+            model: db.Sound,
+            as: "publishing",
+
+            include: [
+              {
+                model: db.SoundLocation,
+                as: "soundlocation",
+              },
+            ],
+          },
+          {
+            model: db.User,
+            as: "publisher",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "liked_by",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "commented_by",
+            attributes: ["id", "username"],
+          },
+
+          {
+            model: db.Tag,
+            as: "tagpost",
+          },
+          {
+            model: db.User,
+            as: "shared_by",
+            attributes: ["id", "username"],
+          },
+          { model: db.Playlist, as: "listplaylist" },
+        ],
+      },
+    ],
+  })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 };
 
 // Retrieve all posts from the database.
@@ -130,7 +208,7 @@ exports.findAll = (req, res) => {
       },
 
       {
-        model: db.tag,
+        model: db.Tag,
         as: "tagpost",
       },
       {
@@ -138,6 +216,7 @@ exports.findAll = (req, res) => {
         as: "shared_by",
         attributes: ["id", "username"],
       },
+      { model: db.Playlist, as: "listplaylist" },
     ],
   })
     .then((data) => {
@@ -177,6 +256,11 @@ exports.allPostsByUser = (req, res) => {
         as: "liked_by",
       },
       {
+        model: db.User,
+        as: "shared_by",
+        attributes: ["id", "username"],
+      },
+      {
         model: db.Sound,
         as: "publishing",
 
@@ -192,12 +276,8 @@ exports.allPostsByUser = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tagpost" },
-      {
-        model: db.User,
-        as: "shared_by",
-        attributes: ["id", "username"],
-      },
+      { model: db.Tag, as: "tagpost" },
+      { model: db.Playlist, as: "listplaylist" },
     ],
   })
     .then((data) => {
@@ -222,7 +302,6 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
     },
   });
   let list_suivis2 = list_suivis.map((x) => x.id);
-  console.log(list_suivis2);
   db.Post.findAll({
     where: {
       publisher_user_id: {
@@ -254,12 +333,13 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tagpost" },
+      { model: db.Tag, as: "tagpost" },
       {
         model: db.User,
         as: "shared_by",
         attributes: ["id", "username"],
       },
+      { model: db.Playlist, as: "listplaylist" },
     ],
   })
     .then((data) => {
@@ -304,12 +384,13 @@ exports.allPostsSharedByUser = (req, res) => {
             as: "commented_by",
             attributes: ["id", "username"],
           },
-          { model: db.tag, as: "tagpost" },
+          { model: db.Tag, as: "tagpost" },
           {
             model: db.User,
             as: "shared_by",
             attributes: ["id", "username"],
           },
+          { model: db.Playlist, as: "listplaylist" },
         ],
       },
     ],
@@ -329,8 +410,6 @@ exports.getAllLike = (req, res) => {
 
   db.Post.findAndCountAll(id)
     .then((data) => {
-      data.co;
-      console.log(data.like);
       let like = {
         like: data.like,
       };
@@ -339,7 +418,7 @@ exports.getAllLike = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error retrieving Post with id=" + id,
+          error: "Error retrieving Post.",
         })
       );
     });
@@ -377,12 +456,13 @@ exports.findOne = (req, res) => {
         as: "commented_by",
         attributes: ["id", "username"],
       },
-      { model: db.tag, as: "tagpost" },
+      { model: db.Tag, as: "tagpost" },
       {
         model: db.User,
         as: "shared_by",
         attributes: ["id", "username"],
       },
+      { model: db.Playlist, as: "listplaylist" },
     ],
   })
     .then((data) => {
@@ -391,7 +471,7 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error retrieving Post with id=" + id,
+          error: "Error retrieving Post.",
         })
       );
     });
@@ -412,7 +492,7 @@ exports.update = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            error: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
+            error: `Cannot update Post.`,
           })
         );
       }
@@ -420,7 +500,7 @@ exports.update = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error updating Post with id=" + id,
+          error: "Error updating Post.",
         })
       );
     });
@@ -441,7 +521,7 @@ exports.delete = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            error: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
+            error: `Cannot delete Post.`,
           })
         );
       }
@@ -449,7 +529,7 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Could not delete Post with id=" + id,
+          error: "Could not delete Post.",
         })
       );
     });
@@ -512,7 +592,7 @@ exports.getAllLike = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: "Error retrieving Likes for Post with id=" + id,
+        error: "Error retrieving Likes for Post",
       });
     });
 };
@@ -586,64 +666,11 @@ exports.getAllComments = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         error:
-          "Error retrieving Comments for Post with id=" + req.params.post_id,
+          "Error retrieving Comments for Post.",
       });
     });
 };
 
-// Get id tag
-exports.getPostByTag = (req, res) => {
-  const tagParameter = req.params.tag;
-  db.tag
-    .findOne({
-      where: { tag: tagParameter },
-      include: [
-        {
-          model: db.Post,
-          as: "tagging",
-          include: [
-            {
-              model: db.Sound,
-              as: "publishing",
-
-              include: [
-                {
-                  model: db.SoundLocation,
-                  as: "soundlocation",
-                },
-              ],
-            },
-            {
-              model: db.User,
-              as: "publisher",
-              attributes: ["id", "username"],
-            },
-            {
-              model: db.User,
-              as: "liked_by",
-              attributes: ["id", "username"],
-            },
-            {
-              model: db.User,
-              as: "commented_by",
-              attributes: ["id", "username"],
-            },
-
-            {
-              model: db.tag,
-              as: "tagpost",
-            },
-          ],
-        },
-      ],
-    })
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
 
@@ -655,6 +682,19 @@ exports.share = async (req, res) => {
     try {
       await post.addShared_by(user_id);
       res.status(201).json("shared");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+exports.unshare = async (req, res) => {
+  const post_id = req.body.post_id;
+  const user_id = req.body.user_id;
+
+  db.Post.findByPk(post_id).then(async (post) => {
+    try {
+      await post.removeShared_by(user_id);
+      res.status(201).json("unshared");
     } catch (e) {
       res.status(400).json("error");
     }

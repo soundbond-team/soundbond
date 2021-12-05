@@ -1,56 +1,69 @@
 import "../App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import Microphone from "../components/Microphone/Microphone";
-import Search from "../components/Search/Search";
-import { Link, Outlet } from "react-router-dom";
-
+import GroupIcon from "@mui/icons-material/Group";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
+import HomeIcon from "@mui/icons-material/Home";
 function Home() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(`/home/allposts`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <div className="container">
         <div className="row">
-          <div className="container">
-            <div className="row justify-content-center">
+          <div className="col-1">
+            <div className="container-fluid">
+              <div className="row">
+                <Link style={{ textDecoration: "none" }} exact to="allposts">
+                  <IconButton>
+                    <HomeIcon style={{ fill: "black", fontSize: "25px" }} />
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Accueil
+                    </span>
+                  </IconButton>
+                </Link>
+              </div>
+              <div className="row">
+                <Link style={{ textDecoration: "none" }} exact to="trending">
+                  <IconButton>
+                    <GroupIcon style={{ fill: "black", fontSize: "25px" }} />
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Abonnements
+                    </span>
+                  </IconButton>
+                </Link>
+              </div>
+              <br></br>
+            </div>
+          </div>
+          <div className="col-11 ">
+            <div className="row ">
+              {" "}
               <Microphone pushFile={null} />
+              <br /> <br />{" "}
             </div>
-          </div>
-          <br /> <br />
-          <div className="container">
-            <div className="row d-flex justify-content-center">
-              <Search
-                placeholder="Search"
-                className="col-4 btn btn-dark"
-                onChange={(e) => console.log(e.target.value)}
-              /><br></br>
-              <Link
-                style={{ margin: "4px" }}
-                type="button"
-                to="allposts"
-                className="col-4 btn btn-dark"
-              >
-                Tous les posts
-              </Link>
-              <Link
-                style={{ margin: "4px" }}
-                type="button"
-                to="trending"
-                className="col-4 btn btn-dark"
-              >
-                Abonnements
-              </Link><br></br>
-
-            </div>
-          </div>
-          <br /> <br />
-          <br /> <br />
-          <br /> <br />
-          <div className="container d-flex justify-content-center">
-            {" "}
-            <div className="container">
+            <div className="row ">
               <Outlet />
-            </div>
+            </div>{" "}
           </div>
-        </div>{" "}
+        </div>
       </div>
     </>
   );
