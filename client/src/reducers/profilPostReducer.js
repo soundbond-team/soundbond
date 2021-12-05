@@ -10,7 +10,7 @@ import {
 import {
   add_like,
   remove_like,
-  add_comment,
+  add_commentaire,
   remove_comment,
   add_share,
   remove_share,
@@ -28,7 +28,7 @@ export default function profilPostReducer(state = initialState, action) {
       return remove_like(state, action.payload);
 
     case ADD_COMMENT:
-      return add_comment(state, action.payload);
+      return add_commentaire(state, action.payload);
 
     case REMOVE_COMMENT:
       return remove_comment(state, action.payload);

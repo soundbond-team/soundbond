@@ -1,4 +1,4 @@
-exports.add_like = (state, payload) => {
+export const add_like = (state, payload) => {
   return state.map((posts) => {
     if (posts.id === payload.id) {
       return {
@@ -10,7 +10,7 @@ exports.add_like = (state, payload) => {
   });
 };
 
-exports.remove_like = (state, payload) => {
+export const remove_like = (state, payload) => {
   return state.map((posts) => {
     if (posts.id === payload.id) {
       return {
@@ -23,8 +23,7 @@ exports.remove_like = (state, payload) => {
     return posts;
   });
 };
-
-exports.add_comment = (state, payload) => {
+export const add_commentaire = (state, payload) => {
   const datacomment = {
     id: payload.userData.id,
     username: payload.userData.username,
@@ -42,7 +41,7 @@ exports.add_comment = (state, payload) => {
   });
 };
 
-exports.remove_comment = (state, payload) => {
+export const remove_comment = (state, payload) => {
   return state.map((posts) => {
     if (posts.id === payload.post_id) {
       return {
@@ -55,7 +54,7 @@ exports.remove_comment = (state, payload) => {
     return posts;
   });
 };
-exports.add_share = (state, payload) => {
+export const add_share = (state, payload) => {
   return state.map((posts) => {
     if (posts.id === payload.post_id) {
       return {
@@ -66,7 +65,7 @@ exports.add_share = (state, payload) => {
     return posts;
   });
 };
-exports.remove_share = (state, payload) => {
+export const remove_share = (state, payload) => {
   return state.map((posts) => {
     if (posts.id === payload.id) {
       return {
