@@ -4,6 +4,11 @@ const SoundLocation = db.SoundLocation;
 const Op = db.Sequelize.Op;
 const soundlocationservice = require("../services/soundlocationService");
 const sanitize = require("sanitize-html");
+
+const MESSAGE_FIND_ERROR = "Error retrieving SoundLocation.";
+const MESSAGE_DELETE_ERROR = "Could not delete SoundLocation.";
+const MESSAGE_UPDATE_ERROR = "Error updating SoundLocation.";
+
 // Create and Save a new SoundLocation
 exports.create = (req, res) => {
   // Validate request
@@ -13,7 +18,6 @@ exports.create = (req, res) => {
     latitude: req.body.latitude,
     longitude: req.body.longitude,
   };
-  console.log(soundlocation.latitude + "/ " + soundlocation.longitude);
   // Save SoundLocation in the database
   SoundLocation.create(soundlocation)
     .then((data) => {
@@ -56,7 +60,7 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Error retrieving SoundLocation with id=" + id,
+          message: MESSAGE_FIND_ERROR,
         })
       );
     });
@@ -77,7 +81,7 @@ exports.update = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            message: `Cannot update SoundLocation with id=${id}. Maybe SoundLocation was not found or req.body is empty!`,
+            message: MESSAGE_UPDATE_ERROR,
           })
         );
       }
@@ -85,7 +89,7 @@ exports.update = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Error updating SoundLocation with id=" + id,
+          message: MESSAGE_UPDATE_ERROR,
         })
       );
     });
@@ -106,7 +110,7 @@ exports.delete = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            message: `Cannot delete SoundLocation with id=${id}. Maybe SoundLocation was not found!`,
+            message: MESSAGE_DELETE_ERROR,
           })
         );
       }
@@ -114,7 +118,7 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          message: "Could not delete SoundLocation with id=" + id,
+          message: MESSAGE_DELETE_ERROR,
         })
       );
     });
@@ -166,7 +170,7 @@ exports.findClosestPositionsofsound = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving SoundLocation with id=" + id,
+        message: MESSAGE_FIND_ERROR,
       });
     });
 };
@@ -184,7 +188,7 @@ exports.findClosestPositions = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving SoundLocation with id=",
+        message: "Error retrieving closests SoundLocations.",
       });
     });
 };

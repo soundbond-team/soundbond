@@ -8,15 +8,20 @@ import Logout from "../Logout";
 import { NavLink } from "react-router-dom";
 import { UidContext } from "../Appcontext";
 import { useSelector } from "react-redux";
+
+import Search from "../Search/Search";
 function NavigationBar() {
   const uid = useContext(UidContext);
   const userData = useSelector((state) => state.userReducer);
+
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav
+        className="navbar navbar-expand-lg navbar-light bg-light"
+        style={{ marginBottom: "20px" }}
+      >
         <div className="container-fluid">
           <NavLink
-            activeStyle={{ style: "none" }}
             className="navbar-brand"
             exact
             to="/home/allposts"
@@ -51,17 +56,21 @@ function NavigationBar() {
                 <NavLink
                   className="nav-link"
                   exact
-                  to={`/profil/${userData.username}`}
+                  to={`/profil/${userData.username}/posts`}
                   style={{ textDecoration: "none" }}
                 >
                   Profil
                 </NavLink>
               </li>
             </ul>
+            <Search />
             <form className="d-flex">
               {uid ? (
                 <>
-                  <p style={{ margin: "4px" }}> Bonjour {userData.username} </p>
+                  <span style={{ margin: "4px" }}>
+                    Bonjour {userData.username}
+                  </span>
+
                   <Logout />
                 </>
               ) : (

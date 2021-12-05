@@ -1,25 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
-import Post from "../../components/Post/Post";
+
 import axios from "axios";
-import Grid from "@material-ui/core/Grid";
+
 import { UidContext } from "../../components/Appcontext";
 import Modal from "react-bootstrap/Modal";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { useDispatch, useSelector } from "react-redux";
-import { follow, unfollow } from "../../actions/user.actions";
 import {
-  getPostTrend,
-  getPostsUser,
-  getAllPostSharedByUser,
-} from "../../actions/post.actions";
-import { useParams } from "react-router-dom";
+  follow,
+  unfollow,
+  getotherprofiluser,
+} from "../../actions/user.actions";
+import { getPostTrend } from "../../actions/post.actions";
+import IconButton from "@material-ui/core/IconButton";
+import { useParams, Link, Outlet, useNavigate } from "react-router-dom";
 
 // il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
 
 function Profil(props) {
   const params = useParams();
-  const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
-  const allpostshare = useSelector((state) => state.allpostsharedReducer);
+  const navigate = useNavigate();
+
   const [currentUserdata, setcurrentUserdata] = useState();
 
   const [isFollow, setFollow] = useState(false);
@@ -49,28 +50,14 @@ function Profil(props) {
             window.location = "/";
           });
       };
-
+      dispatch(getotherprofiluser(params.username));
       getcurrentUser(params.username);
     } // eslint-disable-next-line
   }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
-
   useEffect(() => {
-    if (currentUserdata) {
-      dispatch(getPostsUser(currentUserdata.id));
-
-      for (let i = 0; i < currentUserdata.following.length; i++) {
-        if (currentUserdata.following[i].id === uid) {
-          setFollow(true);
-
-          break;
-        } else {
-          setFollow(false);
-        }
-      }
-      dispatch(getAllPostSharedByUser(currentUserdata.id));
-    }
-  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
-
+    navigate(`/profil/${params.username}/posts`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
   };
@@ -98,104 +85,171 @@ function Profil(props) {
     dispatch(getPostTrend(uid));
   };
 
+  useEffect(() => {
+    if (currentUserdata) {
+      for (let i = 0; i < currentUserdata.following.length; i++) {
+        if (currentUserdata.following[i].id === uid) {
+          setFollow(true);
+
+          break;
+        } else {
+          setFollow(false);
+        }
+      }
+    }
+  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <>
       {currentUserdata ? (
         <>
           {" "}
-          <div style={{ maxWidth: "550px", margin: "0px auto" }}>
-            <div
-              style={{
-                margin: "18px 0px",
-                borderBottom: "1px solid grey",
-              }}
-            >
+          <div className="container">
+            {" "}
+            <div style={{ maxWidth: "550px", margin: "0px auto" }}>
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-around",
+                  margin: "18px 0px",
+                  borderBottom: "1px solid grey",
                 }}
               >
-                <div>
-                  <h4>
-                    {currentUserdata ? currentUserdata.username : <p></p>}
-                  </h4>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <div>
+                    <h4>
+                      {currentUserdata ? currentUserdata.username : <p></p>}
+                    </h4>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      width: "150%",
-                    }}
-                  >
-                    <h6 onClick={handleShow2}>
-                      {" "}
-                      Abonnements :
-                      {currentUserdata.follow.length > 0 ? (
-                        currentUserdata.follow.length
-                      ) : (
-                        <span>0</span>
-                      )}
-                    </h6>
-                    <h6 onClick={handleShow}>
-                      {" "}
-                      Abonnés :
-                      {currentUserdata.following.length > 0 ? (
-                        currentUserdata.following.length
-                      ) : (
-                        <span>0</span>
-                      )}
-                    </h6>
-                  </div>
-                  {currentUserdata.id !== uid ? (
-                    <div>
-                      {isFollow ? (
-                        <button onClick={unfollowclick}>unFollow</button>
-                      ) : (
-                        <button onClick={followclick}>Follow</button>
-                      )}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "150%",
+                      }}
+                    >
+                      <h6 onClick={handleShow2}>
+                        {" "}
+                        Abonnements :
+                        {currentUserdata.follow.length > 0 ? (
+                          currentUserdata.follow.length
+                        ) : (
+                          <span>0</span>
+                        )}
+                      </h6>
+                      <h6 onClick={handleShow}>
+                        {" "}
+                        Abonnés :
+                        {currentUserdata.following.length > 0 ? (
+                          currentUserdata.following.length
+                        ) : (
+                          <span>0</span>
+                        )}
+                      </h6>
                     </div>
-                  ) : (
-                    <div></div>
-                  )}
+                    {currentUserdata.id !== uid ? (
+                      <div>
+                        {isFollow ? (
+                          <button onClick={unfollowclick}>unFollow</button>
+                        ) : (
+                          <button onClick={followclick}>Follow</button>
+                        )}
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
+            <br />
           </div>
-          <br />
           <div className="container">
-            {
-              <Grid container direction="column-reverse" spacing={3}>
-                {allpostprofilsreducer ? (
-                  allpostprofilsreducer.map((i, index) => (
-                    <Grid key={index} item>
-                      <Post post={i} />
-                    </Grid>
-                  ))
-                ) : (
-                  <p></p>
-                )}
-              </Grid>
-            }
-          </div>
-          <p>
-            Share:
-            <div className="container">
-              {
-                <Grid container direction="column-reverse" spacing={3}>
-                  {allpostshare ? (
-                    allpostshare.map((i, index) => (
-                      <Grid key={index} item>
-                        <Post post={i} />
-                      </Grid>
-                    ))
-                  ) : (
-                    <p></p>
-                  )}
-                </Grid>
-              }
+            <div className="row">
+              <div className="col-1">
+                <Link
+                  style={{
+                    margin: "4px",
+                    width: "120px",
+                    textDecoration: "none",
+                  }}
+                  exact
+                  to="posts"
+                  className="col-4 "
+                >
+                  <IconButton>
+                    {" "}
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                        color: "black",
+                      }}
+                    >
+                      Posts
+                    </span>
+                  </IconButton>
+                </Link>{" "}
+                <Link
+                  style={{
+                    margin: "4px",
+                    width: "120px",
+                    textDecoration: "none",
+                  }}
+                  exact
+                  to="partages"
+                  className="col-4 "
+                >
+                  <IconButton>
+                    {" "}
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                        color: "black",
+                      }}
+                    >
+                      {" "}
+                      Partages
+                    </span>
+                  </IconButton>
+                </Link>{" "}
+                <Link
+                  style={{
+                    margin: "4px",
+                    width: "120px",
+                    textDecoration: "none",
+                  }}
+                  exact
+                  to="playlists"
+                  className="col-4 "
+                >
+                  <IconButton>
+                    {" "}
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                        color: "black",
+                      }}
+                    >
+                      PlayLists
+                    </span>
+                  </IconButton>
+                </Link>
+              </div>
+
+              <div className="col-11">
+                <Outlet />
+              </div>
             </div>
-          </p>
+          </div>
           <Modal show={show} onHide={handleClose} size="sm" centered>
             <ModalHeader closeButton>
               <Modal.Title>Abonnés</Modal.Title>

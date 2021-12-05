@@ -2,38 +2,45 @@ const db = require("../models");
 const sanitizeHtml = require("sanitize-html");
 const { Post } = require("../models");
 const User = db.User;
+const Op = db.Sequelize.Op;
+
+const MESSAGE_FIND_ERROR = "Error retrieving User.";
+const MESSAGE_UPDATE_ERROR = "Error updating User.";
+
+const helper_include_followings_followers = [
+  {
+    model: User,
+    as: "follow",
+    attributes: {
+      exclude: ["password"],
+    },
+  },
+  {
+    model: User,
+    as: "following",
+    attributes: {
+      exclude: ["password"],
+    },
+  },
+];
+const helper_exclude_password = {
+  exclude: ["password"],
+};
 
 exports.userInformations = (req, res) => {
   const id = req.params.id;
 
   User.findByPk(id, {
-    include: [
-      {
-        model: User,
-        as: "follow",
-        attributes: {
-          exclude: ["password"],
-        },
-      },
-      {
-        model: User,
-        as: "following",
-        attributes: {
-          exclude: ["password"],
-        },
-      },
-    ],
-    attributes: {
-      exclude: ["password"],
-    },
-  })
+    include: helper_include_followings_followers,
+    attributes: helper_exclude_password,
+    })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error retrieving User with id=" + id,
+          error: MESSAGE_FIND_ERROR,
         })
       );
     });
@@ -43,34 +50,15 @@ exports.userInformations2 = (req, res) => {
 
   User.findOne({
     where: { username },
-    include: [
-      {
-        model: User,
-        as: "follow",
-        attributes: {
-          exclude: ["password"],
-        },
-      },
-      {
-        model: User,
-        as: "following",
-        attributes: {
-          exclude: ["password"],
-        },
-      },
-      {
-        model : Post,
-        as:"shared_posts",
-      }
-    ],
-    attributes: { exclude: ["password"] },
-  })
+    include: helper_include_followings_followers,
+    attributes: helper_exclude_password
+    })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        error: "Error retrieving User with id=" + id,
+        error: MESSAGE_FIND_ERROR,
       });
     });
 };
@@ -88,7 +76,7 @@ exports.updateUser = (req, res) => {
       } else {
         res.send(
           sanitizeHtml({
-            error: `Cannot update User with id=${id}. Maybe Post was not found or req.body is empty!`,
+            error: MESSAGE_UPDATE_ERROR,
           })
         );
       }
@@ -96,7 +84,7 @@ exports.updateUser = (req, res) => {
     .catch((err) => {
       res.status(500).send(
         sanitizeHtml({
-          error: "Error updating User with id=" + id,
+          error: MESSAGE_UPDATE_ERROR,
         })
       );
     });
@@ -130,3 +118,26 @@ exports.unfollow = async (req, res) => {
   });
 };
 
+//Suggestion users
+exports.userSuggestion = (req, res) => {
+  const recherche = req.params.username;
+
+  User.findAll({
+    where: {
+      username: {
+        [Op.startsWith]: "%" + recherche + "%",
+      },
+    },
+    limit: 10,
+    include: helper_include_followings_followers,
+    attributes: helper_exclude_password
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: MESSAGE_FIND_ERROR,
+      });
+    });
+};

@@ -5,8 +5,16 @@ import {
   ADD_COMMENT,
   REMOVE_COMMENT,
   ADD_SHARE,
-  GET_ALL_POSTS_SHARED_BY_USER,
+  REMOVE_SHARE,
 } from "../actions/post.actions";
+import {
+  add_like,
+  remove_like,
+  add_commentaire,
+  remove_comment,
+  add_share,
+  remove_share,
+} from "./functions/function";
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
 const initialState = [];
 
@@ -14,72 +22,22 @@ export default function postTrendReducer(state = initialState, action) {
   switch (action.type) {
     case GET_ALL_POST_TREND:
       return action.payload;
-    case GET_ALL_POSTS_SHARED_BY_USER:
-      return action.payload;
+
     case ADD_LIKE:
-      return state.map((posts) => {
-        if (posts.id === action.payload.id) {
-          return {
-            ...posts,
-            liked_by: [action.payload.user_data, ...posts.liked_by],
-          };
-        }
-        return posts;
-      });
+      return add_like(state, action.payload);
     case REMOVE_LIKE:
-      return state.map((posts) => {
-        if (posts.id === action.payload.id) {
-          return {
-            ...posts,
-            liked_by: posts.liked_by.filter(
-              (user_data) => user_data.id !== action.payload.user_data.id
-            ),
-          };
-        }
-        return posts;
-      });
+      return remove_like(state, action.payload);
+
     case ADD_COMMENT:
-      const datacomment = {
-        id: action.payload.userData.id,
-        username: action.payload.userData.username,
-        comment: action.payload.data,
-      };
-      console.log(datacomment);
-      return state.map((posts) => {
-        if (posts.id === action.payload.post_id) {
-          return {
-            ...posts,
-            commented_by: [datacomment, ...posts.commented_by],
-          };
-        }
-        return posts;
-      });
+      return add_commentaire(state, action.payload);
 
     case REMOVE_COMMENT:
-      return state.map((posts) => {
-        if (posts.id === action.payload.post_id) {
-          console.log(posts.commented_by);
-          return {
-            ...posts,
-            commented_by: posts.commented_by.filter(
-              (data) => data.id !== action.payload.userData.id
-            ),
-          };
-        }
-        return posts;
-      });
+      return remove_comment(state, action.payload);
 
-      case ADD_SHARE :
-        return state.map((posts) => {
-          if (posts.id === action.payload.post_id) {
-            return {
-              ...posts,
-              shared_by: [action.payload.user_data, ...posts.shared_by],
-            };
-          }
-          return posts;
-        });  
-
+    case ADD_SHARE:
+      return add_share(state, action.payload);
+    case REMOVE_SHARE:
+      return remove_share(state, action.payload);
     default:
       return state;
   }

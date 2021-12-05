@@ -20,6 +20,9 @@ module.exports = (app) => {
   // Delete all Post
   router.delete("/", post.deleteAll);
 
+  //check if tag exist
+  router.post("/getTag/", post.getTag);
+
   // Likes
   router.post("/like/:id", post.like);
   router.post("/unlike/:id", post.unlike);
@@ -32,9 +35,10 @@ module.exports = (app) => {
   router.get("/:post_id/getAllComments/", post.getAllComments);
 
   //search by tag
-  router.get("/getPostByTag/:tag", post.getPostByTag);
+  router.post("/getPostByTag/", post.getPostByTag);
   //shares
   router.post("/share/", post.share);
+  router.post("/unshare/", post.unshare);
 
   app.use("/api/v1/post", router);
 };

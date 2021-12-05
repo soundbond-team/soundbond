@@ -16,7 +16,8 @@ function Logout() {
   };
 
   const removeCookiejwt = (key) => {
-    if (window !== "undefined") {
+    // eslint-disable-next-line
+    if (window != "undefined") {
       cookie.remove(key, { expires: 1 });
     }
   };

@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-
 import { ReactMic } from "react-mic";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions";
-
 import { makeStyles } from "@material-ui/styles";
 import MicIcon from "@material-ui/icons/Mic";
 import CropIcon from "@mui/icons-material/Crop";
@@ -66,7 +64,48 @@ export default function Microphone(props) {
   const wavesurfer = useRef(null);
   const uid = useContext(UidContext);
   const buttonTag = useRef();
+  const [resfound,setResfound] = useState(true);
+  //suggestion tag
+  const [suggestions,setSuggestions ]= useState(["humour","drôle","oiseau","horreur","arbre","salut","blabla","chat","chien"]);
+  const [suggest, setSuggest] = useState([]);
 
+  const handleChange = (e) =>{
+    let k = e.target.value;
+    let sug = [];
+    if(k.length > 0){
+      sug = suggestions.sort()
+      .filter((e)=>e.toLowerCase().includes(k.toLowerCase()));
+      setResfound(sug.length!==0 ? true:false);
+    }
+    setSuggest(sug);
+    setTag(k.replace(/\s/g, ""));
+  };
+  const suggestText = (value)=>{
+    setTag(value);
+    setSuggest([]);
+    
+  };
+  //afficher la liste de suggestion de tags
+  const getSuggestions = () =>{
+    if(suggest.length === 0 && tag !=="" && !resfound){
+      return <p>Tag content not found</p>;
+    }
+    return(
+      <ul>
+        {
+          suggest.map((item,index)=>{
+            return(
+              <div key={index}>
+                <li onClick={() =>suggestText(item)}>{item}</li>
+                {index!== suggest.length - 1 && <hr></hr>}
+              </div>
+            );
+          })
+        }
+      </ul>
+    );
+  };
+  
   useEffect(() => {
     if (!open || (open && !tempFile)) return;
 
@@ -257,13 +296,19 @@ export default function Microphone(props) {
   };
 
   const classes = useStyles();
+
   const addTag = () => {
-    if (tags.includes(tag) === false) {
-      setTags((state) => [...state, tag]);
+    if (tags.includes("#" + tag) === false) {
+      setTags((state) => [...state, "#" + tag]);
+      setTag("");
+    }
+    if(suggestions.includes(tag) === false){
+      suggestions.push(tag);
+      setSuggestions(suggestions);
       setTag("");
     }
   };
-
+  
   return (
     <>
       <div className="container d-flex justify-content-center">
@@ -306,34 +351,29 @@ export default function Microphone(props) {
         </div>
         {" Tags: " + tags + ", "}
         <div className="input-group mb-3 container">
-          <Input
+          <input
             style={{ whiteSpace: "nowrap" }}
             type="text"
             multiple
-            class="text-break"
-            className="form-control"
+            className="text-break form-control"
             placeholder="Tag"
             aria-label="Tag"
             aria-describedby="basic-addon2"
-            onChange={(e) => {
-              setTag(e.target.value.replace(/\s/g, ""));
-            }}
+            onChange={handleChange}
             id="tag"
-            defaultValue={""}
             ref={buttonTag}
-            value={tag}
+            value={tag !== " " ? tag : ""}
             pattern="^\S+$"
           />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              onClick={addTag}
-            >
-              Ajouter
-            </button>
-          </div>
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={addTag}
+          >
+            Ajouter
+          </button>
         </div>
+        {getSuggestions()}
 
         <DialogActions>
           <Grid container>
