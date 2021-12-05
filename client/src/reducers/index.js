@@ -8,7 +8,7 @@ import userReducer from "./user.reducer";
 import postTrendReducer from "./postTrend.reducer";
 import profilPostReducer from "./profilPostReducer";
 import postSearcByTagReducer from "./postSearcByTag.reducer";
-import searchReducer from "./search.reducer"; //pour les tags
+
 import allpostsharedReducer from "./allpostSharedbyuser";
 import allplaylistByUser from "./allplaylistByUser";
 import itinerairereducer from "./itineraire.reducer";
@@ -22,7 +22,6 @@ export default combineReducers({
   postTrendReducer,
   profilPostReducer,
   postSearcByTagReducer,
-  searchReducer,
   allpostsharedReducer,
   allplaylistByUser,
   itinerairereducer,
