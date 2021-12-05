@@ -188,7 +188,7 @@ function Post(props) {
                   to={`/profil/${props.post.publisher.username}/posts`}
                   style={{ textDecoration: "none" }}
                 >
-                  <Avatar className={classes.avatar} src={faces[4]} />
+                  <Avatar className={classes.avatar} />
                 </NavLink>
               </ListItemAvatar>
               <NavLink
