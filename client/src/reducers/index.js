@@ -5,6 +5,7 @@ import soundReducer from "./sound.reducer";
 import postReducer from "./post.reducer";
 import onesoundlocationReducer from "./onesoundlocation.reducer";
 import userReducer from "./user.reducer";
+import getotherprofiluser from "./otherprofiluser.reducer";
 import postTrendReducer from "./postTrend.reducer";
 import profilPostReducer from "./profilPostReducer";
 import postSearcByTagReducer from "./postSearcByTag.reducer";
@@ -26,4 +27,5 @@ export default combineReducers({
   allplaylistByUser,
   itinerairereducer,
   postToMapReducer,
+  getotherprofiluser,
 });
