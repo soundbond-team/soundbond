@@ -1,15 +1,16 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import mapboxgl from "mapbox-gl";
 import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
 import axios from "axios";
-
+import { change_ZOOM } from "../../actions/postToMap.actions";
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Map = ({ post_points }) => {
+  const dispatch = useDispatch();
   const mapContainerRef = useRef(null);
   const itineraire = useSelector((state) => state.itinerairereducer);
   const linkFromPost = useSelector((state) => state.postToMapReducer);
@@ -17,7 +18,7 @@ const Map = ({ post_points }) => {
   const [lat, setLat] = useState(34);
   const [zoom, setZoom] = useState(1.5);
   const [markers_list] = useState([]);
-  const [map, setMap] = useState("");
+  const [map, setMap] = useState(null);
 
   const childToParent = async (results, type) => {
     //const dispatch = useDispatch();
@@ -123,15 +124,6 @@ const Map = ({ post_points }) => {
 
     const start = [lng, lat];
 
-    async function getCoordinates() {
-      if (linkFromPost.latitude != null && linkFromPost.longitude != null) {
-        map.flyTo({
-          center: [linkFromPost.longitude, linkFromPost.latitude],
-          zoom: 8,
-        });
-      }
-    }
-
     async function getRoute() {
       // make a directions request using cycling profile
       // an arbitrary start will always be the same
@@ -160,9 +152,7 @@ const Map = ({ post_points }) => {
         // if the route already exists on the map, we'll reset it using setData
 
         // otherwise, we'll make a new request
-        if (map.getSource("route")) {
-          map.getSource("route").setData(geojson);
-        }
+
         map.addLayer({
           id: "route",
           type: "line",
@@ -187,15 +177,32 @@ const Map = ({ post_points }) => {
       setMap(map); // We declare the map as a State to make it available for every functions.
       addMarkers(map, post_points);
       getRoute();
-      getCoordinates();
+
+      // dispatch(change_ZOOM(null));
       // clearMarkers(); clear bien les markers quand on supprime tt
 
       // this is where the code from the next step will go
     });
     // Clean up on unmount
     return () => map.remove();
-  }, [post_points, itineraire, linkFromPost]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [post_points, itineraire]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  function getCoordinates() {
+    if (linkFromPost !== null) {
+      if (linkFromPost.latitude != null && linkFromPost.longitude != null) {
+        map.flyTo({
+          center: [linkFromPost.longitude, linkFromPost.latitude],
+          zoom: 8,
+        });
+        dispatch(change_ZOOM(null));
+      }
+    }
+  }
+  useEffect(() => {
+    if (map != null) {
+      getCoordinates();
+    }
+  }, [map]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <>
       <SearchBox
