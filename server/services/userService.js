@@ -7,8 +7,7 @@ const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 async function crypt(password) {
   const salt = await bcrypt.genSalt();
-  let passwordhash = await bcrypt.hash(password, salt);
-  return passwordhash;
+  return bcrypt.hash(password, salt);
 }
 
 function createToken(id) {
@@ -17,7 +16,7 @@ function createToken(id) {
   });
 }
 
-compare = async function (username, password) {
+let compare = async function (username, password) {
   const user = await User.findOne({ where: { username: username } });
 
   if (user) {
