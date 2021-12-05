@@ -307,9 +307,11 @@ export default function Microphone(props) {
     if(suggestions.includes(tag) === false){
       suggestions.push(tag);
       setSuggestions(suggestions);
-      console.log(suggestions);
+      setTag("");
     }
   };
+  
+  
   return (
     <>
       <div className="container d-flex justify-content-center">
