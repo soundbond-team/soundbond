@@ -8,6 +8,15 @@ import {
   REMOVE_SHARE,
 } from "../actions/post.actions";
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des KF)
+import {
+  add_like,
+  remove_like,
+  add_comment,
+  remove_comment,
+  add_share,
+  remove_share,
+} from "./functions/function";
+
 const initialState = [];
 
 export default function allpostsharedReducer(state = initialState, action) {
@@ -16,79 +25,20 @@ export default function allpostsharedReducer(state = initialState, action) {
       return action.payload;
 
     case ADD_LIKE:
-      return state.map((posts) => {
-        if (posts.id === action.payload.id) {
-          return {
-            ...posts,
-            liked_by: [action.payload.user_data, ...posts.liked_by],
-          };
-        }
-        return posts;
-      });
+      return add_like(state, action.payload);
     case REMOVE_LIKE:
-      return state.map((posts) => {
-        if (posts.id === action.payload.id) {
-          return {
-            ...posts,
-            liked_by: posts.liked_by.filter(
-              (user_data) => user_data.id !== action.payload.user_data.id
-            ),
-          };
-        }
-        return posts;
-      });
+      return remove_like(state, action.payload);
 
     case ADD_COMMENT:
-      const datacomment = {
-        id: action.payload.userData.id,
-        username: action.payload.userData.username,
-        comment: action.payload.data,
-      };
-
-      return state.map((posts) => {
-        if (posts.id === action.payload.post_id) {
-          return {
-            ...posts,
-            commented_by: [datacomment, ...posts.commented_by],
-          };
-        }
-        return posts;
-      });
+      return add_comment(state, action.payload);
 
     case REMOVE_COMMENT:
-      return state.map((posts) => {
-        if (posts.id === action.payload.post_id) {
-          return {
-            ...posts,
-            commented_by: posts.commented_by.filter(
-              (data) => data.id !== action.payload.userData.id
-            ),
-          };
-        }
-        return posts;
-      });
+      return remove_comment(state, action.payload);
+
     case ADD_SHARE:
-      return state.map((posts) => {
-        if (posts.id === action.payload.post_id) {
-          return {
-            ...posts,
-            shared_by: [action.payload.userData, ...posts.shared_by],
-          };
-        }
-        return posts;
-      });
+      return add_share(state, action.payload);
     case REMOVE_SHARE:
-      return state.map((posts) => {
-        if (posts.id === action.payload.id) {
-          return {
-            ...posts,
-            shared_by: posts.shared_by.filter(
-              (data) => action.payload.userData.id !== data.id
-            ),
-          };
-        }
-        return posts;
-      });
+      return remove_share(state, action.payload);
 
     default:
       return state;
