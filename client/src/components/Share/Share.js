@@ -19,14 +19,14 @@ function SocialMediaButtons(props) {
       <Container>
         <Segment>
           <LinkedinShareButton
-            url={"http://www.camperstribe.com"}
+            url={"https://www.camperstribe.com"}
             quote={"partager ...."}
             hashtag="@React"
           >
             <LinkedinIcon>logoFillColor="white" round={true}</LinkedinIcon>
           </LinkedinShareButton>
           <FacebookShareButton
-            url={"http://www.camperstribe.com"}
+            url={"https://www.camperstribe.com"}
             quote={"partager ...."}
             hashtag="@React"
           >
@@ -34,14 +34,14 @@ function SocialMediaButtons(props) {
           </FacebookShareButton>
 
           <WhatsappShareButton
-            url={"http://www.camperstribe.com"}
+            url={"https://www.camperstribe.com"}
             title="Sharing content"
           >
             <WhatsappIcon logoFillColor="white" round={true}></WhatsappIcon>
           </WhatsappShareButton>
 
           <TelegramShareButton
-            url={"http://www.camperstribe.com"}
+            url={"https://www.camperstribe.com"}
             title="Sharing content"
           >
             <TelegramIcon>logoFillColor="white" round={true}</TelegramIcon>
