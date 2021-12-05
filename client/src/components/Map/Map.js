@@ -5,14 +5,11 @@ import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
-import { getpostbytag } from "../../actions/post.actions";
+import axios from "axios";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Map = ({ post_points }) => {
-  //! case where type is 'user' is not taken into account !
-  // Access the store via the `useContext` hook
-  //const { store } = useContext(ReactReduxContext)
   const mapContainerRef = useRef(null);
   const itineraire = useSelector((state) => state.itinerairereducer);
   const [lng, setLng] = useState(5);
@@ -21,25 +18,32 @@ const Map = ({ post_points }) => {
   const [markers_list] = useState([]);
   const [map, setMap] = useState('');
 
-  //const dispatch = useDispatch();
-  const allpostbytag = useSelector((state) => state.postSearcByTagReducer);
-  
   const childToParent = async (results, type) => {
     //const dispatch = useDispatch();
     clearMarkers();
-    await addMarkersByTag(map, results);
+    let points = null;
+    if(type === 'tag'){
+      points = await getPostByTag(results);
+      addMarkers(map, points);
+    }
+    else if(type === 'user'){
+      //points = await getPostByTag(results);
+      //TODO
+      //! Attention : l'API utilise /user/${username}/posts alors que plusieurs utilisateurs peuvent avoir le même username !
+    }
   };
 
-  const addMarkersByTag = async (map, tag) => {
-    //getpostbytag("#" + tag);
-
-    await getpostbytag("#" + tag);
-  
-    
-    console.log("addMarkersByTag with posts =>");
-    console.log(allpostbytag);
-    addMarkers(map, allpostbytag);
-  }
+  const getPostByTag = async (tag) => {
+    let result = await axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/post/getPostBytag`,
+      data: {
+        tag: "#" + tag,
+      },
+      withCredentials: true,
+    });
+    return result.data.tagging;
+  };
 
   function clearMarkers() {
     // Deletes markers from the map.

@@ -1,3 +1,8 @@
+/*
+  This component renders a SearchBox and redirects to /tag of /profil,
+  depending of search results.
+*/
+
 import SearchBox from "../../components/Search/SearchBox";
 import { useNavigate } from "react-router-dom";
 

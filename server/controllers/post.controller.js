@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
     sound_id: req.body.sound_id,
   };
 
-  const findd = () => {
+  const find = () => {
     db.Post.findByPk(postcreate.id, {
       include: [
         {
@@ -81,21 +81,21 @@ exports.create = async (req, res) => {
         .then(async (data) => {
           if (data != null) {
             await postcreate.addTagpost(data);
-            findd();
+            find();
           } else {
             const tagcreated = await db.Tag.create({ tag: value });
             await postcreate.addTagpost(tagcreated);
-            findd();
+            find();
           }
         })
         .catch(async (e) => {
           const tagcreated = await db.Tag.create({ tag: value });
           await postcreate.addTagpost(tagcreated);
-          findd();
+          find();
         });
     }
   } else {
-    findd();
+    find();
   }
 };
 
@@ -671,64 +671,6 @@ exports.getAllComments = (req, res) => {
     });
 };
 
-// Get id tag
-exports.getPostByTag = (req, res) => {
-  const tagParameter = req.body.tag;
-  db.Tag.findOne({
-    where: { tag: tagParameter },
-    include: [
-      {
-        model: db.Post,
-        as: "tagging",
-        include: [
-          {
-            model: db.Sound,
-            as: "publishing",
-
-            include: [
-              {
-                model: db.SoundLocation,
-                as: "soundlocation",
-              },
-            ],
-          },
-          {
-            model: db.User,
-            as: "publisher",
-            attributes: ["id", "username"],
-          },
-          {
-            model: db.User,
-            as: "liked_by",
-            attributes: ["id", "username"],
-          },
-          {
-            model: db.User,
-            as: "commented_by",
-            attributes: ["id", "username"],
-          },
-
-          {
-            model: db.Tag,
-            as: "tagpost",
-          },
-          {
-            model: db.User,
-            as: "shared_by",
-            attributes: ["id", "username"],
-          },
-          { model: db.Playlist, as: "listplaylist" },
-        ],
-      },
-    ],
-  })
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
 
