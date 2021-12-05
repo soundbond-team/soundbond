@@ -43,7 +43,6 @@ import { UidContext } from "../Appcontext";
 import RepeatIcon from "@mui/icons-material/Repeat";
 
 function Post(props) {
-  const faces = [];
   const [liked, setLiked] = useState(false);
   const [rePosted, setRePosted] = useState(false);
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
@@ -188,7 +187,7 @@ function Post(props) {
                   to={`/profil/${props.post.publisher.username}/posts`}
                   style={{ textDecoration: "none" }}
                 >
-                  <Avatar className={classes.avatar} src={faces[4]} />
+                  <Avatar className={classes.avatar} />
                 </NavLink>
               </ListItemAvatar>
               <NavLink

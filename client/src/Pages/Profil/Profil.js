@@ -65,11 +65,15 @@ function Profil(props) {
   const followclick = async () => {
     setFollow(true);
 
-    setcurrentUserdata((prevState) => ({
-      ...prevState,
-      following: [userData, ...prevState.following],
-    }));
-    await dispatch(follow(uid, currentUserdata.id));
+    setcurrentUserdata((prevState) => {
+      if (prevState != null) {
+        return { ...prevState, following: [userData, ...prevState.following] };
+      }
+    });
+    if (currentUserdata !== null) {
+      await dispatch(follow(uid, currentUserdata.id));
+    }
+
     dispatch(getPostTrend(uid));
   };
   const unfollowclick = async () => {
@@ -81,7 +85,9 @@ function Profil(props) {
         (following) => following.id !== userData.id
       ),
     }));
-    await dispatch(unfollow(uid, currentUserdata.id));
+    if (currentUserdata !== null) {
+      await dispatch(unfollow(uid, currentUserdata.id));
+    }
     dispatch(getPostTrend(uid));
   };
 
