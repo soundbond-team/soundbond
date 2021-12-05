@@ -57,7 +57,19 @@ function Profil(props) {
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
   };
+  useEffect(() => {
+    if (currentUserdata) {
+      for (let i = 0; i < currentUserdata.following.length; i++) {
+        if (currentUserdata.following[i].id === uid) {
+          setFollow(true);
 
+          break;
+        } else {
+          setFollow(false);
+        }
+      }
+    }
+  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
   const followclick = async () => {
     setFollow(true);
 

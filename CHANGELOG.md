@@ -1,8 +1,9 @@
 # CHANGELOG
 
 ### Nouvelles fonctionnalités :heavy_check_mark:
-- La possibilité de lire vos sons ou ceux de vos amis à tout moment.
-- Laisser un commentaire sous un post ou lire les commantaires ajoutés par d'autres utilisateurs est aussi possible. 
-- Vous pouvez maintenant chercher un son par un tag qui vous interesse dans la barre de recherche  et vous obtenez les posts qui possèdent ce tag 
-- À la création d'un post, vous pouvez partitionner un son,rejouer et télécharger la partie que vous avez coupé  .
-- Vous avez la possibilité de partager des posts d'autres utilisateurs sur votre profil.
+- Vous pouvez désormais créer des playlists composés de plusieurs posts et la voir sur votre profil.
+- Cette playlist peut également être visualisée sur la carte avec des points reliés.
+- La recherche est maintenant plus accessible grâce à des suggestions en fonction de ce que 
+vous avez déjà tapé et des éléments de SoundBond.
+- Vous pouvez désormais choisir de n'afficher sur la carte que les sons avec le # de votre choix.
+- Le lien est désormais tout fait entre le post et sa localisation sur la carte. Un bouton sur le post vous emmenera directement à la localisation du son.
