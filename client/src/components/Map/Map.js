@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { /*useDispatch,*/ useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import mapboxgl from "mapbox-gl";
 import SearchBox from "../../components/Search/SearchBox";
 import "./Map.css";
