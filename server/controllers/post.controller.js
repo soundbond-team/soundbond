@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
     sound_id: req.body.sound_id,
   };
 
-  const findd = () => {
+  const find = () => {
     db.Post.findByPk(postcreate.id, {
       include: [
         {
@@ -81,21 +81,21 @@ exports.create = async (req, res) => {
         .then(async (data) => {
           if (data != null) {
             await postcreate.addTagpost(data);
-            findd();
+            find();
           } else {
             const tagcreated = await db.Tag.create({ tag: value });
             await postcreate.addTagpost(tagcreated);
-            findd();
+            find();
           }
         })
         .catch(async (e) => {
           const tagcreated = await db.Tag.create({ tag: value });
           await postcreate.addTagpost(tagcreated);
-          findd();
+          find();
         });
     }
   } else {
-    findd();
+    find();
   }
 };
 
