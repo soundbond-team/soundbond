@@ -7,7 +7,7 @@ const Op = db.Sequelize.Op;
 const MESSAGE_FIND_ERROR = "Error retrieving User.";
 const MESSAGE_UPDATE_ERROR = "Error updating User.";
 
-const user_parameters_includes = [
+const helper_include_followings_followers = [
   {
     model: User,
     as: "follow",
@@ -23,7 +23,7 @@ const user_parameters_includes = [
     },
   },
 ];
-const user_parameters_attributes = {
+const helper_exclude_password = {
   exclude: ["password"],
 };
 
@@ -31,8 +31,8 @@ exports.userInformations = (req, res) => {
   const id = req.params.id;
 
   User.findByPk(id, {
-    include: user_parameters_includes,
-    attributes: user_parameters_includes
+    include: helper_include_followings_followers,
+    attributes: helper_exclude_password,
     })
     .then((data) => {
       res.send(data);
@@ -50,8 +50,8 @@ exports.userInformations2 = (req, res) => {
 
   User.findOne({
     where: { username },
-    include: user_parameters_includes,
-    attributes: user_parameters_attributes
+    include: helper_include_followings_followers,
+    attributes: helper_exclude_password
     })
     .then((data) => {
       res.send(data);
@@ -129,8 +129,8 @@ exports.userSuggestion = (req, res) => {
       },
     },
     limit: 10,
-    include: user_parameters_includes,
-    attributes: user_parameters_attributes
+    include: helper_include_followings_followers,
+    attributes: helper_exclude_password
   })
     .then((data) => {
       res.send(data);
