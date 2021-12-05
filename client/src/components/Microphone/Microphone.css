@@ -2,3 +2,13 @@
   max-width: 600px;
   flex: 1;
 }
+ul{
+  list-style: none;
+}
+ul li{
+  cursor: pointer;
+  
+}
+hr{
+  border-top: 1px solid rgba(216,216,216,0.753);
+}
