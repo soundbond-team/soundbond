@@ -17,7 +17,7 @@ function createToken(id) {
   });
 }
 
-compare = async function (username, password) {
+let compare = async function (username, password) {
   const user = await User.findOne({ where: { username: username } });
 
   if (user) {
