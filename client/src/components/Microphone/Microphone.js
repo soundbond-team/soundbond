@@ -21,7 +21,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import { green, red, blue } from "@material-ui/core/colors";
 import { useDispatch, useSelector } from "react-redux";
-
+import axios from "axios";
 import { post_soundlocation } from "../../actions/soundlocation.actions";
 import { post_sound } from "../../actions/sound.actions";
 import { post_post, getallPost } from "../../actions/post.actions";
@@ -64,48 +64,68 @@ export default function Microphone(props) {
   const wavesurfer = useRef(null);
   const uid = useContext(UidContext);
   const buttonTag = useRef();
-  const [resfound,setResfound] = useState(true);
+  /*const [resfound, setResfound] = useState(true);
   //suggestion tag
-  const [suggestions,setSuggestions ]= useState(["humour","drôle","oiseau","horreur","arbre","salut","blabla","chat","chien"]);
-  const [suggest, setSuggest] = useState([]);
-
-  const handleChange = (e) =>{
-    let k = e.target.value;
-    let sug = [];
-    if(k.length > 0){
-      sug = suggestions.sort()
-      .filter((e)=>e.toLowerCase().includes(k.toLowerCase()));
-      setResfound(sug.length!==0 ? true:false);
-    }
-    setSuggest(sug);
-    setTag(k.replace(/\s/g, ""));
+  const [suggestions, setSuggestions] = useState([
+    "humour",
+    "drôle",
+    "oiseau",
+    "horreur",
+    "arbre",
+    "salut",
+    "blabla",
+    "chat",
+    "chien",
+  ]);
+  const [suggest, setSuggest] = useState([]);*/
+  const [tagSuggestion, setTagSuggestion] = useState([]);
+  async function getAllTags(recherche) {
+    await axios({
+      method: "post",
+      url: `http://localhost:8080/api/v1/tag/recherche`,
+      data: {
+        tag: recherche,
+      },
+    })
+      .then((res) => {
+        if (res.data !== "" && res.data != null) {
+          console.log(res.data);
+          setTagSuggestion(res.data);
+        } else {
+          setTagSuggestion([]);
+        }
+      })
+      .catch((err) => {
+        setTagSuggestion([]);
+      });
+  }
+  const handleChange = (e) => {
+    getAllTags(e.target.value);
+    setTag(e.target.value.replace(/\s/g, ""));
   };
-  const suggestText = (value)=>{
+  /*const suggestText = (value) => {
     setTag(value);
     setSuggest([]);
-    
-  };
+  };*/
   //afficher la liste de suggestion de tags
-  const getSuggestions = () =>{
-    if(suggest.length === 0 && tag !=="" && !resfound){
+  /* const getSuggestions = () => {
+    if (suggest.length === 0 && tag !== "" && !resfound) {
       return <p>Tag content not found</p>;
     }
-    return(
+    return (
       <ul>
-        {
-          suggest.map((item,index)=>{
-            return(
-              <div key={index}>
-                <li onClick={() =>suggestText(item)}>{item}</li>
-                {index!== suggest.length - 1 && <hr></hr>}
-              </div>
-            );
-          })
-        }
+        {suggest.map((item, index) => {
+          return (
+            <div key={index}>
+              <li onClick={() => suggestText(item)}>{item}</li>
+              {index !== suggest.length - 1 && <hr></hr>}
+            </div>
+          );
+        })}
       </ul>
     );
-  };
-  
+  };*/
+
   useEffect(() => {
     if (!open || (open && !tempFile)) return;
 
@@ -302,13 +322,13 @@ export default function Microphone(props) {
       setTags((state) => [...state, "#" + tag]);
       setTag("");
     }
-    if(suggestions.includes(tag) === false){
-      suggestions.push(tag);
-      setSuggestions(suggestions);
+    /*if (suggestions.includes(tag) === false) {
+      //  suggestions.push(tag);
+      // setSuggestions(suggestions);
       setTag("");
-    }
+    }*/
   };
-  
+
   return (
     <>
       <div className="container d-flex justify-content-center">
@@ -349,9 +369,20 @@ export default function Microphone(props) {
             defaultValue={""}
           />
         </div>
+        <datalist id="tags">
+          {" "}
+          {tagSuggestion.map((item, key) => (
+            <option key={key} value={item.tag.substring(1)} />
+          ))}
+        </datalist>
         {" Tags: " + tags + ", "}
         <div className="input-group mb-3 container">
+          <span className="input-group-text" id="basic-addon1">
+            #
+          </span>
+
           <input
+            list="tags"
             style={{ whiteSpace: "nowrap" }}
             type="text"
             multiple
@@ -373,7 +404,6 @@ export default function Microphone(props) {
             Ajouter
           </button>
         </div>
-        {getSuggestions()}
 
         <DialogActions>
           <Grid container>
