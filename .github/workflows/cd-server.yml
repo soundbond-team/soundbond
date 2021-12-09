@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - soundbond-node
+name: Build and deploy server to Azure Web App
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          cd server # ?
+          cd server
           yarn install
 
       - name: Writing .env config file for Development (/server)
@@ -36,11 +36,15 @@ jobs:
           cd server
           echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nAZURE_CONTAINER_NAME = ${{ secrets.AZURE_CONTAINER_NAME }}\nAZURE_CONNECTION_STRING = ${{ secrets.AZURE_CONNECTION_STRING }}\n" >> .env
 
+      - name: Zip artifact for deployment
+        run: zip -q server-release.zip ./* -r
+        working-directory: ./server/
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: ./server # ?
+          path: ./server/server-release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -54,6 +58,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
+
+      - name: unzip artifact for deployment
+        run: unzip -q server-release.zip
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
