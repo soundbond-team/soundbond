@@ -40,7 +40,6 @@ jobs:
           cd client
           echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\nREACT_APP_MAPBOX_ACCESS_TOKEN = "${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}"\n" >> .env
 
-
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
@@ -60,16 +59,23 @@ jobs:
 
       - name: Installation
         run: yarn install
+
       - name: Client installation
         run: |
           cd client 
           yarn install
+
       - name: Server installation
         run: |
           cd server
           yarn install
 
-      - name: Build
+      - name: Server build
+        run: |
+          cd server
+          yarn run build
+
+      - name: Client build
         run: |
           cd client
           yarn run build
@@ -95,6 +101,7 @@ jobs:
           rm -r .nyc_output
         env:
           CI: true
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
