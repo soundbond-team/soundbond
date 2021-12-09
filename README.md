@@ -39,12 +39,6 @@ On recommende ici d'utiliser [Snapcraft](https://snapcraft.io/) (snap install) c
 
 Pour Windows, installez NodeJS et NPM [en téléchargeant l'installeur ici](https://nodejs.org/fr/download/)
 
-* Si vous souhaitez utiliser le serveur de développement recommandé, vous avez installé `nodemon` version 2.0.12 ou supérieure __au niveau machine (option -g)__.
-
-``` bash
-sudo npm install -g nodemon
-```
-
 * Si vous souhaitez utiliser un serveur MySQL local, vous disposez de la version `8.0` de `mysql-server` avec une base de données dédiée à _SoundBond_ :
 
 ``` sql
@@ -93,7 +87,7 @@ Pour le serveur backend
 
 ``` bash
 cd server
-nodemon start
+npm start
 ```
 
 Pour le serveur frontend, dans un autre terminal
