@@ -1,0 +1,33 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  CD:
+    name: CD SB
+    runs-on: ubuntu-latest
+
+    # The environment this job references. We now use this for our environment variables.
+    environment:
+      name: Development
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Generate docs
+        run: |
+          yarn run asciidoc
+          rm docs/sb.html
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        id: create_release
+        with:
+          artifacts: docs/sb.pdf
+          bodyFile: CHANGELOG.md
+          token: ${{ secrets.GITHUB_TOKEN }}
