@@ -7,8 +7,8 @@ on:
   push:
     branches:
       - main
-    tags:
-      - "v*"
+#    tags:
+#      - "v*"
   workflow_dispatch:
 
 jobs:
@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: /server # ?
+          path: ./server # ?
 
   deploy:
     runs-on: ubuntu-latest
