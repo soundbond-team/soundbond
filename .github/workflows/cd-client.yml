@@ -32,7 +32,7 @@ jobs:
       - name: Writing .env config file for Production (/client)
         run: |
           cd client
-          echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\nREACT_APP_MAPBOX_ACCESS_TOKEN = "${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}\nREACT_APP_BACK_SERVER_URL = "${{ secrets.REACT_APP_BACK_SERVER_URL }}"\n" >> .env
+          echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\nREACT_APP_MAPBOX_ACCESS_TOKEN = "${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}"\nREACT_APP_BACK_SERVER_URL = "${{ secrets.REACT_APP_BACK_SERVER_URL }}"\n" >> .env
 
       - name: Zip artifact for deployment
         run: zip -q client-release.zip ./* -r
