@@ -9,8 +9,8 @@ import { getUser } from "./actions/user.actions";
 const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
 
 const App = () => {
-  const [uid, setUid] = useState(null); // eslint-disable-next-line
-  const dispatch = useDispatch(); // eslint-disable-next-line
+  const [uid, setUid] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const token = async () => {
@@ -32,7 +32,7 @@ const App = () => {
       dispatch(getUser(uid));
       dispatch(getPostTrend(uid));
     }
-  }, [uid]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [uid]);
   return (
     <UidContext.Provider value={uid}>
       <Routes />

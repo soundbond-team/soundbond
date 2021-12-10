@@ -186,7 +186,7 @@ const Map = ({ post_points }) => {
     });
     // Clean up on unmount
     return () => map.remove();
-  }, [post_points, itineraire]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [post_points, itineraire]);
 
   function getCoordinates() {
     if (linkFromPost !== null) {
@@ -203,7 +203,7 @@ const Map = ({ post_points }) => {
     if (map != null) {
       getCoordinates();
     }
-  }, [map]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [map]);
   return (
     <>
       <SearchBox

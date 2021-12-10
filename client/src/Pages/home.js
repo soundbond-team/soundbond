@@ -10,7 +10,7 @@ function Home() {
 
   useEffect(() => {
     navigate(`/home/allposts`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    react-hooks/exhaustive-deps
   }, []);
   return (
     <>

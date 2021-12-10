@@ -108,7 +108,7 @@ export default function SearchBox(props) {
       getAllUsers();
       setTagSuggestion([]);
     }
-  }, [recherche]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [recherche]);
 
   async function getAllUsers() {
     await axios({

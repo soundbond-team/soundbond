@@ -54,11 +54,11 @@ function Profil(props) {
       };
       dispatch(getotherprofiluser(params.username));
       getcurrentUser(params.username);
-    } // eslint-disable-next-line
+    }
   }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
   useEffect(() => {
     navigate(`/profil/${params.username}/posts`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    react-hooks/exhaustive-deps
   }, []);
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
@@ -105,7 +105,7 @@ function Profil(props) {
         }
       }
     }
-  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata]);
 
   return (
     <>

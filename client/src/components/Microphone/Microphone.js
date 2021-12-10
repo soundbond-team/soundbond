@@ -170,7 +170,7 @@ export default function Microphone(props) {
     if (tempFile) {
       wavesurfer.current.load(tempFile.blobURL);
     }
-  }, [tempFile]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [tempFile]);
 
   const togglePlayback = () => {
     if (!isPlaying) {
@@ -250,7 +250,7 @@ export default function Microphone(props) {
     if (tempFile) {
       addsound(tempFile, lastsoundlocation.id);
     }
-  }, [lastsoundlocation]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [lastsoundlocation]);
 
   const addsound = (tempfile_object, soundlocation_id) =>
     /* Poster un Sound.
@@ -270,7 +270,7 @@ export default function Microphone(props) {
       setOpen(false);
       setRecord(false);
     }
-  }, [sound]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [sound]);
 
   const addpost = (sound_id, _description, tags) =>
     // Poster un Post puis recupérer tous les Posts.

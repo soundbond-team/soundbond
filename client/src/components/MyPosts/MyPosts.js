@@ -17,7 +17,7 @@ function MyPosts() {
     if (currentUserdata) {
       dispatch(getPostsUser(currentUserdata.id));
     }
-  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata]);
 
   return (
     <>

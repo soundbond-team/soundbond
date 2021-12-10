@@ -71,7 +71,7 @@ export default function AudioPlayer(props) {
     wavesurfer.current.on("play", () => setIsPlaying(true));
     wavesurfer.current.on("pause", () => setIsPlaying(false));
     window.addEventListener("resize", handleResize, false);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (props.file_url) {
