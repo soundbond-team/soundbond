@@ -60,7 +60,7 @@ export default function CreatePlaylist(props) {
 
   useEffect(() => {
     dispatch(getPostsUser(userData.id));
-  }, [userData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [userData]);
   useEffect(() => {
     console.log(list_post);
   }, [list_post]);

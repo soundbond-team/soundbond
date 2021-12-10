@@ -11,7 +11,7 @@ function TagPage(props) {
   const params = useParams();
   useEffect(() => {
     dispatch(getpostbytag("#" + params.tag));
-  }, [props, params]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props, params]);
 
   return (
     <>

@@ -18,7 +18,7 @@ function MyPlayLists() {
     if (currentUserdata) {
       dispatch(findallForUser(currentUserdata.id));
     }
-  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata]);
 
   return (
     <>

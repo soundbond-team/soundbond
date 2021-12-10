@@ -17,7 +17,7 @@ function MesPartages() {
     if (currentUserdata) {
       dispatch(getAllPostSharedByUser(currentUserdata.id));
     }
-  }, [currentUserdata]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentUserdata]);
 
   return (
     <>

@@ -24,10 +24,10 @@ function MapPage() {
       //récuperer tous les posts dans la database
       dispatch(getallPost());
     });
-    // eslint-disable-next-line
+   
   }, []);
 
-  // eslint-disable-line react-hooks/exhaustive-deps
+ 
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {
@@ -37,10 +37,10 @@ function MapPage() {
       };
       dispatch(get_soundlocation(position));
     });
-    // eslint-disable-next-line
+   
   }, [allposts]);
 
-  // eslint-disable-line react-hooks/exhaustive-deps
+ 
 
   const listItems = soundlocationdata.map((i) => (
     <li key={i.id}>

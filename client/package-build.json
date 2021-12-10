@@ -20,22 +20,13 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/mapbox-gl": "^2.6.0",
-    "@typescript-eslint/eslint-plugin": "^5.6.0",
-    "@typescript-eslint/parser": "^5.6.0",
     "audiobuffer-to-wav": "^1.0.0",
     "axios": "^0.24.0",
-    "babel-eslint": "^10.1.0",
     "bootstrap": "5",
     "chai": "^4.3.4",
     "chromedriver": "^96.0.0",
     "dotenv-webpack": "^7.0.3",
     "edgedriver": "^4.17134.1",
-    "eslint": "^8.4.1",
-    "eslint-plugin-flowtype": "^8.0.3",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.27.1",
-    "eslint-plugin-react-hooks": "^4.3.0",
     "geckodriver": "^2.0.4",
     "js-cookie": "^3.0.1",
     "mapbox-gl": "^2.6.1",
@@ -82,12 +73,6 @@
     "test": "mocha test --timeout 75000",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -102,7 +87,6 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-react-app": "^6.0.0",
     "mocha": "^9.1.3"
   }
 }

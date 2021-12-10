@@ -85,7 +85,7 @@ function Post(props) {
         }
       }
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const useStyles = makeStyles((theme) => ({
     card: {
