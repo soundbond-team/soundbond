@@ -61,6 +61,9 @@ jobs:
         with:
           name: react-app
 
+      - name: Unzip artifact for deployment
+        run: unzip -q client-release.zip
+
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
