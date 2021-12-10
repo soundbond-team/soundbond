@@ -55,10 +55,9 @@ function Profil(props) {
       dispatch(getotherprofiluser(params.username));
       getcurrentUser(params.username);
     }
-  }, [props, params]); //react-hooks/exhaustive-deps  eslint-disable-next-line
+  }, [props, params]);
   useEffect(() => {
     navigate(`/profil/${params.username}/posts`);
-    react-hooks/exhaustive-deps
   }, []);
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);

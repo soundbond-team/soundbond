@@ -10,7 +10,6 @@ function Home() {
 
   useEffect(() => {
     navigate(`/home/allposts`);
-    react-hooks/exhaustive-deps
   }, []);
   return (
     <>
