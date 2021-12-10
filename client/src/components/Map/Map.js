@@ -8,6 +8,7 @@ import "mapbox-gl/dist/mapbox-gl";
 import axios from "axios";
 import { change_ZOOM } from "../../actions/postToMap.actions";
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
 
 const Map = ({ post_points }) => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const Map = ({ post_points }) => {
   const getPostByTag = async (tag) => {
     let result = await axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/post/getPostBytag`,
+      url: backServerURL+`api/v1/post/getPostBytag`,
       data: {
         tag: "#" + tag,
       },

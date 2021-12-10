@@ -7,7 +7,7 @@ export const GET_OTHER_PROFIL_USER = "GET_OTHER_PROFIL_USER";
 export const getUser = (uid) => {
   return (dispatch) => {
     return axios
-      .get(`http://localhost:8080/api/v1/user/${uid}`)
+      .get(process.env.REACT_APP_BACK_SERVER_URL+`api/v1/user/${uid}`)
       .then((res) => {
         dispatch({ type: GET_USER, payload: res.data });
       })
@@ -19,7 +19,7 @@ export const follow = (id, user_id) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/user/follow/${id}`,
+      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/user/follow/${id}`,
       data: {
         following: user_id,
       },
@@ -37,7 +37,7 @@ export const unfollow = (id, user_id) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/user/unfollow/${id}`,
+      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/user/unfollow/${id}`,
       data: {
         following: user_id,
       },
@@ -55,7 +55,7 @@ export const getotherprofiluser = (username) => {
   return (dispatch) => {
     return axios({
       method: "get",
-      url: `http://localhost:8080/api/v1/user/username/${username}`,
+      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/user/username/${username}`,
     })
       .then((res) => {
         if (res.data !== "" && res.data != null) {

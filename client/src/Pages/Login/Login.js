@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import axios from "axios";
 
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
+
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -10,7 +12,7 @@ function Login() {
     e.preventDefault();
     axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/user/login`,
+      url: backServerURL+`api/v1/user/login`,
       withCredentials: true,
       data: {
         username,

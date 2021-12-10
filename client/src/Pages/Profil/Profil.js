@@ -15,6 +15,8 @@ import { getPostTrend } from "../../actions/post.actions";
 import IconButton from "@material-ui/core/IconButton";
 import { useParams, Link, Outlet, useNavigate } from "react-router-dom";
 
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
+
 // il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
 
 function Profil(props) {
@@ -39,7 +41,7 @@ function Profil(props) {
       const getcurrentUser = async (username) => {
         await axios({
           method: "get",
-          url: `http://localhost:8080/api/v1/user/username/${username}`,
+          url: backServerURL+`api/v1/user/username/${username}`,
         })
           .then((res) => {
             if (res.data !== "" && res.data != null) {

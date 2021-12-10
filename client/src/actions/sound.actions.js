@@ -18,7 +18,7 @@ const send_file = (tempfile_object, filename) => {
       'Content-Type': 'multipart/form-data'
     },
     method: "post",
-    url: `http://localhost:8080/api/v1/file/`,
+    url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/file/`,
     data
   })
 
@@ -42,7 +42,7 @@ export const post_sound = (tempfile_object, soundlocation_id, user_id) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/sound/`,
+      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/sound/`,
       data: {
         url: filename, // nom du fichier envoyé précédemment.
         size: tempfile_object['blob']['size'],

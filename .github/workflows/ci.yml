@@ -30,16 +30,30 @@ jobs:
           # Shallow clones should be disabled for a better relevancy of analysis.
           # But we choose only 1 commit because it is way enough
 
-      - name: Writing .env config file for Development (/server)
-        run: |
-          cd server
-          echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nAZURE_CONTAINER_NAME = ${{ secrets.AZURE_CONTAINER_NAME }}\nAZURE_CONNECTION_STRING = ${{ secrets.AZURE_CONNECTION_STRING }}\n" >> .env
+      - name: Generating dotenv config file for Tests (/server)
+        uses: SpicyPizza/create-envfile@master
+        with:
+          envkey_DATABASE: ${{ secrets.DB_NAME }}
+          envkey_USERNAME: ${{ secrets.DB_USERNAME }}
+          envkey_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          envkey_HOST: ${{ secrets.DB_HOST }}
+          envkey_PORT: ${{ secrets.DB_PORT }}
+          envkey_AZURE_CONTAINER_NAME: ${{ secrets.AZURE_CONTAINER_NAME }}
+          envkey_AZURE_CONNECTION_STRING: ${{ secrets.AZURE_CONNECTION_STRING }}
+          envkey_TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+          envkey_AZURE_STORAGE_TOKEN: ${{ secrets.AZURE_STORAGE_TOKEN }}
+          envkey_AZURE_STORAGERESOURCENAME: ${{ secrets.AZURE_STORAGERESOURCENAME }}
+          directory: server
+          file_name: .env
 
-      - name: Writing .env config file for Development (/client)
-        run: |
-          cd client
-          echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\nREACT_APP_MAPBOX_ACCESS_TOKEN = "${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}"\n" >> .env
-
+      - name: Generating dotenv config file for Tests (/client)
+        uses: SpicyPizza/create-envfile@master
+        with:
+          envkey_REACT_APP_AZURE_BLOB_STORAGE_ADRESS: ${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}
+          envkey_REACT_APP_MAPBOX_ACCESS_TOKEN: ${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}
+          envkey_REACT_APP_BACK_SERVER_URL: ${{ secrets.REACT_APP_BACK_SERVER_URL }}
+          directory: client
+          file_name: .env
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
@@ -60,31 +74,21 @@ jobs:
 
       - name: Installation
         run: yarn install
+
       - name: Client installation
         run: |
           cd client 
           yarn install
+
       - name: Server installation
         run: |
           cd server
           yarn install
 
-      - name: Build
+      - name: Client build
         run: |
           cd client
           yarn run build
-
-      - name: Writing .env config file for Tests (/server)
-        run: |
-          cd server
-          rm .env
-          echo -e "DATABASE = "${{ secrets.DB_NAME }}"\nUSERNAME = "${{ secrets.DB_USERNAME }}"\nPASSWORD = "${{ secrets.DB_PASSWORD }}"\nHOST = "${{ secrets.DB_HOST }}"\nPORT = "${{ secrets.DB_PORT }}"\nAZURE_CONTAINER_NAME = ${{ secrets.AZURE_CONTAINER_NAME }}\nAZURE_CONNECTION_STRING = ${{ secrets.AZURE_CONNECTION_STRING }}\n" >> .env
-
-      - name: Writing .env config file for Development (/client)
-        run: |
-          cd client
-          rm .env
-          echo -e "REACT_APP_AZURE_BLOB_STORAGE_ADRESS = "${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}"\nREACT_APP_MAPBOX_ACCESS_TOKEN = "${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}"\n" >> .env
 
       - name: Tests
         run: |
@@ -95,6 +99,7 @@ jobs:
           rm -r .nyc_output
         env:
           CI: true
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
