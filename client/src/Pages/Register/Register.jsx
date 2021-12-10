@@ -3,6 +3,8 @@ import React, {useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import axios from "axios";
 
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
+
 export default function Registration() {
  
   const navigate = useNavigate();
@@ -13,9 +15,12 @@ export default function Registration() {
   
   const handleSignup=async (e)=>{
     e.preventDefault();
+    console.log(backServerURL+`api/v1/user/register`);
+    console.log(process.env.REACT_APP_BACK_SERVER_URL);
     await axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/user/register`,
+      url: backServerURL+`api/v1/user/register`,
+      
       data:{
         username:username,
         password:password

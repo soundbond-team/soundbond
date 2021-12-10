@@ -3,6 +3,8 @@ import { Tooltip } from "@material-ui/core";
 import axios from "axios";
 import "./Search.css";
 
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
+
 export default function SearchBox(props) {
   const [recherche, setRecherche] = useState(" ");
   const refinput = React.useRef();
@@ -40,7 +42,7 @@ export default function SearchBox(props) {
   const findIfTagExists = async () => {
     await axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/post/getTag`,
+      url: backServerURL+`api/v1/post/getTag`,
       data: {
         tag: recherche,
       },
@@ -63,7 +65,7 @@ export default function SearchBox(props) {
   const findIfUserExists = async (username) => {
     await axios({
       method: "get",
-      url: `http://localhost:8080/api/v1/user/username/${username}`,
+      url: backServerURL+`api/v1/user/username/${username}`,
     })
       .then((res) => {
         if (res.data !== "" && res.data != null) {
@@ -111,7 +113,7 @@ export default function SearchBox(props) {
   async function getAllUsers() {
     await axios({
       method: "get",
-      url: `http://localhost:8080/api/v1/user/recherche/${recherche}`,
+      url: backServerURL+`api/v1/user/recherche/${recherche}`,
     })
       .then((res) => {
         if (res.data !== "" && res.data != null) {
@@ -147,7 +149,7 @@ export default function SearchBox(props) {
   async function getAllTags() {
     await axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/tag/recherche`,
+      url: backServerURL+`api/v1/tag/recherche`,
       data: {
         tag: recherche,
       },

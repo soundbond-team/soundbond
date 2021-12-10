@@ -29,6 +29,8 @@ import { UidContext } from "../Appcontext";
 import "./Microphone.css";
 import { Input } from "@material-ui/core";
 
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
+
 var toWav = require("audiobuffer-to-wav");
 
 const useStyles = makeStyles((theme) => ({
@@ -82,7 +84,7 @@ export default function Microphone(props) {
   async function getAllTags(recherche) {
     await axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/tag/recherche`,
+      url: backServerURL+`api/v1/tag/recherche`,
       data: {
         tag: recherche,
       },

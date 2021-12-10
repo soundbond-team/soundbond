@@ -10,7 +10,7 @@ export const get_soundlocation = (location) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/soundlocation/getClosestPositions/`,
+      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/soundlocation/getClosestPositions/`,
       params: { latitude: location.lat, longitude: location.lng },
     })
       .then((res) => {
@@ -25,7 +25,7 @@ export const post_soundlocation = (props) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: `http://localhost:8080/api/v1/soundlocation/`,
+      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/soundlocation/`,
       data: { latitude: props.lat, longitude: props.lng },
     })
       .then((res) => {
