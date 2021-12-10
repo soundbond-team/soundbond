@@ -68,6 +68,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      - name: Getting the right package.json to build
+        run: |
+          cd client
+          rm package.json
+          mv package-build.json package.json
+
       - name: Installation
         run: yarn install
 

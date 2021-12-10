@@ -24,11 +24,11 @@ jobs:
         with:
           node-version: "16.x"
 
-      - name: Getting the right package.json for production
+      - name: Getting the right package.json to build
         run: |
           cd client
           rm package.json
-          mv package-production.json package.json
+          mv package-build.json package.json
 
       - name: Installing packages
         run: |
