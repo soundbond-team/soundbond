@@ -83,7 +83,7 @@ jobs:
 
       - name: Removing dotenv config file for Development (/client)
         run: rm .env
-    
+
       - name: Generating dotenv config file for Tests (/client)
         uses: SpicyPizza/create-envfile@v1
         with:
@@ -93,7 +93,7 @@ jobs:
           directory: client
           file_name: .env
 
-        - name: Tests
+      - name: Tests
         run: |
           cd server
           yarn run coverage
