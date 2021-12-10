@@ -70,11 +70,6 @@ jobs:
           cd server
           yarn install
 
-      - name: Server build
-        run: |
-          cd server
-          yarn run build
-
       - name: Client build
         run: |
           cd client
