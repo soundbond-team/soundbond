@@ -24,7 +24,13 @@ jobs:
         with:
           node-version: "16.x"
 
-      - name: npm install, build, and test
+      - name: Getting the right package.json for production
+        run: |
+          cd client
+          rm package.json
+          mv package-production.json package.json
+
+      - name: Installing packages
         run: |
           cd client
           yarn install
@@ -38,9 +44,14 @@ jobs:
           directory: client
           file_name: .env
 
+      - name: Building
+        run: |
+          cd client
+          yarn build
+
       - name: Zip artifact for deployment
         run: zip -q client-release.zip ./* -r
-        working-directory: ./client/
+        working-directory: ./client/build/
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
