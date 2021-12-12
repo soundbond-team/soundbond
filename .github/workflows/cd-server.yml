@@ -4,9 +4,10 @@
 name: Build and deploy server to Azure Web App
 
 on:
-  push:
+  pull_request:
     branches:
       - main
+      - develop
   #    tags:
   #      - "v*"
   workflow_dispatch:
