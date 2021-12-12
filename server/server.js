@@ -11,7 +11,12 @@ const port = process.env.PORT || 8080; // Port du serveur de développement.
 const checkUser = require("./middleware/auth.middleware");
 const bodyParser = require("body-parser");
 
-app.use(cors({ credentials: true, origin: "http://localhost:3000" })); //!{ credentials: true, origin: "http://localhost:3000" }));
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://master.da5n7xtx8x57u.amplifyapp.com",
+  })
+); //!{ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(cookieParser());
 //
