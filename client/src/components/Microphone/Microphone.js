@@ -29,7 +29,7 @@ import { UidContext } from "../Appcontext";
 import "./Microphone.css";
 import { Input } from "@material-ui/core";
 
-const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
 
 var toWav = require("audiobuffer-to-wav");
 
@@ -84,7 +84,7 @@ export default function Microphone(props) {
   async function getAllTags(recherche) {
     await axios({
       method: "post",
-      url: backServerURL+`api/v1/tag/recherche`,
+      url: backServerURL + `api/v1/tag/recherche`,
       data: {
         tag: recherche,
       },
@@ -249,7 +249,7 @@ export default function Microphone(props) {
   useEffect(() => {
     if (tempFile) {
       addsound(tempFile, lastsoundlocation.id);
-    }
+    } // eslint-disable-next-line
   }, [lastsoundlocation]);
 
   const addsound = (tempfile_object, soundlocation_id) =>
@@ -269,7 +269,7 @@ export default function Microphone(props) {
       setTempFile(null);
       setOpen(false);
       setRecord(false);
-    }
+    } // eslint-disable-next-line
   }, [sound]);
 
   const addpost = (sound_id, _description, tags) =>

@@ -6,7 +6,7 @@ import { UidContext } from "./components/Appcontext";
 import { getPostTrend, getallPost } from "./actions/post.actions";
 import { getUser } from "./actions/user.actions";
 
-const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
 
 const App = () => {
   const [uid, setUid] = useState(null);
@@ -16,7 +16,7 @@ const App = () => {
     const token = async () => {
       await axios({
         method: "get",
-        url: backServerURL+`jwtid`,
+        url: backServerURL + `jwtid`,
         withCredentials: true,
       })
         .then((res) => {
@@ -31,8 +31,9 @@ const App = () => {
     if (uid) {
       dispatch(getUser(uid));
       dispatch(getPostTrend(uid));
-    }
+    } // eslint-disable-next-line
   }, [uid]);
+
   return (
     <UidContext.Provider value={uid}>
       <Routes />

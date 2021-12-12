@@ -16,7 +16,7 @@ function MesPartages() {
   useEffect(() => {
     if (currentUserdata) {
       dispatch(getAllPostSharedByUser(currentUserdata.id));
-    }
+    } // eslint-disable-next-line
   }, [currentUserdata]);
 
   return (

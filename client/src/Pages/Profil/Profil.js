@@ -15,7 +15,7 @@ import { getPostTrend } from "../../actions/post.actions";
 import IconButton from "@material-ui/core/IconButton";
 import { useParams, Link, Outlet, useNavigate } from "react-router-dom";
 
-const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
 
 // il faudra intégrer les requete aux actions et stocker les données dans les reducers (à l'étude)
 
@@ -41,7 +41,7 @@ function Profil(props) {
       const getcurrentUser = async (username) => {
         await axios({
           method: "get",
-          url: backServerURL+`api/v1/user/username/${username}`,
+          url: backServerURL + `api/v1/user/username/${username}`,
         })
           .then((res) => {
             if (res.data !== "" && res.data != null) {
@@ -55,9 +55,12 @@ function Profil(props) {
       dispatch(getotherprofiluser(params.username));
       getcurrentUser(params.username);
     }
+    // eslint-disable-next-line
   }, [props, params]);
+
   useEffect(() => {
     navigate(`/profil/${params.username}/posts`);
+    // eslint-disable-next-line
   }, []);
   const pushUserdata = async (data) => {
     await setcurrentUserdata(data);
@@ -104,6 +107,7 @@ function Profil(props) {
         }
       }
     }
+    // eslint-disable-next-line
   }, [currentUserdata]);
 
   return (

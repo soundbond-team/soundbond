@@ -16,7 +16,7 @@ function MyPosts() {
   useEffect(() => {
     if (currentUserdata) {
       dispatch(getPostsUser(currentUserdata.id));
-    }
+    } // eslint-disable-next-line
   }, [currentUserdata]);
 
   return (

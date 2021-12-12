@@ -8,7 +8,7 @@ import "mapbox-gl/dist/mapbox-gl";
 import axios from "axios";
 import { change_ZOOM } from "../../actions/postToMap.actions";
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
-const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
 
 const Map = ({ post_points }) => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const Map = ({ post_points }) => {
   const getPostByTag = async (tag) => {
     let result = await axios({
       method: "post",
-      url: backServerURL+`api/v1/post/getPostBytag`,
+      url: backServerURL + `api/v1/post/getPostBytag`,
       data: {
         tag: "#" + tag,
       },
@@ -186,6 +186,7 @@ const Map = ({ post_points }) => {
     });
     // Clean up on unmount
     return () => map.remove();
+    // eslint-disable-next-line
   }, [post_points, itineraire]);
 
   function getCoordinates() {
@@ -203,6 +204,7 @@ const Map = ({ post_points }) => {
     if (map != null) {
       getCoordinates();
     }
+    // eslint-disable-next-line
   }, [map]);
   return (
     <>

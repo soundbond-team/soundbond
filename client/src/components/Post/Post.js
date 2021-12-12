@@ -84,7 +84,7 @@ function Post(props) {
           setRePosted(false);
         }
       }
-    }
+    } // eslint-disable-next-line
   }, []);
 
   const useStyles = makeStyles((theme) => ({
