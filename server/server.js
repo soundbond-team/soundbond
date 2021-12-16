@@ -14,9 +14,9 @@ const bodyParser = require("body-parser");
 app.use(
   cors({
     credentials: true,
-    origin: "https://master.da5n7xtx8x57u.amplifyapp.com",
+    origin: process.env.FRONT_SERVER_URL,
   })
-); //!{ credentials: true, origin: "http://localhost:3000" }));
+);
 app.use(express.json());
 app.use(cookieParser());
 //
