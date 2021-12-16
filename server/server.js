@@ -11,10 +11,15 @@ const port = process.env.PORT || 8080; // Port du serveur de développement.
 const checkUser = require("./middleware/auth.middleware");
 const bodyParser = require("body-parser");
 
-app.use(cors());//!{ credentials: true, origin: "http://localhost:3000" }));
+app.use(
+  cors({
+    credentials: true,
+    origin: process.env.FRONT_SERVER_URL,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
-
+//
 // File Upload
 app.use(fileupload());
 app.use(express.static("files"));

@@ -17,7 +17,7 @@ function MyPlayLists() {
   useEffect(() => {
     if (currentUserdata) {
       dispatch(findallForUser(currentUserdata.id));
-    }
+    } // eslint-disable-next-line
   }, [currentUserdata]);
 
   return (

@@ -33,13 +33,13 @@ function MesPlaylistOnMap(props) {
 
       dispatch(change_itineraire(itineraire_list));
       setItineraire(null);
-    }
+    } // eslint-disable-next-line
   }, [itineraire]);
 
   useEffect(() => {
     if (currentUserdata) {
       dispatch(findallForUser(currentUserdata.id));
-    }
+    } // eslint-disable-next-line
   }, [currentUserdata]);
 
   return (

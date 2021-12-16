@@ -2,14 +2,14 @@ import React from "react";
 import axios from "axios";
 import cookie from "js-cookie";
 
-const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
 
 function Logout() {
   const logout = async (e) => {
     e.preventDefault();
     await axios({
       method: "get",
-      url: backServerURL+`api/v1/user/logout`,
+      url: backServerURL + `api/v1/user/logout`,
       withCredentials: true,
     })
       .then(() => removeCookiejwt("jwt"))
@@ -19,7 +19,7 @@ function Logout() {
   };
 
   const removeCookiejwt = (key) => {
-   
+    // eslint-disable-next-line
     if (window != "undefined") {
       cookie.remove(key, { expires: 1 });
     }

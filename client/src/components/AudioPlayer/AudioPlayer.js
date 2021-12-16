@@ -71,6 +71,7 @@ export default function AudioPlayer(props) {
     wavesurfer.current.on("play", () => setIsPlaying(true));
     wavesurfer.current.on("pause", () => setIsPlaying(false));
     window.addEventListener("resize", handleResize, false);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

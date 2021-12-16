@@ -11,6 +11,7 @@ function TagPage(props) {
   const params = useParams();
   useEffect(() => {
     dispatch(getpostbytag("#" + params.tag));
+    // eslint-disable-next-line
   }, [props, params]);
 
   return (

@@ -24,10 +24,8 @@ function MapPage() {
       //récuperer tous les posts dans la database
       dispatch(getallPost());
     });
-   
+    // eslint-disable-next-line
   }, []);
-
- 
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async function (positiongeo) {
@@ -36,11 +34,8 @@ function MapPage() {
         lng: positiongeo.coords.longitude,
       };
       dispatch(get_soundlocation(position));
-    });
-   
+    }); // eslint-disable-next-line
   }, [allposts]);
-
- 
 
   const listItems = soundlocationdata.map((i) => (
     <li key={i.id}>

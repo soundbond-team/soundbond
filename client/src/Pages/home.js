@@ -10,6 +10,7 @@ function Home() {
 
   useEffect(() => {
     navigate(`/home/allposts`);
+    // eslint-disable-next-line
   }, []);
   return (
     <>

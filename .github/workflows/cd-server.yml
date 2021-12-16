@@ -44,6 +44,7 @@ jobs:
           envkey_TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
           envkey_AZURE_STORAGE_TOKEN: ${{ secrets.AZURE_STORAGE_TOKEN }}
           envkey_AZURE_STORAGERESOURCENAME: ${{ secrets.AZURE_STORAGERESOURCENAME }}
+          FRONT_SERVER_URL: ${{ secrets.FRONT_SERVER_URL }}
           directory: server
           file_name: .env
 

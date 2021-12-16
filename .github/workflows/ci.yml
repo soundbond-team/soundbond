@@ -39,6 +39,7 @@ jobs:
           envkey_TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
           envkey_AZURE_STORAGE_TOKEN: ${{ secrets.AZURE_STORAGE_TOKEN }}
           envkey_AZURE_STORAGERESOURCENAME: ${{ secrets.AZURE_STORAGERESOURCENAME }}
+          FRONT_SERVER_URL: ${{ secrets.FRONT_SERVER_URL }}
           directory: server
           file_name: .env
 
@@ -68,11 +69,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Getting the right package.json to build
-        run: |
-          cd client
-          rm package.json
-          mv package-build.json package.json
+      # - name: Getting the right package.json to build
+      #  run: |
+      #   cd client
+      #  rm package.json
+      #  mv package-build.json package.json
 
       - name: Installation
         run: yarn install

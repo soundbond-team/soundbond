@@ -3,7 +3,7 @@ import { Tooltip } from "@material-ui/core";
 import axios from "axios";
 import "./Search.css";
 
-const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
 
 export default function SearchBox(props) {
   const [recherche, setRecherche] = useState(" ");
@@ -14,7 +14,6 @@ export default function SearchBox(props) {
   const [tagSuggestion, setTagSuggestion] = useState([]);
   const [userSuggestion, setUserSuggestion] = useState([]);
 
-  
   const navigateToTag = async () => {
     await findIfTagExists().then(() => {
       if (tagexist === true) {
@@ -25,7 +24,7 @@ export default function SearchBox(props) {
         setUserSuggestion([]);
         props.childToParent(recherche.substring(1), "tag");
       }
-    })
+    });
   };
 
   const handleTooltipClose = () => {
@@ -42,7 +41,7 @@ export default function SearchBox(props) {
   const findIfTagExists = async () => {
     await axios({
       method: "post",
-      url: backServerURL+`api/v1/post/getTag`,
+      url: backServerURL + `api/v1/post/getTag`,
       data: {
         tag: recherche,
       },
@@ -65,7 +64,7 @@ export default function SearchBox(props) {
   const findIfUserExists = async (username) => {
     await axios({
       method: "get",
-      url: backServerURL+`api/v1/user/username/${username}`,
+      url: backServerURL + `api/v1/user/username/${username}`,
     })
       .then((res) => {
         if (res.data !== "" && res.data != null) {
@@ -92,8 +91,7 @@ export default function SearchBox(props) {
         setUserSuggestion([]);
         props.childToParent(recherche, "user");
       }
-    })
-
+    });
   };
 
   function onChangesearch(e) {
@@ -107,13 +105,13 @@ export default function SearchBox(props) {
     } else {
       getAllUsers();
       setTagSuggestion([]);
-    }
-  }, [recherche]);
+    } // eslint-disable-next-line
+  }, [recherche]); // eslint-disable-next-line
 
   async function getAllUsers() {
     await axios({
       method: "get",
-      url: backServerURL+`api/v1/user/recherche/${recherche}`,
+      url: backServerURL + `api/v1/user/recherche/${recherche}`,
     })
       .then((res) => {
         if (res.data !== "" && res.data != null) {
@@ -149,7 +147,7 @@ export default function SearchBox(props) {
   async function getAllTags() {
     await axios({
       method: "post",
-      url: backServerURL+`api/v1/tag/recherche`,
+      url: backServerURL + `api/v1/tag/recherche`,
       data: {
         tag: recherche,
       },
@@ -215,8 +213,7 @@ export default function SearchBox(props) {
                 zIndex: "10",
               }}
             >
-
-            {userSuggestion ? (
+              {userSuggestion ? (
                 userSuggestion.map((user) => (
                   <li
                     onClick={() => navigateToUserOption(user.username)}

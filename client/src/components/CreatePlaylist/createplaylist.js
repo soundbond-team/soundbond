@@ -60,6 +60,7 @@ export default function CreatePlaylist(props) {
 
   useEffect(() => {
     dispatch(getPostsUser(userData.id));
+    // eslint-disable-next-line
   }, [userData]);
   useEffect(() => {
     console.log(list_post);
