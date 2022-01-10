@@ -10,11 +10,12 @@ const fileupload = require("express-fileupload");
 const port = process.env.PORT || 8080; // Port du serveur de développement.
 const checkUser = require("./middleware/auth.middleware");
 const bodyParser = require("body-parser");
-app.all('', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
- });
+app.get('/', function(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type'); // If needed
+    res.setHeader('Access-Control-Allow-Credentials', true); // If needed
+});
 app.use(
   cors({
     credentials: true,
