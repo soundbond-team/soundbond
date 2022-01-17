@@ -53,7 +53,7 @@ const { response } = require("express");
 const multer = require("multer");
 
 // Pour synchroniser la base de données après quelques changements, utiliser :
-//db.sequelize.sync({});
+db.sequelize.sync({});
 
 app.post("/upload", (req, res, next) => {
   let imageFile = req.files.file;
