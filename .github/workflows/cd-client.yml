@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - main
+  #    tags:
+  #      - "v*"
   workflow_dispatch:
 
 jobs:
@@ -22,15 +24,9 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: "16.x"
+          node-version: '16.x'
 
-      - name: Getting the right package.json to build
-        run: |
-          cd client
-          rm package.json
-          mv package-build.json package.json
-
-      - name: Installing packages
+      - name: Install packages
         run: |
           cd client
           yarn install
@@ -50,8 +46,8 @@ jobs:
           yarn build
 
       - name: Zip artifact for deployment
-        run: zip -q client-release.zip ./* -r
-        working-directory: ./client/build/
+        run: zip -q -r client-release.zip * .[^.]*
+        working-directory: ./client/
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -63,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: "Production"
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -75,11 +71,11 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip -q client-release.zip
 
-      - name: "Deploy to Azure Web App"
+      - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "soundbond"
-          slot-name: "Production"
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F899ED0F065D4885807957A2F3A98B6C }}
+          app-name: 'soundbond'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EFD520899444406984EEEFAE66C1FDE0 }}
           package: .
