@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: "16.x" # was 14.x
 
-      - name: npm install, build, and test
+      - name: Install packages
         run: |
           cd server
           yarn install
