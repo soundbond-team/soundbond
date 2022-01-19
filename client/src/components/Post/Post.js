@@ -42,6 +42,7 @@ import { UidContext } from "../Appcontext";
 import RepeatIcon from "@mui/icons-material/Repeat";
 
 const URL_APP = "https://master.da5n7xtx8x57u.amplifyapp.com";
+const DATE_FORMAT_LANG = "fr-FR";
 
 function Post(props) {
   const [liked, setLiked] = useState(false);
@@ -174,6 +175,14 @@ function Post(props) {
   };
   const [blob_url] = useState(getFileName());
 
+  const date = new Date(props.post.publishing.createdAt);
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
   return (
     <>
       <Card className={classes.card}>
@@ -201,7 +210,11 @@ function Post(props) {
                 <ListItemText
                   primary={props.post.publisher.username}
                   secondary={"@".concat(
-                    props.post.publisher.username + " · 11h ago"
+                    props.post.publisher.username +
+                      " · " +
+                      new Intl.DateTimeFormat(DATE_FORMAT_LANG, options).format(
+                        date
+                      )
                   )}
                 />{" "}
               </NavLink>
