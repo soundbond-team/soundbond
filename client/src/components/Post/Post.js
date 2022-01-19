@@ -41,9 +41,6 @@ import { TextInput } from "react-native";
 import { UidContext } from "../Appcontext";
 import RepeatIcon from "@mui/icons-material/Repeat";
 
-const URL_APP = "https://master.da5n7xtx8x57u.amplifyapp.com";
-const DATE_FORMAT_LANG = "fr-FR";
-
 function Post(props) {
   const [liked, setLiked] = useState(false);
   const [rePosted, setRePosted] = useState(false);
@@ -183,6 +180,7 @@ function Post(props) {
     hour: "numeric",
     minute: "numeric",
   };
+
   return (
     <>
       <Card className={classes.card}>
@@ -212,9 +210,10 @@ function Post(props) {
                   secondary={"@".concat(
                     props.post.publisher.username +
                       " · " +
-                      new Intl.DateTimeFormat(DATE_FORMAT_LANG, options).format(
-                        date
-                      )
+                      new Intl.DateTimeFormat(
+                        navigator.language,
+                        options
+                      ).format(date)
                   )}
                 />{" "}
               </NavLink>
@@ -319,7 +318,7 @@ function Post(props) {
 
           <span>
             <FacebookShareButton
-              url={`${URL_APP}/profil/${props.post.publisher.username}`}
+              url={`${process.env.URL_APP}/profil/${props.post.publisher.username}`}
               quote={`Écouter ce super post SoundBond -> ${props.post.description}`}
               className={classes.socialMediaButton}
             >
@@ -328,7 +327,7 @@ function Post(props) {
           </span>
           <span>
             <TwitterShareButton
-              url={`${URL_APP}/profil/${props.post.publisher.username}`}
+              url={`${process.env.URL_APP}/profil/${props.post.publisher.username}`}
               title={`Écouter ce super post SoundBond -> ${props.post.description}`}
               className={classes.socialMediaButton}
             >
