@@ -6,7 +6,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 
 import { useDispatch, useSelector } from "react-redux";
-import "../Share/Share";
 import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
@@ -173,6 +172,15 @@ function Post(props) {
   };
   const [blob_url] = useState(getFileName());
 
+  const date = new Date(props.post.publishing.createdAt);
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
+
   return (
     <>
       <Card className={classes.card}>
@@ -200,7 +208,12 @@ function Post(props) {
                 <ListItemText
                   primary={props.post.publisher.username}
                   secondary={"@".concat(
-                    props.post.publisher.username + " · 11h ago"
+                    props.post.publisher.username +
+                      " · " +
+                      new Intl.DateTimeFormat(
+                        navigator.language,
+                        options
+                      ).format(date)
                   )}
                 />{" "}
               </NavLink>
@@ -305,7 +318,7 @@ function Post(props) {
 
           <span>
             <FacebookShareButton
-              url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
+              url={`${process.env.URL_APP}/profil/${props.post.publisher.username}`}
               quote={`Écouter ce super post SoundBond -> ${props.post.description}`}
               className={classes.socialMediaButton}
             >
@@ -314,7 +327,7 @@ function Post(props) {
           </span>
           <span>
             <TwitterShareButton
-              url={`http://192.168.1.15:3000/profil/${props.post.publisher.username}`}
+              url={`${process.env.URL_APP}/profil/${props.post.publisher.username}`}
               title={`Écouter ce super post SoundBond -> ${props.post.description}`}
               className={classes.socialMediaButton}
             >
