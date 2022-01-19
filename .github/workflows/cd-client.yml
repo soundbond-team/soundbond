@@ -40,11 +40,6 @@ jobs:
           directory: client
           file_name: .env
 
-      - name: Building
-        run: |
-          cd client
-          yarn build
-
       - name: Zip artifact for deployment
         run: zip -q -r client-release.zip * .[^.]*
         working-directory: ./client/
@@ -63,7 +58,7 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: react-app
