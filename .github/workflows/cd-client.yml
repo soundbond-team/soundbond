@@ -72,5 +72,5 @@ jobs:
         with:
           app-name: 'soundbond'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EFD520899444406984EEEFAE66C1FDE0 }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_b14dfe83206944dd865aaf893d241bd0 }}
           package: .
