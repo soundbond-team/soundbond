@@ -21,5 +21,8 @@ module.exports = (app) => {
   // Delete all sound
   router.delete("/", sound.deleteAll);
 
+  // visits
+  router.post("/visit/:id", sound.visit);
+
   app.use("/api/v1/sound", router);
 };

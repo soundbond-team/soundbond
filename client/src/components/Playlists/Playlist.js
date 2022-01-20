@@ -50,7 +50,7 @@ function Playlist(props) {
       >
         <Card
           onClick={handleClickOpen}
-          style={props.parent ? { width: "15rem" } : { width: "30rem" }}
+          style={props.parent ? { width: "15rem" } : { width: "100%" }}
         >
           <Card.Header> Playlist</Card.Header>
           <Card.Body>

@@ -15,14 +15,18 @@ function Home() {
   return (
     <>
       <div className="container">
-        <div className="row">
-          <div className="col-1">
-            <div className="container-fluid">
-              <div className="row">
+        <div className="row" style={{ width: "100%", margin: 0 }}>
+          <div className="col-1 d-flex justify-content-around">
+            <div style={{ zIndex: 2, position: "fixed" }}>
+              <br /> <br />
+              <Microphone pushFile={null} />
+              <br />
+              <div className="row d-flex justify-content-end">
                 <Link style={{ textDecoration: "none" }} exact to="allposts">
                   <IconButton>
                     <HomeIcon style={{ fill: "black", fontSize: "25px" }} />
                     <span
+                      className="d-lg-block d-none"
                       style={{
                         marginLeft: "5px",
                         fontSize: "18px",
@@ -34,11 +38,12 @@ function Home() {
                   </IconButton>
                 </Link>
               </div>
-              <div className="row">
+              <div className="row d-flex justify-content-start">
                 <Link style={{ textDecoration: "none" }} exact to="trending">
                   <IconButton>
                     <GroupIcon style={{ fill: "black", fontSize: "25px" }} />
                     <span
+                      className="d-lg-block d-none"
                       style={{
                         marginLeft: "5px",
                         fontSize: "18px",
@@ -50,18 +55,10 @@ function Home() {
                   </IconButton>
                 </Link>
               </div>
-              <br></br>
             </div>
           </div>
-          <div className="col-11 ">
-            <div className="row ">
-              {" "}
-              <Microphone pushFile={null} />
-              <br /> <br />{" "}
-            </div>
-            <div className="row ">
-              <Outlet />
-            </div>{" "}
+          <div className="col-11 " text-center>
+            <Outlet />
           </div>
         </div>
       </div>

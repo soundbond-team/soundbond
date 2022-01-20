@@ -1,17 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { v4 as uuidv4 } from "uuid";
 
 import { makeStyles } from "@material-ui/styles";
-
+import { addVisit } from "../../actions/sound.actions";
+import { UidContext } from "../Appcontext";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import StopIcon from "@material-ui/icons/Stop";
-
+import { useDispatch } from "react-redux";
 import PauseIcon from "@material-ui/icons/Pause";
+import CheckIcon from "@material-ui/icons/Check";
 import Grid from "@material-ui/core/Grid";
 import DownloadIcon from "@mui/icons-material/Download";
 import { blue } from "@material-ui/core/colors";
 import IconButton from "@material-ui/core/IconButton";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 600,
@@ -49,6 +52,18 @@ export default function AudioPlayer(props) {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const wavesurferId = `wavesurfer--${uuidv4()}`;
+  const uid = useContext(UidContext);
+  const dispatch = useDispatch();
+  const [visited, setVisited] = useState(() => {
+    for (let i = 0; i < props.visit.length; i++) {
+      if (props.visit[i].id === uid) {
+        return true;
+      }
+    }
+    return false;
+  });
+  const [compteurVisite, setCompteurVisite] = useState(props.visit.length);
+
   useEffect(() => {
     wavesurfer.current = WaveSurfer.create({
       container: `#${wavesurferId}`,
@@ -70,6 +85,16 @@ export default function AudioPlayer(props) {
 
     wavesurfer.current.on("play", () => setIsPlaying(true));
     wavesurfer.current.on("pause", () => setIsPlaying(false));
+    wavesurfer.current.on("finish", async () => {
+      if (uid != null && props.id_son != null) {
+        if (!visited) {
+          setCompteurVisite(compteurVisite + 1);
+          setVisited(true);
+        }
+
+        await dispatch(addVisit(props.id_son, uid));
+      }
+    });
     window.addEventListener("resize", handleResize, false);
     // eslint-disable-next-line
   }, []);
@@ -131,8 +156,8 @@ export default function AudioPlayer(props) {
   return (
     <>
       <Grid item id={wavesurferId} />
-      <Grid item container className={classes.buttons}>
-        <Grid item xs={5}>
+      <Grid item className={classes.buttons}>
+        <Grid item>
           {transportPlayButton}
 
           <IconButton onClick={stopPlayback}>
@@ -147,11 +172,28 @@ export default function AudioPlayer(props) {
               className={classes.icon}
             />{" "}
           </IconButton>
-
-          <p style={{ margin: "4px" }}>
-            {"  Latitude: " + props.latitude}{" "}
-            {" / Longitude: " + props.longitude}{" "}
-          </p>
+          {visited ? (
+            <>
+              {" "}
+              <IconButton style={{ float: " right" }}>
+                <CheckIcon
+                  className={classes.icon}
+                  style={{ marginLeft: "5px" }}
+                />{" "}
+                <span style={{ fontSize: "15px", marginLeft: "5px" }}> Vu</span>
+              </IconButton>
+            </>
+          ) : (
+            <span></span>
+          )}
+          <IconButton>
+            <span style={{ fontSize: "15px" }}> {compteurVisite}</span>
+            <VisibilityIcon
+              className={classes.icon}
+              style={{ marginLeft: "5px" }}
+            />
+          </IconButton>
+          <p style={{ margin: "4px", fontSize: "13px" }}>{props.address}</p>
         </Grid>
       </Grid>
     </>

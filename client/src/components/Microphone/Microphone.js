@@ -35,8 +35,8 @@ var toWav = require("audiobuffer-to-wav");
 
 const useStyles = makeStyles((theme) => ({
   icon: {
-    height: 38,
-    width: 38,
+    height: 30,
+    width: 30,
   },
   reactmic: {
     width: "100%",
@@ -333,7 +333,7 @@ export default function Microphone(props) {
 
   return (
     <>
-      <div className="container d-flex justify-content-center">
+      <div className="row d-flex justify-content-start">
         <IconButton onClick={handleClickOpen}>
           <MicIcon className={classes.icon} />
         </IconButton>

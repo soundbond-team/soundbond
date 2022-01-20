@@ -7,6 +7,7 @@ import {
   ADD_SHARE,
   REMOVE_SHARE,
 } from "../actions/post.actions";
+
 import {
   add_like,
   remove_like,
@@ -37,6 +38,7 @@ export default function profilPostReducer(state = initialState, action) {
       return add_share(state, action.payload);
     case REMOVE_SHARE:
       return remove_share(state, action.payload);
+
     default:
       return state;
   }

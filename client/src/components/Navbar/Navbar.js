@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import "./Navbar.css";
 
 //import { Chat, Notifications, Person, Search } from "@material-ui/icons"
 
@@ -17,7 +16,7 @@ function NavigationBar() {
   return (
     <>
       <nav
-        className="navbar navbar-expand-lg navbar-light bg-light"
+        className="navbar navbar-expand-lg sticky-top  navbar-light bg-light"
         style={{ marginBottom: "20px" }}
       >
         <div className="container-fluid">

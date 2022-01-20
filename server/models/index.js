@@ -41,6 +41,7 @@ db.Post = require("./post")(sequelize, Sequelize);
 db.Comments = require("./comment")(sequelize, Sequelize);
 db.Tag = require("./tag")(sequelize, Sequelize);
 db.Playlist = require("./playlists")(sequelize, Sequelize);
+
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 //Chaque Post a un ou plusieurs tags
 db.Post.belongsToMany(db.Tag, {
@@ -66,6 +67,17 @@ db.Sound.belongsTo(db.User, {
   through: "user_sound",
   as: "uploader",
   foreignKey: "uploader_user_id",
+});
+
+db.Sound.belongsToMany(db.User, {
+  through: "visits",
+  as: "visited_by",
+  foreignKey: "sound_id",
+});
+db.User.belongsToMany(db.Sound, {
+  through: "visits",
+  as: "visits_posts",
+  foreignKey: "user_id",
 });
 
 db.User.hasOne(db.Playlist, {
