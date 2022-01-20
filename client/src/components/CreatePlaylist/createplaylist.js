@@ -14,8 +14,11 @@ import { Input } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getPostsUser } from "../../actions/post.actions";
-import { create_playlist } from "../../actions/playlist.actions";
-import { findallForUser } from "../../actions/playlist.actions";
+import {
+  create_playlist,
+  findallForUser,
+} from "../../actions/playlist.actions";
+
 const useStyles = makeStyles((theme) => ({
   icon: {
     height: 38,
@@ -89,14 +92,10 @@ export default function CreatePlaylist(props) {
 
   return (
     <>
-      <div
-        className="container d-flex justify-content-center"
-        style={{ marginBottom: "35px" }}
-      >
-        <IconButton onClick={handleClickOpen}>
-          <PlaylistAddIcon className={classes.icon} />
-        </IconButton>
-      </div>
+      <IconButton onClick={handleClickOpen}>
+        <PlaylistAddIcon className={classes.icon} />
+      </IconButton>
+
       <Dialog fullWidth maxWidth="lg" open={open} onClose={handleCancel}>
         <DialogTitle className={classes.flex}>Creer une Playlist</DialogTitle>
         <DialogContent>

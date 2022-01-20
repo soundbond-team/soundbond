@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { get_soundlocation } from "../actions/soundlocation.actions";
 import { getallPost } from "../actions/post.actions";
 import Map from "../components/Map/Map";
-import CreatePlaylist from "../components/CreatePlaylist/createplaylist";
 
 import MesPlaylistOnMap from "../components/MesPlaylistOnMap/MesPlaylistOnMap";
 function MapPage() {
@@ -47,9 +46,6 @@ function MapPage() {
       <div className="container-xxl">
         <div className="row">
           {" "}
-          <div className="col-1">
-            <CreatePlaylist />
-          </div>
           <div className="col-11">
             <div className="row justify-content-center">
               {" "}

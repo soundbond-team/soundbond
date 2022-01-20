@@ -117,70 +117,59 @@ function Profil(props) {
           {" "}
           <div className="container">
             {" "}
-            <div style={{ maxWidth: "550px", margin: "0px auto" }}>
-              <div
-                style={{
-                  margin: "18px 0px",
-                  borderBottom: "1px solid grey",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-around",
-                  }}
-                >
-                  <div>
-                    <h4>
-                      {currentUserdata ? currentUserdata.username : <p></p>}
-                    </h4>
+            <div
+              style={{
+                borderBottom: "1px solid grey",
+                maxWidth: "550px",
+                margin: "0px auto",
+              }}
+            >
+              <div>
+                <h4>{currentUserdata ? currentUserdata.username : <p></p>}</h4>
 
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        width: "150%",
-                      }}
-                    >
-                      <h6 onClick={handleShow2}>
-                        {" "}
-                        Abonnements :
-                        {currentUserdata.follow.length > 0 ? (
-                          currentUserdata.follow.length
-                        ) : (
-                          <span>0</span>
-                        )}
-                      </h6>
-                      <h6 onClick={handleShow}>
-                        {" "}
-                        Abonnés :
-                        {currentUserdata.following.length > 0 ? (
-                          currentUserdata.following.length
-                        ) : (
-                          <span>0</span>
-                        )}
-                      </h6>
-                    </div>
-                    {currentUserdata.id !== uid ? (
-                      <div>
-                        {isFollow ? (
-                          <button onClick={unfollowclick}>unFollow</button>
-                        ) : (
-                          <button onClick={followclick}>Follow</button>
-                        )}
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
+                <div className="container d-flex  justify-content-around">
+                  <div>
+                    <h6 onClick={handleShow2}>
+                      {" "}
+                      Abonnements :
+                      {currentUserdata.follow.length > 0 ? (
+                        currentUserdata.follow.length
+                      ) : (
+                        <span>0</span>
+                      )}
+                    </h6>
+                  </div>
+                  <div>
+                    {" "}
+                    <h6 onClick={handleShow}>
+                      {" "}
+                      Abonnés :
+                      {currentUserdata.following.length > 0 ? (
+                        currentUserdata.following.length
+                      ) : (
+                        <span>0</span>
+                      )}
+                    </h6>
                   </div>
                 </div>
+                {currentUserdata.id !== uid ? (
+                  <div>
+                    {isFollow ? (
+                      <button onClick={unfollowclick}>unFollow</button>
+                    ) : (
+                      <button onClick={followclick}>Follow</button>
+                    )}
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </div>
             </div>
             <br />
           </div>
           <div className="container">
             <div className="row">
-              <div className="col-1">
+              <div className="col-1 d-inline-flex flex-lg-column">
                 <Link
                   style={{
                     margin: "4px",
@@ -197,7 +186,7 @@ function Profil(props) {
                       style={{
                         marginLeft: "5px",
                         fontSize: "18px",
-                        whiteSpace: "nowrap",
+
                         color: "black",
                       }}
                     >
@@ -221,7 +210,7 @@ function Profil(props) {
                       style={{
                         marginLeft: "5px",
                         fontSize: "18px",
-                        whiteSpace: "nowrap",
+
                         color: "black",
                       }}
                     >
@@ -246,7 +235,7 @@ function Profil(props) {
                       style={{
                         marginLeft: "5px",
                         fontSize: "18px",
-                        whiteSpace: "nowrap",
+
                         color: "black",
                       }}
                     >
@@ -257,9 +246,12 @@ function Profil(props) {
               </div>
 
               <div className="col-11">
-                <Outlet />
+                <br></br> <br></br> <br></br>
+                <div className="row ">
+                  <Outlet />
+                </div>
               </div>
-            </div>
+            </div>{" "}
           </div>
           <Modal show={show} onHide={handleClose} size="sm" centered>
             <ModalHeader closeButton>

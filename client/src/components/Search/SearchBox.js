@@ -206,7 +206,7 @@ export default function SearchBox(props) {
             <ul
               style={{
                 listStyle: "none",
-                height: "200px",
+
                 overflow: "auto",
                 width: "200px",
                 position: "fixed",

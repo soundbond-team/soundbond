@@ -7,9 +7,12 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "mapbox-gl/dist/mapbox-gl";
 import axios from "axios";
 import { change_ZOOM } from "../../actions/postToMap.actions";
+import CreatePlaylist from "../CreatePlaylist/createplaylist";
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
-
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass =
+  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default; // eslint-disable-line import/no-webpack-loader-syntax
 const Map = ({ post_points }) => {
   const dispatch = useDispatch();
   const mapContainerRef = useRef(null);
@@ -215,11 +218,13 @@ const Map = ({ post_points }) => {
       />
 
       <div className="container-fluid">
+        <CreatePlaylist />
         <div className="sidebarStyle">
           <div>
             Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
           </div>
         </div>
+
         <div className="map-container" ref={mapContainerRef} />
       </div>
     </>
