@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
-
+import mapboxgl from "mapbox-gl";
 import { useDispatch, useSelector } from "react-redux";
 import CommentIcon from "@material-ui/icons/Comment";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
@@ -40,16 +40,30 @@ import { TextInput } from "react-native";
 
 import { UidContext } from "../Appcontext";
 import RepeatIcon from "@mui/icons-material/Repeat";
-
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 function Post(props) {
-  const [liked, setLiked] = useState(false);
-  const [rePosted, setRePosted] = useState(false);
+  const uid = useContext(UidContext);
+  const [liked, setLiked] = useState(() => {
+    for (let i = 0; i < props.post.liked_by.length; i++) {
+      if (props.post.liked_by[i].id === uid) {
+        return true;
+      }
+    }
+    return false;
+  });
+  const [rePosted, setRePosted] = useState(() => {
+    for (let i = 0; i < props.post.shared_by.length; i++) {
+      if (props.post.shared_by[i].id === uid) {
+        return true;
+      }
+    }
+    return false;
+  });
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
   const [commentaire, setCommentaire] = useState(""); // Utilisé pour stocker un commentaire.
 
   const dispatch = useDispatch();
-  const uid = useContext(UidContext);
 
   const navigate = useNavigate();
 
@@ -60,28 +74,27 @@ function Post(props) {
   const [showCommentsModal, setShowCommentsModal] = useState(false);
   const handleCloseCommentsModal = () => setShowCommentsModal(false);
   const handleShowCommentsModal = () => setShowCommentsModal(true);
-
+  const [placeName, setplaceName] = useState("");
   useEffect(() => {
     let currentpost = props.post;
     if (currentpost) {
-      if (currentpost.liked_by) {
-        for (let i = 0; i < currentpost.liked_by.length; i++) {
-          if (currentpost.liked_by[i].id === uid) {
-            setLiked(true);
-            break;
-          } else {
-            setLiked(false);
-          }
-        }
+      async function translateToAdress() {
+        let lat = currentpost.publishing.soundlocation.latitude;
+        let lng = currentpost.publishing.soundlocation.longitude;
+        await fetch(
+          ` https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?types=address&access_token=${mapboxgl.accessToken}`,
+          { method: "GET" }
+        ).then(async (response) => {
+          let address = await response.json();
+          console.log(address.features[0].place_name);
+          setplaceName(address.features[0].place_name);
+        });
       }
-
-      for (let i = 0; i < currentpost.shared_by.length; i++) {
-        if (currentpost.shared_by[i].id === uid) {
-          setRePosted(true);
-          break;
-        } else {
-          setRePosted(false);
-        }
+      if (
+        currentpost.publishing.soundlocation.latitude != null &&
+        currentpost.publishing.soundlocation.longitude != null
+      ) {
+        translateToAdress();
       }
     } // eslint-disable-next-line
   }, []);
@@ -228,8 +241,12 @@ function Post(props) {
             id="son"
             file_url={blob_url}
             id_son={props.post.publishing.id}
-            latitude={props.post.publishing.soundlocation.latitude}
-            longitude={props.post.publishing.soundlocation.longitude}
+            address={placeName !== "" ? placeName : ""}
+            visit={
+              props.post.publishing.visited_by
+                ? props.post.publishing.visited_by
+                : null
+            }
           />
         }
 

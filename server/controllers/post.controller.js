@@ -3,21 +3,26 @@ const sanitizeHtml = require("sanitize-html");
 const Op = db.Sequelize.Op;
 
 /*
-  * Helpers
-*/
+ * Helpers
+ */
 
-const helper_include_soundlocation = [
-  {
-    model: db.SoundLocation,
-    as: "soundlocation",
-  },
-];
+const helper_include_soundlocation = {
+  model: db.SoundLocation,
+  as: "soundlocation",
+};
+
+const helper_include_visited = {
+  model: db.User,
+  as: "visited_by",
+  attributes: ["id", "username"],
+};
 
 const helper_sound = {
   model: db.Sound,
   as: "publishing",
-  include: helper_include_soundlocation,
-}
+  include: [helper_include_soundlocation, helper_include_visited],
+  //include: helper_include_visited,
+};
 
 const helper_user_publisher = {
   model: db.User,
@@ -60,8 +65,8 @@ const helper_include_everything = [
   helper_user_commented_by,
   helper_tag,
   helper_user_shared_by,
-  helper_playlist
-]
+  helper_playlist,
+];
 
 // Création d'un nouveau Post.
 exports.create = async (req, res) => {
@@ -449,12 +454,10 @@ exports.getAllComments = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error:
-          "Error retrieving Comments for Post.",
+        error: "Error retrieving Comments for Post.",
       });
     });
 };
-
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
 

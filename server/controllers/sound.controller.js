@@ -148,3 +148,16 @@ exports.deleteAll = (req, res) => {
 };
 
 // Pagination : voir https://bezkoder.com/node-js-sequelize-pagination-mysql/
+
+exports.visit = async (req, res) => {
+  const id = req.params.id;
+  const user_id = req.body.user_id;
+  db.Sound.findByPk(id).then(async (sound) => {
+    try {
+      await sound.addVisited_by(user_id);
+      res.status(201).json("visited");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
