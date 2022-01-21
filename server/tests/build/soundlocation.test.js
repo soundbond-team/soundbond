@@ -1,8 +1,8 @@
-const db = require("../models");
-const app = require("../server");
+const db = require("../../models");
+const app = require("../../server");
 const SoundLocation = db.SoundLocation;
 const Sound = db.Sound;
-const soundlocationservice = require("../services/soundlocationService");
+const soundlocationservice = require("../../services/soundlocationService");
 
 const chai = require("chai");
 const chaiHttp = require("chai-http");
