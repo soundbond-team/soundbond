@@ -2,7 +2,6 @@ name: Build
 on:
   pull_request:
     branches:
-      - main
       - develop
 
 # Canceling previously running job when a new job is requested
@@ -12,7 +11,7 @@ on:
 
 jobs:
   CI:
-    name: CI SB
+    name: Build
     runs-on: ubuntu-latest
 
     # The environment this job references. We now use this for our environment variables.
@@ -40,6 +39,7 @@ jobs:
           envkey_AZURE_STORAGE_TOKEN: ${{ secrets.AZURE_STORAGE_TOKEN }}
           envkey_AZURE_STORAGERESOURCENAME: ${{ secrets.AZURE_STORAGERESOURCENAME }}
           envkey_FRONT_SERVER_URL: ${{ secrets.FRONT_SERVER_URL }}
+          envkey_BACK_SERVER_URL: ${{ secrets.REACT_APP_BACK_SERVER_URL }}
           directory: server
           file_name: .env
 
@@ -96,10 +96,9 @@ jobs:
       - name: Tests
         run: |
           cd server
-          yarn run coverage
-          rm -r coverage/sonar.xml
-          rm -r coverage/lcov-report
-          rm -r .nyc_output
+          yarn run coverage test/build
+          rm -r coverage/
+          rm -r .nyc_output/
         env:
           CI: true
 

@@ -1,0 +1,25 @@
+name: SonarCloud on main
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  CI:
+    name: Build
+    runs-on: ubuntu-latest
+
+    # The environment this job references. We now use this for our environment variables.
+    environment:
+      name: Development
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
