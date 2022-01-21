@@ -9,10 +9,15 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
+    # The environment this job references. We now use this for our environment variables.
     environment:
-      name: Production
+      name: Development
 
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
