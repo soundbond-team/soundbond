@@ -335,7 +335,7 @@ function Post(props) {
 
           <span>
             <FacebookShareButton
-              url={`${process.env.URL_APP}/profil/${props.post.publisher.username}`}
+              url={`${process.env.REACT_APP_FRONT_URL}/profil/${props.post.publisher.username}`}
               quote={`Écouter ce super post SoundBond -> ${props.post.description}`}
               className={classes.socialMediaButton}
             >
@@ -344,7 +344,7 @@ function Post(props) {
           </span>
           <span>
             <TwitterShareButton
-              url={`${process.env.URL_APP}/profil/${props.post.publisher.username}`}
+              url={`${process.env.REACT_APP_FRONT_URL}/profil/${props.post.publisher.username}`}
               title={`Écouter ce super post SoundBond -> ${props.post.description}`}
               className={classes.socialMediaButton}
             >
