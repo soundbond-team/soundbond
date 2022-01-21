@@ -92,6 +92,35 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16.x"
+
+      - name: Install packages
+        run: |
+          cd server
+          yarn install
+
+      - name: Generating dotenv config file for Production (/server)
+        uses: SpicyPizza/create-envfile@master
+        with:
+          envkey_DATABASE: ${{ secrets.DB_NAME }}
+          envkey_USERNAME: ${{ secrets.DB_USERNAME }}
+          envkey_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          envkey_HOST: ${{ secrets.DB_HOST }}
+          envkey_PORT: ${{ secrets.DB_PORT }}
+          envkey_AZURE_CONTAINER_NAME: ${{ secrets.AZURE_CONTAINER_NAME }}
+          envkey_AZURE_CONNECTION_STRING: ${{ secrets.AZURE_CONNECTION_STRING }}
+          envkey_TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+          envkey_AZURE_STORAGE_TOKEN: ${{ secrets.AZURE_STORAGE_TOKEN }}
+          envkey_AZURE_STORAGERESOURCENAME: ${{ secrets.AZURE_STORAGERESOURCENAME }}
+          envkey_FRONT_SERVER_URL: ${{ secrets.FRONT_SERVER_URL }}
+          envkey_BACK_SERVER_URL: ${{ secrets.REACT_APP_BACK_SERVER_URL }}
+          directory: server
+          file_name: .env
       - name: Tests
         run: |
           cd server
