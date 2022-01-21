@@ -24,7 +24,7 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: "14.x"
 
       - name: Install packages
         run: |
@@ -37,6 +37,7 @@ jobs:
           envkey_REACT_APP_AZURE_BLOB_STORAGE_ADRESS: ${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}
           envkey_REACT_APP_MAPBOX_ACCESS_TOKEN: ${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}
           envkey_REACT_APP_BACK_SERVER_URL: ${{ secrets.REACT_APP_BACK_SERVER_URL }}
+          envkey_REACT_APP_FRONT_URL: ${{ secrets.FRONT_SERVER_URL }}
           directory: client
           file_name: .env
 
@@ -54,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -66,11 +67,11 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip -q client-release.zip
 
-      - name: 'Deploy to Azure Web App'
+      - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'soundbond'
-          slot-name: 'Production'
+          app-name: "soundbond"
+          slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_66642EF3B9E34A62BD23D3993737A360 }}
           package: .
