@@ -124,7 +124,7 @@ jobs:
       - name: Tests
         run: |
           cd server
-          yarn run coverage test/production
+          yarn run coverage tests/production
           rm -r coverage/
           rm -r .nyc_output/
         env:
