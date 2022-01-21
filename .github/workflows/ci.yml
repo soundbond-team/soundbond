@@ -93,7 +93,7 @@ jobs:
           cd client
           yarn run build
 
-      - name: Tests
+      - name: Server tests
         run: |
           cd server
           yarn run coverage tests/build

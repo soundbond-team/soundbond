@@ -86,10 +86,9 @@ jobs:
     
   test:
     runs-on: ubuntu-latest
-    needs: build
+
     environment:
       name: "Production"
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - uses: actions/checkout@v2
@@ -121,6 +120,7 @@ jobs:
           envkey_BACK_SERVER_URL: ${{ secrets.REACT_APP_BACK_SERVER_URL }}
           directory: server
           file_name: .env
+
       - name: Tests
         run: |
           cd server
