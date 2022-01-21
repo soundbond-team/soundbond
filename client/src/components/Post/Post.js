@@ -44,16 +44,16 @@ mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 function Post(props) {
   const uid = useContext(UidContext);
   const [liked, setLiked] = useState(() => {
-    for (const liked_by in props.post.liked_by) {
-      if (liked_by.id === uid){
+    for (let i = 0; i < props.post.liked_by.length; i++) {
+      if (props.post.liked_by[i].id === uid) {
         return true;
       }
     }
     return false;
   });
   const [rePosted, setRePosted] = useState(() => {
-    for (const shared_by in props.post.liked_by) {
-      if (shared_by.id === uid){
+    for (let i = 0; i < props.post.shared_by.length; i++) {
+      if (props.post.shared_by[i].id === uid) {
         return true;
       }
     }

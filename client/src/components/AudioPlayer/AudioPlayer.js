@@ -55,10 +55,12 @@ export default function AudioPlayer(props) {
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
   const [visited, setVisited] = useState(() => {
-    for (const id of props.visit) {
-      if (id === uid) return true;
+    for (let i = 0; i < props.visit.length; i++) {
+      if (props.visit[i].id === uid) {
+        return true;
+      }
+      return false;
     }
-    return false;
   });
   const [compteurVisite, setCompteurVisite] = useState(props.visit.length);
 
