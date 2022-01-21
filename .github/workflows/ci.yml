@@ -2,7 +2,6 @@ name: Build
 on:
   pull_request:
     branches:
-      - main
       - develop
 
 # Canceling previously running job when a new job is requested
@@ -12,7 +11,7 @@ on:
 
 jobs:
   CI:
-    name: CI SB
+    name: Build
     runs-on: ubuntu-latest
 
     # The environment this job references. We now use this for our environment variables.
