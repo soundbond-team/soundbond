@@ -1,11 +1,10 @@
-
 module.exports = (app) => {
     const router = require("express").Router();
     const passport = require("passport");
     const CLIENT_URL = "http://localhost:3000/";
 
 
-    router.get("/login/sucess",(req,res)=>{
+    router.get("/login/success",(req,res)=>{
         if(req.user){
             res.status(200).json({
                 success : true ,
@@ -30,25 +29,38 @@ module.exports = (app) => {
 
     });
 
-    router.get("/google",passport.authenticate("google",{scope:["profile"]}));
+    app.get('/auth/google', function(request, response, next) {
+        passport.authenticate('google', {scope: ['profile', 'email']})(request, response, next);
+    });
 
-    router.get("/google/callback",passport.authenticate("google",{
-        successRedirect:CLIENT_URL,
-        failWithError : "/login/failed"
-    }));
+    router.get("/google/callback",function(){
+        passport.authenticate("google",{
+            successRedirect: CLIENT_URL,
+            failureRedirect : "/login/failed",
+        });
+    });
 
-    router.get("/github",passport.authenticate("github",{scope:["profile"]}));
+    app.get('/auth/github',
+        passport.authenticate('github'));
 
-    router.get("/github/callback",passport.authenticate("github",{
-        successRedirect:CLIENT_URL,
-        failWithError : "/login/failed"
-    }));
+    app.get('/auth/github/callback', 
+    passport.authenticate('github', { failureRedirect: '/login' }),
+    function(req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/');
+    });
 
-    router.get("/facebook",passport.authenticate("facebook",{scope:["profile"]}));
 
-    router.get("/facebook/callback",passport.authenticate("facebook",{
-        successRedirect:CLIENT_URL,
-        failWithError : "/login/failed"
-    }));
+
+    app.get("/auth/facebook", passport.authenticate("facebook", { scope: ["profile"] }));
+
+    app.get("auth/facebook/callback",
+    passport.authenticate("facebook", {
+        successRedirect: CLIENT_URL,
+        failureRedirect: "/login/failed",
+    })
+    );
+
+    app.use("/api/v1/auth", router);
 
 };
