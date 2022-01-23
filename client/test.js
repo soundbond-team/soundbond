@@ -74,7 +74,7 @@ describe("Home Page", function () {
     /**
      * Scénario de test pour vérifier si l'élément donné est chargé avec le bouton
      */
-    it("Doit vérifier si l'item (soundbond) est chargé avec chrome", function () {
+    it("Doit vérifier si l'item (soundbond) est chargé", function () {
       return new Promise((resolve, reject) => {
         browserC
           .findElement({ id: "sel-title" })
@@ -85,7 +85,7 @@ describe("Home Page", function () {
   });
   
   describe("home page avec firefoxe", function(){
-    it("Doit charger la page d'accueil et obtenir le titre avec firefox", function () {
+    it("Doit charger la page d'accueil et obtenir le titre", function () {
       return new Promise((resolve, reject) => {
         browserF
           .get(serverUri)
@@ -98,7 +98,7 @@ describe("Home Page", function () {
       });
     });
 
-    it("Doit vérifier si l'item (soundbond) est chargé avec firefoxe", function () {
+    it("Doit vérifier si l'item (soundbond) est chargé ", function () {
       return new Promise((resolve, reject) => {
         browserF
           .findElement({ id: "sel-title" })
@@ -131,20 +131,20 @@ describe("Home Page", function () {
 
   describe("test authentification et clique sur les boutons avec firefoxe", function() {
     it("clique sur le bouton se connecter de la page accueil", function() {
-      browserC.get(serverUri);
-      browserC.findElement(webdriver.By.id('connecter')).click();
+      browserF.get(serverUri);
+      browserF.findElement(webdriver.By.id('connecter')).click();
   
-      const pageUrlc = browserC.getCurrentUrl();
+      const pageUrlc = browserF.getCurrentUrl();
       assert.notEqual(pageUrlc, serverUri);
     });
 
     it("soumettre les informations de connexion et un clique sur se connecter", function() {
-      browserC.get("http://localhost:3000/login");
-      browserC.findElement(webdriver.By.id('username')).sendKeys('max');
-      browserC.findElement(webdriver.By.id('password')).sendKeys('max');
-      browserC.findElement(webdriver.By.id('login')).click();
+      browserF.get("http://localhost:3000/login");
+      browserF.findElement(webdriver.By.id('username')).sendKeys('max');
+      browserF.findElement(webdriver.By.id('password')).sendKeys('max');
+      browserF.findElement(webdriver.By.id('login')).click();
       
-      const pageUrl = browserC.getCurrentUrl();
+      const pageUrl = browserF.getCurrentUrl();
       assert.notEqual(pageUrl, "http://localhost:3000/login");
     });
   });
