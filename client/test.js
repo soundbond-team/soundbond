@@ -102,6 +102,46 @@ describe("Home Page", function () {
         .catch((err) => reject(err));
     });
   });
+
+  describe("test authentification et clique sur les boutons avec chrome", function() {
+    it("clique sur le bouton se connecter de la page accueil", function() {
+      browserC.get(serverUri);
+      browserC.findElement(webdriver.By.id('connecter')).click();
+  
+      const pageUrlc = browserC.getCurrentUrl();
+      assert.notEqual(pageUrlc, serverUri);
+    });
+
+    it("soumettre les informations de connexion et un clique sur se connecter", function() {
+      browserC.get("http://localhost:3000/login");
+      browserC.findElement(webdriver.By.id('username')).sendKeys('max');
+      browserC.findElement(webdriver.By.id('password')).sendKeys('max');
+      browserC.findElement(webdriver.By.id('login')).click();
+      
+      const pageUrl = browserC.getCurrentUrl();
+      assert.notEqual(pageUrl, "http://localhost:3000/login");
+    });
+  });
+
+  describe("test authentification et clique sur les boutons avec firefoxe", function() {
+    it("clique sur le bouton se connecter de la page accueil", function() {
+      browserC.get(serverUri);
+      browserC.findElement(webdriver.By.id('connecter')).click();
+  
+      const pageUrlc = browserC.getCurrentUrl();
+      assert.notEqual(pageUrlc, serverUri);
+    });
+
+    it("soumettre les informations de connexion et un clique sur se connecter", function() {
+      browserC.get("http://localhost:3000/login");
+      browserC.findElement(webdriver.By.id('username')).sendKeys('max');
+      browserC.findElement(webdriver.By.id('password')).sendKeys('max');
+      browserC.findElement(webdriver.By.id('login')).click();
+      
+      const pageUrl = browserC.getCurrentUrl();
+      assert.notEqual(pageUrl, "http://localhost:3000/login");
+    });
+  });
   /**
    * Fin d'utilisation des cas de test.
    * Fermez le navigateur et quittez.
