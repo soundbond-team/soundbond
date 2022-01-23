@@ -57,51 +57,57 @@ describe("Home Page", function () {
   /**
    * Scénario de test pour charger notre application et vérifier le titre.
    */
-  it("Doit charger la page d'accueil et obtenir le titre avec chrome", function () {
-    return new Promise((resolve, reject) => {
-      browserC
-        .get(serverUri)
-        .then(logTitleC)
-        .then((title) => {
-          assert.strictEqual(title, appTitle);
-          resolve();
-        })
-        .catch((err) => reject(err));
+  describe("home page avec chrome", function() {
+    it("Doit charger la page d'accueil et obtenir le titre", function () {
+      return new Promise((resolve, reject) => {
+        browserC
+          .get(serverUri)
+          .then(logTitleC)
+          .then((title) => {
+            assert.strictEqual(title, appTitle);
+            resolve();
+          })
+          .catch((err) => reject(err));
+      });
+    });
+  
+    /**
+     * Scénario de test pour vérifier si l'élément donné est chargé avec le bouton
+     */
+    it("Doit vérifier si l'item (soundbond) est chargé avec chrome", function () {
+      return new Promise((resolve, reject) => {
+        browserC
+          .findElement({ id: "sel-title" })
+          .then((elem) => resolve())
+          .catch((err) => reject(err));
+      });
     });
   });
+  
+  describe("home page avec firefoxe", function(){
+    it("Doit charger la page d'accueil et obtenir le titre avec firefox", function () {
+      return new Promise((resolve, reject) => {
+        browserF
+          .get(serverUri)
+          .then(logTitleF)
+          .then((title) => {
+            assert.strictEqual(title, appTitle);
+            resolve();
+          })
+          .catch((err) => reject(err));
+      });
+    });
 
-  it("Doit charger la page d'accueil et obtenir le titre avec firefox", function () {
-    return new Promise((resolve, reject) => {
-      browserF
-        .get(serverUri)
-        .then(logTitleF)
-        .then((title) => {
-          assert.strictEqual(title, appTitle);
-          resolve();
-        })
-        .catch((err) => reject(err));
+    it("Doit vérifier si l'item (soundbond) est chargé avec firefoxe", function () {
+      return new Promise((resolve, reject) => {
+        browserF
+          .findElement({ id: "sel-title" })
+          .then((elem) => resolve())
+          .catch((err) => reject(err));
+      });
     });
   });
-  /**
-   * Scénario de test pour vérifier si l'élément donné est chargé avec le bouton
-   */
-  it("Doit vérifier si l'item (soundbond) est chargé avec chrome", function () {
-    return new Promise((resolve, reject) => {
-      browserC
-        .findElement({ id: "sel-title" })
-        .then((elem) => resolve())
-        .catch((err) => reject(err));
-    });
-  });
-
-  it("Doit vérifier si l'item (soundbond) est chargé avec firefoxe", function () {
-    return new Promise((resolve, reject) => {
-      browserF
-        .findElement({ id: "sel-title" })
-        .then((elem) => resolve())
-        .catch((err) => reject(err));
-    });
-  });
+ 
 
   describe("test authentification et clique sur les boutons avec chrome", function() {
     it("clique sur le bouton se connecter de la page accueil", function() {
