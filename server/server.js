@@ -1,6 +1,7 @@
 /* Minimal requiered template for a development server. */
 
 // instanciation des frameworks requis.
+const cookieSession = require("cookie-session");
 const express = require("express");
 const cors = require("cors");
 const { Sequelize } = require("sequelize"); // ORM
@@ -10,6 +11,15 @@ const fileupload = require("express-fileupload");
 const port = process.env.PORT || 8080; // Port du serveur de développement.
 const checkUser = require("./middleware/auth.middleware");
 const bodyParser = require("body-parser");
+const passport =require("passport");
+const passportSetup = require("./passport");
+
+app.use(
+  cookieSession({name:"session", keys:["soundbond"], maxAge : 24*60*60*100})
+);
+
+app.use(passport.initialize())
+app.use(passport.session());
 
 app.use(
   cors({
@@ -19,6 +29,10 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+
+
+
+
 //
 // File Upload
 app.use(fileupload());
@@ -35,6 +49,7 @@ require("./routes/user.routes")(app);
 require("./routes/file.routes")(app);
 require("./routes/tag.routes")(app);
 require("./routes/playlist.routes")(app);
+require("./routes/auth.routes")(app);
 // jwt
 
 app.use(checkUser.checkUser); //a chaque requete nous verifions si l'utilisateur est bien connecté
@@ -51,6 +66,7 @@ app.listen(port, () => {
 const db = require("./models");
 const { response } = require("express");
 const multer = require("multer");
+
 
 // Pour synchroniser la base de données après quelques changements, utiliser :
 db.sequelize.sync({});

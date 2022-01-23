@@ -28,6 +28,18 @@ function Login() {
     });
   };
 
+  const google = ()=>{
+    window.open("http://localhost/3000/auth/google","_self");
+  }
+
+  const facebook = ()=>{
+    window.open("http://localhost/3000/login/facebook","_self");
+  }
+
+  const github = ()=>{
+    window.open("http://localhost/3000/login/github","_self");
+  }
+
   return (
     <>
       <div className="container">
@@ -58,6 +70,11 @@ function Login() {
           <input type="submit" value="Se connecter" />
         </form>
         {err}
+
+        <button onClick={facebook}>Facebook</button>
+        <button onClick={google}>Google</button>
+        <button onClick={github}>Github</button>
+
       </div>
     </>
   );
