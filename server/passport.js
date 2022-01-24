@@ -16,7 +16,7 @@ passport.use(
     callbackURL: "/auth/google/callback"
     },
   function(accessToken, refreshToken, profile, done) {
-    done(null,profile);
+    return done(null,profile);
   }
 ));
 
@@ -32,7 +32,7 @@ passport.use(
     callbackURL: "/auth/github/callback"
     },
   function(accessToken, refreshToken, profile, done) {
-    done(null,profile);
+   return  done(null,profile);
   }
 ));
 
@@ -46,7 +46,7 @@ passport.use(new FacebookStrategy({
     callbackURL: "/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    done(null,profile);
+    return done(null,profile);
   }
 ));
 
