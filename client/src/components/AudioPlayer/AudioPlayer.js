@@ -186,6 +186,7 @@ export default function AudioPlayer(props) {
           ) : (
             <span></span>
           )}
+          vu par : 
           <IconButton>
             <span style={{ fontSize: "15px" }}> {compteurVisite}</span>
             <VisibilityIcon
