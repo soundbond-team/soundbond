@@ -178,13 +178,13 @@ export default function AudioPlayer(props) {
                   className={classes.icon}
                   style={{ marginLeft: "5px" }}
                 />{" "}
-                <span style={{ fontSize: "15px", marginLeft: "5px" }}> Vu</span>
+                <span style={{ fontSize: "15px", marginLeft: "5px" }}> Lu</span>
               </IconButton>
             </>
           ) : (
             <span></span>
           )}
-          vu par :
+          lu par :
           <IconButton>
             <span style={{ fontSize: "15px" }}> {compteurVisite}</span>
             <VisibilityIcon
