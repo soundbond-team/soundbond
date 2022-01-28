@@ -13,7 +13,7 @@ const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default; // eslint-disable-line import/no-webpack-loader-syntax
-const Map = ({ post_points }) => {
+const Map = ({ post_points, connected_user_id }) => {
   const dispatch = useDispatch();
   const mapContainerRef = useRef(null);
   const itineraire = useSelector((state) => state.itinerairereducer);
@@ -25,6 +25,7 @@ const Map = ({ post_points }) => {
   const [map, setMap] = useState(null);
 
   const childToParent = async (results, type) => {
+    // Used to get data from a child component (here, SearchBox)
     clearMarkers();
     let points = null;
     if (type === "tag" || type === "user") {
@@ -42,6 +43,17 @@ const Map = ({ post_points }) => {
       },
       withCredentials: true,
     });
+    return result.data.tagging;
+  };
+
+  const getPostByFollowedUsers = async (tag) => {
+ 
+    let result = await axios({
+      method: "get",
+      url: backServerURL + `api/v1/user/` + connected_user_id + `following_posts/`,
+      withCredentials: true,
+    });
+    alert(result);
     return result.data.tagging;
   };
 
@@ -213,7 +225,14 @@ const Map = ({ post_points }) => {
       />
 
       <div className="container-fluid">
-        <CreatePlaylist />
+        <div class="row justify-content-between">
+          <div class="col-4">
+          <CreatePlaylist/>
+          </div>
+          <div class="col-4 text-end">
+            <button onClick={getPostByFollowedUsers}>Afficher les posts de ceux que je suis</button>
+          </div>
+        </div>
         <div className="sidebarStyle">
           <div>
             Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}

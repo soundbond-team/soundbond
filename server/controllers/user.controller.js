@@ -7,32 +7,30 @@ const Op = db.Sequelize.Op;
 const MESSAGE_FIND_ERROR = "Error retrieving User.";
 const MESSAGE_UPDATE_ERROR = "Error updating User.";
 
+const helper_exclude_password_and_dates = {
+  exclude: ["password", "createdAt", "updatedAt"],
+};
+
 const helper_include_followings_followers = [
   {
     model: User,
     as: "follow",
-    attributes: {
-      exclude: ["password"],
-    },
+    attributes: helper_exclude_password_and_dates
   },
   {
     model: User,
     as: "following",
-    attributes: {
-      exclude: ["password"],
-    },
+    attributes: helper_exclude_password_and_dates
   },
 ];
-const helper_exclude_password = {
-  exclude: ["password"],
-};
+
 
 exports.userInformations = (req, res) => {
-  const id = req.params.id;
+  const user_id = req.params.user_id;
 
-  User.findByPk(id, {
+  User.findByPk(user_id, {
     include: helper_include_followings_followers,
-    attributes: helper_exclude_password,
+    attributes: helper_exclude_password_and_dates
     })
     .then((data) => {
       res.send(data);
@@ -51,7 +49,7 @@ exports.userInformations2 = (req, res) => {
   User.findOne({
     where: { username },
     include: helper_include_followings_followers,
-    attributes: helper_exclude_password
+    attributes: helper_exclude_password_and_dates
     })
     .then((data) => {
       res.send(data);
@@ -64,9 +62,9 @@ exports.userInformations2 = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  const id = req.params.id;
+  const user_id = req.params.user_id;
   User.update(req.body, {
-    where: { id: id },
+    where: { id: user_id },
   })
     .then((num) => {
       if (num == 1) {
@@ -92,7 +90,7 @@ exports.updateUser = (req, res) => {
 
 //follow an user
 exports.follow = async (req, res) => {
-  const follower = req.params.id;
+  const follower = req.params.user_id;
   const following = req.body.following;
   User.findByPk(following).then(async (user) => {
     try {
@@ -106,7 +104,7 @@ exports.follow = async (req, res) => {
 
 //unfollow an user
 exports.unfollow = async (req, res) => {
-  const follower = req.params.id;
+  const follower = req.params.user_id;
   const following = req.body.following;
   User.findByPk(following).then(async (user) => {
     try {
@@ -130,7 +128,7 @@ exports.userSuggestion = (req, res) => {
     },
     limit: 10,
     include: helper_include_followings_followers,
-    attributes: helper_exclude_password
+    attributes: helper_exclude_password_and_dates
   })
     .then((data) => {
       res.send(data);
@@ -139,5 +137,32 @@ exports.userSuggestion = (req, res) => {
       res.status(500).send({
         error: MESSAGE_FIND_ERROR,
       });
+    });
+};
+
+exports.followings = (req, res) => {
+  //TODO Si possible, trouver un moyen d'exclure " abonnement " pour n'avoir que les user_ids des followings.
+  const user_id = req.params.user_id;
+
+  User.findByPk(user_id, {
+    include: [
+      {
+        model: User,
+        as: "following",
+        attributes: ['id', 'username'],
+      },
+    ],
+    attributes: [],
+
+    })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(
+        sanitizeHtml({
+          error: MESSAGE_FIND_ERROR,
+        })
+      );
     });
 };

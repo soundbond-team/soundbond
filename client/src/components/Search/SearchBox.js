@@ -23,6 +23,7 @@ export default function SearchBox(props) {
         setOpen(false);
         setUserSuggestion([]);
         props.childToParent(recherche.substring(1), "tag");
+        // Used to send data to a parent component (here, Map or Search)
       }
     });
   };
@@ -90,6 +91,7 @@ export default function SearchBox(props) {
         setOpen(false);
         setUserSuggestion([]);
         props.childToParent(recherche, "user");
+        // Used to send data to a parent component (here, Map or Search)
       }
     });
   };
@@ -132,6 +134,7 @@ export default function SearchBox(props) {
     setUserSuggestion([]);
     setOpen(false);
     props.childToParent(name, "user");
+    // Used to send data to a parent component (here, Map or Search)
   }
 
   function navigateToTagOption(tag) {
@@ -142,6 +145,7 @@ export default function SearchBox(props) {
     setTagSuggestion([]);
     setOpen(false);
     props.childToParent(tag, "tag");
+    // Used to send data to a parent component (here, Map or Search)
   }
 
   async function getAllTags() {
