@@ -25,16 +25,11 @@ const Map = ({ post_points }) => {
   const [map, setMap] = useState(null);
 
   const childToParent = async (results, type) => {
-    //const dispatch = useDispatch();
     clearMarkers();
     let points = null;
-    if (type === "tag") {
+    if (type === "tag" || type === "user") {
       points = await getPostByTag(results);
       addMarkers(map, points);
-    } else if (type === "user") {
-      //points = await getPostByTag(results);
-      //TODO
-      //! Attention : l'API utilise /user/${username}/posts alors que plusieurs utilisateurs peuvent avoir le même username !
     }
   };
 

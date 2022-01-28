@@ -183,7 +183,7 @@ exports.findAll = (req, res) => {
 };
 
 // Get all Posts posted by a specific User.
-exports.allPostsByUser = (req, res) => {
+exports.allPostsByPublisherUserId = (req, res) => {
   db.Post.findAll({
     where: {
       publisher_user_id: req.params.user_id,

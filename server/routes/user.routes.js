@@ -15,7 +15,7 @@ module.exports = (app) => {
   router.get("/:id", userCtrl.userInformations);
 
   // GET all Posts posted by a specific User.
-  router.get("/:user_id/posts", post.allPostsByUser);
+  router.get("/:user_id/posts", post.allPostsByPublisherUserId);
   // GET all Trending Posts for a specific User.
   router.get("/:user_id/trending/", post.trendingPostsForSpecificUser);
 
