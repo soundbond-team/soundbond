@@ -11,6 +11,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Icon } from '@iconify/react';
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
 import {
@@ -194,6 +195,7 @@ function Post(props) {
     minute: "numeric",
   };
 
+
   return (
     <>
       <Card className={classes.card}>
@@ -281,7 +283,7 @@ function Post(props) {
               onClick={pushLike}
               disabled={props.parent ? true : false}
             >
-              <ThumbUpIcon
+              <ThumbUpIcon 
                 style={
                   liked
                     ? { color: blue[500], cursor: "pointer" }
@@ -351,6 +353,9 @@ function Post(props) {
               <TwitterIcon size={36} round />
             </TwitterShareButton>
           </span>
+          <IconButton>
+              <Icon icon="bytesize:ellipsis-vertical" vFlip={true} />
+          </IconButton>
         </Grid>
       </Card>
 
