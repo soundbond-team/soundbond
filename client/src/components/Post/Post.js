@@ -194,14 +194,21 @@ function Post(props) {
     hour: "numeric",
     minute: "numeric",
   };
-
-
+  const supp = ()=>{
+    return 2;
+  }
   return (
     <>
       <Card className={classes.card}>
         {/* Utilisateur postant le Post. */}
         <Grid item>
           <List className={classes.list}>
+            <IconButton 
+              onClick={supp} 
+              style={{ float:"right" }}
+              >
+              <Icon icon="bytesize:ellipsis-vertical" vFlip={true} />
+            </IconButton>
             <ListItem alignItems="flex-start" className={classes.listItem}>
               <ListItemAvatar>
                 <NavLink
@@ -353,9 +360,6 @@ function Post(props) {
               <TwitterIcon size={36} round />
             </TwitterShareButton>
           </span>
-          <IconButton>
-              <Icon icon="bytesize:ellipsis-vertical" vFlip={true} />
-          </IconButton>
         </Grid>
       </Card>
 
