@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-
 import { NavLink, useNavigate } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
@@ -41,6 +40,11 @@ import { TextInput } from "react-native";
 
 import { UidContext } from "../Appcontext";
 import RepeatIcon from "@mui/icons-material/Repeat";
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 function Post(props) {
   const uid = useContext(UidContext);
@@ -194,21 +198,54 @@ function Post(props) {
     hour: "numeric",
     minute: "numeric",
   };
-  const supp = ()=>{
-    return 2;
-  }
+  const optionss = ['Modifier','Supprimer'];
+  const ITEM_HEIGHT = 48;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <>
       <Card className={classes.card}>
         {/* Utilisateur postant le Post. */}
         <Grid item>
           <List className={classes.list}>
-            <IconButton 
-              onClick={supp} 
-              style={{ float:"right" }}
-              >
-              <Icon icon="bytesize:ellipsis-vertical" vFlip={true} />
+            <IconButton
+              aria-label="more"
+              id="long-button"
+              aria-controls={open ? 'long-menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-haspopup="true"
+              onClick={handleClick}
+              style={{ float: "right" }}
+            >
+              <MoreVertIcon />
             </IconButton>
+            <Menu
+              id="long-menu"
+              MenuListProps={{
+                'aria-labelledby': 'long-button',
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              PaperProps={{
+                style: {
+                  maxHeight: ITEM_HEIGHT * 4.5,
+                  width: '20ch',
+                },
+              }}
+            >
+            {optionss.map((option) => (
+              <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+              {option}
+              </MenuItem>
+            ))}
+            </Menu>
             <ListItem alignItems="flex-start" className={classes.listItem}>
               <ListItemAvatar>
                 <NavLink
