@@ -199,7 +199,7 @@ function Post(props) {
     minute: "numeric",
   };
   const optionss = ['Modifier','Supprimer'];
-  const ITEM_HEIGHT = 48;
+  const ITEM_HEIGHT = 38;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -235,13 +235,13 @@ function Post(props) {
               onClose={handleClose}
               PaperProps={{
                 style: {
-                  maxHeight: ITEM_HEIGHT * 4.5,
+                  maxHeight: ITEM_HEIGHT * 3.5,
                   width: '20ch',
                 },
               }}
             >
             {optionss.map((option) => (
-              <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+              <MenuItem key={option} selected={option === 'Modifier'} onClick={handleClose}>
               {option}
               </MenuItem>
             ))}
