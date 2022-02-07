@@ -241,7 +241,7 @@ function Post(props) {
               }}
             >
             {optionss.map((option) => (
-              <MenuItem key={option} selected={option === 'Modifier'} onClick={handleClose}>
+              <MenuItem key={option} selected={option === ''} onClick={handleClose}>
               {option}
               </MenuItem>
             ))}
