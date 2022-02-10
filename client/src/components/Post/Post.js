@@ -32,6 +32,8 @@ import {
   removeComment,
   addShare,
   removeShare,
+  removePost,
+  updatePost,
 } from "../../actions/post.actions";
 import { change_ZOOM } from "../../actions/postToMap.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
@@ -44,6 +46,7 @@ import RepeatIcon from "@mui/icons-material/Repeat";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { formControlClasses } from "@material-ui/core";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 function Post(props) {
@@ -198,15 +201,23 @@ function Post(props) {
     hour: "numeric",
     minute: "numeric",
   };
-  const optionss = ['Modifier','Supprimer'];
+  const optionss = ['Supprimer','Modifier'];
   const ITEM_HEIGHT = 38;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose = (e) => {
+    console.log(e)
+    setAnchorEl(null); 
+  };
+  const deletePost = async() => {
+     dispatch(removePost(props.post_id, userData));
+  };
+  const sendUpdatePost = () => {
+    dispatch(updatePost(props.post_id,userData));
   };
   return (
     <>
@@ -241,7 +252,7 @@ function Post(props) {
               }}
             >
             {optionss.map((option) => (
-              <MenuItem key={option} selected={option === ''} onClick={handleClose}>
+              <MenuItem key={option} onClick={handleClose}>
               {option}
               </MenuItem>
             ))}

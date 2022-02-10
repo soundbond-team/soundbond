@@ -54,6 +54,7 @@ export const remove_comment = (state, payload) => {
     return posts;
   });
 };
+
 export const add_share = (state, payload) => {
   return state.map((posts) => {
     if (posts.id === payload.post_id) {
@@ -72,6 +73,34 @@ export const remove_share = (state, payload) => {
         ...posts,
         shared_by: posts.shared_by.filter(
           (data) => payload.userData.id !== data.id
+        ),
+      };
+    }
+    return posts;
+  });
+};
+
+export const remove_post = (state, payload) =>{
+  return state.map((posts) => {
+    if(posts.id === payload.post_id){
+      return {
+        ...posts,
+        removed_by: posts.removed_by.filter(
+          (data) => data.id !== payload.userData.id
+        ),
+      };
+    }
+    return posts;
+  });
+};
+
+export const update_post = (state, payload) =>{
+  return state.map((posts) => {
+    if(posts.id === payload.post_id){
+      return {
+        ...posts,
+        updated_by: posts.updated_by.filter(
+          (data) => data.id !== payload.userData.id
         ),
       };
     }
