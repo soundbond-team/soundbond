@@ -70,7 +70,7 @@ function Post(props) {
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
   const [commentaire, setCommentaire] = useState(""); // Utilisé pour stocker un commentaire.
-
+  
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -206,18 +206,21 @@ function Post(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  const deletePost = async() => {
-    dispatch(removePost(props.post_id, userData));
- };
- const sendUpdatePost = () => {
-   dispatch(updatePost(props.post_id,userData));
+  const sendDeleteUpdatePost = async(e) => {
+    console.log(e);
+    if(e === optionss[0]){
+      await dispatch(removePost(props.post_id, userData));
+    }
+    else{
+      await dispatch(updatePost(props.post_id,userData));
+    }
+    
  };
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
-  const handleClose = (e) => {
-    console.log(e.target.value)
+  const handleClose = () => {
     setAnchorEl(null); 
   };
   return (
@@ -226,9 +229,12 @@ function Post(props) {
         {/* Utilisateur postant le Post. */}
         <Grid item>
           <List className={classes.list}>
+            {userData.id === props.post.publisher.id ? (
+            <> 
             <IconButton
               aria-label="more"
               id="long-button"
+              to={`/profil/${props.post.publisher.username}/posts`}
               aria-controls={open ? 'long-menu' : undefined}
               aria-expanded={open ? 'true' : undefined}
               aria-haspopup="true"
@@ -253,11 +259,17 @@ function Post(props) {
               }}
             >
             {optionss.map((option) => (
-              <MenuItem key={option} onClick={deletePost}>
+              <MenuItem key={option} onClick={() => sendDeleteUpdatePost(option)} onClose={handleClose}>
               {option}
               </MenuItem>
             ))}
             </Menu>
+            </>
+            ):(
+              <>
+
+              </>
+            )}
             <ListItem alignItems="flex-start" className={classes.listItem}>
               <ListItemAvatar>
                 <NavLink

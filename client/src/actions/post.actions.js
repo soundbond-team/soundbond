@@ -276,20 +276,20 @@ export const getAllPostSharedByUser = (user_id) => {
 };
 
 //Supprimer un post
-export const removePost = (id,userData) => {
+export const removePost = (post_id,userData) => {
   return (dispatch) => {
     return axios({
       method: "post",
       url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/delete/`,
       data: {
-        post_id: id,
+        post_id: post_id,
       },
     })
     .then((res) => {
       if(res.data.errors){
         dispatch({type:REMOVE_POST, payload:""});
       }else{
-        dispatch({type:REMOVE_POST, payload:{id, userData}});
+        dispatch({type:REMOVE_POST, payload:{post_id, userData}});
       }
     })
     .catch((err) => console.log(err));
@@ -297,21 +297,20 @@ export const removePost = (id,userData) => {
 };
 
 //Modifier un post
-//Supprimer un post
-export const updatePost = (id,userData) => {
+export const updatePost = (post_id,userData) => {
   return (dispatch) => {
     return axios({
       method: "post",
       url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/update/`,
       data: {
-        post_id: id,
+        post_id: post_id,
       },
     })
     .then((res) => {
       if(res.data.errors){
         dispatch({type:UPDATE_POST, payload:""});
       }else{
-        dispatch({type:UPDATE_POST, payload:{id, userData}});
+        dispatch({type:UPDATE_POST, payload:{post_id, userData}});
       }
     })
     .catch((err) => console.log(err));
