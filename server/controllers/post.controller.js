@@ -21,7 +21,6 @@ const helper_sound = {
   model: db.Sound,
   as: "publishing",
   include: [helper_include_soundlocation, helper_include_visited],
-  //include: helper_include_visited,
 };
 
 const helper_user_publisher = {
@@ -182,8 +181,8 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Get all Posts posted by a specific User.
-exports.allPostsByUser = (req, res) => {
+exports.allPostsByPublisherUserId = (req, res) => {
+  // Get all Posts posted by a specific User.
   db.Post.findAll({
     where: {
       publisher_user_id: req.params.user_id,
@@ -195,11 +194,68 @@ exports.allPostsByUser = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: err.message || "Some error occurred while retrieving Posts.",
+        error: err.message || "Some error occurred while retrieving Posts from user.",
       });
     });
 };
 
+async function helper_allPostsByPublishersUserId(users_ids){
+  // Create a list of all Posts for user ids speciied in argument.
+  let posts = [];
+  for (let user_id of users_ids){
+    let posts_per_user = await db.Post.findAll({
+      where: {
+        publisher_user_id: user_id,
+      },
+      include: helper_include_everything,
+    })
+    if (posts_per_user.length > 0){
+      for (let post of posts_per_user){
+        posts.push(post);
+      }
+    }
+  }
+  return posts;
+}
+
+exports.allPostsByPublishersUserId = (req, res) => {
+  /* GET all Posts posted by a set of Users.
+  - specify : {"users":[1, 2, 3]} for the posts from users 1, 2 and 3.
+  Non-existing users and users without posts will be ignored without any warning message.
+  */
+
+  // Vérification que la requête contient bien toutes les valeurs.
+  if (
+    !req.body.users
+  ) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
+  helper_allPostsByPublishersUserId(req.body.users).then((data) => {
+    res.send(data);
+  })
+};
+
+exports.allPostsFromUsersFollowedByUserId = (req, res) => {
+  // GET all Posts from users followed by a speficific User.
+  db.User.findAll({
+    where: {
+      follower_id: req.params.user_id,
+    },
+    include: helper_include_everything,
+  })
+  .then((data) => {
+    res.send(data);
+  })
+  .catch((err) => {
+    res.status(500).send({
+    error: err.message || "Some error occurred while retrieving Posts from followings.",
+    });
+  });
+};
+  
 exports.trendingPostsForSpecificUser = async (req, res) => {
   const user_id = req.params.user_id;
   const list_suivis = await db.User.findAll({
@@ -225,7 +281,7 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: err.message || "Some error occurred while retrieving post.",
+        error: err.message || "Some error occurred while retrieving trending post for that user.",
       });
     });
 };

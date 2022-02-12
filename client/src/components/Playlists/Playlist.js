@@ -69,6 +69,7 @@ function Playlist(props) {
               <Grid container direction="column-reverse" spacing={3}>
                 {props.playlist.listpost ? (
                   props.playlist.listpost.map((j, index2) => {
+                    console.log(j);
                     return (
                       <Grid key={index2} item>
                         <Post post={j} parent="playlist" />

@@ -21,6 +21,7 @@ jobs:
 
       - name: Generate docs
         run: |
+          yarn install
           yarn run asciidoc
           rm docs/sb.html
 
