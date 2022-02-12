@@ -11,6 +11,7 @@ import "./Search.css";
 export default function Search() {
   const navigate = useNavigate();
   const childToParent = async (results, type) => {
+    // Used to get data from a child component (here, SearchBox)
     if(type === "tag"){
       navigate(`/tag/${results}`);
     } else if (type === "user"){

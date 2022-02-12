@@ -159,12 +159,10 @@ export default function AudioPlayer(props) {
       <Grid item className={classes.buttons}>
         <Grid item>
           {transportPlayButton}
-
           <IconButton onClick={stopPlayback}>
             {" "}
             <StopIcon className={classes.icon} />{" "}
           </IconButton>
-
           <IconButton onClick={download}>
             {" "}
             <DownloadIcon
@@ -180,12 +178,13 @@ export default function AudioPlayer(props) {
                   className={classes.icon}
                   style={{ marginLeft: "5px" }}
                 />{" "}
-                <span style={{ fontSize: "15px", marginLeft: "5px" }}> Vu</span>
+                <span style={{ fontSize: "15px", marginLeft: "5px" }}> Lu</span>
               </IconButton>
             </>
           ) : (
             <span></span>
           )}
+          lu par :
           <IconButton>
             <span style={{ fontSize: "15px" }}> {compteurVisite}</span>
             <VisibilityIcon

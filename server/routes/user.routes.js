@@ -12,12 +12,20 @@ module.exports = (app) => {
   router.get("/logout", authCtrl.logout);
 
   //user
-  router.get("/:id", userCtrl.userInformations);
+  router.get("/:user_id", userCtrl.userInformations);
 
   // GET all Posts posted by a specific User.
-  router.get("/:user_id/posts", post.allPostsByUser);
+  router.get("/:user_id/posts", post.allPostsByPublisherUserId);
+  // GET all Posts posted by a set of Users.
+  router.post("/posts", post.allPostsByPublishersUserId);
   // GET all Trending Posts for a specific User.
   router.get("/:user_id/trending/", post.trendingPostsForSpecificUser);
+
+  // GET all Posts from users followed by a speficific User.
+  router.get("/:user_id/following_posts/", post.allPostsFromUsersFollowedByUserId);
+
+  // GET all Users followed by a specify User.
+  router.get("/:user_id/followings/", userCtrl.followings);
 
   //GET all posts shared by a specific user
   router.get("/:user_id/sharedPosts", post.allPostsSharedByUser);
@@ -26,12 +34,10 @@ module.exports = (app) => {
 
   router.get("/recherche/:username", userCtrl.userSuggestion);
 
-  router.post("/follow/:id", userCtrl.follow);
-  router.post("/unfollow/:id", userCtrl.unfollow);
+  router.post("/follow/:user_id", userCtrl.follow);
+  router.post("/unfollow/:user_id", userCtrl.unfollow);
 
-  //GET all Posts shared by a specific User.
-
-  router.put("/:id", userCtrl.updateUser);
+  router.put("/:user_id", userCtrl.updateUser);
 
   app.use("/api/v1/user", router);
 };

@@ -53,6 +53,12 @@ exports.findallForUser = (req, res) => {
                 model: db.SoundLocation,
                 as: "soundlocation",
               },
+
+              {
+                model: db.User,
+                as: "visited_by",
+                attributes: ["id", "username"],
+              },
             ],
           },
           {

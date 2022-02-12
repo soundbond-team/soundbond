@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { get_soundlocation } from "../actions/soundlocation.actions";
 import { getallPost } from "../actions/post.actions";
 import Map from "../components/Map/Map";
+import { UidContext } from "../components/Appcontext";
 
 import MesPlaylistOnMap from "../components/MesPlaylistOnMap/MesPlaylistOnMap";
 function MapPage() {
+  const uid = useContext(UidContext);
   const dispatch = useDispatch();
 
   // These, in 'state', are defined in index.js
@@ -43,27 +45,25 @@ function MapPage() {
   ));
   return (
     <>
-      <div className="container-xxl">
-        <div className="row">
-          {" "}
-          <div className="col-11">
-            <div className="row justify-content-center">
-              {" "}
-              <Map post_points={allposts} />
+      <div className="container-fluid">
+        <div className="col">
+          <div className="row justify-content-center">
+            <Map post_points={allposts} connected_user_id={uid} />
+          </div>
+          <br />
+          <br />
+          <div className="row justify-content-center">
+            <h3>Positions des sons les plus proches:</h3>
+            <div>
+              {listItems.length > 0 ? listItems : "aucun"}
             </div>
-            <br />
-            <br />
-            <div className="row justify-content-center">
-              <h3>Positions des sons les plus proches:</h3>
-              <div>{listItems}</div>
-            </div>
-            <br />
-            <br />
-            <div className="row justify-content-center">
-              <h3>Vos playlists:</h3>
-              <div>
-                <br /> <MesPlaylistOnMap />
-              </div>
+          </div>
+          <br />
+          <br />
+          <div className="row justify-content-center">
+            <h3>Vos playlists:</h3>
+            <div>
+              <br /> <MesPlaylistOnMap />
             </div>
           </div>
         </div>

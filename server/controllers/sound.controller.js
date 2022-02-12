@@ -44,6 +44,11 @@ exports.findAll = (req, res) => {
         as: "soundlocation",
         where: { id: db.Sequelize.col("Sound.soundlocation_id") },
       },
+      {
+        model: db.User,
+        as: "visited_by",
+        attributes: ["id", "username"],
+      },
     ],
   })
     .then((data) => {
