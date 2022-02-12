@@ -206,18 +206,19 @@ function Post(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
+  const deletePost = async() => {
+    dispatch(removePost(props.post_id, userData));
+ };
+ const sendUpdatePost = () => {
+   dispatch(updatePost(props.post_id,userData));
+ };
+
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
   const handleClose = (e) => {
-    console.log(e)
+    console.log(e.target.value)
     setAnchorEl(null); 
-  };
-  const deletePost = async() => {
-     dispatch(removePost(props.post_id, userData));
-  };
-  const sendUpdatePost = () => {
-    dispatch(updatePost(props.post_id,userData));
   };
   return (
     <>
@@ -252,7 +253,7 @@ function Post(props) {
               }}
             >
             {optionss.map((option) => (
-              <MenuItem key={option} onClick={handleClose}>
+              <MenuItem key={option} onClick={deletePost}>
               {option}
               </MenuItem>
             ))}
