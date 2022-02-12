@@ -28,7 +28,7 @@
     "bootstrap": "5",
     "chai": "^4.3.6",
     "chromedriver": "^98.0.0",
-    "dotenv-webpack": "^7.0.3",
+    "dotenv-webpack": "^7.1.0",
     "edgedriver": "^4.17134.1",
     "eslint": "7.11.0",
     "eslint-plugin-flowtype": "^8.0.3",
