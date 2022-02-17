@@ -1,4 +1,4 @@
-require("dotenv").config();
+
 
 export const CHANGE_ZOOM = "CHANGE_ZOOM";
 

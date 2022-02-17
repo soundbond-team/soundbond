@@ -23,7 +23,7 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
-    "dotenv": "^14.2.0",
+    "dotenv": "^16.0.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "formidable": "^2.0.1",
@@ -37,7 +37,7 @@
     "sanitize-html": "^2.5.3",
     "should": "^13.2.3",
     "sqlite3": "^5.0.2",
-    "tedious": "^13.1.0"
+    "tedious": "^14.3.0"
   },
   "devDependencies": {
     "@danmasta/mocha-sonar": "^1.0.1",

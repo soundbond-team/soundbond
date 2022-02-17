@@ -1,5 +1,5 @@
 import axios from "axios";
-require("dotenv").config();
+
 
 export const GET_SOUNDLOCATION = "GET_SOUNDLOCATION";
 export const POST_SOUNDLOCATION = "POST_SOUNDLOCATION";

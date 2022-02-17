@@ -7,6 +7,7 @@ import { getPostTrend, getallPost } from "./actions/post.actions";
 import { getUser } from "./actions/user.actions";
 
 const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
+const trackingServerURL = process.env.REACT_APP_TRACKING_SERVER_URL;
 
 const App = () => {
   const [uid, setUid] = useState(null);
@@ -32,6 +33,18 @@ const App = () => {
       dispatch(getUser(uid));
       dispatch(getPostTrend(uid));
     } // eslint-disable-next-line
+
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      _paq.push(['setTrackerUrl', trackingServerURL+'matomo.php']);
+      _paq.push(['setSiteId', '1']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src=trackingServerURL+'matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+
   }, [uid]);
 
   return (

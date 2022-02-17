@@ -1,5 +1,5 @@
 import axios from "axios";
-require("dotenv").config();
+
 
 export const GET_POST = "GET_POST";
 export const GET_ALL_POST = "GET_ALL_POST";

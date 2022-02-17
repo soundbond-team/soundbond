@@ -50,6 +50,7 @@ jobs:
           envkey_REACT_APP_MAPBOX_ACCESS_TOKEN: ${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}
           envkey_REACT_APP_BACK_SERVER_URL: ${{ secrets.REACT_APP_BACK_SERVER_URL }}
           envkey_REACT_APP_FRONT_URL: ${{ secrets.FRONT_SERVER_URL }}
+          envkey_REACT_APP_TRACKING_SERVER_URL: ${{ secrets.REACT_APP_TRACKING_SERVER_URL }}
           directory: client
           file_name: .env
 
