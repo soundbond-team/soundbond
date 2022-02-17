@@ -59,8 +59,8 @@ export default function AudioPlayer(props) {
       if (props.visit[i].id === uid) {
         return true;
       }
-      return false;
     }
+    return false;
   });
   const [compteurVisite, setCompteurVisite] = useState(props.visit.length);
 
