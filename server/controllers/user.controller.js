@@ -15,23 +15,22 @@ const helper_include_followings_followers = [
   {
     model: User,
     as: "follow",
-    attributes: helper_exclude_password_and_dates
+    attributes: helper_exclude_password_and_dates,
   },
   {
     model: User,
     as: "following",
-    attributes: helper_exclude_password_and_dates
+    attributes: helper_exclude_password_and_dates,
   },
 ];
-
 
 exports.userInformations = (req, res) => {
   const user_id = req.params.user_id;
 
   User.findByPk(user_id, {
     include: helper_include_followings_followers,
-    attributes: helper_exclude_password_and_dates
-    })
+    attributes: helper_exclude_password_and_dates,
+  })
     .then((data) => {
       res.send(data);
     })
@@ -49,8 +48,8 @@ exports.userInformations2 = (req, res) => {
   User.findOne({
     where: { username },
     include: helper_include_followings_followers,
-    attributes: helper_exclude_password_and_dates
-    })
+    attributes: helper_exclude_password_and_dates,
+  })
     .then((data) => {
       res.send(data);
     })
@@ -128,7 +127,7 @@ exports.userSuggestion = (req, res) => {
     },
     limit: 10,
     include: helper_include_followings_followers,
-    attributes: helper_exclude_password_and_dates
+    attributes: helper_exclude_password_and_dates,
   })
     .then((data) => {
       res.send(data);
@@ -149,14 +148,71 @@ exports.followings = (req, res) => {
       {
         model: User,
         as: "following",
-        attributes: ['id', 'username'],
+        attributes: ["id", "username"],
       },
     ],
     attributes: [],
-
-    })
+  })
     .then((data) => {
       res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(
+        sanitizeHtml({
+          error: MESSAGE_FIND_ERROR,
+        })
+      );
+    });
+};
+
+exports.suggestionsFollow = (req, res) => {
+  //TODO Si possible, trouver un moyen d'exclure " abonnement " pour n'avoir que les user_ids des followings.
+  const user_id = req.params.id;
+
+  User.findByPk(user_id, {
+    include: [
+      {
+        model: User,
+        as: "follow",
+      },
+    ],
+    attributes: [],
+  })
+    .then(async (data) => {
+      let suggestions = [];
+
+      if (Object.keys(data.follow).length > 0) {
+        for (let value of Object.values(data.follow)) {
+          await User.findByPk(value.id, {
+            include: [
+              {
+                model: User,
+                as: "follow",
+              },
+            ],
+          }).then((data2) => {
+            if (Object.keys(data2.follow).length > 0) {
+              console.log(Object.keys(data2.follow).length);
+              let compteur = 0;
+              for (let value2 of Object.values(data2.follow)) {
+                for (let value of Object.values(data.follow)) {
+                  if (value.id === value2.id) {
+                    compteur = compteur + 1;
+                  }
+                }
+                if (compteur == 0 && value2.id != user_id) {
+                  suggestions.push(value2);
+                }
+                compteur = 0;
+              }
+            }
+          });
+        }
+      }
+      console.log(Object.keys(data.follow).length);
+
+      console.log(suggestions);
+      res.send(suggestions);
     })
     .catch((err) => {
       res.status(500).send(

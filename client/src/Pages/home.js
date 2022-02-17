@@ -5,6 +5,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import HomeIcon from "@mui/icons-material/Home";
+import FollowSuggestion from "../components/FollowSuggestion/FollowSuggestion";
 function Home() {
   const navigate = useNavigate();
 
@@ -57,8 +58,16 @@ function Home() {
               </div>
             </div>
           </div>
-          <div className="col-11 " text-center>
+          <div className="col-10 " text-center>
             <Outlet />
+          </div>
+
+          <div className="col-1  d-none d-md-block" text-center>
+            <div style={{ zIndex: 2, position: "fixed" }}>
+              <h3 style={{ fontWeight: "normal" }}> Suggestions</h3>
+              <br />
+              <FollowSuggestion />
+            </div>
           </div>
         </div>
       </div>

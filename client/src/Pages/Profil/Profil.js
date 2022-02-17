@@ -270,11 +270,14 @@ function Profil(props) {
               <Modal.Title>Abonnements</Modal.Title>
             </ModalHeader>
             <Modal.Body>
-              {currentUserdata.follow.map((d, index) => (
-                <div key={index}>
-                  <span>{d.username}</span> <br />
-                </div>
-              ))}
+              {currentUserdata.follow.map((d, index) => {
+                console.log(d);
+                return (
+                  <div key={index}>
+                    <span>{d.username}</span> <br />
+                  </div>
+                );
+              })}
             </Modal.Body>
           </Modal>
         </>

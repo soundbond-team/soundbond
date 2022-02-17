@@ -22,7 +22,10 @@ module.exports = (app) => {
   router.get("/:user_id/trending/", post.trendingPostsForSpecificUser);
 
   // GET all Posts from users followed by a speficific User.
-  router.get("/:user_id/following_posts/", post.allPostsFromUsersFollowedByUserId);
+  router.get(
+    "/:user_id/following_posts/",
+    post.allPostsFromUsersFollowedByUserId
+  );
 
   // GET all Users followed by a specify User.
   router.get("/:user_id/followings/", userCtrl.followings);
@@ -38,6 +41,8 @@ module.exports = (app) => {
   router.post("/unfollow/:user_id", userCtrl.unfollow);
 
   router.put("/:user_id", userCtrl.updateUser);
+
+  router.get("/:id/suggestionsFollow/", userCtrl.suggestionsFollow);
 
   app.use("/api/v1/user", router);
 };
