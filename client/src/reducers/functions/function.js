@@ -80,23 +80,13 @@ export const remove_share = (state, payload) => {
   });
 };
 
-export const remove_post = (state, payload) =>{
-  return state.map((posts) => {
-    if(posts.id === payload.post_id){
-      return {
-        ...posts,
-        removed_by: posts.removed_by.filter(
-          (data) => data.id !== payload.userData.id
-        ),
-      };
-    }
-    return posts;
-  });
+export const remove_post = (state, payload) => {
+  return state.filter((post) => post.id !== payload.postId);
 };
 
-export const update_post = (state, payload) =>{
+export const update_post = (state, payload) => {
   return state.map((posts) => {
-    if(posts.id === payload.post_id){
+    if (posts.id === payload.post_id) {
       return {
         ...posts,
         updated_by: posts.updated_by.filter(
