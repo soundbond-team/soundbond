@@ -100,24 +100,24 @@ exports.create = async (req, res) => {
   const postcreate = await db.Post.create(post);
 
   if (Object.keys(req.body.tags).length > 0) {
-    for (let value of Object.values(req.body.tags)) {
+    for (let tag of Object.values(req.body.tags)) {
       //
 
       db.Tag.findOne({
-        where: { tag: value },
+        where: { tag: tag },
       })
         .then(async (data) => {
           if (data != null) {
             await postcreate.addTagpost(data);
             find();
           } else {
-            const tagcreated = await db.Tag.create({ tag: value });
+            const tagcreated = await db.Tag.create({ tag: tag });
             await postcreate.addTagpost(tagcreated);
             find();
           }
         })
         .catch(async (e) => {
-          const tagcreated = await db.Tag.create({ tag: value });
+          const tagcreated = await db.Tag.create({ tag: tag });
           await postcreate.addTagpost(tagcreated);
           find();
         });
@@ -472,11 +472,21 @@ exports.comment = async (req, res) => {
   try {
     const post = await db.Post.findByPk(req.body.post_id);
     const user = await db.User.findByPk(req.body.user_id);
-    await post.addCommented_by(user, {
-      through: { comment: req.body.comment_text },
-    });
+
+    const comment = {
+      post_id: post.id,
+      user_id: user.id,
+      comment: req.body.comment_text
+    }
+    
+    const comment_created = await db.Comments.create(comment);
+
     db.Comments.findOne({
-      where: { post_id: req.body.post_id, user_id: req.body.user_id },
+      where: {
+        post_id: req.body.post_id,
+        user_id: req.body.user_id,
+        comment: req.body.comment_text
+      },
     }).then((data) => {
       res.status(201).json(data);
     });
