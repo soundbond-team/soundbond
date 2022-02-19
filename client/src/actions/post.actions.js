@@ -13,6 +13,8 @@ export const POSTS_BY_TAG = "POSTS_BY_TAG";
 export const GET_POST_TAG = "GET_POST_TAG";
 export const ADD_SHARE = "ADD_SHARE";
 export const REMOVE_SHARE = "REMOVE_SHARE";
+export const REMOVE_POST ="REMOVE_POST";
+export const UPDATE_POST ="UPDATE_POST";
 export const GET_ALL_Shares_FOR_SPECIFIC_POST =
   "GET_ALL_Shares_FOR_SPECIFIC_POST";
 export const GET_ALL_POSTS_SHARED_BY_USER = " GET_ALL_POSTS_SHARED_BY_USER";
@@ -63,7 +65,7 @@ export const post_post = (sound_id, description, uid, tag) => {
         }
       })
       .catch((err) => console.log(err));
-  };
+  };  
 };
 
 // Charge tous les Posts (ainsi que les données des foregn key)
@@ -256,6 +258,7 @@ export const removeShare = (id, user_id, userData) => {
   };
 };
 
+
 export const getAllPostSharedByUser = (user_id) => {
   return (dispatch) => {
     return axios
@@ -269,5 +272,47 @@ export const getAllPostSharedByUser = (user_id) => {
         }
       })
       .catch((err) => console.log(err));
+  };
+};
+
+//Supprimer un post
+export const removePost = (post_id,userData) => {
+  return (dispatch) => {
+    return axios({
+      method: "post",
+      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/delete/`,
+      data: {
+        post_id: post_id,
+      },
+    })
+    .then((res) => {
+      if(res.data.errors){
+        dispatch({type:REMOVE_POST, payload:""});
+      }else{
+        dispatch({type:REMOVE_POST, payload:{post_id, userData}});
+      }
+    })
+    .catch((err) => console.log(err));
+  };
+};
+
+//Modifier un post
+export const updatePost = (post_id,userData) => {
+  return (dispatch) => {
+    return axios({
+      method: "post",
+      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/update/`,
+      data: {
+        post_id: post_id,
+      },
+    })
+    .then((res) => {
+      if(res.data.errors){
+        dispatch({type:UPDATE_POST, payload:""});
+      }else{
+        dispatch({type:UPDATE_POST, payload:{post_id, userData}});
+      }
+    })
+    .catch((err) => console.log(err));
   };
 };
