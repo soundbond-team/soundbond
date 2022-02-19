@@ -1,4 +1,4 @@
-require("dotenv").config();
+
 
 export const CHANGE_ITINERAIRE = "CHANGE_ITINERAIRE";
 
