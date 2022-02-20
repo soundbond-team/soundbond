@@ -296,7 +296,7 @@ function Post(props) {
               style={{ marginLeft: "5px", cursor: "pointer" }}
               onClick={!props.parent ? handleShowCommentsModal : null}
             >
-              {props.post.commented_by.length}{" "}
+              {props.post.comments_on_post.length}{" "}
             </span>
             <IconButton
               onClick={handleShowCommentsModal}
@@ -382,20 +382,20 @@ function Post(props) {
           <Modal.Title>Commentaires</Modal.Title>
         </ModalHeader>
         <Modal.Body>
-          {props.post.commented_by.map((comment, index) => (
+          {props.post.comments_on_post.map((comment, index) => (
             <div key={index}>
               <span>
-                {comment.username} | {comment.comment.comment}
+                {comment.commented_by_user.username} | {comment.comment}
                 <IconButton
                   onClick={() => {
                     sendRemoveComment(
-                      comment.comment.post_id,
-                      comment.comment.user_id,
-                      comment.comment.comment
+                      comment.post_id,
+                      comment.user_id,
+                      comment.comment
                     );
                   }}
                 >
-                  {userData.id === comment.comment.user_id ? (
+                  {userData.id === comment.user_id ? (
                     <DeleteIcon className={classes.icon} />
                   ) : (
                     <span />

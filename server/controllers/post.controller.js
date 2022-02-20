@@ -39,11 +39,11 @@ const helper_user_liked_by = {
 const helper_user_commented_by = {
   model: db.Comments,
   as: 'comments_on_post',
-  attributes: ["id", "comment"],
+  attributes: ["id", "comment", "post_id", "user_id"],
   include: [{
     model: db.User,
     as: "commented_by_user",
-    attributes: ["id"],
+    attributes: ["id", "username"],
   }]
 };
 
