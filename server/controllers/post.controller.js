@@ -35,10 +35,16 @@ const helper_user_liked_by = {
   attributes: ["id", "username"],
 };
 
+
 const helper_user_commented_by = {
-  model: db.User,
-  as: "commented_by",
-  attributes: ["id", "username"],
+  model: db.Comments,
+  as: 'comments_on_post',
+  attributes: ["id", "comment"],
+  include: [{
+    model: db.User,
+    as: "commented_by_user",
+    attributes: ["id"],
+  }]
 };
 
 const helper_user_shared_by = {
@@ -129,7 +135,6 @@ exports.create = async (req, res) => {
 
 exports.getTag = (req, res) => {
   const tagParameter = req.body.tag;
-  console.log(tagParameter);
   db.Tag.findOne({
     where: { tag: tagParameter },
   })
@@ -173,6 +178,8 @@ exports.findAll = (req, res) => {
   })
     .then((data) => {
       res.send(data);
+      console.log("EH SALUT");
+      console.log(data);
     })
     .catch((err) => {
       res.status(500).send({
@@ -467,8 +474,7 @@ exports.getAllLike = (req, res) => {
 
 // Comment a post
 exports.comment = async (req, res) => {
-  //! Impossible d'avoir plus d'un commentaire associant le même couple (user, post) : https://github.com/sequelize/sequelize/issues/3493
-  // We insert the row, and then we look for it in the database to return it under JSON format.
+  // We insert the row and return it under JSON format.
   try {
     const post = await db.Post.findByPk(req.body.post_id);
     const user = await db.User.findByPk(req.body.user_id);
@@ -479,17 +485,10 @@ exports.comment = async (req, res) => {
       comment: req.body.comment_text
     }
     
-    const comment_created = await db.Comments.create(comment);
-
-    db.Comments.findOne({
-      where: {
-        post_id: req.body.post_id,
-        user_id: req.body.user_id,
-        comment: req.body.comment_text
-      },
-    }).then((data) => {
-      res.status(201).json(data);
-    });
+    await db.Comments.create(comment)
+      .then((data) => {
+        res.status(201).json(data);
+      });
   } catch (e) {
     res.status(400).json("error");
   }
