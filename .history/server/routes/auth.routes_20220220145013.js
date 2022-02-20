@@ -1,7 +1,7 @@
 module.exports = (app) => {
     const router = require("express").Router();
     const passport = require("passport");
-    const CLIENT_URL = "http://localhost:3000";
+    const CLIENT_URL = "http://localhost:3000/";
 
 
     router.get("/login/success",(req, res)=>{
@@ -35,9 +35,10 @@ module.exports = (app) => {
         passport.authenticate("google", { scope: ["profile"] }));
 
     
-    router.get("/google/callback", passport.authenticate("google", { 
-        successRedirect: CLIENT_URL,
+    router.get("/google/callback",passport.authenticate("google", { 
         failureRedirect: "/login/failed",
+        successRedirect: CLIENT_URL
+
     }) );
 
 

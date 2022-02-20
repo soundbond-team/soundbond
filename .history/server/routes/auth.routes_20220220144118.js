@@ -1,10 +1,10 @@
 module.exports = (app) => {
     const router = require("express").Router();
     const passport = require("passport");
-    const CLIENT_URL = "http://localhost:3000";
+    const CLIENT_URL = "http://localhost:3000/";
 
 
-    router.get("/login/success",(req, res)=>{
+    router.get("/login/success",(req,res)=>{
         if(req.user){
             res.status(200).json({
                 success : true ,
@@ -31,13 +31,14 @@ module.exports = (app) => {
 
     });
 
-    router.get("/google",
-        passport.authenticate("google", { scope: ["profile"] }));
+    router.get('/google',
+        passport.authenticate('google', { scope: ['profile'] }));
 
     
-    router.get("/google/callback", passport.authenticate("google", { 
-        successRedirect: CLIENT_URL,
-        failureRedirect: "/login/failed",
+    router.get('/google/callback',passport.authenticate('google', { 
+        failureRedirect: '/login/failed',
+        successRedirect: CLIENT_URL
+
     }) );
 
 

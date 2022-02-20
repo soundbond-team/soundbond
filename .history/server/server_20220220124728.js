@@ -23,7 +23,7 @@ app.use(passport.session());
 
 app.use(
   cors({
-    credentials: true, 
+    credentials: true,
     origin: process.env.FRONT_SERVER_URL,
   })
 );

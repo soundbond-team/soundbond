@@ -16,22 +16,21 @@ passport.use(
     },
   async(accessToken, refreshToken, profile, cb)=>{
     const newUser = {
-      username: `${profile.name.givenName}${profile.name.familyName}`,
+      username: "${profile.name.givenName} ${profile.name.familyName}",
       password : null,
       googleId : profile.id,
 
     }
     console.log(newUser);
-    const user =  User.findOrCreate({
+    const user = await User.findOrCreate({
               where : { googleId : profile.id}, 
               defaults : newUser}
               ).catch((err)=>{
                   console.log("Error Signing up", err);
                   cb(err,null);
     });
-    
     if(user)
-      return cb (null,user);
+      return cb(null,user) ;
   }
 ));
 
@@ -53,19 +52,10 @@ passport.use(
 
 
 
-passport.serializeUser((user,cb)=>{
-    console.log("Serializing user:",user);
-    cb(err,user.id);
+passport.serializeUser((user,done)=>{
+    done(null,user);
 });
 
-passport.deserializeUser(async(id,cb)=>{
-    const user = User.findOne({where : {id}})
-    .catch((err)=>{
-      cb(err,null);
-    })  
-  console.log("DeSerialized user ",user);
-
-  if(user)
-    cb(null,user); 
-
+passport.deserializeUser((user,done)=>{
+    done(null,user);
 });

@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-
+import {initializeAuth} from "../../firebase"
 import axios from "axios";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+} from "firebase/auth";
+
+
+initializeAuth();
 
 const backServerURL = process.env.REACT_APP_BACK_SERVER_URL
 
@@ -8,6 +16,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
+  
   const handleLogin = (e) => {
     e.preventDefault();
     axios({
@@ -28,14 +37,25 @@ function Login() {
     });
   };
 
-  const google = ()=>{
-    window.open("http://localhost:8080/api/v1/auth/google","_self");
-  }
+  //authentification avec google et github
+  
+  const auth = getAuth();
+  const googleProvider = new GoogleAuthProvider();
+  //const githubProvider = new GithubAuthProvider();
 
-  /*const github = ()=>{
-    window.open("http://localhost:8080//api/v1/auth/github","_self");
-  }
-*/
+  signInWithPopup (auth,googleProvider)
+  .then((result)=>{
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+
+      const user = result.user;
+      console.log(user);
+  }).catch((error)=>{
+      // The email of the user's account used.
+      const email = error.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+  });
   return (
     <>
       <div className="container">
@@ -66,12 +86,10 @@ function Login() {
           <input type="submit" value="Se connecter" />
         </form>
         {err}
-
-  
-        <button onClick={google}>Google</button>
+      </div>
+        <button onClick={signInWithPopup}>Google</button>
         <button >Github</button>
 
-      </div>
     </>
   );
 }

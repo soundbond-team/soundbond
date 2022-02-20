@@ -1,5 +1,4 @@
-const db = require("./models");
-const User = db.User;
+
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GithubStrategy = require('passport-github2').Strategy;
 
@@ -14,24 +13,13 @@ passport.use(
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: "/api/v1/auth/google/callback"
     },
-  async(accessToken, refreshToken, profile, cb)=>{
+  function(accessToken, refreshToken, profile, done) {
     const newUser = {
-      username: `${profile.name.givenName}${profile.name.familyName}`,
-      password : null,
       googleId : profile.id,
+      displayName : profile.displayName,
+      userName: "${profile.name.givenName} ${profile.name.familyName}",
 
     }
-    console.log(newUser);
-    const user =  User.findOrCreate({
-              where : { googleId : profile.id}, 
-              defaults : newUser}
-              ).catch((err)=>{
-                  console.log("Error Signing up", err);
-                  cb(err,null);
-    });
-    
-    if(user)
-      return cb (null,user);
   }
 ));
 
@@ -53,19 +41,10 @@ passport.use(
 
 
 
-passport.serializeUser((user,cb)=>{
-    console.log("Serializing user:",user);
-    cb(err,user.id);
+passport.serializeUser((user,done)=>{
+    done(null,user);
 });
 
-passport.deserializeUser(async(id,cb)=>{
-    const user = User.findOne({where : {id}})
-    .catch((err)=>{
-      cb(err,null);
-    })  
-  console.log("DeSerialized user ",user);
-
-  if(user)
-    cb(null,user); 
-
+passport.deserializeUser((user,done)=>{
+    done(null,user);
 });

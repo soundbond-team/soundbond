@@ -14,7 +14,7 @@ passport.use(
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: "/api/v1/auth/google/callback"
     },
-  async(accessToken, refreshToken, profile, cb)=>{
+  async(accessToken, refreshToken, profile, done)=>{
     const newUser = {
       username: `${profile.name.givenName}${profile.name.familyName}`,
       password : null,
@@ -30,8 +30,6 @@ passport.use(
                   cb(err,null);
     });
     
-    if(user)
-      return cb (null,user);
   }
 ));
 
@@ -53,19 +51,10 @@ passport.use(
 
 
 
-passport.serializeUser((user,cb)=>{
-    console.log("Serializing user:",user);
-    cb(err,user.id);
+passport.serializeUser((user,done)=>{
+    done(null,user);
 });
 
-passport.deserializeUser(async(id,cb)=>{
-    const user = User.findOne({where : {id}})
-    .catch((err)=>{
-      cb(err,null);
-    })  
-  console.log("DeSerialized user ",user);
-
-  if(user)
-    cb(null,user); 
-
+passport.deserializeUser((user,done)=>{
+    done(null,user);
 });

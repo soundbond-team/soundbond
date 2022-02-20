@@ -69,7 +69,7 @@ function Login() {
 
   
         <button onClick={google}>Google</button>
-        <button >Github</button>
+        <button onClick={github}>Github</button>
 
       </div>
     </>

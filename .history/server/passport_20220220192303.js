@@ -54,18 +54,10 @@ passport.use(
 
 
 passport.serializeUser((user,cb)=>{
-    console.log("Serializing user:",user);
+
     cb(err,user.id);
 });
 
-passport.deserializeUser(async(id,cb)=>{
-    const user = User.findOne({where : {id}})
-    .catch((err)=>{
-      cb(err,null);
-    })  
-  console.log("DeSerialized user ",user);
-
-  if(user)
-    cb(null,user); 
-
+passport.deserializeUser((user,done)=>{
+    done(null,user);
 });

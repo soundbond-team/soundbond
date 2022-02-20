@@ -63,9 +63,5 @@ passport.deserializeUser(async(id,cb)=>{
     .catch((err)=>{
       cb(err,null);
     })  
-  console.log("DeSerialized user ",user);
-
-  if(user)
-    cb(null,user); 
-
+  
 });

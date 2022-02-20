@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import firebase from 'firebase/app'
+import 'firebase/auth'
 
 import axios from "axios";
 
@@ -28,14 +30,10 @@ function Login() {
     });
   };
 
-  const google = ()=>{
-    window.open("http://localhost:8080/api/v1/auth/google","_self");
+  const google = () =>{
+    fir
   }
 
-  /*const github = ()=>{
-    window.open("http://localhost:8080//api/v1/auth/github","_self");
-  }
-*/
   return (
     <>
       <div className="container">
@@ -66,12 +64,10 @@ function Login() {
           <input type="submit" value="Se connecter" />
         </form>
         {err}
-
-  
-        <button onClick={google}>Google</button>
-        <button >Github</button>
-
       </div>
+        <button onClick={google}>Google</button>
+        <button onClick={github}>Github</button>
+
     </>
   );
 }
