@@ -167,14 +167,14 @@ function Post(props) {
 
   const sendAddComment = async () => {
     if (commentaire !== "") {
-      await dispatch(removeComment(props.post.id, uid, commentaire, userData));
+      //!await dispatch(removeComment(props.post.id, uid, commentaire, userData));
       await dispatch(addComment(props.post.id, uid, commentaire, userData));
     }
     setCommentaire("");
   };
 
-  const sendRemoveComment = async (post_id, user_id, _commentaire) => {
-    await dispatch(removeComment(post_id, user_id, _commentaire, userData));
+  const sendRemoveComment = async (comment_id) => {
+    await dispatch(removeComment(comment_id, userData));
   };
 
   const getFileName = () => {
@@ -388,11 +388,7 @@ function Post(props) {
                 {comment.commented_by_user.username} | {comment.comment}
                 <IconButton
                   onClick={() => {
-                    sendRemoveComment(
-                      comment.post_id,
-                      comment.user_id,
-                      comment.comment
-                    );
+                    sendRemoveComment(comment.id);
                   }}
                 >
                   {userData.id === comment.user_id ? (

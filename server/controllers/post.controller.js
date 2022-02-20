@@ -178,8 +178,6 @@ exports.findAll = (req, res) => {
   })
     .then((data) => {
       res.send(data);
-      console.log("EH SALUT");
-      console.log(data);
     })
     .catch((err) => {
       res.status(500).send({
@@ -497,16 +495,31 @@ exports.comment = async (req, res) => {
 // Delete a comment from a post
 exports.uncomment = async (req, res) => {
   /* Avec l'id d'un post et l'id d'un user, supprime le commentaire correspondant. */
-  const post_id = req.body.post_id;
-  const user_id = req.body.user_id;
-  db.Post.findByPk(post_id).then(async (post) => {
-    try {
-      await post.removeCommented_by(user_id);
-      res.status(201).json("comment deleted");
-    } catch (e) {
-      res.status(400).json("error");
-    }
-  });
+  const comment_id = req.body.comment_id;
+
+  db.Comments.destroy({
+    where: { id: comment_id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Comment was deleted successfully!",
+        });
+      } else {
+        res.send(
+          sanitizeHtml({
+            error: `Cannot delete comment.`,
+          })
+        );
+      }
+    })
+    .catch((err) => {
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Could not delete comment.",
+        })
+      );
+    });
 };
 
 // Get all the comments for a specific post
