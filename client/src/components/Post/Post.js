@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-
 import { NavLink, useNavigate } from "react-router-dom";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Avatar from "@material-ui/core/Avatar";
@@ -11,6 +10,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Icon } from "@iconify/react";
 import { blue } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
 import {
@@ -32,6 +32,8 @@ import {
   removeComment,
   addShare,
   removeShare,
+  removePost,
+  updatePost,
 } from "../../actions/post.actions";
 import { change_ZOOM } from "../../actions/postToMap.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
@@ -40,6 +42,12 @@ import { TextInput } from "react-native";
 
 import { UidContext } from "../Appcontext";
 import RepeatIcon from "@mui/icons-material/Repeat";
+
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { formControlClasses } from "@material-ui/core";
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 function Post(props) {
   const uid = useContext(UidContext);
@@ -193,14 +201,37 @@ function Post(props) {
     hour: "numeric",
     minute: "numeric",
   };
+  const optionss = ["Supprimer", "Modifier"];
+  const ITEM_HEIGHT = 38;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
+  const sendDeleteUpdatePost = async (e) => {
+    console.log(e);
+    if (e === "Supprimer") {
+      await dispatch(removePost(props.post.id, userData));
+    } else {
+      await dispatch(updatePost(props.post.id, userData));
+    }
+  };
+
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <>
       <Card className={classes.card}>
         {/* Utilisateur postant le Post. */}
         <Grid item>
           <List className={classes.list}>
-            <ListItem alignItems="flex-start" className={classes.listItem}>
+            <ListItem
+              alignItems="flex-start"
+              className={classes.listItem}
+              style={{ padding: "0px" }}
+            >
               <ListItemAvatar>
                 <NavLink
                   className="nav-link"
@@ -230,6 +261,57 @@ function Post(props) {
                   )}
                 />{" "}
               </NavLink>
+              <ListItem
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  padding: "0px",
+                }}
+              >
+                {userData.id === props.post.publisher.id ? (
+                  <>
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      to={`/profil/${props.post.publisher.username}/posts`}
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                      style={{ float: "right" }}
+                    >
+                      <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 3.5,
+                          width: "20ch",
+                        },
+                      }}
+                    >
+                      {optionss.map((option) => (
+                        <MenuItem
+                          key={option}
+                          onClick={() => sendDeleteUpdatePost(option)}
+                          onClose={handleClose}
+                        >
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </ListItem>
             </ListItem>
           </List>
         </Grid>

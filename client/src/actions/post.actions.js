@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export const GET_POST = "GET_POST";
 export const GET_ALL_POST = "GET_ALL_POST";
 export const ADD_POST = "ADD_POST";
@@ -13,6 +12,8 @@ export const POSTS_BY_TAG = "POSTS_BY_TAG";
 export const GET_POST_TAG = "GET_POST_TAG";
 export const ADD_SHARE = "ADD_SHARE";
 export const REMOVE_SHARE = "REMOVE_SHARE";
+export const REMOVE_POST = "REMOVE_POST";
+export const UPDATE_POST = "UPDATE_POST";
 export const GET_ALL_Shares_FOR_SPECIFIC_POST =
   "GET_ALL_Shares_FOR_SPECIFIC_POST";
 export const GET_ALL_POSTS_SHARED_BY_USER = " GET_ALL_POSTS_SHARED_BY_USER";
@@ -30,7 +31,9 @@ export const getPostByTag = (tag) => {
   return (dispatch) => {
     return axios({
       method: "get",
-      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/getPostByTag/${tag}`,
+      url:
+        process.env.REACT_APP_BACK_SERVER_URL +
+        `api/v1/post/getPostByTag/${tag}`,
     })
       .then((res) => {
         dispatch({
@@ -47,7 +50,7 @@ export const post_post = (sound_id, description, uid, tag) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/`,
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/`,
       data: {
         description: description,
         publisher_user_id: uid,
@@ -70,7 +73,7 @@ export const post_post = (sound_id, description, uid, tag) => {
 export const getallPost = () => {
   return (dispatch) => {
     return axios
-      .get(process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/`)
+      .get(process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/`)
       .then((res) => {
         dispatch({ type: GET_ALL_POST, payload: res.data });
       })
@@ -81,7 +84,9 @@ export const getallPost = () => {
 export const getPostTrend = (id) => {
   return (dispatch) => {
     return axios
-      .get(process.env.REACT_APP_BACK_SERVER_URL+`api/v1/user/${id}/trending/`)
+      .get(
+        process.env.REACT_APP_BACK_SERVER_URL + `api/v1/user/${id}/trending/`
+      )
       .then((res) => {
         dispatch({ type: GET_ALL_POST_TREND, payload: res.data });
       })
@@ -94,7 +99,7 @@ export const addLike = (id, user_id, user_data) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/like/${id}`,
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/like/${id}`,
       data: {
         user_id: user_id,
       },
@@ -119,7 +124,7 @@ export const removeLike = (id, user_id, user_data) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/unlike/${id}`,
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/unlike/${id}`,
       data: {
         user_id: user_id,
       },
@@ -138,7 +143,7 @@ export const addComment = (post_id, user_id, comment, userData) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/comment/`,
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/comment/`,
       data: {
         post_id: post_id,
         user_id: user_id,
@@ -162,7 +167,7 @@ export const removeComment = (post_id, user_id, comment, userData) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/uncomment/`,
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/uncomment/`,
       data: {
         post_id: post_id,
         user_id: user_id,
@@ -186,7 +191,8 @@ export const getPostsUser = (user_id) => {
   return (dispatch) => {
     return axios({
       method: "get",
-      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/user/${user_id}/posts`,
+      url:
+        process.env.REACT_APP_BACK_SERVER_URL + `api/v1/user/${user_id}/posts`,
     })
       .then((res) => {
         if (res.data !== "" && res.data !== null) {
@@ -201,7 +207,7 @@ export const getpostbytag = (tag) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/getPostBytag`,
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/getPostBytag`,
       data: {
         tag: tag,
       },
@@ -218,7 +224,7 @@ export const addShare = (post_id, user_id, userData) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/share/`,
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/share/`,
       data: {
         post_id: post_id,
         user_id: user_id,
@@ -239,7 +245,7 @@ export const removeShare = (id, user_id, userData) => {
   return (dispatch) => {
     return axios({
       method: "post",
-      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/post/unshare/`,
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/unshare/`,
       data: {
         post_id: id,
         user_id: user_id,
@@ -259,13 +265,54 @@ export const removeShare = (id, user_id, userData) => {
 export const getAllPostSharedByUser = (user_id) => {
   return (dispatch) => {
     return axios
-      .get(process.env.REACT_APP_BACK_SERVER_URL+`api/v1/user/${user_id}/sharedPosts`)
+      .get(
+        process.env.REACT_APP_BACK_SERVER_URL +
+          `api/v1/user/${user_id}/sharedPosts`
+      )
       .then((res) => {
         if (res.data.shared_posts) {
           dispatch({
             type: GET_ALL_POSTS_SHARED_BY_USER,
             payload: res.data.shared_posts,
           });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const removePost = (postId, userData) => {
+  return (dispatch) => {
+    return axios({
+      method: "delete",
+      url: `${process.env.REACT_APP_BACK_SERVER_URL}api/v1/post/${postId}`,
+    })
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: REMOVE_POST, payload: "" });
+        } else {
+          dispatch({ type: REMOVE_POST, payload: { postId, userData } });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+//Modifier un post
+export const updatePost = (post_id, userData) => {
+  return (dispatch) => {
+    return axios({
+      method: "post",
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/update/`,
+      data: {
+        post_id: post_id,
+      },
+    })
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: UPDATE_POST, payload: "" });
+        } else {
+          dispatch({ type: UPDATE_POST, payload: { post_id, userData } });
         }
       })
       .catch((err) => console.log(err));
