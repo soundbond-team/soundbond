@@ -175,14 +175,14 @@ function Post(props) {
 
   const sendAddComment = async () => {
     if (commentaire !== "") {
-      await dispatch(removeComment(props.post.id, uid, commentaire, userData));
+      //!await dispatch(removeComment(props.post.id, uid, commentaire, userData));
       await dispatch(addComment(props.post.id, uid, commentaire, userData));
     }
     setCommentaire("");
   };
 
-  const sendRemoveComment = async (post_id, user_id, _commentaire) => {
-    await dispatch(removeComment(post_id, user_id, _commentaire, userData));
+  const sendRemoveComment = async (comment_id) => {
+    await dispatch(removeComment(props.post.id, comment_id, userData));
   };
 
   const getFileName = () => {
@@ -378,7 +378,7 @@ function Post(props) {
               style={{ marginLeft: "5px", cursor: "pointer" }}
               onClick={!props.parent ? handleShowCommentsModal : null}
             >
-              {props.post.commented_by.length}{" "}
+              {props.post.comments_on_post.length}{" "}
             </span>
             <IconButton
               onClick={handleShowCommentsModal}
@@ -464,20 +464,16 @@ function Post(props) {
           <Modal.Title>Commentaires</Modal.Title>
         </ModalHeader>
         <Modal.Body>
-          {props.post.commented_by.map((comment, index) => (
+          {props.post.comments_on_post.map((comment, index) => (
             <div key={index}>
               <span>
-                {comment.username} | {comment.comment.comment}
+                {comment.commented_by_user.username} | {comment.comment}
                 <IconButton
                   onClick={() => {
-                    sendRemoveComment(
-                      comment.comment.post_id,
-                      comment.comment.user_id,
-                      comment.comment.comment
-                    );
+                    sendRemoveComment(comment.id);
                   }}
                 >
-                  {userData.id === comment.comment.user_id ? (
+                  {userData.id === comment.commented_by_user.id ? (
                     <DeleteIcon className={classes.icon} />
                   ) : (
                     <span />

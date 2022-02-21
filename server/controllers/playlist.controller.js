@@ -72,9 +72,15 @@ exports.findallForUser = (req, res) => {
             attributes: ["id", "username"],
           },
           {
-            model: db.User,
-            as: "commented_by",
-            attributes: ["id", "username"],
+            model: db.Comments,
+            as: 'comments_on_post',
+            attributes: ["id", "comment"],
+            include: [{
+              model: db.User,
+              as: "commented_by_user",
+              attributes: ["id"],
+            }]
+          
           },
           {
             model: db.Tag,
