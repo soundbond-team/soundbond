@@ -32,7 +32,7 @@ jobs:
           yarn install
 
       - name: Generating dotenv config file for Production (/client)
-        uses: SpicyPizza/create-envfile@master
+        uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_REACT_APP_AZURE_BLOB_STORAGE_ADRESS: ${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}
           envkey_REACT_APP_MAPBOX_ACCESS_TOKEN: ${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}

@@ -32,7 +32,7 @@ jobs:
           yarn install
 
       - name: Generating dotenv config file for Production (/server)
-        uses: SpicyPizza/create-envfile@master
+        uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DATABASE: ${{ secrets.DB_NAME }}
           envkey_USERNAME: ${{ secrets.DB_USERNAME }}
@@ -105,7 +105,7 @@ jobs:
           yarn install
 
       - name: Generating dotenv config file for Production (/server)
-        uses: SpicyPizza/create-envfile@master
+        uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DATABASE: ${{ secrets.DB_NAME }}
           envkey_USERNAME: ${{ secrets.DB_USERNAME }}

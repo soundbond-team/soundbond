@@ -26,7 +26,7 @@ jobs:
           # But we choose only 1 commit because it is way enough
 
       - name: Generating dotenv config file for Tests (/server)
-        uses: SpicyPizza/create-envfile@master
+        uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DATABASE: ${{ secrets.DB_NAME }}
           envkey_USERNAME: ${{ secrets.DB_USERNAME }}
@@ -44,7 +44,7 @@ jobs:
           file_name: .env
 
       - name: Generating dotenv config file for Tests (/client)
-        uses: SpicyPizza/create-envfile@master
+        uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_REACT_APP_AZURE_BLOB_STORAGE_ADRESS: ${{ secrets.REACT_APP_AZURE_BLOB_STORAGE_ADRESS }}
           envkey_REACT_APP_MAPBOX_ACCESS_TOKEN: ${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}
