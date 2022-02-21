@@ -182,7 +182,7 @@ function Post(props) {
   };
 
   const sendRemoveComment = async (comment_id) => {
-    await dispatch(removeComment(comment_id, userData));
+    await dispatch(removeComment(props.post.id, comment_id, userData));
   };
 
   const getFileName = () => {
@@ -473,7 +473,7 @@ function Post(props) {
                     sendRemoveComment(comment.id);
                   }}
                 >
-                  {userData.id === comment.user_id ? (
+                  {userData.id === comment.commented_by_user.id ? (
                     <DeleteIcon className={classes.icon} />
                   ) : (
                     <span />
