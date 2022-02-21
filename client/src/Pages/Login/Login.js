@@ -51,6 +51,7 @@ function Login() {
         setErr("Mot de passe ou username incorrect");
       } else {
         console.log("etape 2" + res);
+        setstatePass(false);
         window.location = "/";
       }
     });
@@ -69,8 +70,10 @@ function Login() {
     })
       .then((res) => {
         if (res.data.err) {
+          setstatePass(true);
         } else {
           console.log("etape 1" + res);
+
           setstatePass(true);
         }
       })
@@ -87,6 +90,8 @@ function Login() {
   useEffect(() => {
     if (passwordGoogle !== "" && usernameGoogle !== "") {
       console.log(usernameGoogle, passwordGoogle);
+      console.log(usernameGoogle, passwordGoogle);
+
       handleSignup(usernameGoogle, passwordGoogle);
     } //eslint-disable-next-line
   }, [passwordGoogle]);
