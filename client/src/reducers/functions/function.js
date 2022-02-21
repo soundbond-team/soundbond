@@ -24,17 +24,23 @@ export const remove_like = (state, payload) => {
   });
 };
 export const add_commentaire = (state, payload) => {
+  console.log(payload);
   const datacomment = {
-    id: payload.userData.id,
-    username: payload.userData.username,
-    comment: payload.data,
+    comment: payload.data.comment,
+    id: payload.data.id,
+    post_id: payload.data.post_id,
+
+    commented_by_user: {
+      id: payload.userData.id,
+      username: payload.userData.username,
+    },
   };
 
   return state.map((posts) => {
     if (posts.id === payload.post_id) {
       return {
         ...posts,
-        commented_by: [datacomment, ...posts.commented_by],
+        comments_on_post: [datacomment, ...posts.comments_on_post],
       };
     }
     return posts;
@@ -46,14 +52,15 @@ export const remove_comment = (state, payload) => {
     if (posts.id === payload.post_id) {
       return {
         ...posts,
-        commented_by: posts.commented_by.filter(
-          (data) => data.id !== payload.userData.id
+        comments_on_post: posts.comments_on_post.filter(
+          (data) => data.id !== payload.comment_id
         ),
       };
     }
     return posts;
   });
 };
+
 export const add_share = (state, payload) => {
   return state.map((posts) => {
     if (posts.id === payload.post_id) {
@@ -72,6 +79,24 @@ export const remove_share = (state, payload) => {
         ...posts,
         shared_by: posts.shared_by.filter(
           (data) => payload.userData.id !== data.id
+        ),
+      };
+    }
+    return posts;
+  });
+};
+
+export const remove_post = (state, payload) => {
+  return state.filter((post) => post.id !== payload.postId);
+};
+
+export const update_post = (state, payload) => {
+  return state.map((posts) => {
+    if (posts.id === payload.post_id) {
+      return {
+        ...posts,
+        updated_by: posts.updated_by.filter(
+          (data) => data.id !== payload.userData.id
         ),
       };
     }

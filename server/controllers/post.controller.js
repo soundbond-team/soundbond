@@ -35,10 +35,16 @@ const helper_user_liked_by = {
   attributes: ["id", "username"],
 };
 
+
 const helper_user_commented_by = {
-  model: db.User,
-  as: "commented_by",
-  attributes: ["id", "username"],
+  model: db.Comments,
+  as: 'comments_on_post',
+  attributes: ["id", "comment", "post_id", "user_id"],
+  include: [{
+    model: db.User,
+    as: "commented_by_user",
+    attributes: ["id", "username"],
+  }]
 };
 
 const helper_user_shared_by = {
@@ -100,24 +106,24 @@ exports.create = async (req, res) => {
   const postcreate = await db.Post.create(post);
 
   if (Object.keys(req.body.tags).length > 0) {
-    for (let value of Object.values(req.body.tags)) {
+    for (let tag of Object.values(req.body.tags)) {
       //
 
       db.Tag.findOne({
-        where: { tag: value },
+        where: { tag: tag },
       })
         .then(async (data) => {
           if (data != null) {
             await postcreate.addTagpost(data);
             find();
           } else {
-            const tagcreated = await db.Tag.create({ tag: value });
+            const tagcreated = await db.Tag.create({ tag: tag });
             await postcreate.addTagpost(tagcreated);
             find();
           }
         })
         .catch(async (e) => {
-          const tagcreated = await db.Tag.create({ tag: value });
+          const tagcreated = await db.Tag.create({ tag: tag });
           await postcreate.addTagpost(tagcreated);
           find();
         });
@@ -129,7 +135,6 @@ exports.create = async (req, res) => {
 
 exports.getTag = (req, res) => {
   const tagParameter = req.body.tag;
-  console.log(tagParameter);
   db.Tag.findOne({
     where: { tag: tagParameter },
   })
@@ -467,19 +472,21 @@ exports.getAllLike = (req, res) => {
 
 // Comment a post
 exports.comment = async (req, res) => {
-  //! Impossible d'avoir plus d'un commentaire associant le même couple (user, post) : https://github.com/sequelize/sequelize/issues/3493
-  // We insert the row, and then we look for it in the database to return it under JSON format.
+  // We insert the row and return it under JSON format.
   try {
     const post = await db.Post.findByPk(req.body.post_id);
     const user = await db.User.findByPk(req.body.user_id);
-    await post.addCommented_by(user, {
-      through: { comment: req.body.comment_text },
-    });
-    db.Comments.findOne({
-      where: { post_id: req.body.post_id, user_id: req.body.user_id },
-    }).then((data) => {
-      res.status(201).json(data);
-    });
+
+    const comment = {
+      post_id: post.id,
+      user_id: user.id,
+      comment: req.body.comment_text
+    }
+    
+    await db.Comments.create(comment)
+      .then((data) => {
+        res.status(201).json(data);
+      });
   } catch (e) {
     res.status(400).json("error");
   }
@@ -488,16 +495,31 @@ exports.comment = async (req, res) => {
 // Delete a comment from a post
 exports.uncomment = async (req, res) => {
   /* Avec l'id d'un post et l'id d'un user, supprime le commentaire correspondant. */
-  const post_id = req.body.post_id;
-  const user_id = req.body.user_id;
-  db.Post.findByPk(post_id).then(async (post) => {
-    try {
-      await post.removeCommented_by(user_id);
-      res.status(201).json("comment deleted");
-    } catch (e) {
-      res.status(400).json("error");
-    }
-  });
+  const comment_id = req.body.comment_id;
+
+  db.Comments.destroy({
+    where: { id: comment_id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Comment was deleted successfully!",
+        });
+      } else {
+        res.send(
+          sanitizeHtml({
+            error: `Cannot delete comment.`,
+          })
+        );
+      }
+    })
+    .catch((err) => {
+      res.status(500).send(
+        sanitizeHtml({
+          error: "Could not delete comment.",
+        })
+      );
+    });
 };
 
 // Get all the comments for a specific post
