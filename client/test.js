@@ -107,7 +107,6 @@ describe("Home Page", function () {
       });
     });
   });
- 
 
   describe("test authentification et clique sur les boutons avec chrome", function() {
     it("clique sur le bouton se connecter de la page accueil", function() {
@@ -125,7 +124,7 @@ describe("Home Page", function () {
       browserC.findElement(webdriver.By.id('login')).click();
       
       const pageUrl = browserC.getCurrentUrl();
-      assert.notEqual(pageUrl, "http://localhost:3000/login");
+      assert.equal(pageUrl, "http://localhost:3000/home/allposts");
     });
   });
 
@@ -145,15 +144,20 @@ describe("Home Page", function () {
       browserF.findElement(webdriver.By.id('login')).click();
       
       const pageUrl = browserF.getCurrentUrl();
-      assert.notEqual(pageUrl, "http://localhost:3000/login");
+      assert.equal(pageUrl, "http://localhost:3000/home/allposts");
     });
   });
   /**
    * Fin d'utilisation des cas de test.
    * Fermez le navigateur et quittez.
    */
+   function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  } 
+  
 
- after(function() {
+ after ( async function() {
+  await sleep(10000);
   // End of test use this.
   browserC.quit();
   browserF.quit();
