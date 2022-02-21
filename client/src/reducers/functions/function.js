@@ -34,7 +34,7 @@ export const add_commentaire = (state, payload) => {
     if (posts.id === payload.post_id) {
       return {
         ...posts,
-        commented_by: [datacomment, ...posts.commented_by],
+        comments_on_post: [datacomment, ...posts.comments_on_post],
       };
     }
     return posts;
@@ -46,7 +46,7 @@ export const remove_comment = (state, payload) => {
     if (posts.id === payload.post_id) {
       return {
         ...posts,
-        commented_by: posts.commented_by.filter(
+        comments_on_post: posts.comments_on_post.filter(
           (data) => data.id !== payload.userData.id
         ),
       };
