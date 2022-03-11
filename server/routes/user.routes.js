@@ -33,6 +33,8 @@ module.exports = (app) => {
   //GET all posts shared by a specific user
   router.get("/:user_id/sharedPosts", post.allPostsSharedByUser);
 
+  router.get("/:user_id/savedPosts", post.allPostsSavedByUser);
+
   router.get("/username/:username", userCtrl.userInformations2);
 
   router.get("/recherche/:username", userCtrl.userSuggestion);

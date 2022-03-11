@@ -73,14 +73,15 @@ exports.findallForUser = (req, res) => {
           },
           {
             model: db.Comments,
-            as: 'comments_on_post',
+            as: "comments_on_post",
             attributes: ["id", "comment"],
-            include: [{
-              model: db.User,
-              as: "commented_by_user",
-              attributes: ["id"],
-            }]
-          
+            include: [
+              {
+                model: db.User,
+                as: "commented_by_user",
+                attributes: ["id"],
+              },
+            ],
           },
           {
             model: db.Tag,
@@ -89,6 +90,11 @@ exports.findallForUser = (req, res) => {
           {
             model: db.User,
             as: "shared_by",
+            attributes: ["id", "username"],
+          },
+          {
+            model: db.User,
+            as: "saved_by",
             attributes: ["id", "username"],
           },
         ],

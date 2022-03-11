@@ -1,17 +1,17 @@
 import {
-  GET_ALL_POST,
   ADD_LIKE,
   REMOVE_LIKE,
   ADD_COMMENT,
   REMOVE_COMMENT,
   ADD_SHARE,
+  GET_ALL_POSTS_SAVED_USER,
   REMOVE_SHARE,
   REMOVE_POST,
   UPDATE_POST,
   ADD_SAVE,
   REMOVE_SAVE,
 } from "../actions/post.actions";
-
+// Ce reducer sert a stocker tous les posts reçus (ainsi que les données des KF)
 import {
   add_like,
   remove_like,
@@ -23,14 +23,13 @@ import {
   update_post,
   add_save,
   remove_save,
-} from "../reducers/functions/function";
+} from "./functions/function";
 
-// Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
 const initialState = [];
 
-export default function postReducer(state = initialState, action) {
+export default function allpostsavedReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_ALL_POST:
+    case GET_ALL_POSTS_SAVED_USER:
       return action.payload;
 
     case ADD_LIKE:
@@ -56,7 +55,6 @@ export default function postReducer(state = initialState, action) {
       return add_save(state, action.payload);
     case REMOVE_SAVE:
       return remove_save(state, action.payload);
-
     default:
       return state;
   }

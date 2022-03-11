@@ -6,6 +6,8 @@ export const ADD_POST = "ADD_POST";
 export const GET_POST_ERRORS = "GET_POST_ERRORS";
 export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
+export const ADD_SAVE = "ADD_SAVE";
+export const REMOVE_SAVE = "REMOVE_SAVE";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
 export const POSTS_BY_TAG = "POSTS_BY_TAG";
@@ -17,7 +19,7 @@ export const UPDATE_POST = "UPDATE_POST";
 export const GET_ALL_Shares_FOR_SPECIFIC_POST =
   "GET_ALL_Shares_FOR_SPECIFIC_POST";
 export const GET_ALL_POSTS_SHARED_BY_USER = " GET_ALL_POSTS_SHARED_BY_USER";
-
+export const GET_ALL_POSTS_SAVED_USER = " GET_ALL_POSTS_SAVED_USER";
 // Ajoute un post en BD
 export const GET_ALL_POST_TREND = "GET_ALL_POST_TREND";
 export const GET_ALL_COMMENT_FOR_SPECIFIC_POST =
@@ -312,6 +314,67 @@ export const updatePost = (post_id, userData) => {
           dispatch({ type: UPDATE_POST, payload: "" });
         } else {
           dispatch({ type: UPDATE_POST, payload: { post_id, userData } });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const addSave = (post_id, user_id, userData) => {
+  return (dispatch) => {
+    return axios({
+      method: "post",
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/save/`,
+      data: {
+        post_id: post_id,
+        user_id: user_id,
+      },
+    })
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: ADD_SAVE, payload: "" });
+        } else {
+          dispatch({ type: ADD_SAVE, payload: { post_id, userData } });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const removeSave = (id, user_id, userData) => {
+  return (dispatch) => {
+    return axios({
+      method: "post",
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/unsave/`,
+      data: {
+        post_id: id,
+        user_id: user_id,
+      },
+    })
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: REMOVE_SAVE, payload: "" });
+        } else {
+          dispatch({ type: REMOVE_SAVE, payload: { id, userData } });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const getAllPostSavedByUser = (user_id) => {
+  return (dispatch) => {
+    return axios
+      .get(
+        process.env.REACT_APP_BACK_SERVER_URL +
+          `api/v1/user/${user_id}/savedPosts`
+      )
+      .then((res) => {
+        if (res.data.saved_posts) {
+          dispatch({
+            type: GET_ALL_POSTS_SAVED_USER,
+            payload: res.data.saved_posts,
+          });
         }
       })
       .catch((err) => console.log(err));

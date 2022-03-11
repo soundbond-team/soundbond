@@ -8,6 +8,8 @@ import {
   REMOVE_SHARE,
   REMOVE_POST,
   UPDATE_POST,
+  ADD_SAVE,
+  REMOVE_SAVE,
 } from "../actions/post.actions";
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des KF)
 import {
@@ -19,6 +21,8 @@ import {
   remove_share,
   remove_post,
   update_post,
+  add_save,
+  remove_save,
 } from "./functions/function";
 
 const initialState = [];
@@ -47,7 +51,10 @@ export default function allpostsharedReducer(state = initialState, action) {
       return remove_post(state, action.payload);
     case UPDATE_POST:
       return update_post(state, action.payload);
-
+    case ADD_SAVE:
+      return add_save(state, action.payload);
+    case REMOVE_SAVE:
+      return remove_save(state, action.payload);
     default:
       return state;
   }

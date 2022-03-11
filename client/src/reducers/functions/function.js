@@ -103,3 +103,28 @@ export const update_post = (state, payload) => {
     return posts;
   });
 };
+
+export const add_save = (state, payload) => {
+  return state.map((posts) => {
+    if (posts.id === payload.post_id) {
+      return {
+        ...posts,
+        saved_by: [payload.userData, ...posts.saved_by],
+      };
+    }
+    return posts;
+  });
+};
+export const remove_save = (state, payload) => {
+  return state.map((posts) => {
+    if (posts.id === payload.id) {
+      return {
+        ...posts,
+        saved_by: posts.saved_by.filter(
+          (data) => payload.userData.id !== data.id
+        ),
+      };
+    }
+    return posts;
+  });
+};

@@ -6,6 +6,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import HomeIcon from "@mui/icons-material/Home";
 import FollowSuggestion from "../components/FollowSuggestion/FollowSuggestion";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 function Home() {
   const navigate = useNavigate();
 
@@ -52,6 +53,27 @@ function Home() {
                       }}
                     >
                       Abonnements
+                    </span>
+                  </IconButton>
+                </Link>
+              </div>
+              <div className="row d-flex justify-content-start">
+                <Link
+                  style={{ textDecoration: "none" }}
+                  exact
+                  to="enregistrement"
+                >
+                  <IconButton>
+                    <BookmarkIcon style={{ fill: "black", fontSize: "25px" }} />
+                    <span
+                      className="d-lg-block d-none"
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Enregistrement
                     </span>
                   </IconButton>
                 </Link>

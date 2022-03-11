@@ -134,36 +134,40 @@ db.User.belongsToMany(db.Post, {
   foreignKey: "user_id",
 });
 
+//enregistrement
+db.Post.belongsToMany(db.User, {
+  through: "enregistrement",
+  as: "saved_by",
+  foreignKey: "post_id",
+});
+db.User.belongsToMany(db.Post, {
+  through: "enregistrement",
+  as: "saved_posts",
+  foreignKey: "user_id",
+});
+
 // Relation plusieurs à plusieurs pour les commentaires
-db.Comments.belongsTo(
-  db.User, {
+db.Comments.belongsTo(db.User, {
   /* L'alias (as:) nous permet d'accéder aux likes d'un
        post et d'un utilisateur aver mon_post.likes ou
        mon_user.likes.
        https://sequelize.org/master/manual/assocs.html#defining-an-alias */
-    as: "commented_by_user",
-    foreignKey: "user_id",
-  }
-);
-db.User.hasMany(
-  db.Comments, {
-    as: "user_is_commenting",
-    foreignKey: "user_id",
-  }
-);
+  as: "commented_by_user",
+  foreignKey: "user_id",
+});
+db.User.hasMany(db.Comments, {
+  as: "user_is_commenting",
+  foreignKey: "user_id",
+});
 
-db.Comments.belongsTo(
-  db.Post, {
-    as: "comments_the_post",
-    foreignKey: "post_id",
-  }
-);
-db.Post.hasMany(
-  db.Comments, {
-    as: "comments_on_post",
-    foreignKey: "post_id",
-  }
-);
+db.Comments.belongsTo(db.Post, {
+  as: "comments_the_post",
+  foreignKey: "post_id",
+});
+db.Post.hasMany(db.Comments, {
+  as: "comments_on_post",
+  foreignKey: "post_id",
+});
 
 db.User.belongsToMany(db.User, {
   through: "abonnement",

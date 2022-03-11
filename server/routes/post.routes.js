@@ -40,5 +40,8 @@ module.exports = (app) => {
   router.post("/share/", post.share);
   router.post("/unshare/", post.unshare);
 
+  router.post("/save/", post.save);
+  router.post("/unsave/", post.unsave);
+
   app.use("/api/v1/post", router);
 };
