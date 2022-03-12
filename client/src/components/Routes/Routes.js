@@ -18,6 +18,7 @@ import TagPage from "../../Pages/TagPage/tagpage";
 import MesPartages from "../MesPartages/MesPartages";
 import MyPosts from "../MyPosts/MyPosts";
 import MyPlayLists from "../MyPlayLists/MyPlaylists";
+import Historique from "../HistoriqueEcoute/HistoriqueEcoute";
 //le routing ne sert a rien tant quil nya pas une persistance pour tt les elements ( post )
 const routes = () => {
   return (
@@ -38,6 +39,7 @@ const routes = () => {
           <Route exact path="posts" element={<MyPosts />} />
           <Route exact path="partages" element={<MesPartages />} />
           <Route exact path="playlists" element={<MyPlayLists />} />
+          <Route exact path="historique" element={<Historique />} />
         </Route>
 
         {/*<Route path="/upload_file" element={<FileUpload/>} />*/}
