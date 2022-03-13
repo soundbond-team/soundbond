@@ -9,16 +9,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DoneIcon from "@material-ui/icons/Done";
-import Post from "../Post/Post";
-import { Input } from "@material-ui/core";
+
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
-import { getPostsUser } from "../../actions/post.actions";
-import {
-  create_playlist,
-  findallForUser,
-} from "../../actions/playlist.actions";
 import { UidContext } from "../Appcontext";
 import Playlist from "../../components/Playlists/Playlist";
 const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
