@@ -14,6 +14,7 @@ import allpostsharedReducer from "./allpostSharedbyuser";
 import allplaylistByUser from "./allplaylistByUser";
 import itinerairereducer from "./itineraire.reducer";
 import postToMapReducer from "./postToMap.reducer";
+import allpostsavedReducer from "./allpostsaved.reducer";
 export default combineReducers({
   soundlocationReducer,
   soundReducer,
@@ -24,6 +25,7 @@ export default combineReducers({
   profilPostReducer,
   postSearcByTagReducer,
   allpostsharedReducer,
+  allpostsavedReducer,
   allplaylistByUser,
   itinerairereducer,
   postToMapReducer,

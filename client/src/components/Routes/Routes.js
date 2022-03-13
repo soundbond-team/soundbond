@@ -18,7 +18,9 @@ import TagPage from "../../Pages/TagPage/tagpage";
 import MesPartages from "../MesPartages/MesPartages";
 import MyPosts from "../MyPosts/MyPosts";
 import MyPlayLists from "../MyPlayLists/MyPlaylists";
+import PostSave from "../SavedPosts/savedposts";
 import Historique from "../HistoriqueEcoute/HistoriqueEcoute";
+
 //le routing ne sert a rien tant quil nya pas une persistance pour tt les elements ( post )
 const routes = () => {
   return (
@@ -31,6 +33,7 @@ const routes = () => {
         <Route exact path="/home" element={<Home />}>
           <Route exact path="allposts" element={<Allposts />} />
           <Route exact path="trending" element={<TrendingPost />} />
+          <Route exact path="enregistrement" element={<PostSave />} />
         </Route>
         <Route exact path="/register" element={<Registration />} />
         <Route exact path="/login" element={<Login />} />

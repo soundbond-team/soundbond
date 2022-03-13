@@ -3,7 +3,11 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import Routes from "./components/Routes/Routes";
 import { UidContext } from "./components/Appcontext";
-import { getPostTrend, getallPost } from "./actions/post.actions";
+import {
+  getPostTrend,
+  getallPost,
+  getAllPostSavedByUser,
+} from "./actions/post.actions";
 import { getUser } from "./actions/user.actions";
 
 const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
@@ -32,6 +36,7 @@ const App = () => {
     if (uid) {
       dispatch(getUser(uid));
       dispatch(getPostTrend(uid));
+      dispatch(getAllPostSavedByUser(uid));
     } // eslint-disable-next-line
 
     var _paq = (window._paq = window._paq || []);
