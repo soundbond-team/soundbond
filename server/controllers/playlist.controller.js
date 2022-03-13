@@ -164,6 +164,15 @@ exports.addTitleToPlaylist = async (req, res) => {
   await db.Playlist.findOne({
     where: where,
   }).then((playlist) => {
+
+    // Vérifier que l'on n'essaie par d'ajouter un post manuellement à son historique.
+    if (!req.history_add) {
+      if (playlist.titre === "History") {
+        res.status(500).send("Cannot manually add a post to your history.");
+        return;
+      }
+    }
+
     db.Post.findByPk(req.body.post_id).then(async (foundpost) => {
       let titreliste = {
         playlist_id: playlist.id,
@@ -175,6 +184,7 @@ exports.addTitleToPlaylist = async (req, res) => {
         res.status(200).send("added");
       });
     });
+
   });
 };
 
@@ -191,5 +201,6 @@ exports.history_add = async (req, res) => {
   */
   req.body.title = "History";
   req.body.publisher_user_id = req.params.user_id;
+  req.history_add = true; // Utilisé pour savoir si l'on ajoute un titre via la route API de l'historique.
   this.addTitleToPlaylist(req, res);
 };
