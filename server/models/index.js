@@ -80,6 +80,10 @@ db.User.belongsToMany(db.Sound, {
   foreignKey: "user_id",
 });
 
+
+
+
+
 db.User.hasOne(db.Playlist, {
   through: "user_playlist",
   as: "publisher",
@@ -97,7 +101,9 @@ db.Playlist.belongsToMany(db.Post, {
   foreignKey: "playlist_id",
 });
 
+
 // Chaque Post est publié par un User
+
 db.Post.belongsTo(db.User, {
   through: "user_post",
   as: "publisher",
@@ -117,7 +123,9 @@ db.Post.belongsTo(db.Sound, {
   foreignKey: "sound_id",
 });
 
-// Relation plusieurs à plusieurs pour les posts likés
+
+// Posts likés
+
 db.Post.belongsToMany(db.User, {
   /* L'alias (as:) nous permet d'accéder aux likes d'un
        post et d'un utilisateur aver mon_post.likes ou
@@ -134,7 +142,9 @@ db.User.belongsToMany(db.Post, {
   foreignKey: "user_id",
 });
 
-//enregistrement
+
+// Posts enregistrés
+
 db.Post.belongsToMany(db.User, {
   through: "enregistrement",
   as: "saved_by",
@@ -146,7 +156,9 @@ db.User.belongsToMany(db.Post, {
   foreignKey: "user_id",
 });
 
-// Relation plusieurs à plusieurs pour les commentaires
+
+// Commentaires
+
 db.Comments.belongsTo(db.User, {
   /* L'alias (as:) nous permet d'accéder aux likes d'un
        post et d'un utilisateur aver mon_post.likes ou
@@ -169,6 +181,9 @@ db.Post.hasMany(db.Comments, {
   foreignKey: "post_id",
 });
 
+
+// Abonnements
+
 db.User.belongsToMany(db.User, {
   through: "abonnement",
   as: "follow",
@@ -180,6 +195,9 @@ db.User.belongsToMany(db.User, {
   as: "following",
   foreignKey: "following_id",
 });
+
+
+// Partages
 
 // Relation M:M pour les posts partagés
 db.Post.belongsToMany(db.User, {
