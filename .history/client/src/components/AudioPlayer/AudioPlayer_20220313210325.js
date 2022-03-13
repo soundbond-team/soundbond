@@ -15,7 +15,6 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { blue } from "@material-ui/core/colors";
 import IconButton from "@material-ui/core/IconButton";
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
 import VisibilityIcon from "@material-ui/icons/Visibility";
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -124,9 +123,9 @@ export default function AudioPlayer(props) {
 
   const stopPlayback = () => wavesurfer.current.stop();
 
-  const play15back = () => wavesurfer.current.skipBackward(5);
+  const play15back = () => wavesurfer.skipBackward(15);
 
-  const play15forward = () => wavesurfer.current.skipForward(5);
+  const play15forward = () => wavesurfer.skipForward(15);
 
 
   const classes = useStyles();
@@ -179,10 +178,6 @@ export default function AudioPlayer(props) {
           </IconButton>
           <IconButton onClick={play15back}>
             <SkipPreviousIcon className={classes.icon}/>
-          </IconButton>
-
-          <IconButton onClick={play15forward}>
-            <SkipNextIcon className={classes.icon}/>
           </IconButton>
 
           {visited ? (

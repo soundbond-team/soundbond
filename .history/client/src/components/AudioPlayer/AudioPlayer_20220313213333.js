@@ -124,9 +124,9 @@ export default function AudioPlayer(props) {
 
   const stopPlayback = () => wavesurfer.current.stop();
 
-  const play15back = () => wavesurfer.current.skipBackward(5);
+  const play15back = () => wavesurfer.current.skipBackward(15);
 
-  const play15forward = () => wavesurfer.current.skipForward(5);
+  const play15forward = () => wavesurfer.current.skipForward(15);
 
 
   const classes = useStyles();

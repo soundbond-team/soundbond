@@ -124,9 +124,9 @@ export default function AudioPlayer(props) {
 
   const stopPlayback = () => wavesurfer.current.stop();
 
-  const play15back = () => wavesurfer.current.skipBackward(5);
+  const play15back = () => wavesurfer.skipBackward(15);
 
-  const play15forward = () => wavesurfer.current.skipForward(5);
+  const play15forward = () => wavesurfer.skipForward(15);
 
 
   const classes = useStyles();
@@ -181,8 +181,8 @@ export default function AudioPlayer(props) {
             <SkipPreviousIcon className={classes.icon}/>
           </IconButton>
 
-          <IconButton onClick={play15forward}>
-            <SkipNextIcon className={classes.icon}/>
+          <IconButton onClick={play15back}>
+            <SkipPreviousIcon className={classes.icon}/>
           </IconButton>
 
           {visited ? (
