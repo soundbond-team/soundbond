@@ -243,6 +243,31 @@ function Profil(props) {
                     </span>
                   </IconButton>
                 </Link>
+
+                <Link
+                  style={{
+                    margin: "4px",
+                    width: "220px",
+                    textDecoration: "none",
+                  }}
+                  exact
+                  to="historique"
+                  className="col-4 "
+                >
+                  <IconButton>
+                    {" "}
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+
+                        color: "black",
+                      }}
+                    >
+                      Historique d'écoute
+                    </span>
+                  </IconButton>
+                </Link>
               </div>
 
               <div className="col-11">

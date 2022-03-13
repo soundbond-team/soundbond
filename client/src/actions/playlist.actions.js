@@ -1,6 +1,4 @@
 import axios from "axios";
-
-
 export const CREATE_PLAYLIST = "CREATE_PLAYLIST";
 export const FIND_ALL_PLAYLIST_FOR_USER = "FIND_ALL_PLAYLIST_FOR_USER";
 // Récupérer tous les SoundLocation

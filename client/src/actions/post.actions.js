@@ -28,6 +28,7 @@ export const GET_ALL_COMMENT_FOR_SPECIFIC_POST =
 export const POST_USER = "POST_USER";
 
 export const GET_POST_BY_TAG = "GET_POST_BY_TAG";
+export const GET_POST_VISITED_BY_USER = "GET_POST_VISITED_BY_USER";
 
 export const getPostByTag = (tag) => {
   return (dispatch) => {
@@ -281,6 +282,25 @@ export const getAllPostSharedByUser = (user_id) => {
       .catch((err) => console.log(err));
   };
 };
+
+export const getPostVisitedByUser = (user_id) => {
+  return(dispatch) => {
+    return axios
+    .get(
+      process.env.REACT_APP_BACK_SERVER_URL+
+      `api/v1/user/${user_id}/historique`
+    )
+    .then((res) => {
+      if(res.data.historique){
+        dispatch({
+          type: GET_POST_VISITED_BY_USER,
+          payload: res.data.historique,
+        });
+      }
+    })
+    .catch((err) => console.log(err));
+  };
+}; 
 
 export const removePost = (postId, userData) => {
   return (dispatch) => {
