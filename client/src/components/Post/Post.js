@@ -386,6 +386,7 @@ function Post(props) {
                 ? props.post.publishing.visited_by
                 : null
             }
+            post_id={props.post.id}
           />
         }
 
