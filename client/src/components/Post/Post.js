@@ -231,7 +231,6 @@ function Post(props) {
   const open = Boolean(anchorEl);
 
   const sendDeleteUpdatePost = async (e) => {
-
     if (e === "Supprimer") {
       await dispatch(removePost(props.post.id, userData));
     }
@@ -249,7 +248,7 @@ function Post(props) {
             "Unsave",
           ]);
         } else {
-          setOptionss([<AddToPlaylist post={props.post} />, , "Unsave"]);
+          setOptionss([<AddToPlaylist post={props.post} />, "Unsave"]);
         }
       }
 
@@ -261,13 +260,13 @@ function Post(props) {
         if (uid === props.post.publisher.id) {
           setOptionss([
             <AddToPlaylist parent="post" />,
-            ,
+
             "Modifier",
             "Supprimer",
             "Save",
           ]);
         } else {
-          setOptionss([<AddToPlaylist parent="post" />, , "Save"]);
+          setOptionss([<AddToPlaylist parent="post" />, "Save"]);
         }
       }
 
