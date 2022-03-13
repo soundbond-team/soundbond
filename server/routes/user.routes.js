@@ -4,6 +4,7 @@ module.exports = (app) => {
   const userCtrl = require("../controllers/user.controller");
   const authCtrl = require("../controllers/auth.controller");
   const post = require("../controllers/post.controller");
+  const playlistCtrl = require("../controllers/playlist.controller");
   const router = require("express").Router();
 
   //auth
@@ -34,6 +35,9 @@ module.exports = (app) => {
   router.get("/:user_id/sharedPosts", post.allPostsSharedByUser);
 
   router.get("/:user_id/savedPosts", post.allPostsSavedByUser);
+
+  router.get("/:user_id/history", playlistCtrl.history);
+  //router.post("/:user_id/history/add", playlistCtrl.history_add);
 
   router.get("/username/:username", userCtrl.userInformations2);
 

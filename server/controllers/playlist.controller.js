@@ -34,11 +34,22 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.findallForUser = (req, res) => {
+exports.findallForUser = (req, res, arg) => {
+  /*
+  Trouver chaque playlist créée par l'utilisateur user_id.
+  arg.playlist_id permet, si spécifié, de rechercher une playlist avec un ID spécifique.
+  */
+
+  var where = {}
+  where.publisher_user_id = req.params.user_id;
+
+  if (arg.playlist_id != null) {
+    console.log(arg.playlist_id)
+    where.id = arg.playlist_id;
+  }
+
   Playlist.findAll({
-    where: {
-      publisher_user_id: req.params.user_id,
-    },
+    where: where,
     include: [
       {
         model: Post,
@@ -104,3 +115,13 @@ exports.findallForUser = (req, res) => {
     res.send(data);
   });
 };
+
+exports.history = async (req, res, arg) => {
+  /* La playlist numéro 1 est l'historique d'écoute. */
+  arg.playlist_id=1;
+  this.findallForUser(req, res, arg)
+}
+
+/*exports.history_add = async (req, res) => {
+
+}*/
