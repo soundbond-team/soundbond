@@ -17,11 +17,6 @@ import IconButton from "@material-ui/core/IconButton";
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import VisibilityIcon from "@material-ui/icons/Visibility";
-
-import axios from "axios";
-
-const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
-
 const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 600,
@@ -90,21 +85,9 @@ export default function AudioPlayer(props) {
       wavesurfer.current.drawBuffer();
     }, 150);
 
-    wavesurfer.current.on("play", async () => {
-      setIsPlaying(true)
-      await axios({
-        method: "post",
-        url: backServerURL + `api/v1/user/` + uid + `/history/add`,
-        data: {
-          publisher_user_id: uid,
-          title: "History",
-          post_id: props.post_id,
-        },
-      })
-    });
+    wavesurfer.current.on("play", () => setIsPlaying(true));
     wavesurfer.current.on("pause", () => setIsPlaying(false));
     wavesurfer.current.on("finish", async () => {
-      // Lors de la fin de la lecture, on ajoute la personne à la liste de vues
       if (uid != null && props.id_son != null) {
         if (!visited) {
           setCompteurVisite(compteurVisite + 1);
@@ -113,7 +96,6 @@ export default function AudioPlayer(props) {
 
         await dispatch(addVisit(props.id_son, uid));
       }
-      //! ici, on enverra à l'historique
     });
     window.addEventListener("resize", handleResize, false);
     // eslint-disable-next-line
@@ -142,9 +124,9 @@ export default function AudioPlayer(props) {
 
   const stopPlayback = () => wavesurfer.current.stop();
 
-  const play15back = () => wavesurfer.current.skipBackward(5);
+  const play15back = () => wavesurfer.skipBackward(15);
 
-  const play15forward = () => wavesurfer.current.skipForward(5);
+  const play15forward = () => wavesurfer.skipForward(15);
 
 
   const classes = useStyles();
