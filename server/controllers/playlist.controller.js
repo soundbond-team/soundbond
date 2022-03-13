@@ -179,12 +179,17 @@ exports.addTitleToPlaylist = async (req, res) => {
 };
 
 exports.history = async (req, res, arg) => {
-  /* La playlist numéro 1 est l'historique d'écoute. */
+  /* La playlist numéro 1 est l'historique d'écoute. On la retourne. */
   arg.playlist_title = "History";
   this.findallForUser(req, res, arg);
 };
 
 exports.history_add = async (req, res) => {
+  /* Ajouter un titre à l'historique d'écoute.
+  Nécessite le paramètre body
+  - post_id
+  */
   req.body.title = "History";
+  req.body.publisher_user_id = req.params.user_id;
   this.addTitleToPlaylist(req, res);
 };
