@@ -1,3 +1,4 @@
+
 import { GET_POST_VISITED_BY_USER } from "../../actions/post.actions";
 const initialState = [];
 

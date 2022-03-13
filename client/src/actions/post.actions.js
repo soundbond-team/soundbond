@@ -283,25 +283,6 @@ export const getAllPostSharedByUser = (user_id) => {
   };
 };
 
-export const getPostVisitedByUser = (user_id) => {
-  return(dispatch) => {
-    return axios
-    .get(
-      process.env.REACT_APP_BACK_SERVER_URL+
-      `api/v1/user/${user_id}/history`
-    )
-    .then((res) => {
-      if(res.data.history){
-        dispatch({
-          type: GET_POST_VISITED_BY_USER,
-          payload: res.data.history,
-        });
-      }
-    })
-    .catch((err) => console.log(err));
-  };
-}; 
-
 export const removePost = (postId, userData) => {
   return (dispatch) => {
     return axios({
@@ -400,3 +381,22 @@ export const getAllPostSavedByUser = (user_id) => {
       .catch((err) => console.log(err));
   };
 };
+
+export const getPostVisitedByUser = (user_id) => {
+  return(dispatch) => {
+    return axios
+    .get(
+      process.env.REACT_APP_BACK_SERVER_URL+
+      `api/v1/user/${user_id}/history`
+    )
+    .then((res) => {
+      if(res.data.history){
+        dispatch({
+          type: GET_POST_VISITED_BY_USER,
+          payload: res.data.history,
+        });
+      }
+    })
+    .catch((err) => console.log(err));
+  };
+}; 

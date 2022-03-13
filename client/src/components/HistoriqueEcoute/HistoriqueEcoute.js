@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPostVisitedByUser } from "../../actions/post.actions";
 
 function HistoriqueEcoute(){
-    const allpostshare = useSelector((state) => state.allpostsharedReducer);
+  const allplaylistByUser = useSelector((state) => state.allplaylistByUser);
 
   const currentUserdata = useSelector((state) => state.getotherprofiluser);
   const dispatch = useDispatch();
@@ -26,8 +26,8 @@ function HistoriqueEcoute(){
           <br />
           {
             <Grid container direction="column-reverse" spacing={3}>
-              {allpostshare.length > 0 ? (
-                allpostshare.map((i, index) => (
+              {allplaylistByUser.length > 0 ? (
+                allplaylistByUser.map((i, index) => (
                   <Grid key={index} item>
                     <Post post={i} />
                   </Grid>
