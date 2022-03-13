@@ -132,7 +132,7 @@ exports.findallForUser = (req, res, arg) => {
   });
 };
 
-exports.addTitleToPlaylist = async (req, res) => {
+exports.addTitleToPlaylist = async (req, res, arg) => {
   /* Ajout d'un titre à une playlist. */
 
   // Vérification que la requête contient bien un post.
@@ -166,7 +166,7 @@ exports.addTitleToPlaylist = async (req, res) => {
   }).then((playlist) => {
 
     // Vérifier que l'on n'essaie par d'ajouter un post manuellement à son historique.
-    if (!req.history_add) {
+    if (arg.history_add === null) {
       if (playlist.titre === "History") {
         res.status(500).send("Cannot manually add a post to your history.");
         return;
@@ -194,13 +194,13 @@ exports.history = async (req, res, arg) => {
   this.findallForUser(req, res, arg);
 };
 
-exports.history_add = async (req, res) => {
+exports.history_add = async (req, res, arg) => {
   /* Ajouter un titre à l'historique d'écoute.
   Nécessite le paramètre body
   - post_id
   */
   req.body.title = "History";
   req.body.publisher_user_id = req.params.user_id;
-  req.history_add = true; // Utilisé pour savoir si l'on ajoute un titre via la route API de l'historique.
+  arg.history_add = true; // Utilisé pour savoir si l'on ajoute un titre via la route API de l'historique.
   this.addTitleToPlaylist(req, res);
 };
