@@ -30,11 +30,11 @@ exports.create = async (req, res) => {
 
   if (Object.keys(req.body.list_post).length > 0) {
     for (let post of Object.values(req.body.list_post)) {
-      db.Post.findByPk(post.id).then(async (post_id) => {
+      db.Post.findByPk(post.id).then(async (found_post) => {
         let titreliste = {
           playlist_id: playlistcreated.id,
           user_id: req.body.publisher_user_id,
-          post_id: post_id
+          post_id: found_post.id
         }
         await db.TitreListe.create(titreliste).then(() => {
           res.status(200).send("created");
