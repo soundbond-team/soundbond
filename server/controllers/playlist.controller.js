@@ -156,7 +156,7 @@ exports.addTitleToPlaylist = async (req, res) => {
   // S'il n'y a rien de tout cela, on renvoit une erreur.
   else {
     res.status(400).send({
-      message: "Content can not be empty!",
+      message: "Content can not be empty!!",
     });
     return;
   }
