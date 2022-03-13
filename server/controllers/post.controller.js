@@ -66,8 +66,14 @@ const helper_tag = {
 };
 
 const helper_playlist = {
-  model: db.Playlist,
-  as: "listplaylist",
+  model: db.TitreListe,
+  as: "added_in",
+  include: [
+    {
+      model: db.Playlist,
+      as: "is_in_playlist",
+    }
+  ]
 };
 
 const helper_include_everything = [
@@ -599,7 +605,6 @@ exports.unshare = async (req, res) => {
 };
 
 exports.save = async (req, res) => {
-  console.log("test");
   const post_id = req.body.post_id;
   const user_id = req.body.user_id;
 

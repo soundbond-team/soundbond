@@ -1,8 +1,5 @@
 const db = require("../models");
-const sanitizeHtml = require("sanitize-html");
-const { Post } = require("../models");
-const Playlist = db.Playlist;
-const Op = db.Sequelize.Op;
+const { Post, TitreListe } = require("../models");
 
 exports.create = async (req, res) => {
   /* Création d'une playlist et ajout d'éventuels titres si spécifiés. */
@@ -29,18 +26,23 @@ exports.create = async (req, res) => {
     publisher_user_id: req.body.publisher_user_id,
   };
   // Enregistrement dans la base. .create créé et commit dans la base d'un seul coup.
-  const playlistcreate = await Playlist.create(playlist);
+  const playlistcreated = await db.Playlist.create(playlist);
 
   if (Object.keys(req.body.list_post).length > 0) {
-    for (let value of Object.values(req.body.list_post)) {
-      db.Post.findByPk(value.id).then(async (data) => {
-        await playlistcreate.addListpost(data);
+    for (let post of Object.values(req.body.list_post)) {
+      db.Post.findByPk(post.id).then(async (found_post) => {
+        let titreliste = {
+          playlist_id: playlistcreated.id,
+          user_id: req.body.publisher_user_id,
+          post_id: found_post.id,
+        };
+        await db.TitreListe.create(titreliste).then(() => {
+          res.status(200).send("created");
+        });
       });
     }
-    res.status(200).send("created");
-  } else {
-    res.status(500).send("err");
   }
+  res.status(500).send("err");
 };
 
 exports.findallForUser = (req, res, arg) => {
@@ -55,66 +57,72 @@ exports.findallForUser = (req, res, arg) => {
   if (arg.playlist_title != null) {
     where.title = arg.playlist_title;
   }
-
-  Playlist.findAll({
+  db.Playlist.findAll({
     where: where,
     include: [
       {
-        model: Post,
-        as: "listpost",
+        model: TitreListe,
+        as: "has_titreliste",
+        attributes: ["id", "createdAt", "updatedAt"],
         include: [
           {
-            model: db.Sound,
-            as: "publishing",
-
+            model: Post,
+            as: "adds_the_post",
             include: [
               {
-                model: db.SoundLocation,
-                as: "soundlocation",
-              },
+                model: db.Sound,
+                as: "publishing",
 
+                include: [
+                  {
+                    model: db.SoundLocation,
+                    as: "soundlocation",
+                  },
+
+                  {
+                    model: db.User,
+                    as: "visited_by",
+                    attributes: ["id", "username"],
+                  },
+                ],
+              },
               {
                 model: db.User,
-                as: "visited_by",
+                as: "publisher",
+                attributes: ["id", "username"],
+              },
+              {
+                model: db.User,
+                as: "liked_by",
+                attributes: ["id", "username"],
+              },
+              {
+                model: db.Comments,
+                as: "comments_on_post",
+                attributes: ["id", "comment"],
+                include: [
+                  {
+                    model: db.User,
+                    as: "commented_by_user",
+                    attributes: ["id"],
+                  },
+                ],
+              },
+              {
+                model: db.Tag,
+                as: "tagpost",
+              },
+              {
+                model: db.User,
+                as: "shared_by",
+                attributes: ["id", "username"],
+              },
+              {
+                model: db.User,
+                as: "saved_by",
                 attributes: ["id", "username"],
               },
             ],
-          },
-          {
-            model: db.User,
-            as: "publisher",
-            attributes: ["id", "username"],
-          },
-          {
-            model: db.User,
-            as: "liked_by",
-            attributes: ["id", "username"],
-          },
-          {
-            model: db.Comments,
-            as: "comments_on_post",
-            attributes: ["id", "comment"],
-            include: [
-              {
-                model: db.User,
-                as: "commented_by_user",
-                attributes: ["id"],
-              },
-            ],
-          },
-          {
-            model: db.Tag,
-            as: "tagpost",
-          },
-          {
-            model: db.User,
-            as: "shared_by",
-            attributes: ["id", "username"],
-          },
-          {
-            model: db.User,
-            as: "saved_by",
-            attributes: ["id", "username"],
           },
         ],
       },
@@ -153,15 +161,21 @@ exports.addTitleToPlaylist = async (req, res) => {
     return;
   }
 
-  await Playlist.findOne({
+  await db.Playlist.findOne({
     where: where,
   }).then((playlist) => {
     db.Post.findByPk(req.body.post_id).then(async (post_id) => {
-      await playlist.addListpost(post_id);
+      let titreliste = {
+        playlist_id: playlist.id,
+        user_id: req.body.publisher_user_id,
+        post_id: post_id,
+      };
+      await db.TitreListe.create(titreliste).then(() => {
+        res.status(200).send("added");
+      });
     });
-
-    res.status(200).send("added");
   });
+  res.status(500).send("err");
 };
 
 exports.history = async (req, res, arg) => {

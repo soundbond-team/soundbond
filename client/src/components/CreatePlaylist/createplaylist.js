@@ -66,19 +66,15 @@ export default function CreatePlaylist(props) {
     // eslint-disable-next-line
   }, [userData]);
   useEffect(() => {
-    console.log(list_post);
   }, [list_post]);
   const postSelected = (postcheck) => {
     let checked = false;
     for (let i = 0; i < list_post.length; i++) {
-      console.log(list_post[i]);
       if (list_post[i].id === postcheck.id) {
         checked = true;
-        console.log(true);
       }
     }
     if (checked === false) {
-      console.log(false);
       if (list_post.length === 0) {
         setList_post([postcheck]);
       } else {

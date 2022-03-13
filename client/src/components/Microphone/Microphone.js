@@ -91,7 +91,6 @@ export default function Microphone(props) {
     })
       .then((res) => {
         if (res.data !== "" && res.data != null) {
-          console.log(res.data);
           setTagSuggestion(res.data);
         } else {
           setTagSuggestion([]);

@@ -192,7 +192,6 @@ exports.suggestionsFollow = (req, res) => {
             ],
           }).then((data2) => {
             if (Object.keys(data2.follow).length > 0) {
-              console.log(Object.keys(data2.follow).length);
               let compteur = 0;
               for (let value2 of Object.values(data2.follow)) {
                 for (let value of Object.values(data.follow)) {
@@ -209,9 +208,6 @@ exports.suggestionsFollow = (req, res) => {
           });
         }
       }
-      console.log(Object.keys(data.follow).length);
-
-      console.log(suggestions);
       res.send(suggestions);
     })
     .catch((err) => {
