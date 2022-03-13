@@ -49,7 +49,7 @@ exports.findallForUser = (req, res, arg) => {
   arg.playlist_title permet, si spécifié, de rechercher une playlist avec un titre spécifique.
   */
 
-  var where = {}
+  var where = {};
   where.publisher_user_id = req.params.user_id;
 
   if (arg.playlist_title != null) {
@@ -135,13 +135,13 @@ exports.addTitleToPlaylist = async (req, res) => {
     return;
   }
 
-  var where = {}
+  var where = {};
   // On ajoute l'id de la playlist à la clause where.
   if (req.body.playlist_id != null) {
-    where.id = arg.playlist_id;
+    where.id = req.body.playlist_id;
   }
   // S'il n'y a pas de playlist_id en paramètres, on ajoute publisher_user_id et title.
-  else if ((req.body.publisher_user_id != null) && (req.body.title != null)) {
+  else if (req.body.publisher_user_id != null && req.body.title != null) {
     where.publisher_user_id = req.body.publisher_user_id;
     where.title = req.body.title;
   }
@@ -154,23 +154,23 @@ exports.addTitleToPlaylist = async (req, res) => {
   }
 
   await Playlist.findOne({
-    where: where
+    where: where,
   }).then((playlist) => {
     db.Post.findByPk(req.body.post_id).then(async (post_id) => {
       await playlist.addListpost(post_id);
     });
 
     res.status(200).send("added");
-  })
+  });
 };
 
 exports.history = async (req, res, arg) => {
   /* La playlist numéro 1 est l'historique d'écoute. */
   arg.playlist_title = "History";
-  this.findallForUser(req, res, arg)
-}
+  this.findallForUser(req, res, arg);
+};
 
 exports.history_add = async (req, res) => {
   req.body.title = "History";
   this.addTitleToPlaylist(req, res);
-}
+};
