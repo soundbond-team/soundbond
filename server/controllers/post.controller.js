@@ -66,8 +66,14 @@ const helper_tag = {
 };
 
 const helper_playlist = {
-  model: db.Playlist,
-  as: "listplaylist",
+  model: db.TitreListe,
+  as: "added_in",
+  include: [
+    {
+      model: db.Playlist,
+      as: "is_in_playlist",
+    }
+  ]
 };
 
 const helper_include_everything = [
@@ -77,7 +83,7 @@ const helper_include_everything = [
   helper_user_commented_by,
   helper_tag,
   helper_user_shared_by,
-  //helper_playlist,
+  helper_playlist,
   helper_user_saved_by,
 ];
 
