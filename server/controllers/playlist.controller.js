@@ -164,18 +164,18 @@ exports.addTitleToPlaylist = async (req, res) => {
   await db.Playlist.findOne({
     where: where,
   }).then((playlist) => {
-    db.Post.findByPk(req.body.post_id).then(async (post_id) => {
+    db.Post.findByPk(req.body.post_id).then(async (foundpost) => {
       let titreliste = {
         playlist_id: playlist.id,
-        user_id: req.body.publisher_user_id,
-        post_id: post_id,
+        user_id: playlist.publisher_user_id, //!A CHANGER si on veut faire des playlist avec plusieurs users
+        post_id: foundpost.id,
       };
+      console.log(titreliste);
       await db.TitreListe.create(titreliste).then(() => {
         res.status(200).send("added");
       });
     });
   });
-  res.status(500).send("err");
 };
 
 exports.history = async (req, res, arg) => {
