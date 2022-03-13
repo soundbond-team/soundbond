@@ -38,7 +38,7 @@ function HistoriqueEcoute(){
                   <div className="container ">
                     {" "}
                     <p className="d-flex  justify-content-center">
-                      Aucun post partagé
+                      Aucun post pour le moment
                     </p>
                   </div>
                 </Grid>

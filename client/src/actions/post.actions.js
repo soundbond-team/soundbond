@@ -286,13 +286,13 @@ export const getPostVisitedByUser = (user_id) => {
     return axios
     .get(
       process.env.REACT_APP_BACK_SERVER_URL+
-      `api/v1/user/${user_id}/historique`
+      `api/v1/user/${user_id}/history`
     )
     .then((res) => {
-      if(res.data.historique){
+      if(res.data.history){
         dispatch({
           type: GET_POST_VISITED_BY_USER,
-          payload: res.data.historique,
+          payload: res.data.history,
         });
       }
     })
