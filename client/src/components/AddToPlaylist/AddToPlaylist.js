@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { makeStyles } from "@material-ui/styles";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
@@ -9,20 +9,25 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DoneIcon from "@material-ui/icons/Done";
-import Post from "../../components/Post/Post";
+import Post from "../Post/Post";
 import { Input } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 import { getPostsUser } from "../../actions/post.actions";
 import {
   create_playlist,
   findallForUser,
 } from "../../actions/playlist.actions";
-
+import { UidContext } from "../Appcontext";
+import Playlist from "../../components/Playlists/Playlist";
+const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
 const useStyles = makeStyles((theme) => ({
   icon: {
-    height: 38,
-    width: 38,
+    height: 22,
+    width: 22,
+    padding: "0px",
+    margin: "0px",
   },
   reactmic: {
     width: "100%",
@@ -36,53 +41,67 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreatePlaylist(props) {
-  const [title, setTitle] = useState(" "); // Utilisé pour stocker le description.
-  const [description, setDescription] = useState(" "); // Utilisé pour stocker le description.
+export default function AddToPlaylist(props) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [list_post, setList_post] = useState([]);
+  const [list_playlist, setList_playlist] = useState([]);
+  const [playlist_selected, setplaylist_selected] = useState(null);
+  const [checked, setChecked] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const uid = useContext(UidContext);
 
-  const handleDone = () => {
-    dispatch(create_playlist(userData.id, list_post, title, description)).then(
-      () => {
-        setOpen(false);
-        dispatch(findallForUser(userData.id));
-      }
-    );
+  const handleDone = async (post) => {
+    console.log(post);
+    await axios({
+      method: "post",
+      url: backServerURL + `api/v1/playlist/add`,
+      data: {
+        post_id: post.id,
+        playlist_id: playlist_selected.id,
+      },
+    })
+      .then((res) => {
+        if (res.data.err) {
+          console.log("err");
+        } else {
+          console.log(res);
+        }
+      })
+      .catch((err) => {});
+    setOpen(false);
   };
   const handleCancel = () => {
     setOpen(false);
   };
+  const getPlaylists = async () => {
+    await axios({
+      method: "get",
+      url: backServerURL + `api/v1/playlist/findAll/` + uid,
+    })
+      .then((res) => {
+        if (res.data.err) {
+          console.log("err");
+        } else {
+          setList_playlist(res.data);
+        }
+      })
+      .catch((err) => {});
+  };
 
   const userData = useSelector((state) => state.userReducer);
-  const allpostprofilsreducer = useSelector((state) => state.profilPostReducer);
-
   useEffect(() => {
-    dispatch(getPostsUser(userData.id));
+    getPlaylists();
     // eslint-disable-next-line
   }, [userData]);
   useEffect(() => {
-  }, [list_post]);
-  const postSelected = (postcheck) => {
-    let checked = false;
-    for (let i = 0; i < list_post.length; i++) {
-      if (list_post[i].id === postcheck.id) {
-        checked = true;
-      }
-    }
-    if (checked === false) {
-      if (list_post.length === 0) {
-        setList_post([postcheck]);
-      } else {
-        setList_post((oldArray) => [...oldArray, postcheck]);
-      }
-    } else {
-      setList_post(list_post.filter((item) => item.id !== postcheck.id));
-    }
+    console.log(list_playlist);
+  }, [list_playlist]);
+  const postSelected = (palylistchecked) => {
+    setChecked(false);
+
+    setplaylist_selected(palylistchecked);
   };
   const classes = useStyles();
 
@@ -93,7 +112,9 @@ export default function CreatePlaylist(props) {
       </IconButton>
 
       <Dialog fullWidth maxWidth="lg" open={open} onClose={handleCancel}>
-        <DialogTitle className={classes.flex}>Creer une Playlist</DialogTitle>
+        <DialogTitle className={classes.flex}>
+          Ajouter à une Playlist
+        </DialogTitle>
         <DialogContent>
           <>
             {userData ? (
@@ -101,18 +122,19 @@ export default function CreatePlaylist(props) {
                 {" "}
                 {
                   <Grid container direction="column-reverse" spacing={3}>
-                    {allpostprofilsreducer.length > 0 ? (
-                      allpostprofilsreducer.map((i, index) => (
+                    {list_playlist.length > 0 ? (
+                      list_playlist.map((i, index) => (
                         <Grid key={index} item>
                           <input
                             className="form-check-input"
-                            type="checkbox"
+                            type="radio"
                             id="flexCheckDefault"
                             onChange={() => {
                               postSelected(i);
                             }}
+                            name="radAnswer"
                           />{" "}
-                          <Post post={i} parent="createplaylist" />
+                          <Playlist playlist={i} />
                         </Grid>
                       ))
                     ) : (
@@ -133,34 +155,16 @@ export default function CreatePlaylist(props) {
               <p></p>
             )}
           </>
-          <div className="input-group mb-3 container">
-            <Input
-              type="text"
-              className="form-control"
-              placeholder="Title"
-              aria-label="Title"
-              aria-describedby="basic-addon2"
-              onChange={(e) => setTitle(e.target.value)}
-              defaultValue={""}
-            />
-          </div>
-          <div className="input-group mb-3 container">
-            <Input
-              type="text"
-              className="form-control"
-              placeholder="Description"
-              aria-label="Description"
-              aria-describedby="basic-addon2"
-              onChange={(e) => setDescription(e.target.value)}
-              defaultValue={""}
-            />
-          </div>
         </DialogContent>
 
         <DialogActions>
           <Grid container>
             <Grid item container justify="center" xs={12}>
-              <IconButton onClick={handleDone}>
+              <IconButton
+                onClick={() => {
+                  handleDone(props.post);
+                }}
+              >
                 {" "}
                 <DoneIcon />
               </IconButton>

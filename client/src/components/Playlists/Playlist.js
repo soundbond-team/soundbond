@@ -53,7 +53,7 @@ function Playlist(props) {
           onClick={handleClickOpen}
           style={props.parent ? { width: "15rem" } : { width: "100%" }}
         >
-          <Card.Header> Playlist</Card.Header>
+          <Card.Header>Playlist</Card.Header>
           <Card.Body>
             <Card.Title>{props.playlist.title} </Card.Title>
             <Card.Text>{props.playlist.description}</Card.Text>
@@ -68,22 +68,21 @@ function Playlist(props) {
           <>
             {
               <Grid container direction="column-reverse" spacing={3}>
-                {props.playlist.listpost ? (
-                  props.playlist.listpost.map((j, index2) => {
-                    console.log(j);
+                {props.playlist.has_titreliste ? (
+                  props.playlist.has_titreliste.map((titreliste, index2) => {
                     return (
                       <Grid key={index2} item>
-                        <Post post={j} parent="playlist" />
+                        <Post post={titreliste.adds_the_post} parent="playlist" />
                       </Grid>
                     );
                   })
                 ) : (
                   <Grid item>
-                    <br />
+                    <br/>
                     <div className="container ">
                       {" "}
                       <p className="d-flex  justify-content-center">
-                        Aucune Playlist publié
+                        Aucune Playlist publiée
                       </p>
                     </div>
                   </Grid>
