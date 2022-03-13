@@ -70,6 +70,7 @@ export default function AddToPlaylist(props) {
         }
       })
       .catch((err) => {});
+    setOpen(false);
   };
   const handleCancel = () => {
     setOpen(false);
