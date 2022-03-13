@@ -13,8 +13,8 @@ module.exports.signUp = async (req, res) => {
     const user = await User.create({ username, password });
 
     const history = {
-      title: "history",
-      description: req.body.username + "'s history",
+      title: "History",
+      description: req.body.username + "'s History",
       publisher_user_id: user.id,
     };
   
