@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Playlist from "../../components/MyPlayLists/MyPlaylists";
 import { useDispatch, useSelector } from "react-redux";
-import { getPostVisitedByUser } from "../../actions/post.actions";
+import { getHistoryByUser } from "../../actions/post.actions";
 
 function HistoriqueEcoute(){
    
@@ -10,7 +10,7 @@ function HistoriqueEcoute(){
 
   useEffect(() => {
     if (currentUserdata) {
-      dispatch(getPostVisitedByUser(currentUserdata.id));
+      dispatch(getHistoryByUser(currentUserdata.id));
     } // eslint-disable-next-line
   }, [currentUserdata]);
 

@@ -28,7 +28,7 @@ export const GET_ALL_COMMENT_FOR_SPECIFIC_POST =
 export const POST_USER = "POST_USER";
 
 export const GET_POST_BY_TAG = "GET_POST_BY_TAG";
-export const GET_POST_VISITED_BY_USER = "GET_POST_VISITED_BY_USER";
+export const GET_HISTORY_BY_USER = "GET_HISTORY_BY_USER";
 
 export const getPostByTag = (tag) => {
   return (dispatch) => {
@@ -382,7 +382,7 @@ export const getAllPostSavedByUser = (user_id) => {
   };
 };
 
-export const getPostVisitedByUser = (user_id) => {
+export const getHistoryByUser = (user_id) => {
   return(dispatch) => {
     return axios
     .get(
@@ -392,7 +392,7 @@ export const getPostVisitedByUser = (user_id) => {
     .then((res) => {
       if(res.data.history){
         dispatch({
-          type: GET_POST_VISITED_BY_USER,
+          type: GET_HISTORY_BY_USER,
           payload: res.data.history,
         });
       }
