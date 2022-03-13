@@ -73,7 +73,7 @@ function Home() {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      Enregistrement
+                      Enregistrements
                     </span>
                   </IconButton>
                 </Link>
