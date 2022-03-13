@@ -52,6 +52,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { formControlClasses } from "@material-ui/core";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
+import AddToPlaylist from "../AddToPlaylist/AddToPlaylist";
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 function Post(props) {
   const uid = useContext(UidContext);
@@ -110,9 +111,14 @@ function Post(props) {
       }
       if (uid !== null && uid !== "undefined") {
         if (uid === currentpost.publisher.id) {
-          setOptionss(["Modifier", "Supprimer", saveIcon()]);
+          setOptionss([
+            <AddToPlaylist post={props.post} />,
+            "Modifier",
+            "Supprimer",
+            saveIcon(),
+          ]);
         } else {
-          setOptionss([saveIcon()]);
+          setOptionss([<AddToPlaylist post={props.post} />, saveIcon()]);
         }
       }
     } // eslint-disable-next-line
@@ -236,9 +242,14 @@ function Post(props) {
       handleClose();
       if (uid !== null && uid !== "undefined") {
         if (uid === props.post.publisher.id) {
-          setOptionss(["Modifier", "Supprimer", "Unsave"]);
+          setOptionss([
+            <AddToPlaylist post={props.post} />,
+            "Modifier",
+            "Supprimer",
+            "Unsave",
+          ]);
         } else {
-          setOptionss(["Unsave"]);
+          setOptionss([<AddToPlaylist post={props.post} />, , "Unsave"]);
         }
       }
 
@@ -248,9 +259,15 @@ function Post(props) {
       handleClose();
       if (uid !== null && uid !== "undefined") {
         if (uid === props.post.publisher.id) {
-          setOptionss(["Modifier", "Supprimer", "Save"]);
+          setOptionss([
+            <AddToPlaylist parent="post" />,
+            ,
+            "Modifier",
+            "Supprimer",
+            "Save",
+          ]);
         } else {
-          setOptionss(["Save"]);
+          setOptionss([<AddToPlaylist parent="post" />, , "Save"]);
         }
       }
 

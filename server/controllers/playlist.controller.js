@@ -34,11 +34,11 @@ exports.create = async (req, res) => {
         let titreliste = {
           playlist_id: playlistcreated.id,
           user_id: req.body.publisher_user_id,
-          post_id: found_post.id
-        }
+          post_id: found_post.id,
+        };
         await db.TitreListe.create(titreliste).then(() => {
           res.status(200).send("created");
-        })
+        });
       });
     }
   }
@@ -51,7 +51,7 @@ exports.findallForUser = (req, res, arg) => {
   arg.playlist_title permet, si spécifié, de rechercher une playlist avec un titre spécifique.
   */
 
-  var where = {}
+  var where = {};
   where.publisher_user_id = req.params.user_id;
 
   if (arg.playlist_title != null) {
@@ -72,13 +72,13 @@ exports.findallForUser = (req, res, arg) => {
               {
                 model: db.Sound,
                 as: "publishing",
-      
+
                 include: [
                   {
                     model: db.SoundLocation,
                     as: "soundlocation",
                   },
-      
+
                   {
                     model: db.User,
                     as: "visited_by",
@@ -125,9 +125,8 @@ exports.findallForUser = (req, res, arg) => {
             ],
           },
         ],
-      
-      }
-    ]
+      },
+    ],
   }).then((data) => {
     res.send(data);
   });
@@ -144,48 +143,48 @@ exports.addTitleToPlaylist = async (req, res) => {
     return;
   }
 
-  var where = {}
+  var where = {};
   // On ajoute l'id de la playlist à la clause where.
   if (req.body.playlist_id != null) {
     where.id = req.body.playlist_id;
   }
   // S'il n'y a pas de playlist_id en paramètres, on ajoute publisher_user_id et title.
-  else if ((req.body.publisher_user_id != null) && (req.body.title != null)) {
+  else if (req.body.publisher_user_id != null && req.body.title != null) {
     where.publisher_user_id = req.body.publisher_user_id;
     where.title = req.body.title;
   }
   // S'il n'y a rien de tout cela, on renvoit une erreur.
   else {
     res.status(400).send({
-      message: "Content can not be empty!",
+      message: "Content can not be empty!!",
     });
     return;
   }
 
   await db.Playlist.findOne({
-    where: where
+    where: where,
   }).then((playlist) => {
     db.Post.findByPk(req.body.post_id).then(async (post_id) => {
       let titreliste = {
         playlist_id: playlist.id,
         user_id: req.body.publisher_user_id,
-        post_id: post_id
-      }
+        post_id: post_id,
+      };
       await db.TitreListe.create(titreliste).then(() => {
         res.status(200).send("added");
-      })
+      });
     });
-  })
+  });
   res.status(500).send("err");
 };
 
 exports.history = async (req, res, arg) => {
   /* La playlist numéro 1 est l'historique d'écoute. */
   arg.playlist_title = "History";
-  this.findallForUser(req, res, arg)
-}
+  this.findallForUser(req, res, arg);
+};
 
 exports.history_add = async (req, res) => {
   req.body.title = "History";
   this.addTitleToPlaylist(req, res);
-}
+};
