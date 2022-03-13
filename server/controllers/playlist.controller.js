@@ -124,11 +124,11 @@ exports.findallForUser = (req, res, arg) => {
   });
 };
 
-exports.addTitlesToPlaylist = async (req, res) => {
-  /* Ajout d'un ou plusieurs titres à une playlist. */
+exports.addTitleToPlaylist = async (req, res) => {
+  /* Ajout d'un titre à une playlist. */
 
-  // Vérification que la requête contient bien list_post.
-  if (!req.body.list_post) {
+  // Vérification que la requête contient bien un post.
+  if (!req.body.post_id) {
     res.status(400).send({
       message: "Content can not be empty!",
     });
@@ -142,8 +142,8 @@ exports.addTitlesToPlaylist = async (req, res) => {
   }
   // S'il n'y a pas de playlist_id en paramètres, on ajoute publisher_user_id et title.
   else if ((req.body.publisher_user_id != null) && (req.body.title != null)) {
-    where.publisher_user_id = req.body.publisher_user_id
-    where.title = req.body.title
+    where.publisher_user_id = req.body.publisher_user_id;
+    where.title = req.body.title;
   }
   // S'il n'y a rien de tout cela, on renvoit une erreur.
   else {
@@ -156,18 +156,11 @@ exports.addTitlesToPlaylist = async (req, res) => {
   await Playlist.findOne({
     where: where
   }).then((playlist) => {
+    db.Post.findByPk(req.body.post_id).then(async (post_id) => {
+      await playlist.addListpost(post_id);
+    });
 
-    if (Object.keys(req.body.list_post).length > 0) {
-      for (let value of Object.values(req.body.list_post)) {
-        console.log(value);
-        db.Post.findByPk(value.id).then(async (data) => {
-          await playlist.addListpost(data);
-        });
-      }
-      res.status(200).send("added");
-    } else {
-      res.status(500).send("err");
-    }
+    res.status(200).send("added");
   })
 };
 
