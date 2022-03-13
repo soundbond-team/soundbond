@@ -605,7 +605,6 @@ exports.unshare = async (req, res) => {
 };
 
 exports.save = async (req, res) => {
-  console.log("test");
   const post_id = req.body.post_id;
   const user_id = req.body.user_id;
 

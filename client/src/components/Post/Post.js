@@ -99,7 +99,6 @@ function Post(props) {
           { method: "GET" }
         ).then(async (response) => {
           let address = await response.json();
-          console.log(address.features[0].place_name);
           setplaceName(address.features[0].place_name);
         });
       }
@@ -226,7 +225,7 @@ function Post(props) {
   const open = Boolean(anchorEl);
 
   const sendDeleteUpdatePost = async (e) => {
-    console.log(e);
+
     if (e === "Supprimer") {
       await dispatch(removePost(props.post.id, userData));
     }

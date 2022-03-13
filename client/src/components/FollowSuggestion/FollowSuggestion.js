@@ -31,12 +31,8 @@ function FollowSuggestion() {
           .sort((a, b) => b.count - a.count)
           .map((o) => o);
         setListSuggestion(result.slice(0, 5));
-        console.log(result.slice(0, 5));
-        console.log("afa");
       }
     });
-
-    console.log(currentUserdata);
     // eslint-disable-next-line
   }, [currentUserdata]);
 
