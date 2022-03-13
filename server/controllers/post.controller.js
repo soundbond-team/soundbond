@@ -77,7 +77,7 @@ const helper_include_everything = [
   helper_user_commented_by,
   helper_tag,
   helper_user_shared_by,
-  helper_playlist,
+  //helper_playlist,
   helper_user_saved_by,
 ];
 
