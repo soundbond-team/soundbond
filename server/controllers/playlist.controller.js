@@ -170,6 +170,7 @@ exports.history = async (req, res, arg) => {
   this.findallForUser(req, res, arg)
 }
 
-/*exports.history_add = async (req, res) => {
-
-}*/
+exports.history_add = async (req, res) => {
+  req.body.title = "History";
+  this.addTitleToPlaylist(req, res);
+}
