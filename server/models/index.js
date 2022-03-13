@@ -41,6 +41,7 @@ db.Post = require("./post")(sequelize, Sequelize);
 db.Comments = require("./comment")(sequelize, Sequelize);
 db.Tag = require("./tag")(sequelize, Sequelize);
 db.Playlist = require("./playlists")(sequelize, Sequelize);
+db.TitreListe = require("./titreliste")(sequelize, Sequelize);
 
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 //Chaque Post a un ou plusieurs tags
@@ -82,25 +83,58 @@ db.User.belongsToMany(db.Sound, {
 
 
 
+// Playlist
 
-
-db.User.hasOne(db.Playlist, {
-  through: "user_playlist",
+db.Playlist.belongsTo(db.User, {
+  /* L'alias (as:) nous permet d'accéder aux likes d'un
+       post et d'un utilisateur aver mon_post.likes ou
+       mon_user.likes.
+       https://sequelize.org/master/manual/assocs.html#defining-an-alias */
+  as: "publisher",
+  foreignKey: "publisher_user_id",
+});
+db.User.hasMany(db.Playlist, {
   as: "publisher",
   foreignKey: "publisher_user_id",
 });
 
-db.Post.belongsToMany(db.Playlist, {
-  through: "post_playlist",
-  as: "listplaylist",
-  foreignKey: "post_id",
+
+db.TitreListe.belongsTo(db.Playlist, {
+  /* L'alias (as:) nous permet d'accéder aux likes d'un
+       post et d'un utilisateur aver mon_post.likes ou
+       mon_user.likes.
+       https://sequelize.org/master/manual/assocs.html#defining-an-alias */
+  as: "is_in_playlist",
+  foreignKey: "playlist_id",
 });
-db.Playlist.belongsToMany(db.Post, {
-  through: "post_playlist",
-  as: "listpost",
+db.Playlist.hasMany(db.TitreListe, {
+  as: "has_titreliste",
   foreignKey: "playlist_id",
 });
 
+// TitreListe
+
+db.TitreListe.belongsTo(db.User, {
+  /* L'alias (as:) nous permet d'accéder aux likes d'un
+       post et d'un utilisateur aver mon_post.likes ou
+       mon_user.likes.
+       https://sequelize.org/master/manual/assocs.html#defining-an-alias */
+  as: "added_by_user",
+  foreignKey: "user_id",
+});
+db.User.hasMany(db.TitreListe, {
+  as: "user_is_adding",
+  foreignKey: "user_id",
+});
+
+db.TitreListe.belongsTo(db.Post, {
+  as: "adds_the_post",
+  foreignKey: "post_id",
+});
+db.Post.hasMany(db.TitreListe, {
+  as: "added_in",
+  foreignKey: "post_id",
+});
 
 // Chaque Post est publié par un User
 
