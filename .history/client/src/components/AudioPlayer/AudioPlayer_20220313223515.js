@@ -164,8 +164,8 @@ export default function AudioPlayer(props) {
 
 
   const speedUpDoubleSpeed = () => {
-    wavesurfer.current.setPlaybackRate(2);
-    setSpeed(2);
+    wavesurfer.current.setPlaybackRate(4);
+    setSpeed(4);
   }
 
   

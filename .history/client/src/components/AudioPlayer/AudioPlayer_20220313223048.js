@@ -152,21 +152,12 @@ export default function AudioPlayer(props) {
 
   const play15forward = () => wavesurfer.current.skipForward(5);
 
-  const speedUpHalfSpeed = () => {
-    wavesurfer.current.setPlaybackRate(0.5);
-    setSpeed(0.5);
-  }
+  const speedUpHalfSpeed = () => wavesurfer.current.setPlaybackRate(0.5);
   
-  const speedUpNormalSpeed = () => {
-    wavesurfer.current.setPlaybackRate(1);
-    setSpeed(1);
-  }
+  const speedUpNormalSpeed = () => wavesurfer.current.setPlaybackRate(1);
 
 
-  const speedUpDoubleSpeed = () => {
-    wavesurfer.current.setPlaybackRate(2);
-    setSpeed(2);
-  }
+  const speedUpDoubleSpeed = () => wavesurfer.current.setPlaybackRate(2);
 
   
   const classes = useStyles();

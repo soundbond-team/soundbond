@@ -18,7 +18,7 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import FormControl from '@mui/material/FormControl';
-import {InputLabel, Select , MenuItem} from '@mui/material';
+import {InputLabel, Select , MenuItem} from '@mui/icons-material';
 import axios from "axios";
 
 const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
@@ -59,7 +59,6 @@ export default function AudioPlayer(props) {
   const wavesurfer = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speed , setSpeed] = useState(1);
   const wavesurferId = `wavesurfer--${uuidv4()}`;
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
@@ -142,31 +141,18 @@ export default function AudioPlayer(props) {
     }
   };
 
-  const handleChange = ()=>{
-
-  }
-
   const stopPlayback = () => wavesurfer.current.stop();
 
   const play15back = () => wavesurfer.current.skipBackward(5);
 
   const play15forward = () => wavesurfer.current.skipForward(5);
 
-  const speedUpHalfSpeed = () => {
-    wavesurfer.current.setPlaybackRate(0.5);
-    setSpeed(0.5);
-  }
+  const speedUpHalfSpeed = () => wavesurfer.current.setPlaybackRate(0.5);
   
-  const speedUpNormalSpeed = () => {
-    wavesurfer.current.setPlaybackRate(1);
-    setSpeed(1);
-  }
+  const speedUpNormalSpeed = () => wavesurfer.current.setPlaybackRate(1);
 
 
-  const speedUpDoubleSpeed = () => {
-    wavesurfer.current.setPlaybackRate(2);
-    setSpeed(2);
-  }
+  const speedUpDoubleSpeed = () => wavesurfer.current.setPlaybackRate(2);
 
   
   const classes = useStyles();
@@ -229,13 +215,12 @@ export default function AudioPlayer(props) {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={speed}
-                onChange = {handleChange}
+                value={1}
                 label="Age"
               >
-                <MenuItem value={0.5} onClick = {speedUpHalfSpeed}>x0.5</MenuItem>
-                <MenuItem value={1} onClick ={speedUpNormalSpeed}>x1</MenuItem>
-                <MenuItem value={2}onClick = {speedUpDoubleSpeed}>x2</MenuItem>
+                <MenuItem value={0.5} onClick = {speedUpHalfSpeed}>Ten</MenuItem>
+                <MenuItem value={1} onClick ={speedUpNormalSpeed}>Twenty</MenuItem>
+                <MenuItem value={2}onClick = {speedUpDoubleSpeed}>Thirty</MenuItem>
               </Select>
           </FormControl>
 
