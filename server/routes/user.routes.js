@@ -37,7 +37,7 @@ module.exports = (app) => {
   router.get("/:user_id/savedPosts", post.allPostsSavedByUser);
 
   router.get("/:user_id/history", playlistCtrl.history);
-  //router.post("/:user_id/history/add", playlistCtrl.history_add);
+  router.post("/:user_id/history/add", playlistCtrl.history_add);
 
   router.get("/username/:username", userCtrl.userInformations2);
 

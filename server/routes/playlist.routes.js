@@ -4,6 +4,7 @@ module.exports = (app) => {
 
   //create
   router.post("/create", playlistCtrl.create);
+  router.post("/add", playlistCtrl.addTitleToPlaylist);
   router.get("/findAll/:user_id", playlistCtrl.findallForUser);
   app.use("/api/v1/playlist", router);
 };

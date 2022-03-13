@@ -24,7 +24,6 @@ export const remove_like = (state, payload) => {
   });
 };
 export const add_commentaire = (state, payload) => {
-  console.log(payload);
   const datacomment = {
     comment: payload.data.comment,
     id: payload.data.id,
