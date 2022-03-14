@@ -22,11 +22,17 @@ function TagPage(props) {
         <div>
           <Grid container direction="row" spacing={3}>
             {allpostbytag ? (
-              allpostbytag.map((i, index) => (
-                <Grid key={index} item>
-                  <Post post={i} />
-                </Grid>
-              ))
+              allpostbytag.map((i, index) => {
+                if (i !== null) {
+                  return (
+                    <Grid key={index} item>
+                      <Post post={i} />
+                    </Grid>
+                  );
+                } else {
+                  return null;
+                }
+              })
             ) : (
               <p></p>
             )}

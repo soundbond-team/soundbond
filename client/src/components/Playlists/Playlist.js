@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/styles";
@@ -70,15 +69,22 @@ function Playlist(props) {
               <Grid container direction="column-reverse" spacing={3}>
                 {props.playlist.has_titreliste ? (
                   props.playlist.has_titreliste.map((titreliste, index2) => {
-                    return (
-                      <Grid key={index2} item>
-                        <Post post={titreliste.adds_the_post} parent="playlist" />
-                      </Grid>
-                    );
+                    if (titreliste.adds_the_post != null) {
+                      return (
+                        <Grid key={index2} item>
+                          <Post
+                            post={titreliste.adds_the_post}
+                            parent="playlist"
+                          />
+                        </Grid>
+                      );
+                    } else {
+                      return null;
+                    }
                   })
                 ) : (
                   <Grid item>
-                    <br/>
+                    <br />
                     <div className="container ">
                       {" "}
                       <p className="d-flex  justify-content-center">

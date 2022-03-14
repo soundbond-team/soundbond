@@ -65,8 +65,7 @@ export default function CreatePlaylist(props) {
     dispatch(getPostsUser(userData.id));
     // eslint-disable-next-line
   }, [userData]);
-  useEffect(() => {
-  }, [list_post]);
+  useEffect(() => {}, [list_post]);
   const postSelected = (postcheck) => {
     let checked = false;
     for (let i = 0; i < list_post.length; i++) {
@@ -102,19 +101,25 @@ export default function CreatePlaylist(props) {
                 {
                   <Grid container direction="column-reverse" spacing={3}>
                     {allpostprofilsreducer.length > 0 ? (
-                      allpostprofilsreducer.map((i, index) => (
-                        <Grid key={index} item>
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="flexCheckDefault"
-                            onChange={() => {
-                              postSelected(i);
-                            }}
-                          />{" "}
-                          <Post post={i} parent="createplaylist" />
-                        </Grid>
-                      ))
+                      allpostprofilsreducer.map((i, index) => {
+                        if (i != null) {
+                          return (
+                            <Grid key={index} item>
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                id="flexCheckDefault"
+                                onChange={() => {
+                                  postSelected(i);
+                                }}
+                              />{" "}
+                              <Post post={i} parent="createplaylist" />
+                            </Grid>
+                          );
+                        } else {
+                          return null;
+                        }
+                      })
                     ) : (
                       <Grid item>
                         <br />

@@ -32,11 +32,17 @@ function HistoriqueEcoute() {
           {
             <Grid container direction="column-reverse" spacing={3}>
               {histo.length > 0 ? (
-                histo.map((i, index) => (
-                  <Grid key={index} item>
-                    <Post post={i} />
-                  </Grid>
-                ))
+                histo.map((i, index) => {
+                  if (i !== null) {
+                    return (
+                      <Grid key={index} item>
+                        <Post post={i} />
+                      </Grid>
+                    );
+                  } else {
+                    return null;
+                  }
+                })
               ) : (
                 <Grid item>
                   <br />

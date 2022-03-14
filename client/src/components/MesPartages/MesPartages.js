@@ -28,11 +28,17 @@ function MesPartages() {
           {
             <Grid container direction="column-reverse" spacing={3}>
               {allpostshare.length > 0 ? (
-                allpostshare.map((i, index) => (
-                  <Grid key={index} item>
-                    <Post post={i} />
-                  </Grid>
-                ))
+                allpostshare.map((i, index) => {
+                  if (i !== null) {
+                    return (
+                      <Grid key={index} item>
+                        <Post post={i} />
+                      </Grid>
+                    );
+                  } else {
+                    return null;
+                  }
+                })
               ) : (
                 <Grid item>
                   <br />

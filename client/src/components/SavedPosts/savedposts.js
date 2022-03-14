@@ -17,11 +17,17 @@ function PostSave() {
       {
         <Grid container direction="column" spacing={3}>
           {PostSaved.length > 0 ? (
-            PostSaved.map((i, index) => (
-              <Grid key={index} item>
-                <Post key={index} post={i} />
-              </Grid>
-            ))
+            PostSaved.map((i, index) => {
+              if (i !== null) {
+                return (
+                  <Grid key={index} item>
+                    <Post post={i} />
+                  </Grid>
+                );
+              } else {
+                return null;
+              }
+            })
           ) : (
             <Grid item>
               <br />

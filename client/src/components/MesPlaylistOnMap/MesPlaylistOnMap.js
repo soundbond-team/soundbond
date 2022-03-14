@@ -27,10 +27,18 @@ function MesPlaylistOnMap(props) {
   };
   useEffect(() => {
     if (itineraire !== null) {
-      let itineraire_list = itineraire.has_titreliste.map((titreliste) => ({
-        longitude: titreliste.adds_the_post.publishing.soundlocation.longitude,
-        latitude: titreliste.adds_the_post.publishing.soundlocation.latitude,
-      }));
+      let itineraire_list = itineraire.has_titreliste.map((titreliste) => {
+        if (titreliste.adds_the_post != null) {
+          return {
+            longitude:
+              titreliste.adds_the_post.publishing.soundlocation.longitude,
+            latitude:
+              titreliste.adds_the_post.publishing.soundlocation.latitude,
+          };
+        } else {
+          return null;
+        }
+      });
 
       dispatch(change_itineraire(itineraire_list));
       setItineraire(null);

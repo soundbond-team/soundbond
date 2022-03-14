@@ -14,11 +14,17 @@ function TrendingPost() {
       {
         <Grid container direction="column-reverse" spacing={3}>
           {allposts.length > 0 ? (
-            allposts.map((i, index) => (
-              <Grid key={index} item>
-                <Post post={i} />
-              </Grid>
-            ))
+            allposts.map((i, index) => {
+              if (i !== null) {
+                return (
+                  <Grid key={index} item>
+                    <Post post={i} />
+                  </Grid>
+                );
+              } else {
+                return null;
+              }
+            })
           ) : (
             <Grid item>
               <br />

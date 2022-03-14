@@ -86,7 +86,13 @@ export const remove_share = (state, payload) => {
 };
 
 export const remove_post = (state, payload) => {
-  return state.filter((post) => post.id !== payload.postId);
+  return state.filter((post) => {
+    if (post != null) {
+      return post.id !== payload.postId;
+    } else {
+      return null;
+    }
+  });
 };
 
 export const update_post = (state, payload) => {
