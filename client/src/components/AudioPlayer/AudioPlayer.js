@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { makeStyles } from "@material-ui/styles";
 import { addVisit } from "../../actions/sound.actions";
+import { getHistoryByUser } from "../../actions/post.actions";
 import { UidContext } from "../Appcontext";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import StopIcon from "@material-ui/icons/Stop";
@@ -14,11 +15,11 @@ import Grid from "@material-ui/core/Grid";
 import DownloadIcon from "@mui/icons-material/Download";
 import { blue } from "@material-ui/core/colors";
 import IconButton from "@material-ui/core/IconButton";
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
+import SkipNextIcon from "@mui/icons-material/SkipNext";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import FormControl from '@mui/material/FormControl';
-import {InputLabel, Select , MenuItem} from '@mui/material';
+import FormControl from "@mui/material/FormControl";
+import { InputLabel, Select, MenuItem } from "@mui/material";
 import axios from "axios";
 
 const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
@@ -59,7 +60,7 @@ export default function AudioPlayer(props) {
   const wavesurfer = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speed , setSpeed] = useState(1);
+  const [speed, setSpeed] = useState(1);
   const wavesurferId = `wavesurfer--${uuidv4()}`;
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ export default function AudioPlayer(props) {
     }, 150);
 
     wavesurfer.current.on("play", async () => {
-      setIsPlaying(true)
+      setIsPlaying(true);
       await axios({
         method: "post",
         url: backServerURL + `api/v1/user/` + uid + `/history/add`,
@@ -102,7 +103,9 @@ export default function AudioPlayer(props) {
           title: "History",
           post_id: props.post_id,
         },
-      })
+      }).then(() => {
+        dispatch(getHistoryByUser(uid));
+      });
     });
     wavesurfer.current.on("pause", () => setIsPlaying(false));
     wavesurfer.current.on("finish", async () => {
@@ -142,9 +145,7 @@ export default function AudioPlayer(props) {
     }
   };
 
-  const handleChange = ()=>{
-
-  }
+  const handleChange = () => {};
 
   const stopPlayback = () => wavesurfer.current.stop();
 
@@ -155,20 +156,18 @@ export default function AudioPlayer(props) {
   const speedUpHalfSpeed = () => {
     wavesurfer.current.setPlaybackRate(0.5);
     setSpeed(0.5);
-  }
-  
+  };
+
   const speedUpNormalSpeed = () => {
     wavesurfer.current.setPlaybackRate(1);
     setSpeed(1);
-  }
-
+  };
 
   const speedUpDoubleSpeed = () => {
     wavesurfer.current.setPlaybackRate(2);
     setSpeed(2);
-  }
+  };
 
-  
   const classes = useStyles();
 
   let transportPlayButton;
@@ -218,27 +217,31 @@ export default function AudioPlayer(props) {
             />{" "}
           </IconButton>
           <IconButton onClick={play15back}>
-            <SkipPreviousIcon className={classes.icon}/>
+            <SkipPreviousIcon className={classes.icon} />
           </IconButton>
-
           <IconButton onClick={play15forward}>
-            <SkipNextIcon className={classes.icon}/>
+            <SkipNextIcon className={classes.icon} />
           </IconButton>
           <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Speed</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={speed}
-                onChange = {handleChange}
-                label="Age"
-              >
-                <MenuItem value={0.5} onClick = {speedUpHalfSpeed}>x0.5</MenuItem>
-                <MenuItem value={1} onClick ={speedUpNormalSpeed}>x1</MenuItem>
-                <MenuItem value={2}onClick = {speedUpDoubleSpeed}>x2</MenuItem>
-              </Select>
+            <InputLabel id="demo-simple-select-label">Speed</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={speed}
+              onChange={handleChange}
+              label="Age"
+            >
+              <MenuItem value={0.5} onClick={speedUpHalfSpeed}>
+                x0.5
+              </MenuItem>
+              <MenuItem value={1} onClick={speedUpNormalSpeed}>
+                x1
+              </MenuItem>
+              <MenuItem value={2} onClick={speedUpDoubleSpeed}>
+                x2
+              </MenuItem>
+            </Select>
           </FormControl>
-
           {visited ? (
             <>
               {" "}

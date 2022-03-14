@@ -1,36 +1,25 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import { UidContext } from "../Appcontext";
-import axios from "axios";
-import Post from "../Post/Post";
-const backServerURL = process.env.REACT_APP_BACK_SERVER_URL;
-function HistoriqueEcoute() {
-  const [histo, setHisto] = useState([]);
 
+import Post from "../Post/Post";
+import { getHistoryByUser } from "../../actions/post.actions";
+
+function HistoriqueEcoute() {
+  const histo = useSelector((state) => state.historyReducer);
+  const dispatch = useDispatch();
   const currentUserdata = useSelector((state) => state.getotherprofiluser);
   const uid = useContext(UidContext);
 
-  async function getHistoryByUser() {
-    await axios({
-      method: "get",
-      url: backServerURL + `api/v1/user/` + uid + `/history`,
-    })
-      .then((res) => {
-        if (res.data.err) {
-          console.log("err");
-        } else {
-          console.log(res.data);
-          setHisto(res.data[0].has_titreliste);
-        }
-      })
-      .catch((err) => {});
+  async function getHistoryByUserf() {
+    dispatch(getHistoryByUser(uid));
   }
 
   useEffect(() => {
     if (currentUserdata) {
-      getHistoryByUser();
+      getHistoryByUserf();
     } // eslint-disable-next-line
   }, [currentUserdata]);
 
@@ -45,7 +34,7 @@ function HistoriqueEcoute() {
               {histo.length > 0 ? (
                 histo.map((i, index) => (
                   <Grid key={index} item>
-                    <Post post={i.adds_the_post} />
+                    <Post post={i} />
                   </Grid>
                 ))
               ) : (
