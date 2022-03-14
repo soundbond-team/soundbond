@@ -1,6 +1,7 @@
 const db = require("../models");
 const User = db.User;
 const UserService = require("../services/userService");
+const Playlist = db.Playlist;
 
 module.exports.signUp = async (req, res) => {
   const username = req.body.username;
@@ -10,6 +11,14 @@ module.exports.signUp = async (req, res) => {
 
   try {
     const user = await User.create({ username, password });
+
+    const history = {
+      title: "History",
+      description: req.body.username + "'s History",
+      publisher_user_id: user.id,
+    };
+  
+    await Playlist.create(history);
     res.status(201).json({ user: user.id });
   } catch (err) {
     res.status(200).send({ err });

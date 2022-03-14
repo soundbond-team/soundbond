@@ -47,10 +47,10 @@ const Map = ({ post_points, connected_user_id }) => {
   };
 
   const getPostByFollowedUsers = async (tag) => {
- 
     let result = await axios({
       method: "get",
-      url: backServerURL + `api/v1/user/` + connected_user_id + `following_posts/`,
+      url:
+        backServerURL + `api/v1/user/` + connected_user_id + `following_posts/`,
       withCredentials: true,
     });
     alert(result);
@@ -141,9 +141,13 @@ const Map = ({ post_points, connected_user_id }) => {
       // only the end or destination will change
 
       let line = "";
-      itineraire.map(
-        (point) => (line = line + `;${point.longitude},${point.latitude}`)
-      );
+      itineraire.map((point) => {
+        if (point != null) {
+          return (line = line + `;${point.longitude},${point.latitude}`);
+        } else {
+          return null;
+        }
+      });
       if (itineraire.length > 0) {
         const query = await fetch(
           `https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]}${line}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
@@ -227,10 +231,12 @@ const Map = ({ post_points, connected_user_id }) => {
       <div className="container-fluid">
         <div class="row justify-content-between">
           <div class="col-4">
-          <CreatePlaylist/>
+            <CreatePlaylist />
           </div>
           <div class="col-4 text-end">
-            <button onClick={getPostByFollowedUsers}>Afficher les posts de ceux que je suis</button>
+            <button onClick={getPostByFollowedUsers}>
+              Afficher les posts de ceux que je suis
+            </button>
           </div>
         </div>
         <div className="sidebarStyle">

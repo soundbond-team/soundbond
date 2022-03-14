@@ -27,11 +27,17 @@ function MyPosts() {
           {
             <Grid container direction="column-reverse" spacing={3}>
               {allpostprofilsreducer.length > 0 ? (
-                allpostprofilsreducer.map((i, index) => (
-                  <Grid key={index} item>
-                    <Post post={i} />
-                  </Grid>
-                ))
+                allpostprofilsreducer.map((i, index) => {
+                  if (i !== null) {
+                    return (
+                      <Grid key={index} item>
+                        <Post post={i} />
+                      </Grid>
+                    );
+                  } else {
+                    return null;
+                  }
+                })
               ) : (
                 <Grid item>
                   <br />

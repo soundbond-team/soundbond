@@ -26,7 +26,6 @@ function Login() {
       },
     }).then((res) => {
       if (res.data === "") {
-        console.log("mdp ou username incorrect");
         setErr("Mot de passe ou username incorrect");
       } else {
         window.location = "/";
@@ -34,8 +33,6 @@ function Login() {
     });
   };
   const handleLogin2 = async () => {
-    console.log(usernameGoogle, passwordGoogle);
-    console.log("ess");
     await axios({
       method: "post",
       url: backServerURL + `api/v1/user/login`,
@@ -46,18 +43,14 @@ function Login() {
       },
     }).then((res) => {
       if (res.data === "") {
-        console.log("etape 2" + res);
-        console.log("mdp ou username incorrect");
         setErr("Mot de passe ou username incorrect");
       } else {
-        console.log("etape 2" + res);
+        setstatePass(false);
         window.location = "/";
       }
     });
   };
   const handleSignup = async (username_, password_) => {
-    console.log(backServerURL + `api/v1/user/register`);
-    console.log(process.env.REACT_APP_BACK_SERVER_URL);
     await axios({
       method: "post",
       url: backServerURL + `api/v1/user/register`,
@@ -69,8 +62,8 @@ function Login() {
     })
       .then((res) => {
         if (res.data.err) {
+          setstatePass(true);
         } else {
-          console.log("etape 1" + res);
           setstatePass(true);
         }
       })
@@ -80,13 +73,11 @@ function Login() {
   const googleSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
-    console.log(result.token);
     setUsernameGoogle(result.givenName);
     setPasswordGoogle(result.googleId);
   };
   useEffect(() => {
     if (passwordGoogle !== "" && usernameGoogle !== "") {
-      console.log(usernameGoogle, passwordGoogle);
       handleSignup(usernameGoogle, passwordGoogle);
     } //eslint-disable-next-line
   }, [passwordGoogle]);

@@ -35,21 +35,28 @@ const helper_user_liked_by = {
   attributes: ["id", "username"],
 };
 
-
 const helper_user_commented_by = {
   model: db.Comments,
-  as: 'comments_on_post',
+  as: "comments_on_post",
   attributes: ["id", "comment", "post_id", "user_id"],
-  include: [{
-    model: db.User,
-    as: "commented_by_user",
-    attributes: ["id", "username"],
-  }]
+  include: [
+    {
+      model: db.User,
+      as: "commented_by_user",
+      attributes: ["id", "username"],
+    },
+  ],
 };
 
 const helper_user_shared_by = {
   model: db.User,
   as: "shared_by",
+  attributes: ["id", "username"],
+};
+
+const helper_user_saved_by = {
+  model: db.User,
+  as: "saved_by",
   attributes: ["id", "username"],
 };
 
@@ -59,8 +66,14 @@ const helper_tag = {
 };
 
 const helper_playlist = {
-  model: db.Playlist,
-  as: "listplaylist",
+  model: db.TitreListe,
+  as: "added_in",
+  include: [
+    {
+      model: db.Playlist,
+      as: "is_in_playlist",
+    }
+  ]
 };
 
 const helper_include_everything = [
@@ -71,6 +84,7 @@ const helper_include_everything = [
   helper_tag,
   helper_user_shared_by,
   helper_playlist,
+  helper_user_saved_by,
 ];
 
 // Création d'un nouveau Post.
@@ -199,23 +213,25 @@ exports.allPostsByPublisherUserId = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: err.message || "Some error occurred while retrieving Posts from user.",
+        error:
+          err.message ||
+          "Some error occurred while retrieving Posts from user.",
       });
     });
 };
 
-async function helper_allPostsByPublishersUserId(users_ids){
+async function helper_allPostsByPublishersUserId(users_ids) {
   // Create a list of all Posts for user ids speciied in argument.
   let posts = [];
-  for (let user_id of users_ids){
+  for (let user_id of users_ids) {
     let posts_per_user = await db.Post.findAll({
       where: {
         publisher_user_id: user_id,
       },
       include: helper_include_everything,
-    })
-    if (posts_per_user.length > 0){
-      for (let post of posts_per_user){
+    });
+    if (posts_per_user.length > 0) {
+      for (let post of posts_per_user) {
         posts.push(post);
       }
     }
@@ -230,9 +246,7 @@ exports.allPostsByPublishersUserId = (req, res) => {
   */
 
   // Vérification que la requête contient bien toutes les valeurs.
-  if (
-    !req.body.users
-  ) {
+  if (!req.body.users) {
     res.status(400).send({
       message: "Content can not be empty!",
     });
@@ -240,7 +254,7 @@ exports.allPostsByPublishersUserId = (req, res) => {
   }
   helper_allPostsByPublishersUserId(req.body.users).then((data) => {
     res.send(data);
-  })
+  });
 };
 
 exports.allPostsFromUsersFollowedByUserId = (req, res) => {
@@ -251,16 +265,18 @@ exports.allPostsFromUsersFollowedByUserId = (req, res) => {
     },
     include: helper_include_everything,
   })
-  .then((data) => {
-    res.send(data);
-  })
-  .catch((err) => {
-    res.status(500).send({
-    error: err.message || "Some error occurred while retrieving Posts from followings.",
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error:
+          err.message ||
+          "Some error occurred while retrieving Posts from followings.",
+      });
     });
-  });
 };
-  
+
 exports.trendingPostsForSpecificUser = async (req, res) => {
   const user_id = req.params.user_id;
   const list_suivis = await db.User.findAll({
@@ -286,7 +302,9 @@ exports.trendingPostsForSpecificUser = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        error: err.message || "Some error occurred while retrieving trending post for that user.",
+        error:
+          err.message ||
+          "Some error occurred while retrieving trending post for that user.",
       });
     });
 };
@@ -298,6 +316,27 @@ exports.allPostsSharedByUser = (req, res) => {
       {
         model: db.Post,
         as: "shared_posts",
+        include: helper_include_everything,
+      },
+    ],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: err.message || "Some error occurred while retrieving Posts.",
+      });
+    });
+};
+
+exports.allPostsSavedByUser = (req, res) => {
+  let id = req.params.user_id;
+  db.User.findByPk(id, {
+    include: [
+      {
+        model: db.Post,
+        as: "saved_posts",
         include: helper_include_everything,
       },
     ],
@@ -480,13 +519,12 @@ exports.comment = async (req, res) => {
     const comment = {
       post_id: post.id,
       user_id: user.id,
-      comment: req.body.comment_text
-    }
-    
-    await db.Comments.create(comment)
-      .then((data) => {
-        res.status(201).json(data);
-      });
+      comment: req.body.comment_text,
+    };
+
+    await db.Comments.create(comment).then((data) => {
+      res.status(201).json(data);
+    });
   } catch (e) {
     res.status(400).json("error");
   }
@@ -560,6 +598,34 @@ exports.unshare = async (req, res) => {
     try {
       await post.removeShared_by(user_id);
       res.status(201).json("unshared");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+
+exports.save = async (req, res) => {
+  const post_id = req.body.post_id;
+  const user_id = req.body.user_id;
+
+  db.Post.findByPk(post_id).then(async (post) => {
+    try {
+      await post.addSaved_by(user_id);
+      res.status(201).json("saved");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+
+exports.unsave = async (req, res) => {
+  const post_id = req.body.post_id;
+  const user_id = req.body.user_id;
+
+  db.Post.findByPk(post_id).then(async (post) => {
+    try {
+      await post.removeSaved_by(user_id);
+      res.status(201).json("unsaved");
     } catch (e) {
       res.status(400).json("error");
     }

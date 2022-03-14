@@ -24,7 +24,6 @@ export const remove_like = (state, payload) => {
   });
 };
 export const add_commentaire = (state, payload) => {
-  console.log(payload);
   const datacomment = {
     comment: payload.data.comment,
     id: payload.data.id,
@@ -87,7 +86,13 @@ export const remove_share = (state, payload) => {
 };
 
 export const remove_post = (state, payload) => {
-  return state.filter((post) => post.id !== payload.postId);
+  return state.filter((post) => {
+    if (post != null) {
+      return post.id !== payload.postId;
+    } else {
+      return null;
+    }
+  });
 };
 
 export const update_post = (state, payload) => {
@@ -97,6 +102,31 @@ export const update_post = (state, payload) => {
         ...posts,
         updated_by: posts.updated_by.filter(
           (data) => data.id !== payload.userData.id
+        ),
+      };
+    }
+    return posts;
+  });
+};
+
+export const add_save = (state, payload) => {
+  return state.map((posts) => {
+    if (posts.id === payload.post_id) {
+      return {
+        ...posts,
+        saved_by: [payload.userData, ...posts.saved_by],
+      };
+    }
+    return posts;
+  });
+};
+export const remove_save = (state, payload) => {
+  return state.map((posts) => {
+    if (posts.id === payload.id) {
+      return {
+        ...posts,
+        saved_by: posts.saved_by.filter(
+          (data) => payload.userData.id !== data.id
         ),
       };
     }

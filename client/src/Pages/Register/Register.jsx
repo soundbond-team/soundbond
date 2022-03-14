@@ -15,8 +15,6 @@ export default function Registration() {
   
   const handleSignup=async (e)=>{
     e.preventDefault();
-    console.log(backServerURL+`api/v1/user/register`);
-    console.log(process.env.REACT_APP_BACK_SERVER_URL);
     await axios({
       method: "post",
       url: backServerURL+`api/v1/user/register`,
@@ -27,22 +25,16 @@ export default function Registration() {
       }
     }).then((res)=>{
       if(res.data.err){
-        console.log(res.data.err);
         setErr("Username déja utilisé (ou autre erreur)");
+        console.log(err);
       }
       else{
-       
         navigate('/login')
-        
       }
     }).catch((err)=>{
       console.log(err);
-      
     })
-
   }
- 
-
 
     return (
         <>

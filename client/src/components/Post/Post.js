@@ -34,6 +34,9 @@ import {
   removeShare,
   removePost,
   updatePost,
+  addSave,
+  removeSave,
+  getAllPostSavedByUser,
 } from "../../actions/post.actions";
 import { change_ZOOM } from "../../actions/postToMap.actions";
 import ModalHeader from "react-bootstrap/ModalHeader";
@@ -47,7 +50,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { formControlClasses } from "@material-ui/core";
-
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
+import AddToPlaylist from "../AddToPlaylist/AddToPlaylist";
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 function Post(props) {
   const uid = useContext(UidContext);
@@ -67,10 +72,11 @@ function Post(props) {
     }
     return false;
   });
+
   const [nombrelike, setNombrelike] = useState(props.post.liked_by.length);
   const userData = useSelector((state) => state.userReducer);
   const [commentaire, setCommentaire] = useState(""); // Utilisé pour stocker un commentaire.
-
+  const [optionss, setOptionss] = useState([]);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -94,7 +100,6 @@ function Post(props) {
           { method: "GET" }
         ).then(async (response) => {
           let address = await response.json();
-          console.log(address.features[0].place_name);
           setplaceName(address.features[0].place_name);
         });
       }
@@ -104,9 +109,28 @@ function Post(props) {
       ) {
         translateToAdress();
       }
+      if (uid !== null && uid !== "undefined") {
+        if (uid === currentpost.publisher.id) {
+          setOptionss([
+            <AddToPlaylist post={props.post} />,
+            "Modifier",
+            "Supprimer",
+            saveIcon(),
+          ]);
+        } else {
+          setOptionss([<AddToPlaylist post={props.post} />, saveIcon()]);
+        }
+      }
     } // eslint-disable-next-line
   }, []);
-
+  function saveIcon() {
+    for (let i = 0; i < props.post.saved_by.length; i++) {
+      if (props.post.saved_by[i].id === uid) {
+        return "Unsave";
+      }
+    }
+    return "Save";
+  }
   const useStyles = makeStyles((theme) => ({
     card: {
       maxWidth: 600,
@@ -201,17 +225,53 @@ function Post(props) {
     hour: "numeric",
     minute: "numeric",
   };
-  const optionss = ["Supprimer", "Modifier"];
+  // const optionss = ["Supprimer", "Modifier"];
   const ITEM_HEIGHT = 38;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
   const sendDeleteUpdatePost = async (e) => {
-    console.log(e);
     if (e === "Supprimer") {
       await dispatch(removePost(props.post.id, userData));
-    } else {
+    }
+    if (e === "Modifier") {
       await dispatch(updatePost(props.post.id, userData));
+    }
+    if (e === "Save") {
+      handleClose();
+      if (uid !== null && uid !== "undefined") {
+        if (uid === props.post.publisher.id) {
+          setOptionss([
+            <AddToPlaylist post={props.post} />,
+            "Modifier",
+            "Supprimer",
+            "Unsave",
+          ]);
+        } else {
+          setOptionss([<AddToPlaylist post={props.post} />, "Unsave"]);
+        }
+      }
+
+      await dispatch(await addSave(props.post.id, uid, userData));
+    }
+    if (e === "Unsave") {
+      handleClose();
+      if (uid !== null && uid !== "undefined") {
+        if (uid === props.post.publisher.id) {
+          setOptionss([
+            <AddToPlaylist parent="post" />,
+
+            "Modifier",
+            "Supprimer",
+            "Save",
+          ]);
+        } else {
+          setOptionss([<AddToPlaylist parent="post" />, "Save"]);
+        }
+      }
+
+      await dispatch(await removeSave(props.post.id, uid, userData));
+      dispatch(getAllPostSavedByUser(uid));
     }
   };
 
@@ -268,49 +328,45 @@ function Post(props) {
                   padding: "0px",
                 }}
               >
-                {userData.id === props.post.publisher.id ? (
-                  <>
-                    <IconButton
-                      aria-label="more"
-                      id="long-button"
-                      to={`/profil/${props.post.publisher.username}/posts`}
-                      aria-controls={open ? "long-menu" : undefined}
-                      aria-expanded={open ? "true" : undefined}
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                      style={{ float: "right" }}
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "long-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      PaperProps={{
-                        style: {
-                          maxHeight: ITEM_HEIGHT * 3.5,
-                          width: "20ch",
-                        },
-                      }}
-                    >
-                      {optionss.map((option) => (
-                        <MenuItem
-                          key={option}
-                          onClick={() => sendDeleteUpdatePost(option)}
-                          onClose={handleClose}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </>
-                ) : (
-                  <></>
-                )}
+                <>
+                  <IconButton
+                    aria-label="more"
+                    id="long-button"
+                    to={`/profil/${props.post.publisher.username}/posts`}
+                    aria-controls={open ? "long-menu" : undefined}
+                    aria-expanded={open ? "true" : undefined}
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                    style={{ float: "right" }}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id="long-menu"
+                    MenuListProps={{
+                      "aria-labelledby": "long-button",
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    PaperProps={{
+                      style: {
+                        maxHeight: ITEM_HEIGHT * 3.5,
+                        width: "20ch",
+                      },
+                    }}
+                  >
+                    {optionss.map((option) => (
+                      <MenuItem
+                        key={option}
+                        onClick={() => sendDeleteUpdatePost(option)}
+                        onClose={handleClose}
+                      >
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </>
               </ListItem>
             </ListItem>
           </List>
@@ -329,6 +385,7 @@ function Post(props) {
                 ? props.post.publishing.visited_by
                 : null
             }
+            post_id={props.post.id}
           />
         }
 

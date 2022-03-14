@@ -41,6 +41,7 @@ db.Post = require("./post")(sequelize, Sequelize);
 db.Comments = require("./comment")(sequelize, Sequelize);
 db.Tag = require("./tag")(sequelize, Sequelize);
 db.Playlist = require("./playlists")(sequelize, Sequelize);
+db.TitreListe = require("./titreliste")(sequelize, Sequelize);
 
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 //Chaque Post a un ou plusieurs tags
@@ -80,24 +81,63 @@ db.User.belongsToMany(db.Sound, {
   foreignKey: "user_id",
 });
 
-db.User.hasOne(db.Playlist, {
-  through: "user_playlist",
+
+
+// Playlist
+
+db.Playlist.belongsTo(db.User, {
+  /* L'alias (as:) nous permet d'accéder aux likes d'un
+       post et d'un utilisateur aver mon_post.likes ou
+       mon_user.likes.
+       https://sequelize.org/master/manual/assocs.html#defining-an-alias */
+  as: "publisher",
+  foreignKey: "publisher_user_id",
+});
+db.User.hasMany(db.Playlist, {
   as: "publisher",
   foreignKey: "publisher_user_id",
 });
 
-db.Post.belongsToMany(db.Playlist, {
-  through: "post_playlist",
-  as: "listplaylist",
-  foreignKey: "post_id",
+
+db.TitreListe.belongsTo(db.Playlist, {
+  /* L'alias (as:) nous permet d'accéder aux likes d'un
+       post et d'un utilisateur aver mon_post.likes ou
+       mon_user.likes.
+       https://sequelize.org/master/manual/assocs.html#defining-an-alias */
+  as: "is_in_playlist",
+  foreignKey: "playlist_id",
 });
-db.Playlist.belongsToMany(db.Post, {
-  through: "post_playlist",
-  as: "listpost",
+db.Playlist.hasMany(db.TitreListe, {
+  as: "has_titreliste",
   foreignKey: "playlist_id",
 });
 
+// TitreListe
+
+db.TitreListe.belongsTo(db.User, {
+  /* L'alias (as:) nous permet d'accéder aux likes d'un
+       post et d'un utilisateur aver mon_post.likes ou
+       mon_user.likes.
+       https://sequelize.org/master/manual/assocs.html#defining-an-alias */
+  as: "added_by_user",
+  foreignKey: "user_id",
+});
+db.User.hasMany(db.TitreListe, {
+  as: "user_is_adding",
+  foreignKey: "user_id",
+});
+
+db.TitreListe.belongsTo(db.Post, {
+  as: "adds_the_post",
+  foreignKey: "post_id",
+});
+db.Post.hasMany(db.TitreListe, {
+  as: "added_in",
+  foreignKey: "post_id",
+});
+
 // Chaque Post est publié par un User
+
 db.Post.belongsTo(db.User, {
   through: "user_post",
   as: "publisher",
@@ -117,7 +157,9 @@ db.Post.belongsTo(db.Sound, {
   foreignKey: "sound_id",
 });
 
-// Relation plusieurs à plusieurs pour les posts likés
+
+// Posts likés
+
 db.Post.belongsToMany(db.User, {
   /* L'alias (as:) nous permet d'accéder aux likes d'un
        post et d'un utilisateur aver mon_post.likes ou
@@ -134,36 +176,47 @@ db.User.belongsToMany(db.Post, {
   foreignKey: "user_id",
 });
 
-// Relation plusieurs à plusieurs pour les commentaires
-db.Comments.belongsTo(
-  db.User, {
+
+// Posts enregistrés
+
+db.Post.belongsToMany(db.User, {
+  through: "enregistrement",
+  as: "saved_by",
+  foreignKey: "post_id",
+});
+db.User.belongsToMany(db.Post, {
+  through: "enregistrement",
+  as: "saved_posts",
+  foreignKey: "user_id",
+});
+
+
+// Commentaires
+
+db.Comments.belongsTo(db.User, {
   /* L'alias (as:) nous permet d'accéder aux likes d'un
        post et d'un utilisateur aver mon_post.likes ou
        mon_user.likes.
        https://sequelize.org/master/manual/assocs.html#defining-an-alias */
-    as: "commented_by_user",
-    foreignKey: "user_id",
-  }
-);
-db.User.hasMany(
-  db.Comments, {
-    as: "user_is_commenting",
-    foreignKey: "user_id",
-  }
-);
+  as: "commented_by_user",
+  foreignKey: "user_id",
+});
+db.User.hasMany(db.Comments, {
+  as: "user_is_commenting",
+  foreignKey: "user_id",
+});
 
-db.Comments.belongsTo(
-  db.Post, {
-    as: "comments_the_post",
-    foreignKey: "post_id",
-  }
-);
-db.Post.hasMany(
-  db.Comments, {
-    as: "comments_on_post",
-    foreignKey: "post_id",
-  }
-);
+db.Comments.belongsTo(db.Post, {
+  as: "comments_the_post",
+  foreignKey: "post_id",
+});
+db.Post.hasMany(db.Comments, {
+  as: "comments_on_post",
+  foreignKey: "post_id",
+});
+
+
+// Abonnements
 
 db.User.belongsToMany(db.User, {
   through: "abonnement",
@@ -176,6 +229,9 @@ db.User.belongsToMany(db.User, {
   as: "following",
   foreignKey: "following_id",
 });
+
+
+// Partages
 
 // Relation M:M pour les posts partagés
 db.Post.belongsToMany(db.User, {

@@ -1,21 +1,25 @@
-import React, { useEffect } from "react";
-import Post from "../../components/Post/Post";
+import React, { useContext, useEffect } from "react";
 
+import { useSelector, useDispatch } from "react-redux";
 import Grid from "@material-ui/core/Grid";
+import { UidContext } from "../Appcontext";
 
-import { useDispatch, useSelector } from "react-redux";
+import Post from "../Post/Post";
+import { getHistoryByUser } from "../../actions/post.actions";
 
-import { getAllPostSharedByUser } from "../../actions/post.actions";
-
-function MesPartages() {
-  const allpostshare = useSelector((state) => state.allpostsharedReducer);
-
-  const currentUserdata = useSelector((state) => state.getotherprofiluser);
+function HistoriqueEcoute() {
+  const histo = useSelector((state) => state.historyReducer);
   const dispatch = useDispatch();
+  const currentUserdata = useSelector((state) => state.getotherprofiluser);
+  const uid = useContext(UidContext);
+
+  async function getHistoryByUserf() {
+    dispatch(getHistoryByUser(uid));
+  }
 
   useEffect(() => {
     if (currentUserdata) {
-      dispatch(getAllPostSharedByUser(currentUserdata.id));
+      getHistoryByUserf();
     } // eslint-disable-next-line
   }, [currentUserdata]);
 
@@ -27,8 +31,8 @@ function MesPartages() {
 
           {
             <Grid container direction="column-reverse" spacing={3}>
-              {allpostshare.length > 0 ? (
-                allpostshare.map((i, index) => {
+              {histo.length > 0 ? (
+                histo.map((i, index) => {
                   if (i !== null) {
                     return (
                       <Grid key={index} item>
@@ -45,7 +49,7 @@ function MesPartages() {
                   <div className="container ">
                     {" "}
                     <p className="d-flex  justify-content-center">
-                      Aucun post partagé
+                      Aucun historique
                     </p>
                   </div>
                 </Grid>
@@ -60,4 +64,4 @@ function MesPartages() {
   );
 }
 
-export default MesPartages;
+export default HistoriqueEcoute;

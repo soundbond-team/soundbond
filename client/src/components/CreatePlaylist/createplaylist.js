@@ -65,20 +65,15 @@ export default function CreatePlaylist(props) {
     dispatch(getPostsUser(userData.id));
     // eslint-disable-next-line
   }, [userData]);
-  useEffect(() => {
-    console.log(list_post);
-  }, [list_post]);
+  useEffect(() => {}, [list_post]);
   const postSelected = (postcheck) => {
     let checked = false;
     for (let i = 0; i < list_post.length; i++) {
-      console.log(list_post[i]);
       if (list_post[i].id === postcheck.id) {
         checked = true;
-        console.log(true);
       }
     }
     if (checked === false) {
-      console.log(false);
       if (list_post.length === 0) {
         setList_post([postcheck]);
       } else {
@@ -106,19 +101,25 @@ export default function CreatePlaylist(props) {
                 {
                   <Grid container direction="column-reverse" spacing={3}>
                     {allpostprofilsreducer.length > 0 ? (
-                      allpostprofilsreducer.map((i, index) => (
-                        <Grid key={index} item>
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="flexCheckDefault"
-                            onChange={() => {
-                              postSelected(i);
-                            }}
-                          />{" "}
-                          <Post post={i} parent="createplaylist" />
-                        </Grid>
-                      ))
+                      allpostprofilsreducer.map((i, index) => {
+                        if (i != null) {
+                          return (
+                            <Grid key={index} item>
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                id="flexCheckDefault"
+                                onChange={() => {
+                                  postSelected(i);
+                                }}
+                              />{" "}
+                              <Post post={i} parent="createplaylist" />
+                            </Grid>
+                          );
+                        } else {
+                          return null;
+                        }
+                      })
                     ) : (
                       <Grid item>
                         <br />
