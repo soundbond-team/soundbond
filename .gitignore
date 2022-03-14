@@ -29,3 +29,6 @@ yarn-error.log*
 
 # SQLite tests database
 *.sqlite
+
+# Unknown directory
+.history/
