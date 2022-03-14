@@ -166,10 +166,12 @@ exports.addTitleToPlaylist = async (req, res, arg) => {
   }).then((playlist) => {
 
     // Vérifier que l'on n'essaie par d'ajouter un post manuellement à son historique.
-    if (arg.history_add === null) {
-      if (playlist.titre === "History") {
-        res.status(500).send("Cannot manually add a post to your history.");
-        return;
+    if (arg) {
+      if (arg.history_add) {
+        if (playlist.titre === "History") {
+          res.status(500).send("Cannot manually add a post to your history.");
+          return;
+        }
       }
     }
 
