@@ -1,4 +1,5 @@
 import tweepy
+from tweepy.errors import TweepyException
 import pandas as pd
 from dotenv import load_dotenv
 import os
@@ -22,10 +23,10 @@ follower_list = []
 for user in user_list:
     followers = []
     try:
-        for page in tweepy.Cursor(api.followers_ids, user_id=user).pages():
+        for page in tweepy.Cursor(api.get_follower_ids(), user_id=user).pages():
             followers.extend(page)
             print(len(followers))
-    except tweepy.TweepError:
+    except TweepyException:
         print("error")
         continue
     follower_list.append(followers)
@@ -48,7 +49,7 @@ for userID in user_list2:
     followers_count = user.followers_count
 
     try:
-        for page in tweepy.Cursor(api.followers_ids, user_id=userID).pages():
+        for page in tweepy.Cursor(api.get_follower_ids(), user_id=userID).pages():
             followers2.extend(page)
             print(len(followers2))
             if followers_count >= 5000:  # On prend que les 5000 premiers abonnés
