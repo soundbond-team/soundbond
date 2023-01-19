@@ -42,6 +42,7 @@ db.Comments = require("./comment")(sequelize, Sequelize);
 db.Tag = require("./tag")(sequelize, Sequelize);
 db.Playlist = require("./playlists")(sequelize, Sequelize);
 db.TitreListe = require("./titreliste")(sequelize, Sequelize);
+db.Visit = require("./visits")(sequelize, Sequelize);
 
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 //Chaque Post a un ou plusieurs tags
@@ -70,13 +71,32 @@ db.Sound.belongsTo(db.User, {
   foreignKey: "uploader_user_id",
 });
 
+/*
+db.Visits.belongsTo(db.Sound, {
+  as: "visiting",
+  foreignKey: "visited_sound_id",
+});
+db.Sound.hasMany(db.Visits, {
+  as: "visited",
+  foreignKey: "visited_sound_id",
+});
+db.Visits.belongsTo(db.User, {
+  as: "visited_by",
+  foreignKey: "visited_user_id",
+});
+db.User.hasMany(db.Visits, {
+  as: "visits",
+  foreignKey: "visited_user_id",
+});
+*/
+
 db.Sound.belongsToMany(db.User, {
-  through: "visits",
+  through: db.Visit,
   as: "visited_by",
   foreignKey: "sound_id",
 });
 db.User.belongsToMany(db.Sound, {
-  through: "visits",
+  through: db.Visit,
   as: "visits_posts",
   foreignKey: "user_id",
 });
