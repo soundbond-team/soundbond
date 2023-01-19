@@ -243,8 +243,8 @@ exports.mostListened = async (req, res) => {
 exports.timeListening = async (req, res) => {
   try{
     //!AJOUTER DES COMMENTAIRES
-    const favs = await db.sequelize.query('SELECT SUM(s.duration) as duree FROM Sounds s, Visits v\
-    WHERE s.id=v.sound_id AND v.user_id=:id_user and',
+    const favs = await db.sequelize.query("SELECT strftime('%d',v.createdAt) as day, SUM(s.duration) as duree FROM Sounds s, Visits v\
+    WHERE s.id=v.sound_id AND v.user_id=:id_user and day=strftime('%d',DATE())",
     {
       replacements : {
         id_user: req.params.id
