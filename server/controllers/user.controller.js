@@ -1,6 +1,7 @@
 const db = require("../models");
 const sanitizeHtml = require("sanitize-html");
-const { Post } = require("../models");
+const { Post, sequelize, Sequelize } = require("../models");
+const QueryTypes = db.Sequelize.QueryTypes;
 const User = db.User;
 const Op = db.Sequelize.Op;
 
@@ -219,23 +220,40 @@ exports.suggestionsFollow = (req, res) => {
     });
 };
 
-exports.mostListened = (req, res) => {
-  const user_id = req.params.id;
-  //!AJOUTER DES COMMENTAIRES
-  User.findAll({
-    //attributes: [id, username], 
-    include: [
-      {
-        model: db.Sound,
-        as: "les_sons",
-        include:[{
-          model: db.Visit, 
-          as: "les_visites", 
-          where: {
-            user_id : user_id
-          }
-        }]
+exports.mostListened = async (req, res) => {
+  try{
+    //!AJOUTER DES COMMENTAIRES
+    const favs = await db.sequelize.query('SELECT u.username, count(u.username) as apparition \
+    FROM Users u, Sounds s, Visits v \
+    WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user \
+    GROUP BY u.username ORDER BY apparition ASC',
+    {
+      replacements : {
+        id_user: req.params.id
       },
-    ]
-  }).then(data => res.status(200).send(data));
+      type: QueryTypes.SELECT
+    })
+    res.json(favs);
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+exports.timeListening = async (req, res) => {
+  try{
+    //!AJOUTER DES COMMENTAIRES
+    const favs = await db.sequelize.query('SELECT SUM(s.duration) as duree FROM Sounds s, Visits v\
+    WHERE s.id=v.sound_id AND v.user_id=:id_user',
+    {
+      replacements : {
+        id_user: req.params.id
+      },
+      type: QueryTypes.SELECT
+    })
+    res.json(favs);
+  }
+  catch(err){
+    console.log(err);
+  }
 }

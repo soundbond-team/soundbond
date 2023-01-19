@@ -51,6 +51,7 @@ module.exports = (app) => {
   router.get("/:id/suggestionsFollow/", userCtrl.suggestionsFollow);
 
   router.get("/:id/stats/mostListened/", userCtrl.mostListened);
+  router.get("/:id/stats/timeListening/", userCtrl.timeListening);
 
   app.use("/api/v1/user", router);
 };
