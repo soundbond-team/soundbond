@@ -257,3 +257,18 @@ exports.timeListening = async (req, res) => {
     console.log(err);
   }
 }
+
+exports.bestTags = async (req, res) => {
+  try{
+    //!AJOUTER DES COMMENTAIRES
+    const favs = await db.sequelize.query('SELECT t.tag, count(t.tag) as apparition FROM Tags t, Tag_Post tp, Posts p\
+    WHERE t.id=tp.tagging_id AND tp.post_id=p.id',
+    {
+      type: QueryTypes.SELECT
+    })
+    res.json(favs);
+  }
+  catch(err){
+    console.log(err);
+  }
+}

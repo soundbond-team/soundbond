@@ -52,6 +52,7 @@ module.exports = (app) => {
 
   router.get("/:id/stats/mostListened/", userCtrl.mostListened);
   router.get("/:id/stats/timeListening/", userCtrl.timeListening);
+  router.get("/:id/stats/tags/", userCtrl.bestTags);
 
   app.use("/api/v1/user", router);
 };
