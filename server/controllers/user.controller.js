@@ -314,8 +314,27 @@ exports.numberPostByMonth = async (req, res) => {
 exports.numberLikeByMonth = async (req, res) => {
   try{
     //!AJOUTER DES COMMENTAIRES
-    const favs = await db.sequelize.query("SELECT strftime('%m',p.createdAt) as month, count(p.id) FROM Posts p, Likes l, Users u\
+    const favs = await db.sequelize.query("SELECT strftime('%m',p.createdAt) as month, count(p.id) as nbLike FROM Posts p, Likes l, Users u\
     WHERE p.like=1 AND p.id=l.post_id AND l.user_id=u.id AND u.id=:id_user\
+    GROUP BY month",
+    {
+      replacements : {
+        id_user: req.params.id
+      },
+      type: QueryTypes.SELECT
+    })
+    res.json(favs);
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+exports.numberFollowersByMonth = async (req, res) => {
+  try{
+    //!AJOUTER DES COMMENTAIRES
+    const favs = await db.sequelize.query("SELECT strftime('%m',a.createdAt) as month, count(u.id) as nbFollowers FROM Abonnement a, Users u\
+    WHERE a.follower_id=u.id AND u.id=:id_user and month=strftime('%m',DATE())\
     GROUP BY month",
     {
       replacements : {
