@@ -56,17 +56,23 @@ Pour installer MySQL sur Windows, rendez-vous [ici](https://openclassrooms.com/f
 npm install yarn
 ```
 
+Python3, Python3-pip et Python3-venv sont requis pour l'installation des dépendances de l'API ML.
+
 ## Installer SoundBond
 
-### Installer les paquets NPM
+### Installer les paquets
 
-Installez les packets NPM de /client et /server :
+Installez les packets NPM de /client et /server, ainsi que les dépendances Python de /ml.
 
 ``` bash
 cd client
 yarn install
 cd ../server
 yarn install
+cd ../ml
+python -m env env
+.\env\Scripts\activate # ou source env/bin/activate sur Linux
+pip install -r requirements.txt
 ```
 
 Si vous rencontrez l'erreur `The engine "node" is incompatible with this module.`, ajoutez l'option `--ignore-engines` à `yarn install`.
@@ -95,6 +101,14 @@ Pour le serveur frontend, dans un autre terminal
 ``` bash
 cd client
 npm start
+```
+
+Pour le serveur ML, dans un autre terminal
+
+``` bash
+cd ml
+.\env\Scripts\activate # ou source env/bin/activate sur Linux
+uvicorn server:app --reload
 ```
 
 ## Tester l'API REST
