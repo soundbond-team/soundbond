@@ -273,25 +273,6 @@ exports.bestTags = async (req, res) => {
   }
 }
 
-exports.numberPost = async (req, res) => {
-  try{
-    //!AJOUTER DES COMMENTAIRES
-    const favs = await db.sequelize.query("SELECT strftime('%m',p.createdAt) as month, u.username, count(p.id) as nbPost FROM Users u, Posts p\
-    WHERE p.publisher_user_id=u.id and u.id=:id_user\
-    GROUP BY month",
-    {
-      replacements : {
-        id_user: req.params.id
-      },
-      type: QueryTypes.SELECT
-    })
-    res.json(favs);
-  }
-  catch(err){
-    console.log(err);
-  }
-}
-
 exports.numberPostByMonth = async (req, res) => {
   try{
     //!AJOUTER DES COMMENTAIRES
