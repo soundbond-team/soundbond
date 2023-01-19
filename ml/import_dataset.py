@@ -85,7 +85,11 @@ def post_sound(file_path, user_id, sound_location_id, createdAt):
 
     # Send the request
     r = requests.post(BACK_URL+"sound/", data=data)
-    return r.json()["id"]  # We return the id of the sound so we can use it later
+    try:
+        return r.json()["id"]  # We return the id of the sound so we can use it later
+    except KeyError:
+        print(r.json())
+        return post_sound(file_path, user_id, sound_location_id, createdAt)
 
 def post_soundlocation(user_id, latitude, longitude, createdAt):
     """
@@ -193,6 +197,7 @@ def return_random_lat_long():
     longitude = root[0][1].text
     return latitude, longitude
 
+
 print("Generating points...")
 
 lat_long_list = []
@@ -205,35 +210,30 @@ lat_long_list = []
 # get a random latitude and longitude from return_random_lat_long()
 # if in the Ile-De-France region, add it to the list
 
-while len(lat_long_list) < 10:
+while len(lat_long_list) < 5:
     lat, lon = return_random_lat_long()
     if 48.1365394 <= float(lat) <= 49.2063895 and 1.4784398 <= float(lon) <= 3.4857351:
         print(f"Added {lat}, {lon} to the list.")
         lat_long_list.append((lat, lon))
 
 # generate 20 random points in the Ile-De-France region
-for i in range(20):
+for i in range(25):
     lat = random.uniform(48.1365394, 49.2063895)
     lon = random.uniform(1.4784398, 3.4857351)
     print(f"Added {lat}, {lon} to the list.")
     lat_long_list.append((lat, lon))
 
+
 def return_idf_lat_long():
     """
     Returns a random latitude and longitude, based in Ile-De-France.
     """
-    
+
     # pick one of the points in the list and add a small random offset
     lat, lon = random.choice(lat_long_list)
-    lat += random.uniform(-0.01, 0.01)
-    lon += random.uniform(-0.01, 0.01)
+    lat = float(lat) + random.uniform(-0.01, 0.01)
+    lon = float(lon) + random.uniform(-0.01, 0.01)
 
-
-    # jut print 5 random points in the Ile-De-France region
-    for i in range(5):
-        print(lat, lon)
-        lat += random.uniform(-0.01, 0.01)
-        lon += random.uniform(-0.01, 0.01)
     return lat, lon
 
 
@@ -266,6 +266,7 @@ fname                    labels    usage  freesound_id   license
 
 # We need to associate each file to a user, lat and long, and data from the csv files
 continuer = False
+iterations = 0
 for file in files:
     if continuer:
         print(f"Processing {file}...")
@@ -280,5 +281,8 @@ for file in files:
         
         # We post the post
         post_post(user_id, description, FOLDER_PATH + file, latitude, longitude, [""], createdAt)
-    if file == "62414ca8.wav":
+        iterations += 1
+    if file == "64514aaf.wav":
         continuer = True
+    if iterations == 1000:
+        break
