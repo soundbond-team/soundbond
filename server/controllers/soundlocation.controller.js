@@ -17,6 +17,8 @@ exports.create = (req, res) => {
   const soundlocation = {
     latitude: req.body.latitude,
     longitude: req.body.longitude,
+    createdAt: req.body.createdAt,
+    updatedAt: req.body.updatedAt,
   };
   // Save SoundLocation in the database
   SoundLocation.create(soundlocation)
