@@ -42,6 +42,7 @@ db.Comments = require("./comment")(sequelize, Sequelize);
 db.Tag = require("./tag")(sequelize, Sequelize);
 db.Playlist = require("./playlists")(sequelize, Sequelize);
 db.TitreListe = require("./titreliste")(sequelize, Sequelize);
+db.Visit = require("./visit")(sequelize, Sequelize); 
 
 /***%%%*** Déclaration des clés étrangères ***%%%***/
 //Chaque Post a un ou plusieurs tags

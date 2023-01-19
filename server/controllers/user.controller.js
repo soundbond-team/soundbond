@@ -218,3 +218,24 @@ exports.suggestionsFollow = (req, res) => {
       );
     });
 };
+
+exports.mostListened = (req, res) => {
+  const user_id = req.params.id;
+  //!AJOUTER DES COMMENTAIRES
+  User.findAll({
+    //attributes: [id, username], 
+    include: [
+      {
+        model: db.Sound,
+        as: "les_sons",
+        include:[{
+          model: db.Visit, 
+          as: "les_visites", 
+          where: {
+            user_id : user_id
+          }
+        }]
+      },
+    ]
+  }).then(data => res.status(200).send(data));
+}
