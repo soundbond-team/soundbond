@@ -38,7 +38,7 @@ function get_random_string() {
 }
 
 export const post_sound = (tempfile_object, soundlocation_id, user_id) => {
-  let filename = user_id + "_" + get_random_string() + ".mp3"; // Nom de fichier : [user_id]_[aléatoire].mp3
+  let filename = user_id + "_" + get_random_string() + ".wav"; // Nom de fichier : [user_id]_[aléatoire].wav
   send_file(tempfile_object, filename); // On poste le fichier.
 
   // Envoi de la requête POST du Sound.

@@ -2,6 +2,7 @@ const db = require("../models");
 const sanitizeHtml = require("sanitize-html");
 const Sound = db.Sound;
 const SoundLocation = db.SoundLocation;
+const Visit = db.Visit;
 const Op = db.Sequelize.Op;
 
 const MESSAGE_FIND_ERROR = "Error retrieving Sound.";
@@ -159,7 +160,11 @@ exports.visit = async (req, res) => {
   const user_id = req.body.user_id;
   db.Sound.findByPk(id).then(async (sound) => {
     try {
-      await sound.addVisited_by(user_id);
+      if (req.body.position) {
+        await sound.addVisited_by(user_id, {position: req.body.position});
+      } else {
+        await sound.addVisited_by(user_id);
+      }
       res.status(201).json("visited");
     } catch (e) {
       res.status(400).json("error");

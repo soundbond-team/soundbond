@@ -118,8 +118,23 @@ export default function AudioPlayer(props) {
 
         await dispatch(addVisit(props.id_son, uid));
       }
-      //! ici, on enverra à l'historique
     });
+
+    
+    wavesurfer.current.on("audioprocess", async () => {
+      var currentTime = wavesurfer.current.getCurrentTime();
+      if (currentTime % 3 === 0) {
+        await axios({
+          method: "post",
+          url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/sound/visit/${props.id_son}`,
+          data: {
+            user_id: uid,
+            position: currentTime
+          },
+        })
+      }
+  });
+
     window.addEventListener("resize", handleResize, false);
     // eslint-disable-next-line
   }, []);
