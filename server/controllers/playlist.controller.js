@@ -52,84 +52,95 @@ exports.findallForUser = (req, res, arg) => {
   */
 
   var where = {};
-  where.publisher_user_id = req.params.user_id;
-
-  if (arg.playlist_title != null) {
-    where.title = arg.playlist_title;
+  // If publisher_user_id is null, send empty array and exit.
+  if (req.params.user_id == "undefined") {
+    res.status(200).send([]);
+    return;
   }
-  db.Playlist.findAll({
-    where: where,
-    include: [
-      {
-        model: TitreListe,
-        as: "has_titreliste",
-        attributes: ["id", "createdAt", "updatedAt"],
-        include: [
-          {
-            model: Post,
-            as: "adds_the_post",
-            include: [
-              {
-                model: db.Sound,
-                as: "publishing",
+  else {
+    where.publisher_user_id = req.params.user_id;
+    console.log("AAAAAAAAA")
+    if (arg.playlist_title != null) {
+      where.title = arg.playlist_title;
+    }
+    console.log(where)
+    console.log("AAAAAAAAA")
+    db.Playlist.findAll({
+      where: where,
+      include: [
+        {
+          model: TitreListe,
+          as: "has_titreliste",
+          attributes: ["id", "createdAt", "updatedAt"],
+          include: [
+            {
+              model: Post,
+              as: "adds_the_post",
+              include: [
+                {
+                  model: db.Sound,
+                  as: "publishing",
 
-                include: [
-                  {
-                    model: db.SoundLocation,
-                    as: "soundlocation",
-                  },
+                  include: [
+                    {
+                      model: db.SoundLocation,
+                      as: "soundlocation",
+                    },
 
-                  {
-                    model: db.User,
-                    as: "visited_by",
-                    attributes: ["id", "username"],
-                  },
-                ],
-              },
-              {
-                model: db.User,
-                as: "publisher",
-                attributes: ["id", "username"],
-              },
-              {
-                model: db.User,
-                as: "liked_by",
-                attributes: ["id", "username"],
-              },
-              {
-                model: db.Comments,
-                as: "comments_on_post",
-                attributes: ["id", "comment"],
-                include: [
-                  {
-                    model: db.User,
-                    as: "commented_by_user",
-                    attributes: ["id"],
-                  },
-                ],
-              },
-              {
-                model: db.Tag,
-                as: "tagpost",
-              },
-              {
-                model: db.User,
-                as: "shared_by",
-                attributes: ["id", "username"],
-              },
-              {
-                model: db.User,
-                as: "saved_by",
-                attributes: ["id", "username"],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  }).then((data) => {
-    res.send(data);
-  });
+                    {
+                      model: db.User,
+                      as: "visited_by",
+                      attributes: ["id", "username"],
+                    },
+                  ],
+                },
+                {
+                  model: db.User,
+                  as: "publisher",
+                  attributes: ["id", "username"],
+                },
+                {
+                  model: db.User,
+                  as: "liked_by",
+                  attributes: ["id", "username"],
+                },
+                {
+                  model: db.Comments,
+                  as: "comments_on_post",
+                  attributes: ["id", "comment"],
+                  include: [
+                    {
+                      model: db.User,
+                      as: "commented_by_user",
+                      attributes: ["id"],
+                    },
+                  ],
+                },
+                {
+                  model: db.Tag,
+                  as: "tagpost",
+                },
+                {
+                  model: db.User,
+                  as: "shared_by",
+                  attributes: ["id", "username"],
+                },
+                {
+                  model: db.User,
+                  as: "saved_by",
+                  attributes: ["id", "username"],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }).then((data) => {
+      console.log("AAAAAAAAA")
+      console.log(data);
+      res.send(data);
+    });
+  }
 };
 
 exports.addTitleToPlaylist = async (req, res, arg) => {

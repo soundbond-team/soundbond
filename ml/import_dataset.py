@@ -5,6 +5,7 @@ import requests
 import json
 import os
 import random
+import time
 from scipy.io import wavfile
 from typing import List, Any
 import pandas as pd
@@ -14,8 +15,8 @@ from datetime import datetime
 BACK_URL = "http://localhost:8080/api/v1/"
 FOLDER_PATH = "C:\\Users\\flake\\Downloads\\FSDKaggle2019.audio_test\\"
 CSVS_PATH = "C:\\Users\\flake\\Downloads\\FSDKaggle2019.meta\\"
-USER_IDS = [2, 3, 4, 5, 6, 7, 8, 9]
-USER_UPLOAD_WEIGHTS = [0.1, 0.2, 0.3, 0.2, 0.1, 0.05, 0.025, 0.0125]
+USER_IDS = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+USER_UPLOAD_WEIGHTS = [0.1, 0.2, 0.3, 0.2, 0.1, 0.05, 0.025, 0.0125, 0.00625, 0.003125, 0.0015625]
 
 def get_random_string():
     """
@@ -165,6 +166,8 @@ def return_random_user_id():
     
     return random.choices(USER_IDS, weights=USER_UPLOAD_WEIGHTS)[0]
 
+
+
 def return_random_lat_long():
     """
     Returns a random latitude and longitude, based in France.
@@ -183,10 +186,56 @@ def return_random_lat_long():
         root = ET.fromstring(xml)
     except ET.ParseError:
         print("Error with the XML from 3geonames.")
+        # wait 1 second
+        time.sleep(1)
         return return_random_lat_long()
     latitude = root[0][0].text
     longitude = root[0][1].text
     return latitude, longitude
+
+print("Generating points...")
+
+lat_long_list = []
+# Extreme Ile-De-France points:
+# nord : Saint-clair-sur-Epte, Epte, Eure-et-Loir 49.2063895,1.678966
+# est : Louan-Villegruis-Fontaine 48.6097764,3.4857351
+# sud : Beaumont-du-Gâtinais 48.1365394,2.4763389
+# ouest : Blaru 49.0490725,1.4784398
+# while len(lat_long_list) < 50: 
+# get a random latitude and longitude from return_random_lat_long()
+# if in the Ile-De-France region, add it to the list
+
+while len(lat_long_list) < 10:
+    lat, lon = return_random_lat_long()
+    if 48.1365394 <= float(lat) <= 49.2063895 and 1.4784398 <= float(lon) <= 3.4857351:
+        print(f"Added {lat}, {lon} to the list.")
+        lat_long_list.append((lat, lon))
+
+# generate 20 random points in the Ile-De-France region
+for i in range(20):
+    lat = random.uniform(48.1365394, 49.2063895)
+    lon = random.uniform(1.4784398, 3.4857351)
+    print(f"Added {lat}, {lon} to the list.")
+    lat_long_list.append((lat, lon))
+
+def return_idf_lat_long():
+    """
+    Returns a random latitude and longitude, based in Ile-De-France.
+    """
+    
+    # pick one of the points in the list and add a small random offset
+    lat, lon = random.choice(lat_long_list)
+    lat += random.uniform(-0.01, 0.01)
+    lon += random.uniform(-0.01, 0.01)
+
+
+    # jut print 5 random points in the Ile-De-France region
+    for i in range(5):
+        print(lat, lon)
+        lat += random.uniform(-0.01, 0.01)
+        lon += random.uniform(-0.01, 0.01)
+    return lat, lon
+
 
 def return_random_date():
     """
@@ -221,7 +270,7 @@ for file in files:
     if continuer:
         print(f"Processing {file}...")
         user_id = return_random_user_id()
-        latitude, longitude = return_random_lat_long()
+        latitude, longitude = return_idf_lat_long()
         print(f"User id: {user_id}, latitude: {latitude}, longitude: {longitude}")
         description = test_post_competition[test_post_competition["fname"] == file]["labels"].values[0]
         license = test_post_competition[test_post_competition["fname"] == file]["license"].values[0]
@@ -233,5 +282,3 @@ for file in files:
         post_post(user_id, description, FOLDER_PATH + file, latitude, longitude, [""], createdAt)
     if file == "62414ca8.wav":
         continuer = True
-#! ajt des comptes et du temps pour l'api
-#! + dans certaines villes (get une liste de villes) et modif un tout petit peu les lat long
