@@ -16,11 +16,8 @@ import itinerairereducer from "./itineraire.reducer";
 import postToMapReducer from "./postToMap.reducer";
 import allpostsavedReducer from "./allpostsaved.reducer";
 import historyReducer from "./history.reducer";
-<<<<<<< HEAD
 import allpostmapReducer from "./allpostonmap.reducer";
-=======
-import insightsReducer from "./insightsReducer"; 
->>>>>>> 40b752038155507c05362711d8b2f3b2ffdd90f1
+import insightsReducer from "./insightsReducer";
 export default combineReducers({
   soundlocationReducer,
   soundReducer,
@@ -38,5 +35,5 @@ export default combineReducers({
   getotherprofiluser,
   historyReducer,
   allpostmapReducer,
-  insightsReducer, 
+  insightsReducer,
 });
