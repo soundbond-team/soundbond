@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { UidContext } from "../Appcontext";
-import { most_listened_users, top_trend } from "../../actions/insights.actions"
+import { most_listened_users, top_trend, number_posts_during_period } from "../../actions/insights.actions"
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -14,7 +14,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
   BarElement,
   Title, } from 'chart.js';
 import insightsReducer from "../../reducers/insightsReducer";
-import {faker} from '@faker-js/faker';
+import { number } from "prop-types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 ChartJS.register(
@@ -26,14 +26,14 @@ ChartJS.register(
   Legend
 );
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+let labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
-const data = {
+let dataBar = {
   labels,
   datasets: [
     {
       label: 'Dataset 1',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      data: labels.map(() => 0),
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
   ],
@@ -43,6 +43,7 @@ const data = {
 function Statistique() {
   const mostListened = useSelector((state) => state.insightsReducer.getMostListenedResponse);
   const topTrend = useSelector((state) => state.insightsReducer.getTopTrendResponse);
+  const numberPost = useSelector((state) => state.insightsReducer.getNumberPostResponse);
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
   let current_year = new Date().getFullYear();
@@ -77,6 +78,7 @@ function Statistique() {
   useEffect(() => {
     dispatch(most_listened_users(uid));
     dispatch(top_trend());
+    dispatch(number_posts_during_period(uid)); 
   }, []);
 
   useEffect(() => {
@@ -119,11 +121,34 @@ function Statistique() {
     }
   }, [topTrend])
   
+  useEffect(() =>{
+    if(numberPost){
+      let mois = []; 
+      let values = []
+      numberPost.map(e => {
+        mois.push(e.month); 
+        values.push(e.nbPost); 
+      }); 
+      console.log("RES: ", numberPost); 
+      labels = mois
+      dataBar = {
+        labels,
+        datasets: [
+          {
+            label: 'Dataset 1',
+            data: labels.map(() => values),
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          },
+        ],
+      };
+    }
+
+  }, [numberPost])
 
   return (
     <>
     <div>
-      Les utilisateurs que j'écoute le plus sur l'année {current_year}
+      <h4>Les utilisateurs que j'écoute le plus sur l'année {current_year}</h4>
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         { mostListened !== null ? 
         mostListened.map((data, index) => {
@@ -143,6 +168,7 @@ function Statistique() {
         }): null}
       </List>
       
+      <h4>Top Trend du mois</h4>
       <div>
         {
           topTrend !== null ? 
@@ -151,9 +177,12 @@ function Statistique() {
         
       </div>
 
-      <Bar data={data} />  
-      </div>
+      <h4>Nombre de posts postés durant l'année {current_year}</h4>
+      <Bar data={dataBar}/>  
 
+      
+
+    </div>
     </>
   );
 }
