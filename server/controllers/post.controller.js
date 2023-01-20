@@ -224,6 +224,7 @@ exports.allPostsByPublisherUserId = (req, res) => {
       publisher_user_id: req.params.user_id,
     },
     include: helper_include_everything,
+    limit: 20,
   })
     .then((data) => {
       res.send(data);
