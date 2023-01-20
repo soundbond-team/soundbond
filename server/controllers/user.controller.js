@@ -289,8 +289,8 @@ exports.bestTags = async (req, res) => {
   try {
     //!AJOUTER DES COMMENTAIRES
     const favs = await db.sequelize.query(
-      "SELECT t.tag, count(tp.tagging_id) as apparition,DATEPART(month) as month FROM Tags t, Tag_Post tp, Posts p\
-      WHERE t.id=tp.tagging_id AND tp.post_id=p.id AND DATEPART(month)=DATEPART(month,GETDATE()) GROUP BY tp.tagging_id, t.tag",
+      "SELECT t.tag, count(tp.tagging_id) as apparition,DATEPART(month, GETDATE()) as month FROM Tags t, Tag_Post tp, Posts p\
+      WHERE t.id=tp.tagging_id AND tp.post_id=p.id AND DATEPART(month, GETDATE())=DATEPART(month, GETDATE()) GROUP BY tp.tagging_id, t.tag",
       {
         type: QueryTypes.SELECT,
       }
