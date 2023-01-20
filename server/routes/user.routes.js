@@ -51,7 +51,7 @@ module.exports = (app) => {
   router.get("/:id/suggestionsFollow/", userCtrl.suggestionsFollow);
 
   router.get("/:id/stats/mostListened/", userCtrl.mostListened);
-  router.get("/:id/stats/timeListening/", userCtrl.timeListening);
+  router.get("/:id/stats/timeListening/:typeDate", userCtrl.timeListening);
   router.get("/stats/tags/", userCtrl.bestTags);
   router.get("/:id/stats/number_post/", userCtrl.numberPostByMonth);
   router.get("/:id/stats/number_likes/", userCtrl.numberLikeByMonth);
