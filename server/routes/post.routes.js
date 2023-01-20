@@ -8,6 +8,9 @@ module.exports = (app) => {
   // Retrieve all Post
   router.get("/", post.findAll);
 
+  // Retrieve all Post map
+  router.get("/map", post.findAllformap);
+
   // Retrieve a single Post with id
   router.get("/:id", post.findOne);
 

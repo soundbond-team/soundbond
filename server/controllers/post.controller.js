@@ -72,8 +72,8 @@ const helper_playlist = {
     {
       model: db.Playlist,
       as: "is_in_playlist",
-    }
-  ]
+    },
+  ],
 };
 
 const helper_include_everything = [
@@ -189,6 +189,21 @@ exports.getPostByTag = (req, res) => {
 
 // Retrieve all posts from the database.
 exports.findAll = (req, res) => {
+  db.Post.findAll({
+    include: helper_include_everything,
+    limit: 20,
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: err.message || "Some error occurred while retrieving post.",
+      });
+    });
+};
+
+exports.findAllformap = (req, res) => {
   db.Post.findAll({
     include: helper_include_everything,
   })
