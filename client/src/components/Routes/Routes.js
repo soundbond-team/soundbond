@@ -20,6 +20,7 @@ import MyPosts from "../MyPosts/MyPosts";
 import MyPlayLists from "../MyPlayLists/MyPlaylists";
 import PostSave from "../SavedPosts/savedposts";
 import Historique from "../HistoriqueEcoute/HistoriqueEcoute";
+import Statistique from "../Statistique/Statistique";
 
 //le routing ne sert a rien tant quil nya pas une persistance pour tt les elements ( post )
 const routes = () => {
@@ -43,6 +44,7 @@ const routes = () => {
           <Route exact path="partages" element={<MesPartages />} />
           <Route exact path="playlists" element={<MyPlayLists />} />
           <Route exact path="historique" element={<Historique />} />
+          <Route exact path="stats" element={<Statistique />} />
         </Route>
 
         {/*<Route path="/upload_file" element={<FileUpload/>} />*/}

@@ -16,6 +16,9 @@
     "@mui/icons-material": "^5.4.1",
     "@mui/material": "^5.4.1",
     "@mui/styles": "^5.4.1",
+    "@nivo/bar": "^0.80.0",
+    "@nivo/core": "^0.80.0",
+    "@nivo/line": "^0.80.0",
     "@popperjs/core": "^2.11.0",
     "@syncfusion/ej2-react-buttons": "^19.4.50",
     "@testing-library/jest-dom": "^5.16.2",
@@ -28,6 +31,7 @@
     "axios": "^0.25.0",
     "bootstrap": "5",
     "chai": "^4.3.6",
+    "chart.js": "^4.2.0",
     "chromedriver": "^98.0.0",
     "dotenv-webpack": "^7.1.0",
     "edgedriver": "^4.17134.1",
@@ -45,8 +49,9 @@
     "ms-chromium-edge-driver": "^0.4.3",
     "popper": "^1.0.1",
     "prop-types": "^15.7.2",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-bootstrap": "^2.1.2",
+    "react-chartjs-2": "^5.2.0",
     "react-dev-utils": "^12.0.0",
     "react-dnd": "^15.1.1",
     "react-dnd-html5-backend": "^15.1.2",
@@ -69,6 +74,7 @@
     "react-share": "^4.4.0",
     "react-tag-autocomplete": "^6.3.0",
     "react-tag-input": "^6.7.3",
+    "reaviz": "^13.3.2",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
@@ -108,6 +114,7 @@
     ]
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "eslint-config-react-app": "^7.0.0",
     "mocha": "^9.2.0"
   }
