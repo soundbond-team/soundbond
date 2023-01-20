@@ -161,11 +161,43 @@ exports.visit = async (req, res) => {
   const id = req.params.id;
   const user_id = req.body.user_id;
   db.Sound.findByPk(id).then(async (sound) => {
+    /* Visit:
+    {
+      position: DataTypes.STRING,
+      sound_id: DataTypes.INTEGER,
+      post_id: DataTypes.INTEGER,
+      nb_visit: DataTypes.INTEGER,
+    },*/
+
+    // If the user has already visited the sound, we add 1 to the nb_visit
+    const visit = await Visit.findOne({
+      where: {
+        sound_id: id,
+        user_id: user_id,
+      },
+    });
+    if (visit) {
+      visit.nb_visit += 1;
+      await visit.save();
+      res.status(201).json("visited");
+      return;
+    }
+    
+    // If the user has not visited the sound, we create a new visit
     try {
       if (req.body.position) {
-        await sound.addVisited_by(user_id, {position: req.body.position});
+        await sound.addVisited_by(user_id, {
+          through: {
+            position: req.body.position,
+            nb_visit: 1,
+          },
+        });
       } else {
-        await sound.addVisited_by(user_id);
+        await sound.addVisited_by(user_id, {
+          through: {
+            nb_visit: 1,
+          },
+        });
       }
       res.status(201).json("visited");
     } catch (e) {

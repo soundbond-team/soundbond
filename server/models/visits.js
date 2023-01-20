@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       position: DataTypes.STRING,
       sound_id: DataTypes.INTEGER,
       post_id: DataTypes.INTEGER,
+      nb_visit: DataTypes.INTEGER,
     },
     {
       sequelize,

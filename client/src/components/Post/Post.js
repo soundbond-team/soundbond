@@ -78,6 +78,16 @@ function Post(props) {
   const [commentaire, setCommentaire] = useState(""); // Utilisé pour stocker un commentaire.
   const [optionss, setOptionss] = useState([]);
   const dispatch = useDispatch();
+  const [impressions, setImpressions] = useState(() => {
+    let imp = 0;
+    for (let i = 0; i < props.post.publishing.visited_by.length; i++) {
+      imp = props.post.publishing.visited_by[i].visit.nb_visit + imp;
+    }
+//! TODO
+    return imp;
+  }
+    
+  );
 
   const navigate = useNavigate();
 
@@ -89,7 +99,7 @@ function Post(props) {
   const handleCloseCommentsModal = () => setShowCommentsModal(false);
   const handleShowCommentsModal = () => setShowCommentsModal(true);
   const [placeName, setplaceName] = useState("");
-  useEffect(() => {
+  useEffect(() => {  
     let currentpost = props.post;
     if (currentpost) {
       async function translateToAdress() {

@@ -187,6 +187,11 @@ exports.addTitleToPlaylist = async (req, res, arg) => {
     }
 
     db.Post.findByPk(req.body.post_id).then(async (foundpost) => {
+      // If playlist.id == null, we return and send nothing
+      if (playlist.id == null) {
+        res.status(200).send("osef");
+        return;
+      }
       let titreliste = {
         playlist_id: playlist.id,
         user_id: playlist.publisher_user_id, //!A CHANGER si on veut faire des playlist avec plusieurs users
