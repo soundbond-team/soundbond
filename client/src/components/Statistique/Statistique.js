@@ -161,19 +161,43 @@ function Statistique() {
   }, [numberPost])
 
   useEffect(() =>{
+    let typeT = '';
+    function msToTime(ms) {
+      let seconds = (ms / 1000).toFixed(1);
+      let minutes = (ms / (1000 * 60)).toFixed(1);
+      let hours = (ms / (1000 * 60 * 60)).toFixed(1);
+      let days = (ms / (1000 * 60 * 60 * 24)).toFixed(1);
+      if (seconds < 60){
+        typeT="Secondes"
+        return seconds;
+      } 
+      else if (minutes < 60){
+        typeT="Minute(s)"
+        return minutes;
+      } 
+      else if (hours < 24){
+        typeT="Heure(s)"
+        return hours;
+      } 
+      else{
+        typeT="Jour(s)"
+        return days
+      } 
+    }
+
     if(timeListening){
       let values = [];
       let labels = []; 
       timeListening.map(e => {
-        values.push(e.duree);
+        values.push(msToTime(e.duree));
         labels.push(e.date); 
       });
-      console.log("values: ", values); 
+      console.log("Durée ",msToTime(values))
       setDataBar2({
         labels,
         datasets: [
           {
-            label: 'Durée d\'écoute en ms',
+            label: 'Durée d\'écoute en '+typeT,
             data: values,
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
           },
