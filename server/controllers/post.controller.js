@@ -106,6 +106,8 @@ exports.create = async (req, res) => {
     description: req.body.description,
     publisher_user_id: req.body.publisher_user_id,
     sound_id: req.body.sound_id,
+    createdAt: req.body.createdAt,
+    updatedAt: req.body.updatedAt,
   };
 
   const find = () => {
@@ -114,7 +116,7 @@ exports.create = async (req, res) => {
     }).then((data) => {
       res.send(data);
     });
-  };
+  }; //! Responsible for server crashes
 
   // Enregistrement dans la base. .create créé et commit dans la base d'un seul coup.
   const postcreate = await db.Post.create(post);
