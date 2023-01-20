@@ -22,6 +22,8 @@ exports.create = (req, res) => {
     uploader_user_id: req.body.uploader_user_id,
     codec: req.body.codec,
     soundlocation_id: req.body.soundlocation_id,
+    createdAt: req.body.createdAt,
+    updatedAt: req.body.updatedAt,
   };
 
   // Save Sound in the database

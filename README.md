@@ -146,6 +146,45 @@ Pour lancer les tests, exécutez :
 $ yarn test
 ```
 
+## Data et ML
+
+### Récupérer le Dataset
+
+Le dataset `` est téléchargeable [ici](https://zenodo.org/record/3612637). Les fichiers sont les suivants :
+
+``` txt
+root
+│  
+└───FSDKaggle2019.audio_train_curated/               Audio clips in the curated train set
+│
+└───FSDKaggle2019.audio_train_noisy/                 Audio clips in the noisy train set
+│   
+└───FSDKaggle2019.audio_test/                        Audio clips in the full test set
+│   
+└───FSDKaggle2019.meta/                              Files for evaluation setup
+│   │            
+│   └─── train_curated_post_competition.csv          Ground truth for the curated train set
+│   │            
+│   └─── train_noisy_post_competition.csv            Ground truth for the noisy train set
+│   │            
+│   └─── test_post_competition.csv                   Ground truth for the full test set
+│   │            
+│   └─── vocabulary.csv                              List of sound classes in FSDKaggle2019    
+│   
+└───FSDKaggle2019.doc/
+    │            
+    └───README.md                                    The dataset description file that you are reading
+    │            
+    └───LICENSE-DATASET                              License of the FSDKaggle2019 dataset as an entity   
+```
+
+Pour le moment, nous utilisons audio_train_curated ainsi que les fichiers CSV.
+
+### Les données de Soundbond
+
+Dans Soundbond, nous avons uploadé les fichiers issus de audio_test/, car curated et noisy serviront à entrainer le modèle de ML sur le serveur dédié.
+Dans la description, il y a une idée de ce que le serveur de ML devrait trouver, c'est-à-dire des tags séparés par des virgules.
+
 ## License
 
 Tous droits réservés.
