@@ -306,12 +306,11 @@ exports.numberPostByMonth = async (req, res) => {
     //!AJOUTER DES COMMENTAIRES
     const favs = await db.sequelize.query(
       "SELECT (MONTH(p.createdAt)-1) as month, u.username, count(p.id) as nbPost FROM Users u, Posts p\
-      WHERE p.publisher_user_id=u.id and u.id=@id_user and YEAR(p.createdAt)=YEAR(GETDATE())\
+      WHERE p.publisher_user_id=u.id and u.id=" +
+        req.params.id +
+        " and YEAR(p.createdAt)=YEAR(GETDATE())\
       GROUP BY month",
       {
-        replacements: {
-          id_user: req.params.id,
-        },
         type: QueryTypes.SELECT,
       }
     );
@@ -326,12 +325,13 @@ exports.numberLikeByMonth = async (req, res) => {
     //!AJOUTER DES COMMENTAIRES
     const favs = await db.sequelize.query(
       "SELECT (MONTH(p.createdAt)-1) as month, count(p.id) as nbLike FROM Posts p, Likes l, Users u\
-      WHERE p.like=1 AND p.id=l.post_id AND l.user_id=u.id AND u.id=@id_user\
+      WHERE p.like=1 AND p.id=l.post_id AND l.user_id=" +
+        req.params.id +
+        " AND u.id=" +
+        req.params.id +
+        "\
       GROUP BY month",
       {
-        replacements: {
-          id_user: req.params.id,
-        },
         type: QueryTypes.SELECT,
       }
     );
