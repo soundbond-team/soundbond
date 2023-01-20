@@ -223,7 +223,11 @@ exports.suggestionsFollow = (req, res) => {
 exports.mostListened = async (req, res) => {
   try{
     //!AJOUTER DES COMMENTAIRES
-    const favs = await db.sequelize.query("SELECT strftime('%Y',v.createdAt) as year, u.username, count(v.nbVisit) as apparition \
+    /*const favs = await db.sequelize.query("SELECT strftime('%Y',v.createdAt) as year, u.username, count(v.nbVisit) as apparition \
+    FROM Users u, Sounds s, Visits v \
+    WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user AND year=strftime('%Y',DATE())  \
+    GROUP BY u.username ORDER BY apparition ASC",*/
+    const favs = await db.sequelize.query("SELECT strftime('%Y',v.createdAt) as year, u.username, count(u.username) as apparition \
     FROM Users u, Sounds s, Visits v \
     WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user AND year=strftime('%Y',DATE())  \
     GROUP BY u.username ORDER BY apparition ASC",
@@ -243,19 +247,25 @@ exports.mostListened = async (req, res) => {
 exports.timeListening = async (req, res) => {
   try{
     //!AJOUTER DES COMMENTAIRES
-    const type = req.params.typeDate
-    let cond = ''
+    const type = req.params.typeDate;
+    let cond = '';
+    let select = '';
+
     switch (type) {
       case 'd':
         cond = "strftime('%Y-%m-%d',v.createdAt)=DATE()";
+        select = "strftime('%Y-%m-%d',DATE())";
+        break; 
       case 'm':
         cond = "strftime('%Y-%m',v.createdAt)=strftime('%Y-%m',DATE())";
-      case 'y':
-        cond = "strftime('%Y',v.createdAt)=strftime('%Y',DATE())";
+        select = "strftime('%Y-%m',DATE())";
+        break;
       default:
+        cond = "strftime('%Y',v.createdAt)=strftime('%Y',DATE())";
+        select = "strftime('%Y',DATE())";
         break;
     }
-    const favs = await db.sequelize.query("SELECT strftime('%Y-%m-%d',DATE()) as date, SUM(s.duration) as duree FROM Sounds s, Visits v\
+    const favs = await db.sequelize.query("SELECT " + select + " as date, SUM(s.duration) as duree FROM Sounds s, Visits v\
     WHERE s.id=v.sound_id AND v.user_id=:id_user and "+cond,
     {
       replacements : {

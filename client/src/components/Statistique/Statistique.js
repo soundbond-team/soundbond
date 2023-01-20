@@ -13,10 +13,9 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
   BarElement,
   Title, } from 'chart.js';
-import insightsReducer from "../../reducers/insightsReducer";
-import { number } from "prop-types";
-import {faker} from "@faker-js/faker"; 
-
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+  
 ChartJS.register(ArcElement, Tooltip, Legend);
 ChartJS.register(
   CategoryScale,
@@ -32,7 +31,7 @@ function Statistique() {
   const mostListened = useSelector((state) => state.insightsReducer.getMostListenedResponse);
   const topTrend = useSelector((state) => state.insightsReducer.getTopTrendResponse);
   const numberPost = useSelector((state) => state.insightsReducer.getNumberPostResponse);
-  const timeListening = useSelector((state) => state.insightsReducer.getMostListenedResponse);
+  const timeListening = useSelector((state) => state.insightsReducer.getTimeListeningResponse);
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
   let current_year = new Date().getFullYear();
@@ -83,6 +82,7 @@ function Statistique() {
       },
     ],
   });
+  const [alignment, setAlignment] = useState('d');
 
   function getMonthName(monthNumber) {
     const date = new Date();
@@ -161,11 +161,35 @@ function Statistique() {
   }, [numberPost])
 
   useEffect(() =>{
-    //let label = timeListening.date; 
     if(timeListening){
-      console.log("timeListening: ", timeListening)    
+      let values = [];
+      let labels = []; 
+      timeListening.map(e => {
+        values.push(e.duree);
+        labels.push(e.date); 
+      });
+      console.log("values: ", values); 
+      setDataBar2({
+        labels,
+        datasets: [
+          {
+            label: 'Durée d\'écoute en ms',
+            data: values,
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          },
+        ],
+      });
     }
   }, [timeListening])
+
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) => {
+    //console.log("newAlign: ", newAlignment);
+    dispatch(get_time_listening(uid, newAlignment))
+    setAlignment(newAlignment);
+  };
 
 
   return (
@@ -201,6 +225,20 @@ function Statistique() {
 
       <h4>Nombre de posts postés durant l'année {current_year}</h4>
       <Bar data={dataBar}/>  
+
+      <h4>Durée d'écoute</h4>
+      <ToggleButtonGroup
+        color="primary"
+        value={alignment}
+        exclusive
+        onChange={handleChange}
+        aria-label="Platform"
+      >
+        <ToggleButton value="d">JOUR</ToggleButton>
+        <ToggleButton value="m">MOIS</ToggleButton>
+        <ToggleButton value="y">ANNEE</ToggleButton>
+      </ToggleButtonGroup>
+      <Bar data={dataBar2}/>  
 
     </div>
     </>
