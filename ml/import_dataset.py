@@ -15,8 +15,8 @@ from datetime import datetime
 BACK_URL = "http://localhost:8080/api/v1/"
 FOLDER_PATH = "C:\\Users\\flake\\Downloads\\FSDKaggle2019.audio_test\\"
 CSVS_PATH = "C:\\Users\\flake\\Downloads\\FSDKaggle2019.meta\\"
-USER_IDS = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-USER_UPLOAD_WEIGHTS = [0.1, 0.2, 0.3, 0.2, 0.1, 0.05, 0.025, 0.0125, 0.00625, 0.003125, 0.0015625]
+USER_IDS = [10, 11, 12, 13, 14, 15, 16, 17, 19, 20]
+USER_UPLOAD_WEIGHTS = [0.1, 0.2, 0.3, 0.2, 0.1, 0.05, 0.025, 0.0125, 0.00625, 0.003125]
 
 def get_random_string():
     """
@@ -87,9 +87,8 @@ def post_sound(file_path, user_id, sound_location_id, createdAt):
     r = requests.post(BACK_URL+"sound/", data=data)
     try:
         return r.json()["id"]  # We return the id of the sound so we can use it later
-    except KeyError:
-        print(r.json())
-        return post_sound(file_path, user_id, sound_location_id, createdAt)
+    except:
+        return None
 
 def post_soundlocation(user_id, latitude, longitude, createdAt):
     """
@@ -109,15 +108,21 @@ def post_soundlocation(user_id, latitude, longitude, createdAt):
 
     # Print the response
     print(r.json())
-    return r.json()["id"]  # We return the id of the sound location so we can use it later
-
+    try:
+        return r.json()["id"]  # We return the id of the sound location so we can use it later
+    except:
+        return None
 
 def post_post(user_id, description, file_path, latitude, longitude, tags:List[Any], createdAt):
     """
     Post a post to the Node server.
     """
     soundlocation_id = post_soundlocation(user_id, latitude, longitude, createdAt)
+    if not soundlocation_id:
+        return
     sound_id = post_sound(file_path, user_id, soundlocation_id, createdAt)
+    if not sound_id:
+        return
     
     """
     Post :
@@ -282,7 +287,7 @@ for file in files:
         # We post the post
         post_post(user_id, description, FOLDER_PATH + file, latitude, longitude, [""], createdAt)
         iterations += 1
-    if file == "64514aaf.wav":
+    if file == "8f8cc869.wav":
         continuer = True
     if iterations == 1000:
         break
