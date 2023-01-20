@@ -12,10 +12,14 @@ import { Doughnut, Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
   BarElement,
-  Title, } from 'chart.js';
+  Title, 
+  PointElement,
+  LineElement,} from 'chart.js';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-  
+import {faker} from "@faker-js/faker"; 
+
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 ChartJS.register(
   CategoryScale,
@@ -25,6 +29,28 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+export const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+    },
+  },
+};
 
 
 function Statistique() {
@@ -68,6 +94,7 @@ function Statistique() {
       {
         label: '',
         data: labels.map(() => 0),
+        borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
     ],
@@ -153,8 +180,9 @@ function Statistique() {
           {
             label: 'Nombre de posts',
             data: values,
+            borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          },
+              },
         ],
       });
     }
@@ -174,7 +202,7 @@ function Statistique() {
         datasets: [
           {
             label: 'Durée d\'écoute en ms',
-            data: values,
+            data: [20.5],
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
           },
         ],
@@ -224,7 +252,7 @@ function Statistique() {
       </div>
 
       <h4>Nombre de posts postés durant l'année {current_year}</h4>
-      <Bar data={dataBar}/>  
+      <Line options={options} data={dataBar} />  
 
       <h4>Durée d'écoute</h4>
       <ToggleButtonGroup
@@ -238,7 +266,8 @@ function Statistique() {
         <ToggleButton value="m">MOIS</ToggleButton>
         <ToggleButton value="y">ANNEE</ToggleButton>
       </ToggleButtonGroup>
-      <Bar data={dataBar2}/>  
+      <Bar data={dataBar2}/>
+
 
     </div>
     </>
