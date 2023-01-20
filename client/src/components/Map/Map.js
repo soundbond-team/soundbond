@@ -70,6 +70,14 @@ const Map = ({ post_points, connected_user_id }) => {
       // create a HTML element for each feature
       const el = document.createElement("div");
       el.className = "marker ";
+      // We want the points to be more little
+      el.style.width = "5px";
+      el.style.height = "5px";
+      // colored transaprent red
+      el.style.backgroundColor = "red";
+      el.style.opacity = "0.5";
+
+
 
       // make a marker for each feature and add it to the map
       new mapboxgl.Marker(el)
