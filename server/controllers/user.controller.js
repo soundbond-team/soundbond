@@ -1,6 +1,7 @@
 const db = require("../models");
 const sanitizeHtml = require("sanitize-html");
-const { Post } = require("../models");
+const { Post, sequelize, Sequelize } = require("../models");
+const QueryTypes = db.Sequelize.QueryTypes;
 const User = db.User;
 const Op = db.Sequelize.Op;
 
@@ -218,3 +219,135 @@ exports.suggestionsFollow = (req, res) => {
       );
     });
 };
+
+exports.mostListened = async (req, res) => {
+  try{
+    //!AJOUTER DES COMMENTAIRES
+    /*const favs = await db.sequelize.query("SELECT strftime('%Y',v.createdAt) as year, u.username, count(v.nbVisit) as apparition \
+    FROM Users u, Sounds s, Visits v \
+    WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user AND year=strftime('%Y',DATE())  \
+    GROUP BY u.username ORDER BY apparition ASC",*/
+    const favs = await db.sequelize.query("SELECT strftime('%Y',v.createdAt) as year, u.username, count(u.username) as apparition \
+    FROM Users u, Sounds s, Visits v \
+    WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user AND year=strftime('%Y',DATE())  \
+    GROUP BY u.username ORDER BY apparition ASC",
+    {
+      replacements : {
+        id_user: req.params.id
+      },
+      type: QueryTypes.SELECT
+    })
+    res.json(favs);
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+exports.timeListening = async (req, res) => {
+  try{
+    //!AJOUTER DES COMMENTAIRES
+    const type = req.params.typeDate;
+    let cond = '';
+    let select = '';
+
+    switch (type) {
+      case 'd':
+        cond = "strftime('%Y-%m-%d',v.createdAt)=DATE()";
+        select = "strftime('%Y-%m-%d',DATE())";
+        break; 
+      case 'm':
+        cond = "strftime('%Y-%m',v.createdAt)=strftime('%Y-%m',DATE())";
+        select = "strftime('%Y-%m',DATE())";
+        break;
+      default:
+        cond = "strftime('%Y',v.createdAt)=strftime('%Y',DATE())";
+        select = "strftime('%Y',DATE())";
+        break;
+    }
+    const favs = await db.sequelize.query("SELECT " + select + " as date, SUM(s.duration) as duree FROM Sounds s, Visits v\
+    WHERE s.id=v.sound_id AND v.user_id=:id_user and "+cond,
+    {
+      replacements : {
+        id_user: req.params.id,
+      },
+      type: QueryTypes.SELECT
+    })
+    res.json(favs);
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+exports.bestTags = async (req, res) => {
+  try{
+    //!AJOUTER DES COMMENTAIRES
+    const favs = await db.sequelize.query("SELECT t.tag, count(tp.tagging_id) as apparition,strftime('%m',p.createdAt) as month FROM Tags t, Tag_Post tp, Posts p\
+    WHERE t.id=tp.tagging_id AND tp.post_id=p.id AND strftime('%m',p.createdAt)=strftime('%m',DATE()) GROUP BY tp.tagging_id",
+    {
+      type: QueryTypes.SELECT
+    })
+    res.json(favs);
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+exports.numberPostByMonth = async (req, res) => {
+  try{
+    //!AJOUTER DES COMMENTAIRES
+    const favs = await db.sequelize.query("SELECT (strftime('%m',p.createdAt)-1) as month, u.username, count(p.id) as nbPost FROM Users u, Posts p\
+    WHERE p.publisher_user_id=u.id and u.id=:id_user and strftime('%Y',p.createdAt)=strftime('%Y',DATE())\
+    GROUP BY month",
+    {
+      replacements : {
+        id_user: req.params.id
+      },
+      type: QueryTypes.SELECT
+    })
+    res.json(favs);
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+exports.numberLikeByMonth = async (req, res) => {
+  try{
+    //!AJOUTER DES COMMENTAIRES
+    const favs = await db.sequelize.query("SELECT strftime('%m',p.createdAt) as month, count(p.id) as nbLike FROM Posts p, Likes l, Users u\
+    WHERE p.like=1 AND p.id=l.post_id AND l.user_id=u.id AND u.id=:id_user\
+    GROUP BY month",
+    {
+      replacements : {
+        id_user: req.params.id
+      },
+      type: QueryTypes.SELECT
+    })
+    res.json(favs);
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+exports.numberFollowersByMonth = async (req, res) => {
+  try{
+    //!AJOUTER DES COMMENTAIRES
+    const favs = await db.sequelize.query("SELECT strftime('%m',a.createdAt) as month, count(u.id) as nbFollowers FROM Abonnement a, Users u\
+    WHERE a.follower_id=u.id AND u.id=:id_user and month=strftime('%m',DATE())\
+    GROUP BY month",
+    {
+      replacements : {
+        id_user: req.params.id
+      },
+      type: QueryTypes.SELECT
+    })
+    res.json(favs);
+  }
+  catch(err){
+    console.log(err);
+  }
+}

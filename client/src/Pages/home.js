@@ -14,6 +14,7 @@ function Home() {
     navigate(`/home/allposts`);
     // eslint-disable-next-line
   }, []);
+  
   return (
     <>
       <div className="container">
