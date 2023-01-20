@@ -305,15 +305,80 @@ exports.numberPostByMonth = async (req, res) => {
   try {
     //!AJOUTER DES COMMENTAIRES
     const favs = await db.sequelize.query(
-      "SELECT (MONTH(p.createdAt)-1) as month, count(p.id) as nbPost FROM Users u, Posts p\
-      WHERE p.publisher_user_id=u.id and u.id=" +
+      "SELECT\
+      MONTH(p.createdAt) - 1 AS month,\
+      COALESCE(COUNT(p.id), 0) AS nbPost\
+  FROM\
+      Users u\
+      JOIN Posts p ON p.publisher_user_id = u.id\
+  WHERE\
+      u.id = " +
         req.params.id +
-        " and YEAR(p.createdAt)=YEAR(GETDATE())\
-      GROUP BY MONTH(p.createdAt)",
+        "AND YEAR(p.createdAt) = YEAR(GETDATE())\
+  GROUP BY\
+      MONTH(p.createdAt)\
+  UNION ALL\
+  SELECT\
+      i AS month,\
+      0 AS nbPost\
+  FROM\
+      (\
+          SELECT\
+              0 AS i\
+          UNION ALL\
+          SELECT\
+              1 AS i\
+          UNION ALL\
+          SELECT\
+              2 AS i\
+          UNION ALL\
+          SELECT\
+              3 AS i\
+          UNION ALL\
+          SELECT\
+              4 AS i\
+          UNION ALL\
+          SELECT\
+              5 AS i\
+          UNION ALL\
+          SELECT\
+              6 AS i\
+          UNION ALL\
+          SELECT\
+              7 AS i\
+          UNION ALL\
+          SELECT\
+              8 AS i\
+          UNION ALL\
+          SELECT\
+              9 AS i\
+          UNION ALL\
+          SELECT\
+              10 AS i\
+          UNION ALL\
+          SELECT\
+              11 AS i\
+      ) AS months\
+  WHERE\
+      i NOT IN (\
+          SELECT\
+              MONTH(p.createdAt) - 1 AS month\
+          FROM\
+              Users u\
+              JOIN Posts p ON p.publisher_user_id = u.id\
+          WHERE\
+              u.id = " +
+        req.params.id +
+        " AND YEAR(p.createdAt) = YEAR(GETDATE())\
+          GROUP BY\
+              MONTH(p.createdAt)\
+      )",
       {
         type: QueryTypes.SELECT,
       }
     );
+    console.log("favs :");
+    console.log(favs);
     res.json(favs);
   } catch (err) {
     console.log(err);
