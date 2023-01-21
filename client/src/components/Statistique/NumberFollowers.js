@@ -51,7 +51,7 @@ function NumberFollowers() {
                 labels.push(i.month);
             }) 
           });
-          setDiff((values[1]-values[0])/100);
+          setDiff((values[1]-values[0])/(values[0])*100);
           setDataBar({
             labels,
             datasets: [
@@ -69,7 +69,7 @@ function NumberFollowers() {
         <>
         <div>
             <h4>Nombre de Followers</h4>
-            <h6>Evolution de {diff ? diff+' %' : null}</h6>
+            <h6 style={{ color: 'red' }}>Evolution de {diff ? diff+' %' : null}</h6>
             <Bar data={dataBar}/>
         </div>
         </>
