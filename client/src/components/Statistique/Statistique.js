@@ -5,7 +5,6 @@ import NumberPosts from "./NumberPosts";
 import ListeningTime from "./ListeningTime";
 
 
-
 function Statistique() {
 
   return (
@@ -18,7 +17,6 @@ function Statistique() {
       <NumberPosts/>
 
       <ListeningTime/>
-
     </div>
     </>
   );

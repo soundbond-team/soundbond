@@ -35,12 +35,14 @@ function ListeningTime() {
       });
     const [alignment, setAlignment] = useState('d');
     
+    //API call
     useEffect(() => {
         dispatch(get_time_listening(uid, "d")); 
     }, []);
 
     useEffect(() =>{
         let typeT = '';
+        //Fonction de conversion 
         function msToTime(ms) {
           let seconds = (ms / 1000).toFixed(1);
           let minutes = (ms / (1000 * 60)).toFixed(1);
@@ -71,12 +73,11 @@ function ListeningTime() {
             values.push(msToTime(e.duree));
             labels.push(e.date); 
           });
-          console.log("Durée ",msToTime(values))
           setDataBar({
             labels,
             datasets: [
               {
-                label: 'Durée d\'écoute en '+typeT,
+                label: 'Durée d\'écoute en ' + typeT,
                 data: values,
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
               },
@@ -89,6 +90,7 @@ function ListeningTime() {
         event: React.MouseEvent<HTMLElement>,
         newAlignment: string,
       ) => {
+        console.log("timelaps: ", newAlignment);
         dispatch(get_time_listening(uid, newAlignment))
         setAlignment(newAlignment);
     };

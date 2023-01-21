@@ -19,8 +19,9 @@ function Podium() {
 
 
     useEffect(() => {
+        //API call 
         dispatch(most_listened_users(uid));
-    })    
+    }, [])    
 
     return (
         <>
@@ -30,16 +31,14 @@ function Podium() {
             { mostListened !== null ? 
                 mostListened.map((data, index) => {
                 return(
-                    <div>
-                    <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                        <Avatar alt={index} />
-                        </ListItemAvatar>
-                        <ListItemText
-                        primary={data.username}
-                        />
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
+                    <div key={index}>
+                        <ListItem alignItems="flex-start">
+                            <ListItemAvatar>
+                                <Avatar alt={data.username} />
+                            </ListItemAvatar>
+                            <ListItemText primary={data.username}/>
+                        </ListItem>
+                        <Divider variant="inset" component="li" />
                     </div>
                 )
                 })

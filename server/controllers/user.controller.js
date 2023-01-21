@@ -221,18 +221,21 @@ exports.suggestionsFollow = (req, res) => {
     });
 };
 
+/**
+ * Cette fonction permet de récupérer pour un compte les 3 utilisateurs les plus écoutés
+ */
 exports.mostListened = async (req, res) => {
   try {
-    //!AJOUTER DES COMMENTAIRES
     /*const favs = await db.sequelize.query("SELECT strftime('%Y',v.createdAt) as year, u.username, count(v.nbVisit) as apparition \
     FROM Users u, Sounds s, Visits v \
     WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user AND year=strftime('%Y',DATE())  \
     GROUP BY u.username ORDER BY apparition ASC",*/
     const favs = await db.sequelize.query(
-      "SELECT DATEPART(yyyy,v.createdAt) as year, u.username, count(u.username) as apparition \
+      "SELECT DATEPART(yyyy,v.createdAt) AS year, u.username, count(u.username) AS apparition \
       FROM Users u, Sounds s, Visits v \
-      WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user AND DATEPART(yyyy,v.createdAt)=DATEPART(yyyy,GETDATE())  \
-      GROUP BY u.username, DATEPART(yyyy,v.createdAt) ORDER BY apparition ASC",
+      WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user AND s.uploader_user_id!=:id_user AND DATEPART(yyyy,v.createdAt)=DATEPART(yyyy,GETDATE())  \
+      GROUP BY u.username, DATEPART(yyyy,v.createdAt) ORDER BY apparition DESC, u.username OFFSET 0 ROWS \
+      FETCH NEXT 3 ROWS ONLY",
       {
         replacements: {
           id_user: req.params.id,
@@ -246,6 +249,9 @@ exports.mostListened = async (req, res) => {
   }
 };
 
+/**
+ * Cette fonction permet de récupérer le temps qu'il a passsé à écouter des audios durant un timelaps(jour, mois, année)
+ */
 exports.timeListening = async (req, res) => {
   try {
     //!AJOUTER DES COMMENTAIRES
@@ -257,11 +263,15 @@ exports.timeListening = async (req, res) => {
       case "d":
         cond =
           "DATEPART(yyyy,v.createdAt)=DATEPART(yyyy,GETDATE()) AND DATEPART(mm,v.createdAt)=DATEPART(mm,GETDATE()) AND DATEPART(dd,v.createdAt)=DATEPART(dd,GETDATE())";
-        select = "DATEPART(yyyy,GETDATE())";
+        select = "FORMAT (GETDATE(), 'dd/MM/yyyy')";
         break;
       case "m":
+        cond = "DATEPART(yyyy,v.createdAt)=DATEPART(yyyy,GETDATE()) AND DATEPART(mm,v.createdAt)=DATEPART(mm,GETDATE())";
+        select = "FORMAT (GETDATE(), 'MM/yyyy')";
+        break;
+      case "y": 
         cond = "DATEPART(yyyy,v.createdAt)=DATEPART(yyyy,GETDATE())";
-        select = "DATEPART(yyyy,GETDATE())";
+        select = "FORMAT (GETDATE(), 'yyyy')";
         break;
       default:
         break;
@@ -270,7 +280,7 @@ exports.timeListening = async (req, res) => {
       "SELECT " +
         select +
         " as date, SUM(s.duration) as duree FROM Sounds s, Visits v\
-    WHERE s.id=v.sound_id AND v.user_id=:id_user and " +
+        WHERE s.id=v.sound_id AND v.user_id=:id_user and " +
         cond,
       {
         replacements: {
@@ -285,29 +295,35 @@ exports.timeListening = async (req, res) => {
   }
 };
 
+/**
+ * Cette fonction permet de récupérer les tags les plus utilisés durant le mois courant
+ */
 exports.bestTags = async (req, res) => {
   try {
-    //!AJOUTER DES COMMENTAIRES
-    const favs = await db.sequelize.query(
-      "SELECT t.tag, count(tp.tagging_id) as apparition,DATEPART(month,p.createdAt) as month FROM Tags t, Tag_Post tp, Posts p\
-        WHERE t.id=tp.tagging_id AND tp.post_id=p.id AND DATEPART(month,p.createdAt)=DATEPART(month,GETDATE()) GROUP BY tp.tagging_id, t.tag",
+    const bestTags = await db.sequelize.query("SELECT t.tag, count(tp.tagging_id) as apparition FROM Tags t, Tag_Post tp, Posts p\
+      WHERE t.id=tp.tagging_id AND tp.post_id=p.id AND DATEPART(mm,p.createdAt)=DATEPART(mm, GETDATE()) AND DATEPART(yy,p.createdAt)=DATEPART(yy, GETDATE()) \
+      GROUP BY tp.tagging_id, t.tag",
       {
         type: QueryTypes.SELECT,
       }
     );
-    res.json(favs);
+    res.json(bestTags);
   } catch (err) {
     console.log(err);
   }
 };
 
+/**
+ * Cette fonction permet de récupérer le nombre de postés publiés 
+ * au cours de chaque mois de l'année courante
+ */
 exports.numberPostByMonth = async (req, res) => {
   try {
     //!AJOUTER DES COMMENTAIRES
-    const favs = await db.sequelize.query(
-      "SELECT (MONTH(p.createdAt)-1) as month, u.username, count(p.id) as nbPost FROM Users u, Posts p\
-      WHERE p.publisher_user_id=u.id and u.id=@id_user and YEAR(p.createdAt)=YEAR(GETDATE())\
-      GROUP BY month",
+    const nbPost = await db.sequelize.query(
+      "SELECT (MONTH(p.createdAt)) as month, count(p.id) as nbPost FROM Users u, Posts p \
+      WHERE p.publisher_user_id=u.id and u.id=8 and YEAR(p.createdAt)=YEAR(GETDATE()) \
+      GROUP BY (MONTH(p.createdAt))",
       {
         replacements: {
           id_user: req.params.id,
@@ -315,7 +331,7 @@ exports.numberPostByMonth = async (req, res) => {
         type: QueryTypes.SELECT,
       }
     );
-    res.json(favs);
+    res.json(nbPost);
   } catch (err) {
     console.log(err);
   }

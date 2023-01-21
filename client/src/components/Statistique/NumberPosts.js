@@ -43,7 +43,7 @@ function NumberPosts() {
             position: 'top',
           },
           title: {
-            display: true,
+            display: false,
           },
         },
     };
@@ -86,7 +86,7 @@ function NumberPosts() {
       return(
         <>
         <div>
-            <h4>Nombre de posts postés durant l'année {current_year}</h4>
+            <h4>Nombre de posts publiés durant l'année {current_year}</h4>
             <Line options={options} data={dataBar} />  
         </div>
         </>  
