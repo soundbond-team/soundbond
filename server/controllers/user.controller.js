@@ -302,7 +302,7 @@ exports.bestTags = async (req, res) => {
   try {
     const bestTags = await db.sequelize.query("SELECT t.tag, count(tp.tagging_id) as apparition FROM Tags t, Tag_Post tp, Posts p\
       WHERE t.id=tp.tagging_id AND tp.post_id=p.id AND DATEPART(mm,p.createdAt)=DATEPART(mm, GETDATE()) AND DATEPART(yy,p.createdAt)=DATEPART(yy, GETDATE()) \
-      GROUP BY tp.tagging_id, t.tag",
+      GROUP BY tp.tagging_id, t.tag ORDER BY apparition DESC",
       {
         type: QueryTypes.SELECT,
       }
