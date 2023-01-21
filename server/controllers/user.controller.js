@@ -322,7 +322,7 @@ exports.numberPostByMonth = async (req, res) => {
     //!AJOUTER DES COMMENTAIRES
     const nbPost = await db.sequelize.query(
       "SELECT (MONTH(p.createdAt)) as month, count(p.id) as nbPost FROM Users u, Posts p \
-      WHERE p.publisher_user_id=u.id and u.id=8 and YEAR(p.createdAt)=YEAR(GETDATE()) \
+      WHERE p.publisher_user_id=u.id and u.id=:id_user and YEAR(p.createdAt)=YEAR(GETDATE()) \
       GROUP BY (MONTH(p.createdAt))",
       {
         replacements: {
@@ -342,12 +342,13 @@ exports.numberLikeByMonth = async (req, res) => {
     //!AJOUTER DES COMMENTAIRES
     const favs = await db.sequelize.query(
       "SELECT (MONTH(p.createdAt)-1) as month, count(p.id) as nbLike FROM Posts p, Likes l, Users u\
-      WHERE p.like=1 AND p.id=l.post_id AND l.user_id=u.id AND u.id=@id_user\
-      GROUP BY month",
+      WHERE p.like=1 AND p.id=l.post_id AND l.user_id=" +
+        req.params.id +
+        " AND u.id=" +
+        req.params.id +
+        "\
+      GROUP BY MONTH(p.createdAt)",
       {
-        replacements: {
-          id_user: req.params.id,
-        },
         type: QueryTypes.SELECT,
       }
     );
@@ -363,7 +364,7 @@ exports.numberFollowersByMonth = async (req, res) => {
     const favs = await db.sequelize.query(
       "SELECT MONTH(a.createdAt) as month, count(u.id) as nbFollowers FROM Abonnement a, Users u\
       WHERE a.follower_id=u.id AND u.id=@id_user and month=MONTH(GETDATE())\
-      GROUP BY month",
+      GROUP BY MONTH(p.createdAt)",
       {
         replacements: {
           id_user: req.params.id,
