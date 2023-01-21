@@ -44,11 +44,18 @@ function TopTrend() {
     useEffect(() => {
         if(topTrend){
           let tags = []; 
-          let occurence = []; 
-          topTrend.map(e => {
-            tags.push(e.tag); 
-            occurence.push(e.apparition);
+          let occurence = [];
+          let somme ; 
+          topTrend.map(e,index => {
+            if (index<10) {
+              tags.push(e.tag); 
+              occurence.push(e.apparition);
+            }
+            else{
+              somme+=e.apparition;
+            }
           });
+          tag.push('Autres');
           let temp = {
             labels: tags, 
             datasets:[
