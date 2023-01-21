@@ -55,6 +55,7 @@ module.exports = (app) => {
   router.get("/stats/tags/", userCtrl.bestTags);
   router.get("/:id/stats/number_post/", userCtrl.numberPostByMonth);
   router.get("/:id/stats/number_likes/", userCtrl.numberLikeByMonth);
+  router.get("/:id/stats/number_followers/", userCtrl.numberFollowersByMonth);
 
   app.use("/api/v1/user", router);
 };
