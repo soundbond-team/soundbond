@@ -99,7 +99,9 @@ function TopTrend() {
     
     return(
         <div>
-            <h4>Top Trend du mois</h4>
+          <center>
+          <h4>Top Trend du mois</h4>
+          </center>
             {
                 topTrend !== null ? 
                 <Doughnut data={dataDoghnut}/>: null
