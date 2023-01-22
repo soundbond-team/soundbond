@@ -8,7 +8,8 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import { most_listened_users } from "../../actions/insights.actions"
-import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import StarIcon from '@mui/icons-material/Star';
+
 
 
 function Podium() {
@@ -25,6 +26,7 @@ function Podium() {
 
     return (
         <>
+        <center>
         <div>
         <div style={{display: "flex", flexDirection:"row"}}>
             <LeaderboardIcon style={{marginRight:"10"}}/>
@@ -35,11 +37,14 @@ function Podium() {
                 mostListened.map((data, index) => {
                 return(
                     <div key={index}>
-                        <ListItem alignItems="flex-start">
+                        <hr/>
+                        <h6>{index +1}</h6>
+                        <ListItem alignItems="flex-start" sx={{bgcolor: '#f5fcfc'}}>
                             <ListItemAvatar>
                                 <Avatar alt={data.username} />
                             </ListItemAvatar>
-                            <ListItemText primary={data.username}/>
+                            <ListItemText primary={data.username}/> 
+                            <StarIcon style={{color:"#f5c12e"}}/>
                         </ListItem>
                         <Divider variant="inset" component="li" />
                     </div>
@@ -50,6 +55,7 @@ function Podium() {
             }
           </List>
         </div>
+        </center>
         </>   
     ) 
   
