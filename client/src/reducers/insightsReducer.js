@@ -2,12 +2,14 @@ import { GET_MOST_LISTENED, GET_NUMBER_FOLLOWER } from "../actions/insights.acti
 import { GET_TOP_TREND } from "../actions/insights.actions";
 import { GET_NUMBER_POST } from "../actions/insights.actions";
 import { GET_TIME_LISTENING } from "../actions/insights.actions";
+import { GET_NUMBER_LIKES } from "../actions/insights.actions";
 
 const initialState = {
   getMostListenedResponse: null,
   getTopTrendResponse: null,
   getNumberPostResponse: null,
   getTimeListeningResponse: null,
+  getNumberLikesResponse: null,
 };
 
 export default function insightsReducer(state = initialState, action) {
@@ -22,6 +24,8 @@ export default function insightsReducer(state = initialState, action) {
       return {...state, getTimeListeningResponse: action.payload};
     case GET_NUMBER_FOLLOWER:
       return {...state, getNumberFolllowerResponse: action.payload};
+    case GET_NUMBER_LIKES:
+      return {...state, getNumberLikesResponse: action.payload};
     default:
       return state;
   }
