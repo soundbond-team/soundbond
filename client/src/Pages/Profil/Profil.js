@@ -125,7 +125,7 @@ function Profil(props) {
               }}
             >
               <div>
-                <h4>{currentUserdata ? currentUserdata.username : <p></p>}</h4>
+                <center><h4>{currentUserdata ? currentUserdata.username : <p></p>}</h4></center>
 
                 <div className="container d-flex  justify-content-around">
                   <div>
