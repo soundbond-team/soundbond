@@ -143,16 +143,22 @@ image::assets/FiltreMapTags-after.png[]
 ==== v1.0 Recherche avancée
 
 ==== v1.4 Consulter ses statistiques
-Sur sur profil un utilisateur peut consulter les statistiques suivantes: 
-image::assets/Stats-nombre-posts.png[]
+Depuis son profil, un utilisateur peut consulter les statistiques suivantes: 
 
+image::assets/Stats-podium.png[]
 Les utilisateurs qu'il a le plus écouté durant l'année en cours
-image::assets/Stats-nombre-abonnes.png[]
 
-Les tags en tendance durant le mois en cours
-Le nombre de posts publiés chaque mois de la l'année en cours 
-La durée d'écoute totale durant un timelaps choisi (jour, mois ou année)
-L'évolution du nombre d'abonnés entre le mois courant et le mois précédent
+image::assets/Stats-top-trend.png[]
+Les tags en tendance durant le mois en cours.
+
+image::assets/Stats-nombre-posts.png[]
+Le nombre de posts publiés et posts likés chaque mois de la l'année en cours. 
+
+image::assets/Stats-duree-ecoute.png[]
+La durée d'écoute totale durant un timelaps choisi (jour, mois ou année).
+
+image::assets/Stats-nombre-abonnes.png[]
+L'évolution du nombre d'abonnés entre le mois courant et le mois précédent.
 
 
 ==== v1.4 HeatMap 
