@@ -7,6 +7,8 @@ import { Chart as ChartJS, Tooltip, Legend, CategoryScale,
   LinearScale,
   BarElement,
   Title, } from 'chart.js';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
 
 ChartJS.register(
@@ -18,11 +20,12 @@ ChartJS.register(
     Legend
 );
 
+
 function NumberFollowers() {
   const numFollower = useSelector((state) => state.insightsReducer.getNumberFolllowerResponse);
   const dispatch = useDispatch();
   const uid = useContext(UidContext);
-  const [diff,setDiff] = useState();
+  const [diff,setDiff] = useState(0);
   const [dataBar, setDataBar] = useState({
     datasets: [
       {
@@ -70,7 +73,13 @@ function NumberFollowers() {
       <>
       <div>
         <h4>Nombre de followers</h4>
-        <h6 style={styleDiff}>Evolution de {diff ? diff+' %' : null}</h6>
+        <div style={{display:"flex", flexDirection:"row"}}>
+          {diff > 0 ? 
+            <TrendingUpIcon style={styleDiff} /> :
+            <TrendingDownIcon style={styleDiff}/>
+          }
+          <h6 style={styleDiff}>Evolution de {diff ? diff+' %' : null}</h6>
+        </div>
         <Bar data={dataBar}/>
       </div>
       </>

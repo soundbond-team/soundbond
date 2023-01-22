@@ -8,7 +8,7 @@ import { Chart as ChartJS, Tooltip, Legend, CategoryScale,
     Title, 
     PointElement,
     LineElement,} from 'chart.js';
-  
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -25,7 +25,7 @@ function NumberPosts() {
     const dispatch = useDispatch();
     const uid = useContext(UidContext);
     let current_year = new Date().getFullYear();
-    const [labels, setLabels] = useState(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
+    const [labels, setLabels] = useState(['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']);
     const [dataBar, setDataBar] = useState({
       labels,
       datasets: [
@@ -83,7 +83,7 @@ function NumberPosts() {
               }
             });
           });
-          
+
           setDataBar({
             labels,
             datasets: [

@@ -9,7 +9,7 @@ import { Chart as ChartJS, Tooltip, Legend, CategoryScale,
   Title, } from 'chart.js';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
+import HeadphonesIcon from '@mui/icons-material/Headphones';
 
 ChartJS.register(
     CategoryScale,
@@ -49,19 +49,19 @@ function ListeningTime() {
           let hours = (ms / (1000 * 60 * 60)).toFixed(1);
           let days = (ms / (1000 * 60 * 60 * 24)).toFixed(1);
           if (seconds < 60){
-            typeT="Secondes"
+            typeT="secondes"
             return seconds;
           } 
           else if (minutes < 60){
-            typeT="Minute(s)"
+            typeT="minute(s)"
             return minutes;
           } 
           else if (hours < 24){
-            typeT="Heure(s)"
+            typeT="heure(s)"
             return hours;
           } 
           else{
-            typeT="Jour(s)"
+            typeT="jour(s)"
             return days
           } 
         }
@@ -98,7 +98,10 @@ function ListeningTime() {
     return(
         <>
         <div>
+          <div style={{display: "flex", flexDirection:"row"}}>
+            <HeadphonesIcon style={{marginRight:"10"}}/>
             <h4>Durée d'écoute</h4>
+          </div>
             <ToggleButtonGroup
                 color="primary"
                 value={alignment}

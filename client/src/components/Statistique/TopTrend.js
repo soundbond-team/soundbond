@@ -45,7 +45,7 @@ function TopTrend() {
         if(topTrend){
           let tags = []; 
           let occurence = [];
-          let somme=0 ; 
+          let somme ; 
           topTrend.map((e,index) => {
             if (index<9) {
               tags.push(e.tag); 
@@ -102,7 +102,7 @@ function TopTrend() {
             <h4>Top Trend du mois</h4>
             {
                 topTrend !== null ? 
-                <Doughnut data={dataDoghnut}/>: null
+                <Doughnut data={dataDoghnut} options={{ responsive: true, maintainAspectRatio: true,}}/>: null
             }
         </div>
     )   

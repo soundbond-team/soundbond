@@ -10,7 +10,7 @@ function Statistique() {
 
   return (
     <>
-    <div>
+    <div style={{display: 'flex', flexDirection:"column", alignItems:"center"}}>
       <Podium/>     
       <hr/>
       <TopTrend/> 

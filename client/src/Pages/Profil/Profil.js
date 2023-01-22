@@ -169,7 +169,7 @@ function Profil(props) {
           </div>
           <div className="container">
             <div className="row">
-              <div className="col-1 d-inline-flex flex-lg-column">
+              <div className="col-1 d-inline-flex flex-md-column">
                 <Link
                   style={{
                     margin: "4px",
