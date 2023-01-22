@@ -71,8 +71,8 @@ function NumberFollowers() {
   
   return(
       <>
-      <div>
-        <h4>Nombre de followers</h4>
+      <div style={{marginBottom:"50px"}}>
+        <h4 style={{marginBottom:"20px"}}>Nombre de followers</h4>
         <div style={{display:"flex", flexDirection:"row"}}>
           {diff > 0 ? 
             <TrendingUpIcon style={styleDiff} /> :

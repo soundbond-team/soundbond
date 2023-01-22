@@ -86,34 +86,30 @@ function ListeningTime() {
         }
     }, [timeListening])
     
-    const handleChange = (
-        event: React.MouseEvent<HTMLElement>,
-        newAlignment: string,
-      ) => {
-        console.log("timelaps: ", newAlignment);
-        dispatch(get_time_listening(uid, newAlignment))
-        setAlignment(newAlignment);
+    const handleChange = (event, newAlignment) => {
+      dispatch(get_time_listening(uid, newAlignment))
+      setAlignment(newAlignment);
     };
     
     return(
         <>
-        <div>
-          <div style={{display: "flex", flexDirection:"row"}}>
+        <div style={{marginBottom:"50px"}}>
+          <div style={{display: "flex", flexDirection:"row", justifyContent:"center", marginBottom:"20px"}}>
             <HeadphonesIcon style={{marginRight:"10"}}/>
             <h4>Durée d'écoute</h4>
           </div>
-            <ToggleButtonGroup
-                color="primary"
-                value={alignment}
-                exclusive
-                onChange={handleChange}
-                aria-label="Platform"
-            >
-                <ToggleButton value="d">JOUR</ToggleButton>
-                <ToggleButton value="m">MOIS</ToggleButton>
-                <ToggleButton value="y">ANNEE</ToggleButton>
-                </ToggleButtonGroup>
-            <Bar data={dataBar}/>
+          <ToggleButtonGroup
+              color="primary"
+              value={alignment}
+              exclusive
+              onChange={handleChange}
+              aria-label="Platform"
+          >
+              <ToggleButton value="d">JOUR</ToggleButton>
+              <ToggleButton value="m">MOIS</ToggleButton>
+              <ToggleButton value="y">ANNEE</ToggleButton>
+          </ToggleButtonGroup>
+          <Bar data={dataBar}/>
         </div>
         </>
     )

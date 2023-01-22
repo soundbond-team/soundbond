@@ -8,6 +8,8 @@ import { Chart as ChartJS, Tooltip, Legend, CategoryScale,
     Title, 
     PointElement,
     LineElement,} from 'chart.js';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
 ChartJS.register(
     CategoryScale,
@@ -25,7 +27,7 @@ function NumberPosts() {
     const dispatch = useDispatch();
     const uid = useContext(UidContext);
     let current_year = new Date().getFullYear();
-    const [labels, setLabels] = useState(['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']);
+    const [labels, setLabels] = useState(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
     const [dataBar, setDataBar] = useState({
       labels,
       datasets: [
@@ -106,8 +108,10 @@ function NumberPosts() {
 
       return(
         <>
-        <div>
-            <h4>Nombre de posts publiés durant l'année {current_year}</h4>
+        <div style={{marginBottom:"50px"}}>
+          <center>
+            <h4 style={{marginBottom:"20px"}}>Nombre de posts publiés durant l'année {current_year}</h4>
+          </center>
             <Line options={options} data={dataBar} />  
         </div>
         </>  

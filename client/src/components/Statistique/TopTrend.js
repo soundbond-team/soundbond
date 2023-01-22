@@ -98,14 +98,14 @@ function TopTrend() {
     }, [topTrend])
     
     return(
-        <div>
+        <div style={{marginBottom:"50px"}}>
           <center>
-          <h4>Top Trend du mois</h4>
+            <h4 style={{marginBottom:"20px"}}>Top Trend du mois</h4>
           </center>
-            {
-                topTrend !== null ? 
-                <Doughnut data={dataDoghnut} options={{ responsive: true, maintainAspectRatio: true,}}/>: null
-            }
+          {
+            topTrend !== null ? 
+            <Doughnut data={dataDoghnut} options={{ responsive: true, maintainAspectRatio: true,}}/>: null
+          }
         </div>
     )   
 }

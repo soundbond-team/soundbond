@@ -11,9 +11,10 @@ function Statistique() {
 
   return (
     <>
-    <div>
+    <div style={{display:"flex", flexDirection:"column", justifyItems:"space-between"}}>
       <center>
-      <h5>Vos Statistiques </h5> <QueryStatsIcon sx={{ fontSize: 80 }}/>
+        <h5>Vos Statistiques </h5> 
+        <QueryStatsIcon sx={{ fontSize: 80 }}/>
       </center>
       <hr/>
       <Podium/>     
