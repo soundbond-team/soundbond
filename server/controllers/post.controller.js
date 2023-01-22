@@ -375,7 +375,7 @@ exports.getAllLike = (req, res) => {
   db.Post.findAndCountAll(id)
     .then((data) => {
       let like = {
-        like: data.like,
+        likeP: data.likeP,
       };
       res.send(like);
     })
@@ -516,7 +516,7 @@ exports.getAllLike = (req, res) => {
   db.Post.findAndCountAll(id)
     .then((data) => {
       let like = {
-        like: data.like,
+        likeP: data.likeP,
       };
       res.send(like);
     })

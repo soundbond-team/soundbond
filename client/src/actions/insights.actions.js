@@ -4,6 +4,7 @@ export const GET_MOST_LISTENED = "GET_MOST_LISTENED";
 export const GET_TOP_TREND = "GET_TOP_TREND";
 export const GET_NUMBER_POST = "GET_NUMBER_POST";
 export const GET_TIME_LISTENING = "GET_TIME_LISTENING";
+export const GET_NUMBER_FOLLOWER = "GET_NUMBER_FOLLOWER";
 
 
 // Récupérer tous les users qui sont les plus écoutés 
@@ -58,4 +59,16 @@ export const get_time_listening = (user_id, timelaps) => {
         .catch((err) => console.log(err));
     };
 };
-  
+
+export const get_number_follower = (user_id) => {
+  return (dispatch) => {
+    return axios({
+      method: "get",
+      url: process.env.REACT_APP_BACK_SERVER_URL+`api/v1/user/${user_id}/stats/number_followers/`,
+    })
+      .then((res) => {
+        dispatch({ type: GET_NUMBER_FOLLOWER, payload: res.data });
+      })
+      .catch((err) => console.log(err));
+  };
+};

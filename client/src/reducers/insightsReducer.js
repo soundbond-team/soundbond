@@ -1,4 +1,4 @@
-import { GET_MOST_LISTENED } from "../actions/insights.actions";
+import { GET_MOST_LISTENED, GET_NUMBER_FOLLOWER } from "../actions/insights.actions";
 import { GET_TOP_TREND } from "../actions/insights.actions";
 import { GET_NUMBER_POST } from "../actions/insights.actions";
 import { GET_TIME_LISTENING } from "../actions/insights.actions";
@@ -20,6 +20,8 @@ export default function insightsReducer(state = initialState, action) {
       return {...state, getNumberPostResponse: action.payload};
     case GET_TIME_LISTENING:
       return {...state, getTimeListeningResponse: action.payload};
+    case GET_NUMBER_FOLLOWER:
+      return {...state, getNumberFolllowerResponse: action.payload};
     default:
       return state;
   }
