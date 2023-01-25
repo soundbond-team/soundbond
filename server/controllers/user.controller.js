@@ -1,7 +1,8 @@
 const db = require("../models");
 const sanitizeHtml = require("sanitize-html");
 const { Post, sequelize, Sequelize } = require("../models");
-const QueryTypes = db.Sequelize.QueryTypes;
+const { QueryTypes } = require("sequelize");
+//const QueryTypes = db.Sequelize.QueryTypes;
 const User = db.User;
 const Op = db.Sequelize.Op;
 
@@ -220,134 +221,185 @@ exports.suggestionsFollow = (req, res) => {
     });
 };
 
+/**
+ * Cette fonction permet de récupérer pour un compte les 3 utilisateurs les plus écoutés
+ */
 exports.mostListened = async (req, res) => {
-  try{
-    //!AJOUTER DES COMMENTAIRES
+  try {
     /*const favs = await db.sequelize.query("SELECT strftime('%Y',v.createdAt) as year, u.username, count(v.nbVisit) as apparition \
     FROM Users u, Sounds s, Visits v \
     WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user AND year=strftime('%Y',DATE())  \
     GROUP BY u.username ORDER BY apparition ASC",*/
-    const favs = await db.sequelize.query("SELECT strftime('%Y',v.createdAt) as year, u.username, count(u.username) as apparition \
-    FROM Users u, Sounds s, Visits v \
-    WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user AND year=strftime('%Y',DATE())  \
-    GROUP BY u.username ORDER BY apparition ASC",
-    {
-      replacements : {
-        id_user: req.params.id
-      },
-      type: QueryTypes.SELECT
-    })
+    const favs = await db.sequelize.query(
+      "SELECT DATEPART(yyyy,v.createdAt) AS year, u.username, count(u.username) AS apparition \
+      FROM Users u, Sounds s, Visits v \
+      WHERE s.id=v.sound_id AND s.uploader_user_id=u.id AND v.user_id=:id_user AND s.uploader_user_id!=:id_user AND DATEPART(yyyy,v.createdAt)=DATEPART(yyyy,GETDATE())  \
+      GROUP BY u.username, DATEPART(yyyy,v.createdAt) ORDER BY apparition DESC, u.username OFFSET 0 ROWS \
+      FETCH NEXT 3 ROWS ONLY",
+      {
+        replacements: {
+          id_user: req.params.id,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
     res.json(favs);
-  }
-  catch(err){
+  } catch (err) {
     console.log(err);
   }
-}
+};
 
+/**
+ * Cette fonction permet de récupérer le temps qu'il a passsé à écouter des audios durant un timelaps(jour, mois, année)
+ */
 exports.timeListening = async (req, res) => {
-  try{
-    //!AJOUTER DES COMMENTAIRES
+  try {
     const type = req.params.typeDate;
-    let cond = '';
-    let select = '';
+    let cond = "";
+    let select = "";
 
     switch (type) {
-      case 'd':
-        cond = "strftime('%Y-%m-%d',v.createdAt)=DATE()";
-        select = "strftime('%Y-%m-%d',DATE())";
-        break; 
-      case 'm':
-        cond = "strftime('%Y-%m',v.createdAt)=strftime('%Y-%m',DATE())";
-        select = "strftime('%Y-%m',DATE())";
+      case "d":
+        cond =
+          "DATEPART(yyyy,v.createdAt)=DATEPART(yyyy,GETDATE()) AND DATEPART(mm,v.createdAt)=DATEPART(mm,GETDATE()) AND DATEPART(dd,v.createdAt)=DATEPART(dd,GETDATE())";
+        select = "FORMAT (GETDATE(), 'dd/MM/yyyy')";
+        break;
+      case "m":
+        cond = "DATEPART(yyyy,v.createdAt)=DATEPART(yyyy,GETDATE()) AND DATEPART(mm,v.createdAt)=DATEPART(mm,GETDATE())";
+        select = "FORMAT (GETDATE(), 'MM/yyyy')";
+        break;
+      case "y": 
+        cond = "DATEPART(yyyy,v.createdAt)=DATEPART(yyyy,GETDATE())";
+        select = "FORMAT (GETDATE(), 'yyyy')";
         break;
       default:
-        cond = "strftime('%Y',v.createdAt)=strftime('%Y',DATE())";
-        select = "strftime('%Y',DATE())";
         break;
     }
-    const favs = await db.sequelize.query("SELECT " + select + " as date, SUM(s.duration) as duree FROM Sounds s, Visits v\
-    WHERE s.id=v.sound_id AND v.user_id=:id_user and "+cond,
-    {
-      replacements : {
-        id_user: req.params.id,
-      },
-      type: QueryTypes.SELECT
-    })
+    const favs = await db.sequelize.query(
+      "SELECT " +
+        select +
+        " as date, SUM(s.duration) as duree FROM Sounds s, Visits v\
+        WHERE s.id=v.sound_id AND v.user_id=:id_user and " +
+        cond,
+      {
+        replacements: {
+          id_user: req.params.id,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
     res.json(favs);
-  }
-  catch(err){
+  } catch (err) {
     console.log(err);
   }
-}
+};
 
+/**
+ * Cette fonction permet de récupérer les tags les plus utilisés durant le mois courant
+ */
 exports.bestTags = async (req, res) => {
-  try{
-    //!AJOUTER DES COMMENTAIRES
-    const favs = await db.sequelize.query("SELECT t.tag, count(tp.tagging_id) as apparition,strftime('%m',p.createdAt) as month FROM Tags t, Tag_Post tp, Posts p\
-    WHERE t.id=tp.tagging_id AND tp.post_id=p.id AND strftime('%m',p.createdAt)=strftime('%m',DATE()) GROUP BY tp.tagging_id",
-    {
-      type: QueryTypes.SELECT
-    })
-    res.json(favs);
-  }
-  catch(err){
+  try {
+    const bestTags = await db.sequelize.query("SELECT t.tag, count(tp.tagging_id) as apparition FROM Tags t, Tag_Post tp, Posts p\
+      WHERE t.id=tp.tagging_id AND tp.post_id=p.id AND DATEPART(mm,p.createdAt)=DATEPART(mm, GETDATE()) AND DATEPART(yy,p.createdAt)=DATEPART(yy, GETDATE()) \
+      GROUP BY tp.tagging_id, t.tag ORDER BY apparition DESC",
+      {
+        type: QueryTypes.SELECT,
+      }
+    );
+    res.json(bestTags);
+  } catch (err) {
     console.log(err);
   }
-}
+};
 
+/**
+ * Cette fonction permet de récupérer le nombre de postés publiés 
+ * au cours de chaque mois de l'année courante
+ */
 exports.numberPostByMonth = async (req, res) => {
-  try{
-    //!AJOUTER DES COMMENTAIRES
-    const favs = await db.sequelize.query("SELECT (strftime('%m',p.createdAt)-1) as month, u.username, count(p.id) as nbPost FROM Users u, Posts p\
-    WHERE p.publisher_user_id=u.id and u.id=:id_user and strftime('%Y',p.createdAt)=strftime('%Y',DATE())\
-    GROUP BY month",
-    {
-      replacements : {
-        id_user: req.params.id
-      },
-      type: QueryTypes.SELECT
-    })
-    res.json(favs);
-  }
-  catch(err){
+  try {
+    const resTot= []
+    const nbPost = await db.sequelize.query(
+      "SELECT (MONTH(p.createdAt)) as month, count(p.id) as nbPost FROM Users u, Posts p \
+      WHERE p.publisher_user_id=u.id and u.id=:id_user and YEAR(p.createdAt)=YEAR(GETDATE()) \
+      GROUP BY (MONTH(p.createdAt))",
+      {
+        replacements: {
+          id_user: req.params.id,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
+    const nbPost2 = await db.sequelize.query(
+      "SELECT (MONTH(p.createdAt)+1) as month, count(p.id) as nbPost FROM Users u, Posts p \
+      WHERE p.publisher_user_id=u.id and u.id=:id_user and YEAR(p.createdAt)=YEAR(GETDATE()) \
+      GROUP BY (MONTH(p.createdAt)+1)",
+      {
+        replacements: {
+          id_user: req.params.id,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
+    resTot.push(nbPost);
+    resTot.push(nbPost2)
+    res.json(nbPost);
+  } catch (err) {
     console.log(err);
   }
-}
+};
 
 exports.numberLikeByMonth = async (req, res) => {
-  try{
+  try {
     //!AJOUTER DES COMMENTAIRES
-    const favs = await db.sequelize.query("SELECT strftime('%m',p.createdAt) as month, count(p.id) as nbLike FROM Posts p, Likes l, Users u\
-    WHERE p.like=1 AND p.id=l.post_id AND l.user_id=u.id AND u.id=:id_user\
-    GROUP BY month",
-    {
-      replacements : {
-        id_user: req.params.id
-      },
-      type: QueryTypes.SELECT
-    })
-    res.json(favs);
-  }
-  catch(err){
+    const nbLike = await db.sequelize.query(
+      "SELECT (MONTH(l.createdAt)) as month, Count(l.user_id) as nbLike FROM Likes l \
+      WHERE l.user_id=:id_user GROUP BY MONTH(l.createdAt)",
+      {
+        replacements: {
+          id_user: req.params.id,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
+    res.json(nbLike);
+  } catch (err) {
     console.log(err);
   }
-}
+};
 
+/* 
+* Cette fonction permet de récupérer le nombre de comptes qu'un user suit d'un mois M et M-1 ainsi que l'évolution en pourcentage
+*/
 exports.numberFollowersByMonth = async (req, res) => {
-  try{
-    //!AJOUTER DES COMMENTAIRES
-    const favs = await db.sequelize.query("SELECT strftime('%m',a.createdAt) as month, count(u.id) as nbFollowers FROM Abonnement a, Users u\
-    WHERE a.follower_id=u.id AND u.id=:id_user and month=strftime('%m',DATE())\
-    GROUP BY month",
-    {
-      replacements : {
-        id_user: req.params.id
-      },
-      type: QueryTypes.SELECT
-    })
-    res.json(favs);
-  }
-  catch(err){
+  try {
+    const resTot=[]
+    const nbFollowers = await db.sequelize.query(
+      "SELECT FORMAT (a.createdAt, 'MM/yyyy') as month, count(u.id) as nbFollowers FROM Abonnement a, Users u\
+      WHERE a.following_id=u.id AND u.id=:id_user and DATEDIFF(MONTH, a.createdAt, GETDATE()) = 1 \
+      GROUP BY FORMAT (a.createdAt, 'MM/yyyy')",
+      {
+        replacements: {
+          id_user: req.params.id,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
+    const nbFollowers2 = await db.sequelize.query(
+      "SELECT FORMAT (a.createdAt, 'MM/yyyy') as month, count(u.id) as nbFollowers FROM Abonnement a, Users u\
+      WHERE a.following_id=u.id AND u.id=:id_user and MONTH(a.createdAt)=MONTH(GETDATE())\
+      GROUP BY FORMAT (a.createdAt, 'MM/yyyy')",
+      {
+        replacements: {
+          id_user: req.params.id,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
+    resTot.push(nbFollowers);
+    resTot.push(nbFollowers2);
+    res.json(resTot);
+  } catch (err) {
     console.log(err);
   }
-}
+};

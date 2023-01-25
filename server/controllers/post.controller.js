@@ -72,8 +72,8 @@ const helper_playlist = {
     {
       model: db.Playlist,
       as: "is_in_playlist",
-    }
-  ]
+    },
+  ],
 };
 
 const helper_include_everything = [
@@ -191,6 +191,21 @@ exports.getPostByTag = (req, res) => {
 exports.findAll = (req, res) => {
   db.Post.findAll({
     include: helper_include_everything,
+    limit: 20,
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: err.message || "Some error occurred while retrieving post.",
+      });
+    });
+};
+
+exports.findAllformap = (req, res) => {
+  db.Post.findAll({
+    include: helper_include_everything,
   })
     .then((data) => {
       res.send(data);
@@ -209,6 +224,7 @@ exports.allPostsByPublisherUserId = (req, res) => {
       publisher_user_id: req.params.user_id,
     },
     include: helper_include_everything,
+    limit: 20,
   })
     .then((data) => {
       res.send(data);
@@ -359,7 +375,7 @@ exports.getAllLike = (req, res) => {
   db.Post.findAndCountAll(id)
     .then((data) => {
       let like = {
-        like: data.like,
+        likeP: data.likeP,
       };
       res.send(like);
     })
@@ -500,7 +516,7 @@ exports.getAllLike = (req, res) => {
   db.Post.findAndCountAll(id)
     .then((data) => {
       let like = {
-        like: data.like,
+        likeP: data.likeP,
       };
       res.send(like);
     })

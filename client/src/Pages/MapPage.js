@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { get_soundlocation } from "../actions/soundlocation.actions";
-import { getallPost } from "../actions/post.actions";
+import { getallPostForMap } from "../actions/post.actions";
 import Map from "../components/Map/Map";
 import { UidContext } from "../components/Appcontext";
 
@@ -12,7 +12,8 @@ function MapPage() {
   const dispatch = useDispatch();
 
   // These, in 'state', are defined in index.js
-  const allposts = useSelector((state) => state.postReducer); // On stocke tous les Posts (se mettra a jour automatiquement par rapport a letat du reducer).
+
+  const allpostsforMap = useSelector((state) => state.allpostmapReducer); // On stocke tous les Posts (se mettra a jour automatiquement par rapport a letat du reducer).
   const soundlocationdata = useSelector((state) => state.soundlocationReducer); // On stocke tous les SoundLocation les plus proches(se mettra a jour automatiquement par rapport a letat du reducer).
 
   useEffect(() => {
@@ -23,7 +24,7 @@ function MapPage() {
       };
       dispatch(get_soundlocation(position));
       //récuperer tous les posts dans la database
-      dispatch(getallPost());
+      dispatch(getallPostForMap());
     });
     // eslint-disable-next-line
   }, []);
@@ -36,7 +37,7 @@ function MapPage() {
       };
       dispatch(get_soundlocation(position));
     }); // eslint-disable-next-line
-  }, [allposts]);
+  }, [allpostsforMap]);
 
   const listItems = soundlocationdata.map((i) => (
     <li key={i.id}>
@@ -48,15 +49,13 @@ function MapPage() {
       <div className="container-fluid">
         <div className="col">
           <div className="row justify-content-center">
-            <Map post_points={allposts} connected_user_id={uid} />
+            <Map post_points={allpostsforMap} connected_user_id={uid} />
           </div>
           <br />
           <br />
           <div className="row justify-content-center">
             <h3>Positions des sons les plus proches:</h3>
-            <div>
-              {listItems.length > 0 ? listItems : "aucun"}
-            </div>
+            <div>{listItems.length > 0 ? listItems : "aucun"}</div>
           </div>
           <br />
           <br />

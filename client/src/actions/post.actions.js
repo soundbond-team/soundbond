@@ -13,6 +13,7 @@ export const REMOVE_COMMENT = "REMOVE_COMMENT";
 export const POSTS_BY_TAG = "POSTS_BY_TAG";
 export const GET_POST_TAG = "GET_POST_TAG";
 export const ADD_SHARE = "ADD_SHARE";
+export const GET_ALL_POST_FOR_MAP = "GET_ALL_POST_FOR_MAP";
 export const REMOVE_SHARE = "REMOVE_SHARE";
 export const REMOVE_POST = "REMOVE_POST";
 export const UPDATE_POST = "UPDATE_POST";
@@ -80,6 +81,17 @@ export const getallPost = () => {
       .get(process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/`)
       .then((res) => {
         dispatch({ type: GET_ALL_POST, payload: res.data });
+      })
+      .catch((err) => console.log(err));
+  };
+};
+//post de la map
+export const getallPostForMap = () => {
+  return (dispatch) => {
+    return axios
+      .get(process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/map`)
+      .then((res) => {
+        dispatch({ type: GET_ALL_POST_FOR_MAP, payload: res.data });
       })
       .catch((err) => console.log(err));
   };
