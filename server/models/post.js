@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   Post.init(
     {
       description: DataTypes.TEXT,
-      like: DataTypes.INTEGER,
+      likeP: DataTypes.INTEGER,
       share : DataTypes.INTEGER,
     },
     {

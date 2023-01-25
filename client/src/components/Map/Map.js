@@ -77,8 +77,6 @@ const Map = ({ post_points, connected_user_id }) => {
       el.style.backgroundColor = "red";
       el.style.opacity = "0.5";
 
-
-
       // make a marker for each feature and add it to the map
       new mapboxgl.Marker(el)
         .setLngLat([
@@ -87,6 +85,7 @@ const Map = ({ post_points, connected_user_id }) => {
         ])
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }) // add popups
+            //add component Postto popup
             .setHTML(
               `<h5>${e.publishing.soundlocation.longitude}, ${e.publishing.soundlocation.latitude}</h5>
               <p>${e.description}</p>
@@ -222,6 +221,7 @@ const Map = ({ post_points, connected_user_id }) => {
             })),
           },
         },
+        //paint the heatmap layer with different colors (blue , red, green etc) depending on the density of the points in the area
         paint: {
           // increase weight as diameter breast height increases
           "heatmap-weight": {
@@ -239,7 +239,8 @@ const Map = ({ post_points, connected_user_id }) => {
               [15, 3],
             ],
           },
-          // assign color values be applied to points depending on their density
+          // assign color values be applied to points depending on their density (blue, red, green etc)
+
           "heatmap-color": [
             "interpolate",
             ["linear"],
@@ -255,6 +256,7 @@ const Map = ({ post_points, connected_user_id }) => {
             0.8,
             "rgb(28,144,153)",
           ],
+
           // increase radius as zoom increases
           "heatmap-radius": {
             stops: [
