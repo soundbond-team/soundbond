@@ -163,11 +163,24 @@ exports.visit = async (req, res) => {
   db.Sound.findByPk(id).then(async (sound) => {
     try {
       if (req.body.position) {
-        await sound.addVisited_by(user_id, {position: req.body.position});
+        await sound.addVisited_by(user_id, { position: req.body.position });
       } else {
         await sound.addVisited_by(user_id);
       }
       res.status(201).json("visited");
+    } catch (e) {
+      res.status(400).json("error");
+    }
+  });
+};
+
+exports.getVisitLength = async (req, res) => {
+  console.log("getVisitLength");
+  const id = req.params.id;
+  db.Sound.findByPk(id).then(async (sound) => {
+    try {
+      const visitLength = await sound.countVisited_by();
+      res.status(200).json(visitLength);
     } catch (e) {
       res.status(400).json("error");
     }

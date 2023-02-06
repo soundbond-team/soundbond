@@ -24,5 +24,7 @@ module.exports = (app) => {
   // visits
   router.post("/visit/:id", sound.visit);
 
+  router.get("/visit/length/:id", sound.getVisitLength);
+
   app.use("/api/v1/sound", router);
 };

@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export const GET_SOUND = "GET_SOUND";
 export const POST_SOUND = "POST_SOUND";
 export const GET_SOUND_ERRORS = "GET_SOUND_ERRORS";
@@ -74,6 +73,21 @@ export const addVisit = (id, user_id) => {
     })
       .then((res) => {
         console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const getVisitLength = (id) => {
+  return (dispatch) => {
+    return axios({
+      method: "get",
+      url:
+        process.env.REACT_APP_BACK_SERVER_URL +
+        `api/v1/sound/visit/length/${id}`,
+    })
+      .then((res) => {
+        return res;
       })
       .catch((err) => console.log(err));
   };

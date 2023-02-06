@@ -10,6 +10,7 @@ import {
   UPDATE_POST,
   ADD_SAVE,
   REMOVE_SAVE,
+  LOAD_MORE_POSTS,
 } from "../actions/post.actions";
 
 import {
@@ -23,6 +24,7 @@ import {
   update_post,
   add_save,
   remove_save,
+  load_more_posts,
 } from "../reducers/functions/function";
 
 // Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
@@ -56,6 +58,8 @@ export default function allpostmapReducer(state = initialState, action) {
       return add_save(state, action.payload);
     case REMOVE_SAVE:
       return remove_save(state, action.payload);
+    case LOAD_MORE_POSTS:
+      return load_more_posts(state, action.payload);
 
     default:
       return state;

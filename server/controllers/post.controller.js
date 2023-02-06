@@ -20,7 +20,7 @@ const helper_include_visited = {
 const helper_sound = {
   model: db.Sound,
   as: "publishing",
-  include: [helper_include_soundlocation, helper_include_visited],
+  include: [helper_include_soundlocation],
 };
 
 const helper_user_publisher = {
@@ -189,9 +189,12 @@ exports.getPostByTag = (req, res) => {
 
 // Retrieve all posts from the database.
 exports.findAll = (req, res) => {
+  console.log(req.query);
+  let offset = parseInt(req.query.offset);
   db.Post.findAll({
     include: helper_include_everything,
-    limit: 20,
+    limit: 10,
+    offset: offset,
   })
     .then((data) => {
       res.send(data);
@@ -224,7 +227,7 @@ exports.allPostsByPublisherUserId = (req, res) => {
       publisher_user_id: req.params.user_id,
     },
     include: helper_include_everything,
-    limit: 20,
+    limit: 10,
   })
     .then((data) => {
       res.send(data);
@@ -282,6 +285,7 @@ exports.allPostsFromUsersFollowedByUserId = (req, res) => {
       follower_id: req.params.user_id,
     },
     include: helper_include_everything,
+    limit: 10,
   })
     .then((data) => {
       res.send(data);

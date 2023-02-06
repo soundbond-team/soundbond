@@ -23,6 +23,7 @@ const initiateConnection = () => {
     {
       host: process.env.HOST,
       dialect: "mssql",
+      logging: false,
     }
   );
 };
@@ -101,8 +102,6 @@ db.User.belongsToMany(db.Sound, {
   foreignKey: "user_id",
 });
 
-
-
 // Playlist
 
 db.Playlist.belongsTo(db.User, {
@@ -117,7 +116,6 @@ db.User.hasMany(db.Playlist, {
   as: "publisher",
   foreignKey: "publisher_user_id",
 });
-
 
 db.TitreListe.belongsTo(db.Playlist, {
   /* L'alias (as:) nous permet d'accéder aux likes d'un
@@ -177,7 +175,6 @@ db.Post.belongsTo(db.Sound, {
   foreignKey: "sound_id",
 });
 
-
 // Posts likés
 
 db.Post.belongsToMany(db.User, {
@@ -196,7 +193,6 @@ db.User.belongsToMany(db.Post, {
   foreignKey: "user_id",
 });
 
-
 // Posts enregistrés
 
 db.Post.belongsToMany(db.User, {
@@ -209,7 +205,6 @@ db.User.belongsToMany(db.Post, {
   as: "saved_posts",
   foreignKey: "user_id",
 });
-
 
 // Commentaires
 
@@ -235,7 +230,6 @@ db.Post.hasMany(db.Comments, {
   foreignKey: "post_id",
 });
 
-
 // Abonnements
 
 db.User.belongsToMany(db.User, {
@@ -249,7 +243,6 @@ db.User.belongsToMany(db.User, {
   as: "following",
   foreignKey: "following_id",
 });
-
 
 // Partages
 
