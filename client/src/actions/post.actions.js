@@ -18,6 +18,7 @@ export const REMOVE_SHARE = "REMOVE_SHARE";
 export const REMOVE_POST = "REMOVE_POST";
 export const UPDATE_POST = "UPDATE_POST";
 export const GET_HISTORY = "GET_HISTORY";
+export const LOAD_MORE_POSTS = "LOAD_MORE_POSTS";
 export const GET_ALL_Shares_FOR_SPECIFIC_POST =
   "GET_ALL_Shares_FOR_SPECIFIC_POST";
 export const GET_ALL_POSTS_SHARED_BY_USER = " GET_ALL_POSTS_SHARED_BY_USER";
@@ -417,5 +418,27 @@ export const getHistoryByUser = (user_id) => {
         }
       })
       .catch((err) => {});
+  };
+};
+
+//load more posts request body with offset
+export const loadMorePosts = (offset) => {
+  console.log("offset", offset);
+  return (dispatch) => {
+    return axios({
+      method: "get",
+      url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/post/`,
+      params: {
+        offset: parseInt(offset),
+      },
+    })
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: LOAD_MORE_POSTS, payload: "" });
+        } else {
+          dispatch({ type: LOAD_MORE_POSTS, payload: res.data });
+        }
+      })
+      .catch((err) => console.log(err));
   };
 };
