@@ -3,9 +3,16 @@ import random
 import pymssql
 import pandas as pd
 import numpy as np
+from decouple import config
 
+
+DATABASE = config("DATABASE")
+USER = config("USER")
+PASSWORD = config("PASSWORD")
+HOST = config("HOST")
 
 def connexion():
+    conn = pymssql.connect(HOST, USER, PASSWORD, DATABASE, as_dict=True, autocommit=True)
     cursor = conn.cursor()
     return cursor
 

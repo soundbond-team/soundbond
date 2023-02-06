@@ -12,7 +12,7 @@
 
 ## A propos
 
-__SoundBond__ est un projet de réseau social basé sur le son. Figurez-vous le comme un Instagram des sons. Tous droits réservés.
+**SoundBond** est un projet de réseau social basé sur le son. Figurez-vous le comme un Instagram des sons. Tous droits réservés.
 [Documentation en ligne du projet](https://gu1lhem.github.io/soundbond/)
 
 ### Intégration continue
@@ -27,10 +27,10 @@ Notre kanban client est disponible [sur Jira](https://soundbond.atlassian.net/ji
 
 Avant de commencer, assurez-vous de satisfaire les pré-requis suivants :
 
-* Vous avez une machine avec `Windows/Linux Ubuntu`. Le fonctionnement avec un autre OS n'est pas garanti.
-* Vous avez installé [NodeJS](https://nodejs.org/fr/) et [NPM](https://www.npmjs.com/). Pour Linux :
+- Vous avez une machine avec `Windows/Linux Ubuntu`. Le fonctionnement avec un autre OS n'est pas garanti.
+- Vous avez installé [NodeJS](https://nodejs.org/fr/) et [NPM](https://www.npmjs.com/). Pour Linux :
 
-``` bash
+```bash
 sudo apt install snapd npm
 sudo snap install node --classic
 ```
@@ -39,9 +39,9 @@ On recommende ici d'utiliser [Snapcraft](https://snapcraft.io/) (snap install) c
 
 Pour Windows, installez NodeJS et NPM [en téléchargeant l'installeur ici](https://nodejs.org/fr/download/)
 
-* Si vous souhaitez utiliser un serveur MySQL local, vous disposez de la version `8.0` de `mysql-server` avec une base de données dédiée à _SoundBond_ :
+- Si vous souhaitez utiliser un serveur MySQL local, vous disposez de la version `8.0` de `mysql-server` avec une base de données dédiée à _SoundBond_ :
 
-``` sql
+```sql
     CREATE DATABASE `nom de la base`;
     CREATE USER '`nom administrateur`'@'localhost' IDENTIFIED BY '`mot de passe`';
     GRANT ALL PRIVILEGES ON `nom de la base`.* to '`nom administrateur`'@'localhost';
@@ -50,9 +50,9 @@ Pour Windows, installez NodeJS et NPM [en téléchargeant l'installeur ici](http
 
 Pour installer MySQL sur Windows, rendez-vous [ici](https://openclassrooms.com/fr/courses/1959476-administrez-vos-bases-de-donnees-avec-mysql/1959969-installez-mysql). Sur Linux, exécutez simplement `sudo apt install mysql-server`.
 
-* Installez `yarn` :
+- Installez `yarn` :
 
-``` bash
+```bash
 npm install yarn
 ```
 
@@ -64,13 +64,13 @@ Python3, Python3-pip et Python3-venv sont requis pour l'installation des dépend
 
 Installez les packets NPM de /client et /server, ainsi que les dépendances Python de /ml.
 
-``` bash
+```bash
 cd client
 yarn install
 cd ../server
 yarn install
 cd ../ml
-python -m env env
+python -m venv env
 .\env\Scripts\activate # ou source env/bin/activate sur Linux
 pip install -r requirements.txt
 ```
@@ -81,7 +81,7 @@ Si vous rencontrez l'erreur `The engine "node" is incompatible with this module.
 
 Copiez le fichier .env.sample en un autre fichier .env.
 
-``` bash
+```bash
 cp ./server/.env.sample ./server/.env
 ```
 
@@ -91,21 +91,21 @@ Puis écrivez-y les valeurs que vous avez défini en initialisant la base de don
 
 Pour le serveur backend
 
-``` bash
+```bash
 cd server
 npm start
 ```
 
 Pour le serveur frontend, dans un autre terminal
 
-``` bash
+```bash
 cd client
 npm start
 ```
 
 Pour le serveur ML, dans un autre terminal
 
-``` bash
+```bash
 cd ml
 .\env\Scripts\activate # ou source env/bin/activate sur Linux
 uvicorn server:app --reload
@@ -115,7 +115,7 @@ uvicorn server:app --reload
 
 Essayez d'insérer un élément dans la base de données depuis l'API.
 
-``` bash
+```bash
 curl -i -H "Content-Type: application/json" -X POST -d '{"string_attribute":"hello world"}' http://localhost:5000/example/add
 ```
 
@@ -126,12 +126,14 @@ curl -i -H "Content-Type: application/json" -X POST -d '{"string_attribute":"hel
 #### Linux
 
 Pour Linux, installez les navigateurs Google Chrome avec, dans un _shell_ super-utilisateur :
-``` bash
+
+```bash
 # curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
 # echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
 # apt-get -y update
 # apt-get -y install google-chrome-stable
 ```
+
 et [Mozilla Firefox](https://www.mozilla.org/fr/firefox/linux/).
 
 #### Microsoft Windows
@@ -142,7 +144,7 @@ Pour Windows, installez les navigateurs [Google Chrome](https://www.google.com/i
 
 Pour lancer les tests, exécutez :
 
-``` bash
+```bash
 $ yarn test
 ```
 
@@ -152,30 +154,30 @@ $ yarn test
 
 Le dataset `` est téléchargeable [ici](https://zenodo.org/record/3612637). Les fichiers sont les suivants :
 
-``` txt
+```txt
 root
-│  
+│
 └───FSDKaggle2019.audio_train_curated/               Audio clips in the curated train set
 │
 └───FSDKaggle2019.audio_train_noisy/                 Audio clips in the noisy train set
-│   
+│
 └───FSDKaggle2019.audio_test/                        Audio clips in the full test set
-│   
+│
 └───FSDKaggle2019.meta/                              Files for evaluation setup
-│   │            
+│   │
 │   └─── train_curated_post_competition.csv          Ground truth for the curated train set
-│   │            
+│   │
 │   └─── train_noisy_post_competition.csv            Ground truth for the noisy train set
-│   │            
+│   │
 │   └─── test_post_competition.csv                   Ground truth for the full test set
-│   │            
-│   └─── vocabulary.csv                              List of sound classes in FSDKaggle2019    
-│   
+│   │
+│   └─── vocabulary.csv                              List of sound classes in FSDKaggle2019
+│
 └───FSDKaggle2019.doc/
-    │            
+    │
     └───README.md                                    The dataset description file that you are reading
-    │            
-    └───LICENSE-DATASET                              License of the FSDKaggle2019 dataset as an entity   
+    │
+    └───LICENSE-DATASET                              License of the FSDKaggle2019 dataset as an entity
 ```
 
 Pour le moment, nous utilisons audio_train_curated ainsi que les fichiers CSV.
