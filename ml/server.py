@@ -2,6 +2,7 @@
 import pickle
 
 import uvicorn
+from decouple import config
 from fastapi import FastAPI
 
 # 2. Create the app object
@@ -38,7 +39,11 @@ class LoadPickle(metaclass=Singleton):
 
 @app.get("/recommend/{user_id}")
 def get_recommendations(user_id: int):
-    return = LoadPickle().table[user_id]
+    DATABASE = config("DATABASE")
+    USER = config("USER")
+    PASSWORD = config("PASSWORD")
+    HOST = config("HOST")
+    return p LoadPickle().table[user_id]
 
 # 5. Run the API with uvicorn
 #    Will run on http://127.0.0.1:8000
