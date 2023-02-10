@@ -41,7 +41,7 @@ class LoadPickle(metaclass=Singleton):
             self.table = pickle.load(f)
 
 @app.get("/recommend/{user_id}")
-def get_recommendations(user_id: int):
+def get_recommendations(user_id: str):
     
     cursor = connexion()
 
