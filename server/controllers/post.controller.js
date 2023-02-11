@@ -186,6 +186,28 @@ exports.getPostByTag = (req, res) => {
       res.status(500).send(err);
     });
 };
+//check if post is visited by user
+exports.checkIfVisited = (req, res) => {
+  consoelk.log("dad");
+  const post_id = req.param.post_id;
+  const user_id = req.param.user_id;
+  db.Post.findOne({
+    where: { id: post_id },
+    include: [
+      {
+        model: db.User,
+        as: "visited_by",
+        where: { id: user_id },
+      },
+    ],
+  }).then((data) => {
+    if (data.visited_by.length > 0) {
+      res.status(200).send(true);
+    } else {
+      res.status(200).send(false);
+    }
+  });
+};
 
 // Retrieve all posts from the database.
 exports.findAll = (req, res) => {
@@ -208,7 +230,8 @@ exports.findAll = (req, res) => {
 
 exports.findAllformap = (req, res) => {
   db.Post.findAll({
-    include: helper_include_everything,
+    include: [helper_sound, helper_user_publisher],
+    limit: 500,
   })
     .then((data) => {
       res.send(data);
