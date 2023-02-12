@@ -6,6 +6,7 @@ import random
 import uvicorn
 from fastapi import FastAPI
 from fonction import *
+from guess_tags import guess_tags
 
 app = FastAPI()
 
@@ -83,8 +84,7 @@ def guess_tags(data: dict):
     # Get the data from the request, a sound file
     sound = data["sound"]
 
-    #return ml_guess_tags(sound)
-    return {"tags": ["tag1", "tag2", "tag3"]}
+    return {"tags": guess_tags(sound)}
 
 
 if __name__ == "__main__":
