@@ -1,4 +1,3 @@
-# 1. Library imports
 import pickle
 import pandas as pd
 import numpy as np
@@ -8,21 +7,12 @@ import uvicorn
 from fastapi import FastAPI
 from fonction import *
 
-# 2. Create the app object
 app = FastAPI()
 
-# 3. Index route, opens automatically on http://127.0.0.1:8000
 @app.get("/")
 def index():
-    return {"message": "Hello, stranger"}
-
-
-# 4. Route with a single parameter, returns the parameter within a message
-#    Located at: http://127.0.0.1:8000/AnyNameHere
-@app.get("/{name}")
-def get_name(name: str):
-    return {"message": f"Hello, {name}"}
-
+    """ Default is http://127.0.0.1:8000 """
+    return {"message": "Welcom to Soundbond ML API"}
 
 class Singleton(type):
     _instances = {}
@@ -31,7 +21,6 @@ class Singleton(type):
         if cls not in cls._instances:
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
-
 
 # load pickle file
 class LoadPickle(metaclass=Singleton):
@@ -82,7 +71,21 @@ def get_recommendations(user_id: str):
 
     return recommanded_sounds
 
-# 5. Run the API with uvicorn
-#    Will run on http://127.0.0.1:8000
+@app.get("/guess_tags/")
+def guess_tags(data: dict):
+    """
+    This route is used to guess the tags of a sound.
+    data: dict
+    """
+
+    #assuming model function is ml_guess_tags()
+
+    # Get the data from the request, a sound file
+    sound = data["sound"]
+
+    #return ml_guess_tags(sound)
+    return {"tags": ["tag1", "tag2", "tag3"]}
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
