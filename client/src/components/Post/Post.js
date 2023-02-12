@@ -110,7 +110,14 @@ function Post(props) {
           { method: "GET" }
         ).then(async (response) => {
           let address = await response.json();
-          setplaceName(address.features[0].place_name);
+          if (
+            address.features.length > 0 &&
+            address.features[0].place_name !== undefined &&
+            address.features[0].place_name !== null &&
+            address.features[0].place_name !== "undefined"
+          ) {
+            setplaceName(address.features[0].place_name);
+          }
         });
       }
       if (

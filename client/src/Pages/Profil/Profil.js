@@ -125,7 +125,7 @@ function Profil(props) {
               }}
             >
               <div>
-                <h4>{currentUserdata ? currentUserdata.username : <p></p>}</h4>
+                <center><h4>{currentUserdata ? currentUserdata.username : <p></p>}</h4></center>
 
                 <div className="container d-flex  justify-content-around">
                   <div>
@@ -169,7 +169,7 @@ function Profil(props) {
           </div>
           <div className="container">
             <div className="row">
-              <div className="col-1 d-inline-flex flex-lg-column">
+              <div className="col-1 d-inline-flex flex-md-column">
                 <Link
                   style={{
                     margin: "4px",
@@ -265,6 +265,31 @@ function Profil(props) {
                       }}
                     >
                       Historique d'écoute
+                    </span>
+                  </IconButton>
+                </Link>
+
+                <Link
+                  style={{
+                    margin: "4px",
+                    width: "220px",
+                    textDecoration: "none",
+                  }}
+                  exact
+                  to="stats"
+                  className="col-4 "
+                >
+                  <IconButton>
+                    {" "}
+                    <span
+                      style={{
+                        marginLeft: "5px",
+                        fontSize: "18px",
+
+                        color: "black",
+                      }}
+                    >
+                      Mes statistiques
                     </span>
                   </IconButton>
                 </Link>

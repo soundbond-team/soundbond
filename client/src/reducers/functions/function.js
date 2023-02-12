@@ -10,6 +10,9 @@ export const add_like = (state, payload) => {
   });
 };
 
+export const load_more_posts = (state, payload) => {
+  return [...state, ...payload];
+};
 export const remove_like = (state, payload) => {
   return state.map((posts) => {
     if (posts.id === payload.id) {

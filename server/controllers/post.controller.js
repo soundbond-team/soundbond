@@ -20,7 +20,7 @@ const helper_include_visited = {
 const helper_sound = {
   model: db.Sound,
   as: "publishing",
-  include: [helper_include_soundlocation, helper_include_visited],
+  include: [helper_include_soundlocation],
 };
 
 const helper_user_publisher = {
@@ -72,8 +72,8 @@ const helper_playlist = {
     {
       model: db.Playlist,
       as: "is_in_playlist",
-    }
-  ]
+    },
+  ],
 };
 
 const helper_include_everything = [
@@ -186,11 +186,52 @@ exports.getPostByTag = (req, res) => {
       res.status(500).send(err);
     });
 };
+//check if post is visited by user
+exports.checkIfVisited = (req, res) => {
+  consoelk.log("dad");
+  const post_id = req.param.post_id;
+  const user_id = req.param.user_id;
+  db.Post.findOne({
+    where: { id: post_id },
+    include: [
+      {
+        model: db.User,
+        as: "visited_by",
+        where: { id: user_id },
+      },
+    ],
+  }).then((data) => {
+    if (data.visited_by.length > 0) {
+      res.status(200).send(true);
+    } else {
+      res.status(200).send(false);
+    }
+  });
+};
 
 // Retrieve all posts from the database.
 exports.findAll = (req, res) => {
+  console.log(req.query);
+  let offset = parseInt(req.query.offset);
   db.Post.findAll({
     include: helper_include_everything,
+    limit: 10,
+    offset: offset,
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        error: err.message || "Some error occurred while retrieving post.",
+      });
+    });
+};
+
+exports.findAllformap = (req, res) => {
+  db.Post.findAll({
+    include: [helper_sound, helper_user_publisher],
+    limit: 500,
   })
     .then((data) => {
       res.send(data);
@@ -209,6 +250,7 @@ exports.allPostsByPublisherUserId = (req, res) => {
       publisher_user_id: req.params.user_id,
     },
     include: helper_include_everything,
+    limit: 10,
   })
     .then((data) => {
       res.send(data);
@@ -266,6 +308,7 @@ exports.allPostsFromUsersFollowedByUserId = (req, res) => {
       follower_id: req.params.user_id,
     },
     include: helper_include_everything,
+    limit: 10,
   })
     .then((data) => {
       res.send(data);
@@ -359,7 +402,7 @@ exports.getAllLike = (req, res) => {
   db.Post.findAndCountAll(id)
     .then((data) => {
       let like = {
-        like: data.like,
+        likeP: data.likeP,
       };
       res.send(like);
     })
@@ -500,7 +543,7 @@ exports.getAllLike = (req, res) => {
   db.Post.findAndCountAll(id)
     .then((data) => {
       let like = {
-        like: data.like,
+        likeP: data.likeP,
       };
       res.send(like);
     })

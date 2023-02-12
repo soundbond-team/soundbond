@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { makeStyles } from "@material-ui/styles";
 import { addVisit } from "../../actions/sound.actions";
+import { getVisitLength } from "../../actions/sound.actions";
 import { getHistoryByUser } from "../../actions/post.actions";
 import { UidContext } from "../Appcontext";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -65,16 +66,19 @@ export default function AudioPlayer(props) {
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
   const [visited, setVisited] = useState(() => {
-    for (let i = 0; i < props.visit.length; i++) {
-      if (props.visit[i].id === uid) {
-        return true;
-      }
-    }
     return false;
   });
-  const [compteurVisite, setCompteurVisite] = useState(props.visit.length);
+  const [compteurVisite, setCompteurVisite] = useState(0);
 
   useEffect(() => {
+    const length = async () => {
+      console.log("compteurVisite");
+      await dispatch(getVisitLength(props.id_son)).then((data) => {
+        console.log(data);
+        setCompteurVisite(data.data);
+      });
+    };
+
     wavesurfer.current = WaveSurfer.create({
       container: `#${wavesurferId}`,
       waveColor: "grey",
@@ -120,21 +124,22 @@ export default function AudioPlayer(props) {
       }
     });
 
-    
     wavesurfer.current.on("audioprocess", async () => {
       var currentTime = wavesurfer.current.getCurrentTime();
       if (currentTime % 3 === 0) {
         await axios({
           method: "post",
-          url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/sound/visit/${props.id_son}`,
+          url:
+            process.env.REACT_APP_BACK_SERVER_URL +
+            `api/v1/sound/visit/${props.id_son}`,
           data: {
             user_id: uid,
-            position: currentTime
+            position: currentTime,
           },
-        })
+        });
       }
-  });
-
+    });
+    length();
     window.addEventListener("resize", handleResize, false);
     // eslint-disable-next-line
   }, []);

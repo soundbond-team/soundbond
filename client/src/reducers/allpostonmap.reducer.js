@@ -1,10 +1,10 @@
 import {
+  GET_ALL_POST_FOR_MAP,
   ADD_LIKE,
   REMOVE_LIKE,
   ADD_COMMENT,
   REMOVE_COMMENT,
   ADD_SHARE,
-  GET_ALL_POSTS_SHARED_BY_USER,
   REMOVE_SHARE,
   REMOVE_POST,
   UPDATE_POST,
@@ -12,7 +12,7 @@ import {
   REMOVE_SAVE,
   LOAD_MORE_POSTS,
 } from "../actions/post.actions";
-// Ce reducer sert a stocker tous les posts reçus (ainsi que les données des KF)
+
 import {
   add_like,
   remove_like,
@@ -25,13 +25,14 @@ import {
   add_save,
   remove_save,
   load_more_posts,
-} from "./functions/function";
+} from "../reducers/functions/function";
 
+// Ce reducer sert a stocker tous les posts reçus (ainsi que les données des FK)
 const initialState = [];
 
-export default function allpostsharedReducer(state = initialState, action) {
+export default function allpostmapReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_ALL_POSTS_SHARED_BY_USER:
+    case GET_ALL_POST_FOR_MAP:
       return action.payload;
 
     case ADD_LIKE:
@@ -59,6 +60,7 @@ export default function allpostsharedReducer(state = initialState, action) {
       return remove_save(state, action.payload);
     case LOAD_MORE_POSTS:
       return load_more_posts(state, action.payload);
+
     default:
       return state;
   }
