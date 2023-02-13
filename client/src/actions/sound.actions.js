@@ -23,6 +23,25 @@ const send_file = (tempfile_object, filename) => {
   });
 };
 
+export const send_file2 = async (tempfile_object, filename) => {
+  // Envoyer un fichier au serveur Node.
+  let file = new File([tempfile_object.blob], filename); // Créer un objet File à partir du blob local.
+  const data = new FormData();
+  data.append("file", file);
+
+  // Envoi de la requête POST du fichier et retourne des données.
+  return await axios({
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    method: "post",
+    url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/file/uploadML`,
+    data,
+  }).then((response) => {
+    return response.data;
+  });
+};
+
 function get_random_string() {
   /* Returns 9 random string with modern crypto solution.
   Base on :

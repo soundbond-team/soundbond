@@ -23,7 +23,7 @@ import { green, red, blue } from "@material-ui/core/colors";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { post_soundlocation } from "../../actions/soundlocation.actions";
-import { post_sound } from "../../actions/sound.actions";
+import { post_sound, send_file2 } from "../../actions/sound.actions";
 import { post_post, getallPost } from "../../actions/post.actions";
 import { UidContext } from "../Appcontext";
 import "./Microphone.css";
@@ -59,6 +59,8 @@ export default function Microphone(props) {
   const [description, setDescription] = useState(" "); // Utilisé pour stocker le description.
   const [tag, setTag] = useState(" ");
   const [tags, setTags] = useState([]); //tous les tags
+
+  const [tagsAI, setTagsAI] = useState([]);
   const [record, setRecord] = useState(false);
   const [open, setOpen] = useState(false);
   const [tempFile, setTempFile] = useState(null);
@@ -168,8 +170,18 @@ export default function Microphone(props) {
   useEffect(() => {
     if (tempFile) {
       wavesurfer.current.load(tempFile.blobURL);
+      console.log("test2");
+      gettagsAi();
     }
   }, [tempFile]);
+
+  const gettagsAi = async () => {
+    await dispatch(
+      send_file2(tempFile).then((res) => {
+        setTagsAI(res);
+      })
+    );
+  };
 
   const togglePlayback = () => {
     if (!isPlaying) {
@@ -264,6 +276,7 @@ export default function Microphone(props) {
 
   useEffect(() => {
     if (tempFile) {
+      console.log("test");
       addpost(sound.id, description, tags);
       setTempFile(null);
       setOpen(false);
@@ -370,6 +383,18 @@ export default function Microphone(props) {
             defaultValue={""}
           />
         </div>
+        <div className="input-group mb-3 container">
+          {tagsAI.map((item, key) => (
+            <span
+              key={key}
+              className="badge rounded-pill bg-secondary"
+              style={{ margin: "2px" }}
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+
         <datalist id="tags">
           {" "}
           {tagSuggestion.map((item, key) => (
