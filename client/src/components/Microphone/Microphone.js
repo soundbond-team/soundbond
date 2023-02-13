@@ -176,11 +176,10 @@ export default function Microphone(props) {
   }, [tempFile]);
 
   const gettagsAi = async () => {
-    await dispatch(
-      send_file2(tempFile).then((res) => {
+    await dispatch();
+    /*send_file2(tempFile).then((res) => {
         setTagsAI(res);
-      })
-    );
+      })*/
   };
 
   const togglePlayback = () => {

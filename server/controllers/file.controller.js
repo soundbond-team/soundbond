@@ -16,6 +16,21 @@ exports.upload = async (req, res) => {
 
   // Upload data to the blob
   await blockBlobClient.upload(req.files.file.data, req.files.file.size);
+
+  // Upload data to the ML server
+  const data = new FormData();
+  data.append("file", req.files.file.data);
+  await axios({
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    method: "post",
+    url: "http://localhost:8000/guess_tags/",
+    data,
+  }).then((response) => {
+    console.log(response.data);
+  });
+
   res.status(200).send({ message: "File Uploaded", code: 200 });
 };
 
