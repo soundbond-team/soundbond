@@ -384,15 +384,16 @@ export default function Microphone(props) {
           />
         </div>
         <div className="input-group mb-3 container">
-          {tagsAI.map((item, key) => (
-            <span
-              key={key}
-              className="badge rounded-pill bg-secondary"
-              style={{ margin: "2px" }}
-            >
-              {item}
-            </span>
-          ))}
+          {tagsAI.length > 0 &&
+            tagsAI.map((item, key) => (
+              <span
+                key={key}
+                className="badge rounded-pill bg-secondary"
+                style={{ margin: "2px" }}
+              >
+                {item}
+              </span>
+            ))}
         </div>
 
         <datalist id="tags">
