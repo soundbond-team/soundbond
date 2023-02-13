@@ -1,3 +1,4 @@
+import io
 import pickle
 import random
 
@@ -5,11 +6,22 @@ import numpy as np
 import pandas as pd
 import uvicorn
 from classifier import predict_file
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fonction import *
+from guess_tags import guess_tagsfunction
 from sklearn.cluster import KMeans
 
 app = FastAPI()
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -84,28 +96,18 @@ def get_recommendations(user_id: str):
     return recommanded_sounds
 
 
-@app.get("/guess_tags/")
-def guess_tags(data: dict):
+@app.post("/guess_tags/")
+async def guess_tags(file: UploadFile):
     """
     This route is used to guess the tags of a sound.
     data: dict
     """
-
-    # assuming model function is ml_guess_tags()
+    contents = await file.read()
+    print(contents)
 
     # Get the data from the request, a sound file
-    # File is POST as multipart/form-data
-    # get the sound file
-    sound = data["file"]
 
-    print("Sound file: ", sound)
-
-    # Get the tags
-    tags = predict_file(sound)
-
-    return {"tags": tags}
-
-    # return {"tags": guess_tags(sound)}
+    return {"tags": guess_tagsfunction()}
 
 
 if __name__ == "__main__":

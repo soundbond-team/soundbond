@@ -217,6 +217,7 @@ exports.findAll = (req, res) => {
     include: helper_include_everything,
     limit: 10,
     offset: offset,
+    //sort by date recent
   })
     .then((data) => {
       res.send(data);

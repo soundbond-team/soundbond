@@ -176,10 +176,9 @@ export default function Microphone(props) {
   }, [tempFile]);
 
   const gettagsAi = async () => {
-    await dispatch();
-    /*send_file2(tempFile).then((res) => {
-        setTagsAI(res);
-      })*/
+    send_file2(tempFile).then((res) => {
+      setTagsAI(res.tags);
+    });
   };
 
   const togglePlayback = () => {
@@ -383,6 +382,7 @@ export default function Microphone(props) {
           />
         </div>
         <div className="input-group mb-3 container">
+          Tags suggested:{" "}
           {tagsAI.length > 0 &&
             tagsAI.map((item, key) => (
               <span

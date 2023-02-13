@@ -35,7 +35,7 @@ export const send_file2 = async (tempfile_object, filename) => {
       "Content-Type": "multipart/form-data",
     },
     method: "post",
-    url: process.env.REACT_APP_BACK_SERVER_URL + `api/v1/file/uploadML`,
+    url: `http://localhost:8000/guess_tags/`,
     data,
   }).then((response) => {
     return response.data;
