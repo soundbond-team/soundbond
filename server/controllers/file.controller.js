@@ -19,7 +19,7 @@ exports.upload = async (req, res) => {
   res.status(200).send({ message: "File Uploaded", code: 200 });
 };
 
-exports.upload2 = async (req, res) => {
+exports.uploadML = async (req, res) => {
   //envoie ce son au model machine learning fastapi pour qu'il le traite et qu'il renvoie un json avec les infos
   const data = new FormData();
   data.append("file", req.files.file.data);
@@ -33,12 +33,10 @@ exports.upload2 = async (req, res) => {
     url: "http://localhost:8000/guess_tags/",
     data,
   }).then((response) => {
-    res
-      .status(200)
-      .send({
-        message: "File Uploaded for ml",
-        code: 200,
-        response: response.data,
-      });
+    res.status(200).send({
+      message: "File Uploaded for ml",
+      code: 200,
+      response: response.data,
+    });
   });
 };
