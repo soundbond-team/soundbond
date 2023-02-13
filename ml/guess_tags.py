@@ -3,7 +3,7 @@ This file is used to guess the tags of a sound.
 """
 
 # arg : sound file
-def guess_tags(sound):
+def guess_tagsfunction():
     """
     This function is used to guess the tags of a sound.
     sound: sound file

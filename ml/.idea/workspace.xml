@@ -2,7 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="48dfa002-9e47-4b3d-bf97-c8475c094e9b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/Microphone/Microphone.js" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/components/Microphone/Microphone.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/guess_tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/guess_tags.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/controllers/file.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/controllers/file.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/controllers/post.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/controllers/post.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/models/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/models/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/routes/file.routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/routes/file.routes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

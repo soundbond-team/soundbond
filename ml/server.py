@@ -6,9 +6,18 @@ import random
 import uvicorn
 from fastapi import FastAPI
 from fonction import *
-from guess_tags import guess_tags
-
+from guess_tags import guess_tagsfunction
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def index():
@@ -72,19 +81,18 @@ def get_recommendations(user_id: str):
 
     return recommanded_sounds
 
-@app.get("/guess_tags/")
-def guess_tags(data: dict):
+@app.post("/guess_tags/")
+def guess_tags():
     """
     This route is used to guess the tags of a sound.
     data: dict
     """
 
-    #assuming model function is ml_guess_tags()
 
     # Get the data from the request, a sound file
-    sound = data["sound"]
 
-    return {"tags": guess_tags(sound)}
+
+    return {"tags": guess_tagsfunction()}
 
 
 if __name__ == "__main__":

@@ -23,7 +23,6 @@ const initiateConnection = () => {
     {
       host: process.env.HOST,
       dialect: "mssql",
-      logging: false,
     }
   );
 };

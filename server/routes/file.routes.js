@@ -5,7 +5,7 @@ module.exports = (app) => {
 
   // Create a new Sound
   router.post("/", file.upload);
-  router.post("/uploadML", file.upload);
+  router.post("/uploadML", file.uploadML);
 
   app.use("/api/v1/file", router);
 };

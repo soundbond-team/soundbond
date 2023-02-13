@@ -1,3 +1,4 @@
+const axios = require("axios").default;
 const { BlobServiceClient } = require("@azure/storage-blob");
 const blobServiceClient = BlobServiceClient.fromConnectionString(
   process.env.AZURE_CONNECTION_STRING
@@ -21,8 +22,6 @@ exports.upload = async (req, res) => {
 
 exports.uploadML = async (req, res) => {
   //envoie ce son au model machine learning fastapi pour qu'il le traite et qu'il renvoie un json avec les infos
-  const data = new FormData();
-  data.append("file", req.files.file.data);
 
   // Envoi de la requête POST du fichier.
   return axios({
@@ -31,7 +30,7 @@ exports.uploadML = async (req, res) => {
     },
     method: "post",
     url: "http://localhost:8000/guess_tags/",
-    data,
+    data: req.data,
   }).then((response) => {
     res.status(200).send({
       message: "File Uploaded for ml",
