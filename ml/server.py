@@ -3,8 +3,9 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 import random
+import io
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI,File, UploadFile
 from fonction import *
 from guess_tags import guess_tagsfunction
 from fastapi.middleware.cors import CORSMiddleware
@@ -82,12 +83,13 @@ def get_recommendations(user_id: str):
     return recommanded_sounds
 
 @app.post("/guess_tags/")
-def guess_tags():
+async def guess_tags(file: UploadFile):
     """
     This route is used to guess the tags of a sound.
     data: dict
     """
-
+    contents = await file.read()
+    print(contents)
 
     # Get the data from the request, a sound file
 
