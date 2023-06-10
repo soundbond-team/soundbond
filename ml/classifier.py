@@ -415,7 +415,7 @@ import gc
 
 
 def predict_model(test_fnames, x_test, test_transforms, num_classes, *, tta=5):
-    batch_size = 128  # testing batch size, i.e. how many testing samples to work through before updating the weights
+    batch_size = 32  # testing batch size, i.e. how many testing samples to work through before updating the weights
     #!256
 
     # let's try with 1/4 of the test data

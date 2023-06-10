@@ -1,6 +1,7 @@
 import io
 import pickle
 import random
+import shutil
 
 import numpy as np
 import pandas as pd
@@ -102,12 +103,22 @@ async def guess_tags(file: UploadFile):
     This route is used to guess the tags of a sound.
     data: dict
     """
-    contents = await file.read()
-    print(contents)
+    print(file)  # starlette.datastructures.UploadFile object
+    # Save the file to disk and get the path
+    print(file.filename)
+    file_path = f"./{file.filename}.wav"
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
     # Get the data from the request, a sound file
+    predict = predict_file(file_path)
+    print(predict)
+    print(type(predict))
+    #
 
-    return {"tags": guess_tagsfunction()}
+    # return {"tags": predict}
+    # vars() argument must have __dict__ attribute
+    return {"tags": predict.tolist()}
 
 
 if __name__ == "__main__":

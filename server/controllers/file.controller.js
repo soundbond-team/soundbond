@@ -19,6 +19,7 @@ exports.upload = async (req, res) => {
   await blockBlobClient.upload(req.files.file.data, req.files.file.size);
 
   // Upload data to the ML server
+  /*
   const data = new FormData();
   data.append("file", req.files.file.data);
   await axios({
@@ -30,7 +31,7 @@ exports.upload = async (req, res) => {
     data,
   }).then((response) => {
     console.log(response.data);
-  });
+  });*/
 
   res.status(200).send({ message: "File Uploaded", code: 200 });
 };
